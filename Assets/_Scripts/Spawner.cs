@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 /// <summary>
-/// sdfgadsfsga
+/// Simple Spawner class to spawn various game objects
 /// </summary>
 public class Spawner : MonoBehaviour
 {
@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
     public enum BlockedBehaviour { ForceSpawn, WaitThenSpawn, DontSpawn };
     [Tooltip("What do we do when something is inside the spawn volume?")]
     public BlockedBehaviour blockedBehaviour;
-
+    [Tooltip("What Layers to ignore when checking for blocking")]
+    public LayerMask ignoreLayer = 0;
     [Tooltip("Size of volume to check for overlap")]
     public Vector3 blockedVolume = new Vector3(1, 2, 1);
     [Tooltip("Green is clear, red is blocked")]
@@ -47,7 +48,10 @@ public class Spawner : MonoBehaviour
             SpawnWithDelay(spawnDelay);
         }
     }
-
+    /// <summary>
+    /// Will spawn the GameObject after seconds
+    /// </summary>
+    /// <param name="seconds"></param>
     public void SpawnWithDelay(float seconds)
     {
         if(seconds <= 0)
@@ -59,7 +63,9 @@ public class Spawner : MonoBehaviour
             StartCoroutine(SpawnIn(seconds));
         }
     }
-
+    /// <summary>
+    /// Will spawn the GameObject right away
+    /// </summary>
     public void SpawnImmidiate()
     {
         if (PrefabToSpawn)
@@ -150,9 +156,13 @@ public class Spawner : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Will return true if there is a non-trogger collider in the spawn volume
+    /// </summary>
+    /// <returns></returns>
     public bool CheckIfBlocked()
     {
-        return Physics.CheckBox(transform.position + transform.up * blockedVolume.y / 2, blockedVolume*.499f, transform.rotation, ~0, QueryTriggerInteraction.Ignore);
+        return Physics.CheckBox(transform.position + transform.up * blockedVolume.y / 2, blockedVolume*.499f, transform.rotation, ~ignoreLayer, QueryTriggerInteraction.Ignore);
     }
 
     private void OnDrawGizmos()

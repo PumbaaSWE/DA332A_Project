@@ -488,7 +488,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a5170469345e8fe45a8e424dd0afa3b7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -605,6 +605,11 @@ PrefabInstance:
     - target: {fileID: 8096098381025371080, guid: e87bf2cdf93d2b944900c9da3c9857e8,
         type: 3}
       propertyPath: blockedBehaviour
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096098381025371080, guid: e87bf2cdf93d2b944900c9da3c9857e8,
+        type: 3}
+      propertyPath: ignoreLayer.m_Bits
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
