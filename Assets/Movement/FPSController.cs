@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 /// <summary>
 /// Partly stolen from BaseController by pumbaaswe, partly stolen from Sourcelike FPS Character Controller by Majikayo Games and partly original af.
@@ -26,6 +28,7 @@ public class FPSController : MonoBehaviour
     private MoveCommand command;
     private CapsuleCollider cc;
     private Rigidbody rb;
+    private PlayerInput pInput;
 
     private bool crouchToggle;
     private bool grounded;
@@ -42,6 +45,7 @@ public class FPSController : MonoBehaviour
         cc.center = Vector3.up * controllerData.height / 2f;
 
         rb = GetComponent<Rigidbody>();
+        pInput = GetComponent<PlayerInput>();
         move = Vector3.zero;
 
         if (controllerData.jumpHeight > 0)
@@ -74,6 +78,7 @@ public class FPSController : MonoBehaviour
         // Jump
         if (command.jump && grounded && !didJump)
         {
+            rb.velocity = rb.velocity.WithY();
             rb.AddForce(Vector3.up * controllerData.jumpForce, ForceMode.Impulse);
         }
 
@@ -215,7 +220,7 @@ public class FPSController : MonoBehaviour
             Vector3 v = move / Time.fixedDeltaTime * speed;
             Vector3 a = (v - rb.velocity) / Time.fixedDeltaTime;
             Vector3 f = rb.mass * a;
-            f = f.normalized * Mathf.Min(f.magnitude, controllerData.maxAccel);
+            f = f.normalized * Mathf.Min(f.magnitude, rb.mass * controllerData.maxAccel);
             rb.AddForce(f.WithY(0));
         }
         else
@@ -226,7 +231,7 @@ public class FPSController : MonoBehaviour
             float v = speed;
             float a = (v - currentSpeedInWishDir) / Time.fixedDeltaTime;
             float f = rb.mass * a;
-            rb.AddForce((Mathf.Min(f, controllerData.maxAccel) * move / Time.fixedDeltaTime).WithY(0));
+            rb.AddForce((Mathf.Min(f, rb.mass * controllerData.maxAccel) * move / Time.fixedDeltaTime).WithY(0));
         }
     }
     
@@ -242,54 +247,29 @@ public class FPSController : MonoBehaviour
         float v = controllerData.moveSpeed;
         float a = (v - currentSpeedInWishDir) / Time.fixedDeltaTime;
         float f = rb.mass * a;
-        rb.AddForce((Mathf.Min(f, MaxAirAccel) * move.normalized).WithY(0));
-
+        rb.AddForce((Mathf.Min(f, rb.mass * MaxAirAccel) * move.normalized).WithY(0));
     }
 
     private MoveCommand GetInput()
     {
+        Vector2 mouse = pInput.actions.FindAction("Look").ReadValue<Vector2>();
+        mouse.x *= keyBinds.sensX;
+        mouse.y *= keyBinds.sensY;
+        mouse *= Time.deltaTime * keyBinds.sens;
 
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * keyBinds.sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * keyBinds.sensY;
-
-
-        float moveZ = 0;
-        float moveX = 0;
-        if (Input.GetKey(keyBinds.forward))
-        {
-            moveZ += 1;
-        }
-        if (Input.GetKey(keyBinds.back))
-        {
-            moveZ += -1;
-        }
-
-        if (Input.GetKey(keyBinds.right))
-        {
-            moveX += 1;
-        }
-        if (Input.GetKey(keyBinds.left))
-        {
-            moveX += -1;
-        }
-
-        if (Input.GetKeyDown(keyBinds.crouchToggle))
-        {
-            crouchToggle = true;
-        }
-        else if (Input.GetKeyUp(keyBinds.crouchToggle))
-        {
-            crouchToggle = false;
-        }
+        Vector2 move = pInput.actions.FindAction("Move").ReadValue<Vector2>();
+        bool jump = pInput.actions.FindAction("Jump").ReadValue<float>() > 0;
+        bool crouch = pInput.actions.FindAction("Crouch").ReadValue<float>() > 0;
+        bool sprint = pInput.actions.FindAction("Sprint").ReadValue<float>() > 0;
 
         return new MoveCommand()
         {
-            mouse = new Vector2(mouseX, mouseY) * keyBinds.sens,
-            move = new Vector2(moveX, moveZ),
-            jump = Input.GetKey(keyBinds.jump),
-            crouch = Input.GetKey(keyBinds.crouch),
-            crouchToggle = crouchToggle,
-            sprint = Input.GetKey(keyBinds.sprint),
+            mouse = mouse,
+            move = move,
+            jump = jump,
+            crouch = crouch,
+            crouchToggle = crouchToggle, // haha no crouch toggle for you!!
+            sprint = sprint,
         };
     }
 }
