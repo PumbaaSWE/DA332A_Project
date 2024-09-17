@@ -25,6 +25,9 @@ public class FPSController : MonoBehaviour
     [SerializeField] private Vector3 velocity;
     [SerializeField] private float speed;
 
+    [Range(0f, 1f)]
+    [SerializeField] private float timeScale = 1f;
+
     private MoveCommand command;
     private CapsuleCollider cc;
     private Rigidbody rb;
@@ -61,26 +64,29 @@ public class FPSController : MonoBehaviour
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// Rotate player camera by <paramref name="x"/> (pitch) and <paramref name="y"/> (yaw) degrees.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void Rotate(float x, float y)
     {
-        command = GetInput();
-
         // Rotate body Y
-        transform.Rotate(Vector3.up, command.mouse.x);
+        transform.Rotate(Vector3.up, y);
 
         // Rotate head X
         if (head != null)
         {
-            xRot = Mathf.Clamp(xRot - command.mouse.y, controllerData.minLookUpAngle, controllerData.maxLookUpAngle);
+            xRot = Mathf.Clamp(xRot - x, controllerData.minLookUpAngle, controllerData.maxLookUpAngle);
             head.localRotation = Quaternion.Euler(xRot, 0f, 0f);
         }
+    }
 
-        // Jump
-        if (command.jump && grounded && !didJump)
-        {
-            rb.velocity = rb.velocity.WithY();
-            rb.AddForce(Vector3.up * controllerData.jumpForce, ForceMode.Impulse);
-        }
+    private void Update()
+    {
+        command = GetInput();
+
+        Rotate(command.mouse.y, command.mouse.x);
 
         // Crouch and uncrouch
         if (command.crouch)
@@ -102,6 +108,14 @@ public class FPSController : MonoBehaviour
         head.position = transform.position + Vector3.up * (cc.height - controllerData.camOffset);
         bool crouched = cc.height != controllerData.height;
 
+        // Jump
+        if (command.jump && !crouched && grounded && !didJump)
+        {
+            rb.velocity = rb.velocity.WithY();
+            rb.AddForce(Vector3.up * controllerData.jumpForce, ForceMode.Impulse);
+            didJump = true;
+        }
+
         // Sum the move vector for fixed update
         if (command.move.sqrMagnitude > 1f)
             command.move.Normalize();
@@ -120,8 +134,7 @@ public class FPSController : MonoBehaviour
         velocity = rb.velocity;
         speed = rb.velocity.magnitude;
 
-        if (command.jump && !didJump)
-            didJump = true;
+        Time.timeScale = timeScale;
     }
 
     private void FixedUpdate()
@@ -131,64 +144,77 @@ public class FPSController : MonoBehaviour
 
         wasGrounded = grounded;
 
-        if (rb.velocity.y > 0f)
+        if (didJump)
         {
             grounded = false;
         }
         else
         {
             grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight + .1f - r, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
+            
+            //if (Vector3.Angle(Vector3.up, hit.normal) > 45f)
+            //{
+            //    Debug.Log("steep");
+            //}
         }
+
+        // Stair snapping disabled for now because it's jittery and not must have, right now!
 
         // Snap down if sent flying by ramps or stepping down small steps
-        if (wasGrounded && !didJump)
-        {
-            Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r + controllerData.stepHeight, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
+        //if (rb.velocity.y < 0 && wasGrounded && !didJump)
+        //{
+        //    // p + h
+        //    //
+        //    Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r + controllerData.stepHeight, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
             
-            if (hit.distance > 0f && hit.point.y <= transform.position.y + .1f)
-            {
-                rb.MovePosition(transform.position.WithY(hit.point.y));
+        //    if (hit.distance > 0f && hit.point.y + .01f < transform.position.y)
+        //    {
+        //        Debug.Log("snap down");
 
-                //If we move, we want to keep our Y velocity
-                if (move.sqrMagnitude > 0f)
-                {
-                    float normalVel = Vector3.Dot(rb.velocity, hit.normal);
-                    rb.velocity -= hit.normal * normalVel;
-                }
-                // Otherwise, we want to stay on the stairs. this is a bit hacky but it's to prevent the capsule collider to make us slide off the steps
-                else
-                {
-                    rb.velocity = rb.velocity.WithY(0f);
-                }
+        //        rb.MovePosition(transform.position.WithY(hit.point.y));
 
-                grounded = true;
-            }
-        }
+        //        //If we move, we want to keep our Y velocity
+        //        //if (move.sqrMagnitude > 0f)
+        //        //{
+        //        //    float normalVel = Vector3.Dot(rb.velocity, hit.normal);
+        //        //    rb.velocity -= hit.normal * normalVel;
+        //        //}
+        //        // Otherwise, we want to stay on the stairs. this is a bit hacky but it's to prevent the capsule collider to make us slide off the steps
+        //        //else
+        //        {
+        //            rb.velocity = rb.velocity.WithY(0f);
+        //        }
+
+        //        grounded = true;
+        //    }
+        //}
 
         //Snap up small steps
-        if (grounded && !didJump)
-        {
-            Physics.SphereCast(transform.position + rb.velocity.WithY(0) * Time.fixedDeltaTime + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
+        //if (grounded && !didJump)
+        //{
+        //    Physics.SphereCast(transform.position + rb.velocity.WithY(0) * Time.fixedDeltaTime + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
 
-            if (hit.distance > 0f && hit.point.y <= transform.position.y + controllerData.stepHeight)
-            {
-                transform.position = transform.position.WithY(hit.point.y - Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime);
+        //    if (hit.distance > 0f && hit.point.y - .01f > transform.position.y && hit.point.y <= transform.position.y + controllerData.stepHeight)
+        //    {
+        //        Debug.Log("snap up");
 
-                //If we move, we want to keep our Y velocity
-                if (move.sqrMagnitude > 0f)
-                {
-                    float normalVel = Vector3.Dot(rb.velocity, hit.normal);
-                    rb.velocity -= hit.normal * normalVel;
-                }
-                // Otherwise, we want to stay on the stairs. this is a bit hacky but it's to prevent the capsule collider to make us slide off the steps
-                //else
-                {
-                    rb.velocity = rb.velocity.WithY(0f);
-                }
+        //        transform.position = transform.position.WithY(hit.point.y/* - Physics.gravity.y * Time.fixedDeltaTime * Time.fixedDeltaTime*/);
 
-                grounded = true;
-            }
-        }
+        //        //If we move, we want to keep our Y velocity
+        //        //if (move.sqrMagnitude > 0f)
+        //        //{
+        //        //    float normalVel = Vector3.Dot(rb.velocity, hit.normal);
+        //        //    rb.velocity -= hit.normal * normalVel;
+        //        //}
+        //        // Otherwise, we want to stay on the stairs. this is a bit hacky but it's to prevent the capsule collider to make us slide off the steps
+        //        //else
+        //        {
+        //            rb.velocity = rb.velocity.WithY(0f);
+        //        }
+
+        //        grounded = true;
+        //    }
+        //}
 
         if (grounded)
             DoGroundPhysics();
