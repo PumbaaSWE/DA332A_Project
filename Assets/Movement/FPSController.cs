@@ -88,13 +88,6 @@ public class FPSController : MonoBehaviour
 
         Rotate(command.mouse.y, command.mouse.x);
 
-        // Jump
-        if (command.jump && grounded && !didJump)
-        {
-            rb.velocity = rb.velocity.WithY();
-            rb.AddForce(Vector3.up * controllerData.jumpForce, ForceMode.Impulse);
-        }
-
         // Crouch and uncrouch
         if (command.crouch)
         {
@@ -115,6 +108,14 @@ public class FPSController : MonoBehaviour
         head.position = transform.position + Vector3.up * (cc.height - controllerData.camOffset);
         bool crouched = cc.height != controllerData.height;
 
+        // Jump
+        if (command.jump && !crouched && grounded && !didJump)
+        {
+            rb.velocity = rb.velocity.WithY();
+            rb.AddForce(Vector3.up * controllerData.jumpForce, ForceMode.Impulse);
+            didJump = true;
+        }
+
         // Sum the move vector for fixed update
         if (command.move.sqrMagnitude > 1f)
             command.move.Normalize();
@@ -132,9 +133,6 @@ public class FPSController : MonoBehaviour
         // Debug
         velocity = rb.velocity;
         speed = rb.velocity.magnitude;
-
-        if (command.jump && !didJump)
-            didJump = true;
 
         Time.timeScale = timeScale;
     }
