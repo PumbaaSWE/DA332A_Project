@@ -813,15 +813,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CameraView: {fileID: 2479122937451904695}
   ShotOrigin: {fileID: 2479122937451904695}
   LoadedAmmo: 0
-  MagazineSize: 10
-  ReserveAmmo: 5
-  MaxReserveAmmo: 100
-  FireRate: 60
-  VerticalRecoil: 0
-  MaxHorizontalRecoilLeft: 0
-  MaxHorizontalRecoilRight: 0
+  MagazineSize: 30
+  ReserveAmmo: 300
+  MaxReserveAmmo: 300
+  RPM: 1000
+  VerticalRecoil: 1
+  MinHorizontalRecoil: 0.1
+  MaxHorizontalRecoil: 0.5
   MaxRange: 100
   RoundInTheChamber: 1
   AutoReload: 0
@@ -829,6 +830,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   Decal: {fileID: 2313464559674179374, guid: df09586d17bb7454ca19d4a4227d8bf0, type: 3}
+  Player: {fileID: 2745199073733906212}
+  CurrentMode: 0
+  AvailableModes: 000000000100000002000000
 --- !u!4 &2479122937451904695
 Transform:
   m_ObjectHideFlags: 0
@@ -864,6 +868,7 @@ MonoBehaviour:
   head: {fileID: 2479122937451904695}
   velocity: {x: 0, y: 0, z: 0}
   speed: 0
+  timeScale: 1
 --- !u!114 &4102645545203065342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -986,7 +991,19 @@ MonoBehaviour:
     m_ActionId: 9f6ce3fb-2268-4980-8600-67af85715ca2
     m_ActionName: Player/Sprint[/Keyboard/leftShift]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1877312302}
+        m_TargetAssemblyTypeName: Firearm, Assembly-CSharp
+        m_MethodName: ToggleFireMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 46833a2e-f0ce-4325-ab73-f40c64338087
     m_ActionName: Player/SecondaryUse[/Mouse/rightButton]
   - m_PersistentCalls:
