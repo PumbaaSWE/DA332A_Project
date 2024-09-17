@@ -144,18 +144,11 @@ public class FPSController : MonoBehaviour
 
         wasGrounded = grounded;
 
+        grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight + .1f - r, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
+
         if (didJump)
         {
             grounded = false;
-        }
-        else
-        {
-            grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight + .1f - r, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
-            
-            //if (Vector3.Angle(Vector3.up, hit.normal) > 45f)
-            //{
-            //    Debug.Log("steep");
-            //}
         }
 
         // Stair snapping disabled for now because it's jittery and not must have, right now!
@@ -166,7 +159,7 @@ public class FPSController : MonoBehaviour
         //    // p + h
         //    //
         //    Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r + controllerData.stepHeight, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
-            
+
         //    if (hit.distance > 0f && hit.point.y + .01f < transform.position.y)
         //    {
         //        Debug.Log("snap down");
@@ -217,14 +210,44 @@ public class FPSController : MonoBehaviour
         //}
 
         if (grounded)
+        {
+            Physics.Raycast(hit.point + Vector3.up * halfHeight, Vector3.down, out hit, halfHeight + .1f, controllerData.groundLayer, QueryTriggerInteraction.Ignore);
+
+            if (hit.distance < 0f)
+                grounded = false;
+
+            float angle = Vector3.Angle(Vector3.up, hit.normal);
+
+            if (angle > controllerData.slopeAngle)
+            {
+                // hacky way to prevent steep slope climbing, but it (kinda) works?
+                Vector3 gravityFromSlope = Vector3.ProjectOnPlane(Physics.gravity, hit.normal);
+                rb.AddForce(gravityFromSlope, ForceMode.Acceleration);
+
+                float velocityFromSlopeMagnitude = Vector3.Dot(rb.velocity, gravityFromSlope.normalized);
+
+                if (velocityFromSlopeMagnitude < 0f)
+                {
+                    Vector3 velocityFromSlope = rb.velocity.normalized * velocityFromSlopeMagnitude;
+                    rb.AddForce(velocityFromSlope / Time.fixedDeltaTime, ForceMode.Acceleration);
+                }
+
+                grounded = false;
+            }
+            else
+            {
+                // i stole this line from jack, very good!
+                rb.AddForce(-Vector3.ProjectOnPlane(Physics.gravity, hit.normal), ForceMode.Acceleration);
+            }
+        }
+
+        if (grounded)
             DoGroundPhysics();
         else
             DoAirPhysics();
 
         move = Vector3.zero;
         didJump = false;
-
-        //Debug.Log(grounded);
     }
 
     private void DoGroundPhysics()
