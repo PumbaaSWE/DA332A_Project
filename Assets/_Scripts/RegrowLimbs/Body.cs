@@ -6,18 +6,18 @@ using UnityEngine.Events;
 public class Body : MonoBehaviour
 {
 
-    //[SerializeField] private Limb headLimb;
-    //[SerializeField] private Limb rightArmLimb;
-    //[SerializeField] private Limb leftArmLimb;   
-    //[SerializeField] private Limb rightLegLimb;
-    //[SerializeField] private Limb leftLegLimb;
+    [SerializeField] private Limb headLimb;
+    [SerializeField] private Limb rightArmLimb;
+    [SerializeField] private Limb leftArmLimb;
+    [SerializeField] private Limb rightLegLimb;
+    [SerializeField] private Limb leftLegLimb;
 
     public bool HasHead { get; private set; }
     public bool HasArms { get; private set; }
     public bool HasLegs { get; private set; }
 
-    int nrOfLegs = 2;
-    int nrOfArms = 2;
+    //int nrOfLegs = 2;
+    //int nrOfArms = 2;
 
     public event Action StateChanged;
 
@@ -42,14 +42,14 @@ public class Body : MonoBehaviour
     private void LooseLeg(Limb leg)
     {
         HasLegs = false;
-        nrOfLegs--;
+        //nrOfLegs--;
         StateChanged?.Invoke();
     }
 
     private void RegrownLeg(Limb leg)
     {
-        nrOfLegs++;
-        if(nrOfLegs == 2)
+        //nrOfLegs++;
+        if(CheckLegs())
         {
             HasLegs = true;
             StateChanged?.Invoke();
@@ -59,14 +59,14 @@ public class Body : MonoBehaviour
     private void LooseArm(Limb leg)
     {
         HasArms = false;
-        nrOfArms--;
+        //nrOfArms--;
         StateChanged?.Invoke();
     }
 
     private void RegrownArm(Limb leg)
     {
-        nrOfArms++;
-        if (nrOfArms == 2)
+        //nrOfArms++;
+        if (CheckArms())
         {
             HasArms = true;
             StateChanged?.Invoke();
@@ -85,20 +85,22 @@ public class Body : MonoBehaviour
         
     }
 
-    //public bool CheckLegs()
-    //{
-    //    return rightLegLimb.IsWhole && leftLegLimb.IsWhole;
-    //}
+    public bool CheckLegs()
+    {
+        return rightLegLimb.IsWhole && leftLegLimb.IsWhole;
+    }
 
-    //public bool CheckArms()
-    //{
-    //    return rightArmLimb.IsWhole && leftArmLimb.IsWhole;
-    //}
+    public bool CheckArms()
+    {
+        return rightArmLimb.IsWhole && leftArmLimb.IsWhole;
+    }
 
-    //public bool CheckHead()
-    //{
-    //    return headLimb.IsWhole;
-    //}
+    public bool CheckHead()
+    {
+        return headLimb.IsWhole;
+    }
+
+
 #if UNITY_EDITOR
     [ContextMenu("Add Events..")]
     private void AssignEvents()
@@ -107,7 +109,8 @@ public class Body : MonoBehaviour
         for (int i = 0; i < limbs.Length; i++)
         {
             Limb limb = limbs[i];
-            if (limb.gameObject.name.Contains("Arm"))
+            string name = limb.gameObject.name;
+            if (name.Contains("Arm"))
             {
                 //limb.LimbSeveredEvent.AddListener(LooseArm);
                 //limb.LimbSeveredEvent.
@@ -115,18 +118,35 @@ public class Body : MonoBehaviour
                 AddButDontDupe(limb.LimbRegownEvent, RegrownArm);
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseArm);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownArm);
+                if (name.Contains("Left"))
+                {
+                    leftArmLimb = limb;
+                }
+                else
+                {
+                    rightArmLimb = limb;
+                }
             }
-            if (limb.gameObject.name.Contains("Leg"))
+            if (name.Contains("Leg"))
             {
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseLeg);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownLeg);
                 AddButDontDupe(limb.LimbSeveredEvent, LooseLeg);
                 AddButDontDupe(limb.LimbRegownEvent, RegrownLeg);
+                if (name.Contains("Left"))
+                {
+                    leftLegLimb = limb;
+                }
+                else
+                {
+                    rightLegLimb = limb;
+                }
             }
-            if (limb.gameObject.name.Contains("Head"))
+            if (name.Contains("Head"))
             {
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseHead);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownHead);
+                headLimb = limb;
                 AddButDontDupe(limb.LimbSeveredEvent, LooseHead);
                 AddButDontDupe(limb.LimbRegownEvent, RegrownHead);
             }

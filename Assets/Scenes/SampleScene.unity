@@ -229,6 +229,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba51e34f9ccfe24b8aa6753df5029ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headLimb: {fileID: 2099510575}
+  rightArmLimb: {fileID: 1374189357}
+  leftArmLimb: {fileID: 1665786243}
+  rightLegLimb: {fileID: 710917377}
+  leftLegLimb: {fileID: 710917381}
 --- !u!95 &307849745
 Animator:
   serializedVersion: 5
@@ -988,33 +993,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 307849743}
-        m_TargetAssemblyTypeName: Body, Assembly-CSharp
-        m_MethodName: LooseLeg
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   LimbRegownEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 307849743}
-        m_TargetAssemblyTypeName: Body, Assembly-CSharp
-        m_MethodName: RegrownLeg
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 307849743}
         m_TargetAssemblyTypeName: Body, Assembly-CSharp
         m_MethodName: RegrownLeg

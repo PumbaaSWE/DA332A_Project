@@ -5,6 +5,8 @@ public class BodyAnimator : MonoBehaviour
     public Body body;
     public Animator animator;
     readonly int hasLegsHash = Animator.StringToHash("HasLegs");
+    readonly int hasArmsHash = Animator.StringToHash("HasArms");
+    readonly int hasHeadHash = Animator.StringToHash("HasHead");
 
     // Start is called before the first frame update
     void Awake()
@@ -20,6 +22,8 @@ public class BodyAnimator : MonoBehaviour
     private void CheckState()
     {
         animator.SetBool(hasLegsHash, body.HasLegs);
+        animator.SetBool(hasArmsHash, body.HasArms);
+        animator.SetBool(hasHeadHash, body.HasHead);
     }
 
     private void OnEnable()
