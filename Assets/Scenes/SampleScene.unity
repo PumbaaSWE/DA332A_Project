@@ -211,6 +211,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &307849742 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 957f0140890091344868b2a3948c2d9e,
+    type: 3}
+  m_PrefabInstance: {fileID: 710917358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &307849743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307849742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bba51e34f9ccfe24b8aa6753df5029ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &307849745
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307849742}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: e59dce6569309be4d809a4a8f2693b30, type: 3}
+  m_Controller: {fileID: 9100000, guid: f6bb5917e56b22e40bb8d377b4926907, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &307849746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307849742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b72231716a18e7b48921a593e47de197, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 307849743}
+  animator: {fileID: 307849745}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,8 +350,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.063653134, y: 0.9179564, z: -0.3553161, w: 0.1644835}
+  m_LocalPosition: {x: 1.3475887, y: 2.097491, z: 2.404298}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -569,6 +622,18 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 307849743}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 307849745}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 307849746}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
@@ -577,18 +642,50 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 710917375}
+    - targetCorrespondingSourceObject: {fileID: 3135921509060577837, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917381}
+    - targetCorrespondingSourceObject: {fileID: 3135921509060577837, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917380}
+    - targetCorrespondingSourceObject: {fileID: 3135921509060577837, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917382}
     - targetCorrespondingSourceObject: {fileID: -6170625038081293824, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 710917374}
+    - targetCorrespondingSourceObject: {fileID: -6170625038081293824, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1508452142}
     - targetCorrespondingSourceObject: {fileID: -3086436065929644917, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 710917373}
+    - targetCorrespondingSourceObject: {fileID: -3086436065929644917, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917377}
+    - targetCorrespondingSourceObject: {fileID: -3086436065929644917, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917379}
+    - targetCorrespondingSourceObject: {fileID: -3086436065929644917, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710917378}
     - targetCorrespondingSourceObject: {fileID: -4332706925441422008, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 710917372}
+    - targetCorrespondingSourceObject: {fileID: -4332706925441422008, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684569614}
     - targetCorrespondingSourceObject: {fileID: -203856693384778745, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
@@ -601,10 +698,26 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1665786241}
+    - targetCorrespondingSourceObject: {fileID: 8817898888258712963, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1665786243}
+    - targetCorrespondingSourceObject: {fileID: 8817898888258712963, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1665786242}
+    - targetCorrespondingSourceObject: {fileID: 8817898888258712963, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1665786244}
     - targetCorrespondingSourceObject: {fileID: 3948933247560734027, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1896516013}
+    - targetCorrespondingSourceObject: {fileID: 3948933247560734027, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1896516014}
     - targetCorrespondingSourceObject: {fileID: -5195048882033904264, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
@@ -617,6 +730,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 89225877}
+    - targetCorrespondingSourceObject: {fileID: -1781356600409242780, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099510575}
+    - targetCorrespondingSourceObject: {fileID: -1781356600409242780, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099510574}
+    - targetCorrespondingSourceObject: {fileID: -1781356600409242780, guid: 957f0140890091344868b2a3948c2d9e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099510573}
     - targetCorrespondingSourceObject: {fileID: -9070493210130169274, guid: 957f0140890091344868b2a3948c2d9e,
         type: 3}
       insertIndex: -1
@@ -833,6 +958,216 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.32, y: 0.21, z: 0.22}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &710917377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToBeginRegrow: 5
+  regrowTime: 5
+  limbHealth: {fileID: 710917379}
+  LimbSeveredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbRegownEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &710917378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 710917379}
+--- !u!114 &710917379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe2036b3cb2b144d96dc942ad86c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  hitboxes:
+  - {fileID: 710917378}
+  - {fileID: 1684569614}
+  LimbDeathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 710917377}
+        m_TargetAssemblyTypeName: Limb, Assembly-CSharp
+        m_MethodName: SeverLimb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbHealthEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &710917380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe2036b3cb2b144d96dc942ad86c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  hitboxes:
+  - {fileID: 710917382}
+  - {fileID: 1508452142}
+  LimbDeathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 710917381}
+        m_TargetAssemblyTypeName: Limb, Assembly-CSharp
+        m_MethodName: SeverLimb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbHealthEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &710917381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToBeginRegrow: 5
+  regrowTime: 5
+  limbHealth: {fileID: 710917380}
+  LimbSeveredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbRegownEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownLeg
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &710917382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 710917380}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,12 +1321,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToBeginRegrow: 5
+  regrowTime: 5
+  limbHealth: {fileID: 1374189356}
   LimbSeveredEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseArm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   LimbRegownEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownArm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!135 &1379802653
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1013,6 +1375,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.05
   m_Center: {x: 0, y: 0.06, z: 0.015}
+--- !u!114 &1508452142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 710917380}
 --- !u!136 &1665786241
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1036,6 +1411,112 @@ CapsuleCollider:
   m_Height: 0.35
   m_Direction: 1
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &1665786242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe2036b3cb2b144d96dc942ad86c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  hitboxes:
+  - {fileID: 1665786244}
+  - {fileID: 1896516014}
+  LimbDeathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1665786243}
+        m_TargetAssemblyTypeName: Limb, Assembly-CSharp
+        m_MethodName: SeverLimb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbHealthEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1665786243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToBeginRegrow: 5
+  regrowTime: 5
+  limbHealth: {fileID: 1665786242}
+  LimbSeveredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseArm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbRegownEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownArm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1665786244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 1665786242}
+--- !u!114 &1684569614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 710917379}
 --- !u!65 &1841474223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1080,6 +1561,19 @@ CapsuleCollider:
   m_Height: 0.4
   m_Direction: 1
   m_Center: {x: 0, y: 0.15, z: 0}
+--- !u!114 &1896516014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 1665786242}
 --- !u!1 &2096607203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1680,98 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2099510573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  limbHealth: {fileID: 2099510574}
+--- !u!114 &2099510574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fe2036b3cb2b144d96dc942ad86c8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  hitboxes:
+  - {fileID: 2099510573}
+  LimbDeathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2099510575}
+        m_TargetAssemblyTypeName: Limb, Assembly-CSharp
+        m_MethodName: SeverLimb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbHealthEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2099510575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710917361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToBeginRegrow: 5
+  regrowTime: 5
+  limbHealth: {fileID: 2099510574}
+  LimbSeveredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: LooseHead
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LimbRegownEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 307849743}
+        m_TargetAssemblyTypeName: Body, Assembly-CSharp
+        m_MethodName: RegrownHead
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &3317045016375172440
 PrefabInstance:
   m_ObjectHideFlags: 0

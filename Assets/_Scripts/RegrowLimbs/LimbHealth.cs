@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,32 @@ public class LimbHealth : MonoBehaviour
     void Update()
     {
         
+    }
+
+    /// <summary>
+    /// Heals a maxHealth amount of hitpoints in desired seconds
+    /// </summary>
+    /// <param name="seconds"></param>
+    public void HealFull(float seconds)
+    {
+        StartCoroutine(HealSome(maxHealth, seconds));
+    }
+
+    private IEnumerator HealSome(float amount, float seconds)
+    {
+        float healPerSec = amount / seconds;
+        while(amount > 0)
+        {
+            float heal = healPerSec * Time.deltaTime;
+            health += heal;
+            if(health >= maxHealth)
+            {
+                health = maxHealth;
+                amount = 0;
+            }
+            amount -= heal;
+            yield return null;
+        }
     }
 
     public void TakeDamage(float amount)
