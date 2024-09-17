@@ -22,7 +22,7 @@ public sealed class MakeButtonAttribute : Attribute
     }
 }
 
-[AttributeUsage(AttributeTargets.Method)]
-public sealed class MakePlayButtonAttribute : Attribute
-{
-}
+//[AttributeUsage(AttributeTargets.Method)]
+//public sealed class MakePlayButtonAttribute : Attribute
+//{
+//}
