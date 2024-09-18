@@ -47,8 +47,10 @@ public class Firearm : MonoBehaviour
     {
         if (HipFireAngle > MinHipFireAngle && !Firing)
         {
-            HipFireAngle = Mathf.Clamp(MinHipFireAngle, MaxHipFireAngle, HipFireAngle);
+            HipFireAngle = Mathf.Clamp(HipFireAngle - HipFireDecay * Time.deltaTime, MinHipFireAngle, MaxHipFireAngle);
         }
+
+        Debug.Log($"Hipfire Angle {HipFireAngle}");
     }
 
     public void Fire(CallbackContext context)
@@ -80,13 +82,12 @@ public class Firearm : MonoBehaviour
             {
                 Vector2 randomPoint = Random.insideUnitCircle;
                 shotDirection = Quaternion.Euler(randomPoint.x * HipFireAngle, randomPoint.y * HipFireAngle, 0) * shotDirection;
-                HipFireAngle = Mathf.Clamp(MinHipFireAngle, MaxHipFireAngle, HipFireAngle + HipFireGain);
             }
 
             if (Physics.Raycast(ShotOrigin.position, shotDirection, out hit, MaxRange))
             {
                 Debug.DrawLine(ShotOrigin.position, hit.point, Color.red, 10f);
-                Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
+                //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
                 Instantiate(Decal, hit.point, new Quaternion());
             }
 
@@ -94,12 +95,12 @@ public class Firearm : MonoBehaviour
                 Debug.DrawRay(ShotOrigin.position, shotDirection, Color.red, 10f);
 
             LoadedAmmo--;
-            Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
+            //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
             CanFire = false;
-            Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
-            //StopCoroutine(Recoil());
-            //StartCoroutine(Recoil());
+            //Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
+            StopCoroutine(Recoil());
+            StartCoroutine(Recoil());
             yield return new WaitForSeconds(60f / (float)(RPM));
             CanFire = true;
 
@@ -130,6 +131,7 @@ public class Firearm : MonoBehaviour
         float yRecoil = Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil);
         float previousXRecoil = 0;
         float previousYRecoil = 0;
+        float startHipFireAngle = HipFireAngle;
 
         while (timeElapsed < recoilDuration)
         {
@@ -139,10 +141,14 @@ public class Firearm : MonoBehaviour
 
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
+
+            HipFireAngle = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
+
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
+        HipFireAngle = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireAngle, MaxHipFireAngle);
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
     }
 
