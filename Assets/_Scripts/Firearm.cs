@@ -17,16 +17,26 @@ public class Firearm : MonoBehaviour
 
     [SerializeField] float VerticalRecoil, MinHorizontalRecoil, MaxHorizontalRecoil;
     public float AdsZoom, OriginalFov;
+    [SerializeField] float Damage;
     [SerializeField] float MaxRange = 100;
-    [SerializeField] float HipFireAngle, MinHipFireAngle, MaxHipFireAngle, HipFireGain, HipFireDecay;
+    [SerializeField] int ProjectilesPerShot = 1;
+    [SerializeField] float HipFireSpread, MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
+    [SerializeField] float AdsSpread;
     [SerializeField] float RecoilDuration;
-    Vector2 RecoilImpulse;
+    public Vector2 RecoilImpulse;
+    [SerializeField] float ImpulseDuration;
 
     [SerializeField] bool RoundInTheChamber = true;
     [SerializeField] bool AutoReload = false;
     bool CanFire = true;
     bool Firing = false;
-    [SerializeField] bool ADS = false;
+    /// <summary>
+    /// True: Ammo consumption per shot depends on how many projectiles are shot
+    /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
+    /// </summary>
+    [SerializeField] bool ProportionalAmmoConsumption = false;
+    [SerializeField] bool UseAdsSpread = false;
+    [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
     [SerializeField] FPSController Player;
@@ -38,29 +48,29 @@ public class Firearm : MonoBehaviour
     void Start()
     {
         LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
-        HipFireAngle = MinHipFireAngle;
+        HipFireSpread = MinHipFireSpread;
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (HipFireAngle > MinHipFireAngle && !Firing)
+        if (HipFireSpread > MinHipFireSpread && !Firing)
         {
-            HipFireAngle = Mathf.Clamp(HipFireAngle - HipFireDecay * Time.deltaTime, MinHipFireAngle, MaxHipFireAngle);
+            HipFireSpread = Mathf.Clamp(HipFireSpread - HipFireDecay * Time.deltaTime, MinHipFireSpread, MaxHipFireSpread);
         }
 
-        Debug.Log($"Hipfire Angle {HipFireAngle}");
+        //Debug.Log($"Hipfire Angle {HipFireAngle}");
     }
 
-    public void Fire(CallbackContext context)
+    public void Shoot(CallbackContext context)
     {
         if (context.started)
         {
             if (LoadedAmmo > 0 && CanFire)
             {
                 Firing = true;
-                StartCoroutine(Fire());
+                StartCoroutine(Shoot());
             }
         }
 
@@ -71,30 +81,12 @@ public class Firearm : MonoBehaviour
         }
     }
 
-    IEnumerator Fire()
+    IEnumerator Shoot()
     {
         if (CanFire && Firing)
         {
-            RaycastHit hit;
-            Vector3 shotDirection = ShotOrigin.forward;
+            Fire();
 
-            if (!ADS)
-            {
-                Vector2 randomPoint = Random.insideUnitCircle;
-                shotDirection = Quaternion.Euler(randomPoint.x * HipFireAngle, randomPoint.y * HipFireAngle, 0) * shotDirection;
-            }
-
-            if (Physics.Raycast(ShotOrigin.position, shotDirection, out hit, MaxRange))
-            {
-                Debug.DrawLine(ShotOrigin.position, hit.point, Color.red, 10f);
-                //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
-                Instantiate(Decal, hit.point, new Quaternion());
-            }
-
-            else
-                Debug.DrawRay(ShotOrigin.position, shotDirection, Color.red, 10f);
-
-            LoadedAmmo--;
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
             CanFire = false;
@@ -118,8 +110,50 @@ public class Firearm : MonoBehaviour
                         break;
                 }
 
-            StartCoroutine(Fire());
+            StartCoroutine(Shoot());
         }
+    }
+
+    void Fire()
+    {
+        int projectilesToFire = ProjectilesPerShot;
+
+        if (ProportionalAmmoConsumption && projectilesToFire < LoadedAmmo)
+            projectilesToFire = LoadedAmmo;
+
+        for (int x = 0; x < projectilesToFire; x++)
+        {
+            Vector3 shotDirection = ShotOrigin.forward;
+
+            if (!Ads)
+            {
+                Vector2 randomPoint = Random.insideUnitCircle;
+                shotDirection = Quaternion.Euler(randomPoint.x * HipFireSpread, randomPoint.y * HipFireSpread, 0) * shotDirection;
+            }
+
+            else if (UseAdsSpread)
+            {
+                Vector2 randomPoint = Random.insideUnitCircle;
+                shotDirection = Quaternion.Euler(randomPoint.x * AdsSpread, randomPoint.y * AdsSpread, 0) * shotDirection;
+            }
+
+            RaycastHit hit;
+            if (Physics.Raycast(ShotOrigin.position, shotDirection, out hit, MaxRange))
+            {
+                Debug.DrawLine(ShotOrigin.position, hit.point, Color.red, 10f);
+                //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
+                Instantiate(Decal, hit.point, new Quaternion());
+            }
+
+            else
+                Debug.DrawRay(ShotOrigin.position, shotDirection, Color.red, 10f);
+        }
+
+        if (ProportionalAmmoConsumption)
+            LoadedAmmo -= projectilesToFire;
+
+        else
+            LoadedAmmo--;
     }
 
     IEnumerator Recoil()
@@ -131,7 +165,7 @@ public class Firearm : MonoBehaviour
         float yRecoil = Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil);
         float previousXRecoil = 0;
         float previousYRecoil = 0;
-        float startHipFireAngle = HipFireAngle;
+        float startHipFireAngle = HipFireSpread;
 
         while (timeElapsed < recoilDuration)
         {
@@ -142,13 +176,13 @@ public class Firearm : MonoBehaviour
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
 
-            HipFireAngle = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
+            HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
 
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        HipFireAngle = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireAngle, MaxHipFireAngle);
+        HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
     }
 
@@ -156,13 +190,13 @@ public class Firearm : MonoBehaviour
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
         {
-            ADS = true;
+            Ads = true;
             GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov / AdsZoom;
         }
 
         else if (context.canceled)
         {
-            ADS = false;
+            Ads = false;
             GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov;
         }
     }

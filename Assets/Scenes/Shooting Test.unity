@@ -1065,27 +1065,34 @@ MonoBehaviour:
   ReserveAmmo: 300
   MaxReserveAmmo: 300
   RPM: 600
-  VerticalRecoil: 0.75
-  MinHorizontalRecoil: -0.3
-  MaxHorizontalRecoil: 0.3
-  AdsZoom: 2
+  VerticalRecoil: 1.3
+  MinHorizontalRecoil: -0.5
+  MaxHorizontalRecoil: 0.5
+  AdsZoom: 1.5
   OriginalFov: 0
+  Damage: 0
   MaxRange: 100
-  HipFireAngle: 0
-  MinHipFireAngle: 1
-  MaxHipFireAngle: 5
+  ProjectilesPerShot: 8
+  HipFireSpread: 0
+  MinHipFireSpread: 2
+  MaxHipFireSpread: 6
   HipFireGain: 0.5
-  HipFireDecay: 3
+  HipFireDecay: 2
+  AdsSpread: 1
   RecoilDuration: 0.1
+  RecoilImpulse: {x: 0, y: 0}
+  ImpulseDuration: 0
   RoundInTheChamber: 1
   AutoReload: 0
-  ADS: 0
+  ProportionalAmmoConsumption: 0
+  UseAdsSpread: 1
+  Ads: 0
   ShootableLayers:
     serializedVersion: 2
     m_Bits: 1
   Decal: {fileID: 2313464559674179374, guid: df09586d17bb7454ca19d4a4227d8bf0, type: 3}
   Player: {fileID: 2745199073733906212}
-  CurrentMode: 2
+  CurrentMode: 0
   AvailableModes: 000000000100000002000000
 --- !u!4 &2479122937451904695
 Transform:
@@ -1216,7 +1223,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1877312302}
         m_TargetAssemblyTypeName: Firearm, Assembly-CSharp
-        m_MethodName: Fire
+        m_MethodName: Shoot
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
