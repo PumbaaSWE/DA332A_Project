@@ -21,7 +21,8 @@ public class Limb : MonoBehaviour
 
     void Awake()
     {
-
+        if (!limbHealth)
+            limbHealth = GetComponent<LimbHealth>();
     }
 
     // Update is called once per frame
