@@ -84,7 +84,7 @@ public class Goal_RangedAttack : Goal_Base
         // add if somthing is in the way
 
         // no targets
-        if (Sensors.ActiveTargets == null || Sensors.ActiveTargets.Count == 0)
+        if (Sensors.ActiveTargets == null || Sensors.ActiveTargets.Count == 0 || CurrentTarget == null)
             return false;
 
       

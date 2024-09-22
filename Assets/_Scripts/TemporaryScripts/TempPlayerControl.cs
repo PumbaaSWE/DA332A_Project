@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static HearingManager;
 
 public class TempPlayerControl : MonoBehaviour
 {
@@ -36,5 +37,9 @@ public class TempPlayerControl : MonoBehaviour
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         transform.position += move;
+        if(moveX > 0 || moveZ > 0)
+        {
+            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, EHeardSoundCategory.EFootstep, .8f);
+        }
     }
 }

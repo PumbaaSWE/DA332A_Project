@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RangeWeapon : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class RangeWeapon : MonoBehaviour
     private void Awake()
     {
         WeponType();
+      
     }
 
    
@@ -43,7 +45,7 @@ public class RangeWeapon : MonoBehaviour
         if (shoot && Time.time >= nextFireTime && !isReloading)
         {
             FireWeaponAtTarget(target);
-        }
+        }     
     }
 
     private void FireWeaponAtTarget(Vector3 target)

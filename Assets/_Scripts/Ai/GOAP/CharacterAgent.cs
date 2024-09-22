@@ -554,28 +554,22 @@ public class CharacterAgent : CharacterBase
 
     public void SetLookDirection(Vector3 direction)
     {
-
-
-
-        Vector3 targetDirection = direction - transform.position;
+        Vector3 targetDirection = (direction - transform.position).normalized;
+        targetDirection.y = 0;
 
         float angleToTarget = Vector3.Angle(transform.forward, targetDirection);
+
         if (angleToTarget > rotationThreshold)
         {
-
-            LookDirection = targetDirection.normalized;
-
-            Quaternion targetRotation = Quaternion.LookRotation(LookDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * agent.angularSpeed);
-
-
         }
-
     }
 
 
 
-   
+
+
 
 
 }

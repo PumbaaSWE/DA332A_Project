@@ -5,8 +5,8 @@ using UnityEngine;
 public class Goal_Investagate : Goal_Base
 {
     [SerializeField] int priority = 45;
-    [SerializeField] float MinAwarenessToChase = 0.7f;
-    [SerializeField] float AwarenessToStopChase = 0.5f;
+    [SerializeField] float MinAwarenessToChase = 1.4f;
+    [SerializeField] float AwarenessToStopChase = 1f;
 
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
