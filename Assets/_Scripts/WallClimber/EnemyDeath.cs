@@ -4,6 +4,8 @@ public class EnemyDeath : MonoBehaviour
 {
     Body body;
     RagdollController controller;
+    //WallClimber wallClimber
+
     void Start()
     {
         body = GetComponentInChildren<Body>();
@@ -21,6 +23,12 @@ public class EnemyDeath : MonoBehaviour
         }
         else
         {
+            Vector3 pos = controller.Hip.position;
+            if(Physics.Raycast(pos, Vector3.down, out RaycastHit hit, 1, ~0, QueryTriggerInteraction.Ignore))
+            {
+                transform.position = hit.point;
+                transform.up = hit.normal;
+            }
             controller.DisableRagdoll();
         }
     }

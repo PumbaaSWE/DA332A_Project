@@ -50,8 +50,8 @@ public class PivotBody : MonoBehaviour
 
         //pivot.MatchUp(up.normalized);
 
-        Debug.DrawRay(pivot.position, up, Color.yellow);
-        Debug.DrawRay(pivot.position, prevUp, Color.green);
-        Debug.DrawRay(pivot.position, pivot.up, Color.magenta);
+        //Debug.DrawRay(pivot.position, up, Color.yellow);
+        //Debug.DrawRay(pivot.position, prevUp, Color.green);
+        //Debug.DrawRay(pivot.position, pivot.up, Color.magenta);
     }
 }

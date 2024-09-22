@@ -19,6 +19,7 @@ public class RagdollController : MonoBehaviour
         if(!animator)animator = GetComponentInChildren<Animator>();
         hip = animator.GetBoneTransform(HumanBodyBones.Hips);
         rbs = hip.GetComponentsInChildren<Rigidbody>();
+        EnableProjection();
         DisableRagdoll();
     }
 

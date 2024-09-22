@@ -20,10 +20,19 @@ public class PointerClicker : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                if(hit.collider.TryGetComponent(out LimbHitbox limbHitbox))
+                if (hit.collider.TryGetComponent(out IDamageble dmg))
                 {
-                    limbHitbox.ReciveHit(50);
+                    dmg.TakeDamage(hit.point, ray.direction, 50);
                 }
+                else //bonus...
+                {
+                    dmg = hit.collider.GetComponentInParent<IDamageble>();
+                    if (dmg != null)
+                    {
+                        dmg.TakeDamage(hit.point, ray.direction, 50);
+                    }
+                }
+                
             }
         }
         

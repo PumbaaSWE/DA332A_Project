@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LimbHitbox : MonoBehaviour
+public class LimbHitbox : MonoBehaviour, IDamageble
 {
     
     [SerializeField]private LimbHealth limbHealth;
@@ -22,7 +22,7 @@ public class LimbHitbox : MonoBehaviour
         
     }
 
-    public void ReciveHit(float damage)
+    public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
         limbHealth.TakeDamage(damage);
     }

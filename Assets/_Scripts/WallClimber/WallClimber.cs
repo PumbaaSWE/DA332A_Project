@@ -157,10 +157,11 @@ public class WallClimber : MonoBehaviour
     {
         if (!debugDraw) return;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, .2f);
-        Gizmos.DrawLine(transform.position, transform.position + transform.up * .5f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, transform.forward);
+        //Gizmos.DrawSphere(transform.position, .2f);
+        //Gizmos.DrawLine(transform.position, transform.position + transform.up * .5f);
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawRay(transform.position, transform.forward);
+        GizmosExtra.DrawArrow(transform);
 
     }
 }

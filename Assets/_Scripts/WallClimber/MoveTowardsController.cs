@@ -13,7 +13,7 @@ public class MoveTowardsController : Controller
 
     [SerializeField] private LayerMask selfLayer = 0;
 
-    static Collider[] others = new Collider[20];
+    static readonly Collider[] others = new Collider[20];
     public float radius = 1.5f;
     public float avoidStrength = 1.0f;
 
@@ -81,7 +81,7 @@ public class MoveTowardsController : Controller
     {
         Vector3 pos = transform.position;
         Vector3 avgPos = Vector3.zero;
-        int n = Physics.OverlapSphereNonAlloc(transform.position, radius, others, selfLayer, QueryTriggerInteraction.Ignore);
+        int n = Physics.OverlapSphereNonAlloc(transform.position, radius, others, selfLayer, QueryTriggerInteraction.Collide);
         if(n==1)return Vector3.zero;
         for (int i = 0; i < n; i++)
         {
@@ -90,7 +90,7 @@ public class MoveTowardsController : Controller
             Vector3 otherPos = others[i].transform.position;
             Vector3 d = otherPos - pos;
             avgPos -= d * 1 / d.sqrMagnitude;
-            Debug.DrawLine(otherPos, pos);
+            Debug.DrawLine(otherPos, pos, Color.blue);
         }
 
         return avgPos / (n - 1);
