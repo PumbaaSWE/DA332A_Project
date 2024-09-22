@@ -25,9 +25,6 @@ public class FPSController : MonoBehaviour
     [SerializeField] private Vector3 velocity;
     [SerializeField] private float speed;
 
-    [Range(0f, 1f)]
-    [SerializeField] private float timeScale = 1f;
-
     private MoveCommand command;
     private CapsuleCollider cc;
     private Rigidbody rb;
@@ -133,8 +130,6 @@ public class FPSController : MonoBehaviour
         // Debug
         velocity = rb.velocity;
         speed = rb.velocity.magnitude;
-
-        Time.timeScale = timeScale;
     }
 
     private void FixedUpdate()
