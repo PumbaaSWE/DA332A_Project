@@ -26,20 +26,18 @@ public class Action_Stalk : Action_Base
 
         stalkGoal = (Goal_Stalk)LinkedGoal;
 
-        // Check if the agent is at the destination or if it's too far from the target
         if (Agent.AtDestination || Vector3.Distance(Agent.transform.position, stalkGoal.MoveTarget) > SearchRange)
         {
             Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
             Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
 
-            // Move agent to a position within SearchRange distance from the player
             Agent.MoveTo(targetPosition);
         }
     }
 
     public override void OnTick()
     {
-        // When the agent arrives at the destination, face the player
+      
         if (Agent.AtDestination)
         {
             FacePlayer();
@@ -49,17 +47,15 @@ public class Action_Stalk : Action_Base
 
     private void FacePlayer()
     {
-        // Calculate direction to the player
         Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
 
-        // Only rotate on the Y-axis to prevent tilting
         directionToPlayer.y = 0;
 
         // Check if there is a direction to face
         if (directionToPlayer != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-            Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f); // Smooth rotation
+            Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f); 
         }
     }
 }

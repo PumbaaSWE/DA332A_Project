@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Action_FindFood : Action_Base
 {
-    [SerializeField] float SearchRange = 10f; // Räckvidd för att söka efter mat
+    [SerializeField] float SearchRange = 10f;
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Eat) });
 
