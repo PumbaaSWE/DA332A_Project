@@ -28,7 +28,7 @@ public class RagdollController : MonoBehaviour
     {
         
     }
-    [MakeButton(true)]
+    [MakeButton(false)]
     public void DisableRagdoll()
     {
         for (int i = 0; i < rbs.Length; i++)
@@ -47,7 +47,7 @@ public class RagdollController : MonoBehaviour
 
     }
 
-    [MakeButton(true)]
+    [MakeButton(false)]
     public void EnableRagdoll()
     {
 
