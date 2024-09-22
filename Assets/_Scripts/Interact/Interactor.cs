@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour
 {
@@ -12,12 +14,19 @@ public class Interactor : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float range;
 
-    
+    [SerializeField] PlayerInput playerInput;
+    InputAction action;
+    string key = "[error]";
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Assert(lookDir, "Interactor - lookDir not assigned!");
+
+        action = playerInput.actions.FindAction("Interact");
+        //playerInput.actions.
+        //InputBinding binding 
+        key = "[" + action.bindings.First().ToDisplayString() + "]";
     }
 
     // Update is called once per frame
@@ -30,9 +39,9 @@ public class Interactor : MonoBehaviour
             if (item != null)
             {
                 //OnCanInteract?.Invoke("Press [E] to interact with " + item.Name, 0);
-                OnCanInteract?.Invoke(string.Format(item.Tooltip, "[E]"), 0);
+                OnCanInteract?.Invoke(string.Format(item.Tooltip, key), 0);
                 //Debug.Log("Item != null");
-                if (Input.GetKeyDown(KeyCode.E))
+                if (action.triggered)
                 {
                     OnInteracted?.Invoke(item.Tooltip, 0);
                     item.Interact(transform);
