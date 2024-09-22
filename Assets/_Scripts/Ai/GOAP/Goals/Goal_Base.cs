@@ -17,6 +17,7 @@ public class Goal_Base : MonoBehaviour, IGoal
     protected AwarenessSystem Sensors;
     protected GOAPUI DebugUI;
     protected Action_Base LinkedAction;
+    protected RangeWeapon rangeWeapon;
     void Awake()
     {
         Agent = GetComponent<CharacterAgent>();
@@ -26,10 +27,10 @@ public class Goal_Base : MonoBehaviour, IGoal
     void Start()
     {
         DebugUI = FindObjectOfType<GOAPUI>();
-       
 
+        rangeWeapon = GetComponentInChildren<RangeWeapon>();
         //DebugUI = FindObjectOfType<GOAPUI>();
-       // DebugUI = FindAnyObjectByType<GOAPUI>();
+        // DebugUI = FindAnyObjectByType<GOAPUI>();
     }
     void Update()
     {

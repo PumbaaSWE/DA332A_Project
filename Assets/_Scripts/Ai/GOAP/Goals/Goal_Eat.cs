@@ -8,10 +8,11 @@ public class Goal_Eat : Goal_Base
 
     [SerializeField] float PriorityBuildRate = 1f;
     [SerializeField] float PriorityDecayRate = 0.1f;
-    float CurrentPriority = 0f;
+    public float CurrentPriority = 0f;
 
     public override void OnTickGoal()
     {
+        if(CurrentPriority < 50)
          CurrentPriority += PriorityBuildRate * Time.deltaTime;
 
         // if eat food prio = 0;

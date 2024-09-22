@@ -26,11 +26,9 @@ public class Food : MonoBehaviour
             if (findFood != null)
             {
                 
-                findFood.prio = 0; 
+                findFood.CurrentPriority -= 50; 
             }
           
-
-            // Inaktivera detta spelobjekt
             this.gameObject.SetActive(false);
         }
     }
@@ -40,17 +38,14 @@ public class Food : MonoBehaviour
     {
         foreach (GameObject enemy in enemies)
         {
-            // Hämta fiendens script
             Goal_Stalk enemyScript = enemy.GetComponent<Goal_Stalk>();
 
             if (enemyScript != null)
             {
-                // Anropa en metod på fiendens script eller ändra en variabel
                 enemyScript.prio -= 5;
             }
         }
 
-        // Deaktivera detta objekt (triggern)
         this.gameObject.SetActive(false);
     }
 }

@@ -41,7 +41,7 @@ public class Action_Stalk : Action_Base
         if (Agent.AtDestination)
         {
             FacePlayer();
-            OnActivated(LinkedGoal); // Continue following the player
+            OnActivated(LinkedGoal); 
         }
     }
 
@@ -51,7 +51,6 @@ public class Action_Stalk : Action_Base
 
         directionToPlayer.y = 0;
 
-        // Check if there is a direction to face
         if (directionToPlayer != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
