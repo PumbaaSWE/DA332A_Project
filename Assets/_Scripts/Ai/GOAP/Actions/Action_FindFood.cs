@@ -49,7 +49,7 @@ public class Action_FindFood : Action_Base
         }
         else
         {
-            // Om ingen mat hittas, välj en slumpmässig position inom räckvidden
+      
             Vector3 location = Agent.PickLocationInRange(SearchRange);
             Agent.MoveTo(location);
         }
@@ -57,7 +57,7 @@ public class Action_FindFood : Action_Base
 
     public override void OnTick()
     {
-        // Om vi har anlänt till destinationen, utför något beteende
+
         if (Agent.AtDestination)
         {
             OnActivated(LinkedGoal);
