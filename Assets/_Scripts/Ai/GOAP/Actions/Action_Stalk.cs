@@ -9,7 +9,8 @@ public class Action_Stalk : Action_Base
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Stalk) });
     Goal_Stalk stalkGoal;
-
+    private Vector3 lastMoveTarget;
+    [SerializeField] private float positionUpdateTolerance = 0.5f;
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -37,14 +38,26 @@ public class Action_Stalk : Action_Base
 
     public override void OnTick()
     {
-      
+
         if (Agent.AtDestination)
         {
-            FacePlayer();
-            OnActivated(LinkedGoal); 
+               FacePlayer();
+            if (ShouldUpdateMoveTarget(stalkGoal.MoveTarget))
+            {
+                MoveAgentToTarget();
+            }
         }
     }
+    private bool ShouldUpdateMoveTarget(Vector3 newMoveTarget)
+    {
+        return Vector3.Distance(lastMoveTarget, newMoveTarget) > positionUpdateTolerance;
+    }
 
+    private void MoveAgentToTarget()
+    {
+        lastMoveTarget = stalkGoal.MoveTarget;
+        Agent.MoveTo(lastMoveTarget);
+    }
     private void FacePlayer()
     {
         Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;

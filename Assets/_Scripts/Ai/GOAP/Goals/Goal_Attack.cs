@@ -86,11 +86,11 @@ public class Goal_Attack : Goal_Base
         // check if we have anything we are aware of
         foreach (var candidate in Sensors.ActiveTargets.Values)
         {
-            if (candidate.Awarness >= MinAwarenessToAttack)
+           if (candidate.Awarness >= MinAwarenessToAttack)
             {
                 //if (IsPlayerLookingAtEnemy(candidate.rawPosition))
                 {
-                    if (Vector3.Distance(Agent.transform.position, candidate.rawPosition) < attackRange)
+                    if (Vector3.Distance(controller.transform.position, candidate.rawPosition) < attackRange)
                     {
 
                        return true;

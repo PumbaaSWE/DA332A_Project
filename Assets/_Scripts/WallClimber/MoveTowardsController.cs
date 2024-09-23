@@ -10,6 +10,7 @@ public class MoveTowardsController : Controller
     [SerializeField]private float minDist = .1f;
     [SerializeField] private float turnSpeed = 1;
     public WallClimber wallClimber;
+    public float stoppingDistance = 0.5f;
 
     [SerializeField] private LayerMask selfLayer = 0;
 
@@ -76,7 +77,15 @@ public class MoveTowardsController : Controller
         look = new Vector2(Mathf.Clamp(x, -1, 1), 0);
 
     }
-
+    public bool IsAtDestination()
+    {
+        float distanceToDestination = Vector3.Distance(transform.position, point);
+        return distanceToDestination <= stoppingDistance; 
+    }
+    public Vector3 GetTargetPosition()
+    {
+        return point;
+    }
     private Vector3 Avoid()
     {
         Vector3 pos = transform.position;
@@ -98,6 +107,12 @@ public class MoveTowardsController : Controller
         //return Vector3.SignedAngle(transform.forward, d, transform.up);
     }
 
+    public void ResetTarget()
+    {
+        point = transform.position;
+        move = Vector2.zero;
+        look = Vector2.zero;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

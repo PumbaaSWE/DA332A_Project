@@ -43,10 +43,10 @@ public class Action_Shoot : Action_Base
     {
         base.OnActivated(linkedGoal);
         attackGoal = (Goal_RangedAttack)LinkedGoal;
-        Vector3 location = Agent.PickCoverInRange(SearchCoverRange);
-        Debug.Log("agent pos" + Agent.transform.position);
-        Debug.Log("cover pos" + location);
-        Agent.MoveTo(location);
+       // Vector3 location = Agent.PickCoverInRange(SearchCoverRange);
+        //Debug.Log("agent pos" + Agent.transform.position);
+        //Debug.Log("cover pos" + location);
+        //Agent.MoveTo(location);
 
     }
 

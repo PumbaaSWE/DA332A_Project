@@ -13,6 +13,9 @@ public interface IGoal
 }
 public class Goal_Base : MonoBehaviour, IGoal
 {
+    public bool noNav;
+    protected MoveTowardsController controller; 
+
     protected CharacterAgent Agent;
     protected AwarenessSystem Sensors;
     protected GOAPUI DebugUI;
@@ -20,7 +23,15 @@ public class Goal_Base : MonoBehaviour, IGoal
     protected RangeWeapon rangeWeapon;
     void Awake()
     {
-        Agent = GetComponent<CharacterAgent>();
+        if (!noNav)
+        {
+            Agent = GetComponent<CharacterAgent>();
+        }
+        else
+        {
+            controller = GetComponent<MoveTowardsController>();
+        }
+
         Sensors = GetComponent<AwarenessSystem>();
     }
 

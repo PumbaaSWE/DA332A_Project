@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class Action_Wander : Action_Base
 {
-    [SerializeField] float SearchRange = 10f;
+    [SerializeField] float SearchRange = 20f;
+    [SerializeField] float WanderCooldown = 2f; // Tid mellan nya målpunkter
+    private float cooldownTimer = 0f;
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Wander) });
+
+  
+   
+
+ 
 
     public override List<System.Type> GetSupportedGoals()
     {
@@ -22,15 +29,30 @@ public class Action_Wander : Action_Base
     {
         base.OnActivated(linkedGoal);
 
-        Vector3 location = Agent.PickLocationInRange(SearchRange);
-
-        Agent.MoveTo(location);
+        PickNewLocation();
     }
 
     public override void OnTick()
     {
-        // arrived at destination?
+
+        //if (cooldownTimer > 0)
+        //{
+        //    cooldownTimer -= Time.deltaTime;
+        //    return;
+        //}
+
+
         if (Agent.AtDestination)
-            OnActivated(LinkedGoal);
+        {
+            PickNewLocation();
+        }
+    }
+
+    private void PickNewLocation()
+    {
+
+        Vector3 location = Agent.PickLocationInRange(SearchRange);
+        Agent.MoveTo(location);
+        //cooldownTimer = WanderCooldown;
     }
 }

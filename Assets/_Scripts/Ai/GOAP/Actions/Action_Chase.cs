@@ -7,7 +7,8 @@ public class Action_Chase : Action_Base
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Chase) });
 
     Goal_Chase ChaseGoal;
-
+    private Vector3 lastMoveTarget;
+    [SerializeField] private float positionUpdateTolerance = 0.5f;
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -25,7 +26,7 @@ public class Action_Chase : Action_Base
         // cache the chase goal
         ChaseGoal = (Goal_Chase)LinkedGoal;
 
-       Agent.MoveTo(ChaseGoal.MoveTarget);
+      Agent.MoveTo(ChaseGoal.MoveTarget);
     }
 
     public override void OnDeactivated()
@@ -40,6 +41,20 @@ public class Action_Chase : Action_Base
 
     public override void OnTick()
     {
-        Agent.MoveTo(ChaseGoal.MoveTarget);
+        if (ShouldUpdateMoveTarget(ChaseGoal.MoveTarget))
+        {
+            MoveAgentToTarget();
+        }
+    }
+
+    private bool ShouldUpdateMoveTarget(Vector3 newMoveTarget)
+    {
+        return Vector3.Distance(lastMoveTarget, newMoveTarget) > positionUpdateTolerance;
+    }
+
+    private void MoveAgentToTarget()
+    {
+        lastMoveTarget = ChaseGoal.MoveTarget; 
+        Agent.MoveTo(lastMoveTarget); 
     }
 }
