@@ -115,8 +115,8 @@ public class Body : MonoBehaviour
             {
                 //limb.LimbSeveredEvent.AddListener(LooseArm);
                 //limb.LimbSeveredEvent.
-                AddButDontDupe(limb.LimbSeveredEvent, LooseArm);
-                AddButDontDupe(limb.LimbRegownEvent, RegrownArm);
+                UnityEventExtra.AddButDontDupe(limb.LimbSeveredEvent, LooseArm);
+                UnityEventExtra.AddButDontDupe(limb.LimbRegownEvent, RegrownArm);
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseArm);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownArm);
                 if (name.Contains("Left"))
@@ -132,8 +132,8 @@ public class Body : MonoBehaviour
             {
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseLeg);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownLeg);
-                AddButDontDupe(limb.LimbSeveredEvent, LooseLeg);
-                AddButDontDupe(limb.LimbRegownEvent, RegrownLeg);
+                UnityEventExtra.AddButDontDupe(limb.LimbSeveredEvent, LooseLeg);
+                UnityEventExtra.AddButDontDupe(limb.LimbRegownEvent, RegrownLeg);
                 if (name.Contains("Left"))
                 {
                     leftLegLimb = limb;
@@ -148,38 +148,38 @@ public class Body : MonoBehaviour
                 //UnityEventTools.AddPersistentListener(limb.LimbSeveredEvent, LooseHead);
                 //UnityEventTools.AddPersistentListener(limb.LimbRegownEvent, RegrownHead);
                 headLimb = limb;
-                AddButDontDupe(limb.LimbSeveredEvent, LooseHead);
-                AddButDontDupe(limb.LimbRegownEvent, RegrownHead);
+                UnityEventExtra.AddButDontDupe(limb.LimbSeveredEvent, LooseHead);
+                UnityEventExtra.AddButDontDupe(limb.LimbRegownEvent, RegrownHead);
             }
         }
     }
 
-    public static void AddButDontDupe(UnityEvent<Limb> e, UnityAction<Limb> a)
-    {
-        int length = e.GetPersistentEventCount();
-        string name = a.Method.Name;
+    //public static void AddButDontDupe(UnityEvent<Limb> e, UnityAction<Limb> a)
+    //{
+    //    int length = e.GetPersistentEventCount();
+    //    string name = a.Method.Name;
 
 
-        if(length == 0)
-        {
-            UnityEventTools.AddPersistentListener(e, a);
-            return;
-        }
+    //    if(length == 0)
+    //    {
+    //        UnityEventTools.AddPersistentListener(e, a);
+    //        return;
+    //    }
 
-        for (int i = 0; i < length; i++)
-        {
-            if (name.Equals(e.GetPersistentMethodName(i)))
-            {
-                //we have dupe
-                Debug.Log("Listener Method added already: " + e.GetPersistentMethodName(i) + " is " + name);
-            }
-            else
-            {
-                UnityEventTools.AddPersistentListener(e, a);
-            }
-        }
+    //    for (int i = 0; i < length; i++)
+    //    {
+    //        if (name.Equals(e.GetPersistentMethodName(i)))
+    //        {
+    //            //we have dupe
+    //            Debug.Log("Listener Method added already: " + e.GetPersistentMethodName(i) + " is " + name);
+    //        }
+    //        else
+    //        {
+    //            UnityEventTools.AddPersistentListener(e, a);
+    //        }
+    //    }
 
 
-    }
+    //}
 #endif
 }
