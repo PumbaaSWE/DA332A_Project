@@ -153,7 +153,8 @@ public class Firearm : MonoBehaviour
                 }
 
                 //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
-                Instantiate(Decal, hit.point, new Quaternion());
+                GameObject go = Instantiate(Decal, hit.point, new Quaternion());
+                Destroy(go, 1.0f);
             }
 
             else
