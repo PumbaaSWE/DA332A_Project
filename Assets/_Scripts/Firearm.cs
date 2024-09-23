@@ -141,6 +141,17 @@ public class Firearm : MonoBehaviour
             if (Physics.Raycast(ShotOrigin.position, shotDirection, out hit, MaxRange))
             {
                 Debug.DrawLine(ShotOrigin.position, hit.point, Color.red, 10f);
+
+                if (hit.collider.TryGetComponent(out IDamageble target))
+                    target.TakeDamage(hit.point, shotDirection, Damage);
+
+                else //bonus...
+                {
+                    target = hit.collider.GetComponentInParent<IDamageble>();
+                    if (target != null)
+                        target.TakeDamage(hit.point, shotDirection, Damage);
+                }
+
                 //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
                 Instantiate(Decal, hit.point, new Quaternion());
             }
