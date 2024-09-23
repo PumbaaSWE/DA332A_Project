@@ -21,7 +21,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] private KeyBinds keyBinds;
     [SerializeField] private ControllerData controllerData;
     [SerializeField] private float MaxAirAccel;
-    [SerializeField] private Transform head;
+    [SerializeField] private Transform head; // Would be good to access to rotate the guns with the camera
     [SerializeField] private Vector3 velocity;
     [SerializeField] private float speed;
 
@@ -34,7 +34,7 @@ public class FPSController : MonoBehaviour
     private bool grounded;
     private bool wasGrounded;
     private bool didJump;
-    private float xRot;
+    private float xRot; // Need to access to be able to handle gun recoil
     private Vector3 move;
 
     private void Start()
