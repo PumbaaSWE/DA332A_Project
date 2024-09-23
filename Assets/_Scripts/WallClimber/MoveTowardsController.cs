@@ -77,15 +77,8 @@ public class MoveTowardsController : Controller
         look = new Vector2(Mathf.Clamp(x, -1, 1), 0);
 
     }
-    public bool IsAtDestination()
-    {
-        float distanceToDestination = Vector3.Distance(transform.position, point);
-        return distanceToDestination <= stoppingDistance; 
-    }
-    public Vector3 GetTargetPosition()
-    {
-        return point;
-    }
+   
+   
     private Vector3 Avoid()
     {
         Vector3 pos = transform.position;

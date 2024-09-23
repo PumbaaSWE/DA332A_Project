@@ -47,12 +47,12 @@ public class CharacterClimber : CharacterBase
     {
         base.Update();
 
-        CheckGroundUpright();
+       // CheckGroundUpright();
         if (DestinationSet && IsAtDestination())
         {
             DestinationSet = false;
             ReachedDestination = true;
-            // Sätt agenten till idle eller vad som behövs när destinationen nåtts
+         
             Debug.Log("Destination reached.");
         }
 
@@ -60,9 +60,15 @@ public class CharacterClimber : CharacterBase
     }
     private bool IsAtDestination()
     {
-     
-        float distanceToDestination = Vector3.Distance(transform.position, controller.point); 
-        return distanceToDestination <= controller.stoppingDistance; 
+        float sqrDistanceToDestination = (transform.position - controller.point).sqrMagnitude;
+        float sqrStoppingDistance = controller.stoppingDistance * controller.stoppingDistance;
+
+        if (sqrDistanceToDestination <= sqrStoppingDistance)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void UpdateState()

@@ -41,23 +41,11 @@ public class Action_Stalk : Action_Base
 
         if (Agent.AtDestination)
         {
-               FacePlayer();
-            if (ShouldUpdateMoveTarget(stalkGoal.MoveTarget))
-            {
-                MoveAgentToTarget();
-            }
+            FacePlayer();
+            OnActivated(LinkedGoal); // Continue following the player
         }
     }
-    private bool ShouldUpdateMoveTarget(Vector3 newMoveTarget)
-    {
-        return Vector3.Distance(lastMoveTarget, newMoveTarget) > positionUpdateTolerance;
-    }
-
-    private void MoveAgentToTarget()
-    {
-        lastMoveTarget = stalkGoal.MoveTarget;
-        Agent.MoveTo(lastMoveTarget);
-    }
+  
     private void FacePlayer()
     {
         Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
