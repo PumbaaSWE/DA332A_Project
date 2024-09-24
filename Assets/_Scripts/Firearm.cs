@@ -20,7 +20,8 @@ public class Firearm : MonoBehaviour
     [SerializeField] float Damage;
     [SerializeField] float MaxRange = 100;
     [SerializeField] int ProjectilesPerShot = 1;
-    [SerializeField] float HipFireSpread, MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
+    public float HipFireSpread;
+    [SerializeField] float MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
     [SerializeField] float AdsSpread;
     [SerializeField] float RecoilDuration;
     public Vector2 RecoilImpulse;
@@ -35,6 +36,7 @@ public class Firearm : MonoBehaviour
     /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
+    [SerializeField] bool UseLocalAmmoPool;
     [SerializeField] bool UseAdsSpread = false;
     [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
@@ -43,6 +45,8 @@ public class Firearm : MonoBehaviour
 
     [SerializeField] FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
+    [SerializeField] Cartridgetype AmmoType;
+    [SerializeField] WeaponHandler Handler;
 
     // Start is called before the first frame update
     void Start()
@@ -217,18 +221,31 @@ public class Firearm : MonoBehaviour
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
         {
-            if (ReserveAmmo == 0 || Firing)
-                return;
+            if (UseLocalAmmoPool)
+            {
+                if (ReserveAmmo == 0 || Firing)
+                    return;
 
-            int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
-            LoadedAmmo -= returnedAmmo;
-            ReserveAmmo += returnedAmmo;
+                int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
+                LoadedAmmo -= returnedAmmo;
+                ReserveAmmo += returnedAmmo;
 
-            int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, MagazineSize);
-            LoadedAmmo += ammoToLoad;
-            ReserveAmmo -= ammoToLoad;
+                int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, MagazineSize);
+                LoadedAmmo += ammoToLoad;
+                ReserveAmmo -= ammoToLoad;
+            }
 
-            Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
+            else
+            {
+                if (!Handler.AmmoLeft(AmmoType) || Firing)
+                    return;
+
+                int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
+                LoadedAmmo -= returnedAmmo;
+                Handler.AddAmmo(AmmoType, returnedAmmo);
+
+                LoadedAmmo += Handler.TakeAmmo(AmmoType, MagazineSize);
+            }
         }
     }
 
@@ -238,6 +255,28 @@ public class Firearm : MonoBehaviour
         {
             CurrentMode = AvailableModes[(Array.IndexOf(AvailableModes, CurrentMode) + 1) % AvailableModes.Length];
         }
+    }
+
+    public void Equip()
+    {
+        // Play animation of pulling up gun
+        gameObject.SetActive(true);
+    }
+
+    public void Unequip()
+    {
+        // Play animation of putting away gun
+        gameObject.SetActive(false);
+    }
+
+    public void Pickup()
+    {
+        // Pickup Gun into inventory
+    }
+
+    public void Drop()
+    {
+        // Drop gun onto floor
     }
 }
 
