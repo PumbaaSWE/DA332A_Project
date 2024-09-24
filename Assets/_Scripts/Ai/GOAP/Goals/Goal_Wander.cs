@@ -12,20 +12,28 @@ public class Goal_Wander : Goal_Base
 
     public override void OnTickGoal()
     {
-        //if (Agent.IsMoving)
-        //    CurrentPriority -= PriorityDecayRate * Time.deltaTime;
-        //else
-        //    CurrentPriority += PriorityBuildRate * Time.deltaTime;
+       
 
-        if (controller.Move != Vector2.zero)
+        if(!noNav)
         {
-            CurrentPriority -= PriorityDecayRate * Time.deltaTime;
+            if (Agent.IsMoving)
+                CurrentPriority -= PriorityDecayRate * Time.deltaTime;
+            else
+                CurrentPriority += PriorityBuildRate * Time.deltaTime;
         }
         else
         {
-            CurrentPriority += PriorityBuildRate * Time.deltaTime;
-        
+            if (controller.Move != Vector2.zero)
+            {
+                CurrentPriority -= PriorityDecayRate * Time.deltaTime;
+            }
+            else
+            {
+                CurrentPriority += PriorityBuildRate * Time.deltaTime;
+
+            }
         }
+       
     }
 
     public override void OnGoalActivated(Action_Base linkedAction)

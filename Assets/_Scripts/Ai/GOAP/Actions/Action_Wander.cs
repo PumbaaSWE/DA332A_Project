@@ -41,18 +41,37 @@ public class Action_Wander : Action_Base
         //    return;
         //}
 
-
-        if (Agent.AtDestination)
+        if(!noNav)
         {
-            PickNewLocation();
+            if (agent.AtDestination)
+            {
+                PickNewLocation();
+            }
         }
+        else 
+        {
+            if (Agent.AtDestination)
+            {
+                PickNewLocation();
+            }
+        }
+       
     }
 
     private void PickNewLocation()
     {
 
-        Vector3 location = Agent.PickLocationInRange(SearchRange);
-        Agent.MoveTo(location);
+        if (!noNav)
+        {
+            Vector3 location = agent.PickLocationInRange(SearchRange);
+            agent.MoveTo(location);
+        }
+        else
+        {
+            Vector3 location = Agent.PickLocationInRange(SearchRange);
+            Agent.MoveTo(location);
+        }
+      
         //cooldownTimer = WanderCooldown;
     }
 }

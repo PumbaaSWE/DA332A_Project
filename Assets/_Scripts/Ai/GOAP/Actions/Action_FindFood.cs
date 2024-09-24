@@ -40,27 +40,54 @@ public class Action_FindFood : Action_Base
                     closestFood = food;
                 }
             }
-
          
             if (closestFood != null)
             {
-                Agent.MoveTo(closestFood.transform.position);
+                if(!noNav)
+                {
+                    agent.MoveTo(closestFood.transform.position);
+                }
+                else
+                {
+                    Agent.MoveTo(closestFood.transform.position);
+                }
             }
+             
         }
         else
         {
-      
-            Vector3 location = Agent.PickLocationInRange(SearchRange);
-            Agent.MoveTo(location);
+            if (!noNav)
+            {
+                Vector3 location = agent.PickLocationInRange(SearchRange);
+                agent.MoveTo(location);
+            }
+            else
+            {
+                Vector3 location = Agent.PickLocationInRange(SearchRange);
+                Agent.MoveTo(location);
+            }
+
+           
         }
     }
 
     public override void OnTick()
     {
-
-        if (Agent.AtDestination)
+        if (!noNav)
         {
-            OnActivated(LinkedGoal);
+            if (agent.AtDestination)
+            {
+                OnActivated(LinkedGoal);
+            }
         }
+        else
+        {
+            if (Agent.AtDestination)
+            {
+                OnActivated(LinkedGoal);
+            }
+        }
+
+       
     }
 }

@@ -30,6 +30,14 @@ public class Action_Attack : Action_Base
 
     public override void OnTick()
     {
-        Agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+        if (!noNav)
+        {
+            agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+        }
+        else
+        {
+
+            Agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+        }
     }
 }

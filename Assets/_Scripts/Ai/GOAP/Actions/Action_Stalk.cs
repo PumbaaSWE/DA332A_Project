@@ -27,35 +27,78 @@ public class Action_Stalk : Action_Base
 
         stalkGoal = (Goal_Stalk)LinkedGoal;
 
-        if (Agent.AtDestination || Vector3.Distance(Agent.transform.position, stalkGoal.MoveTarget) > SearchRange)
+        if(!noNav)
         {
-            Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
-            Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
+            if (agent.AtDestination || Vector3.Distance(agent.transform.position, stalkGoal.MoveTarget) > SearchRange)
+            {
+                Vector3 directionToPlayer = (stalkGoal.MoveTarget - agent.transform.position).normalized;
+                Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
 
-            Agent.MoveTo(targetPosition);
+                agent.MoveTo(targetPosition);
+            }
         }
+        else
+        {
+            if (Agent.AtDestination || Vector3.Distance(Agent.transform.position, stalkGoal.MoveTarget) > SearchRange)
+            {
+                Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
+                Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
+
+                Agent.MoveTo(targetPosition);
+            }
+        }
+
+       
     }
 
     public override void OnTick()
     {
-
-        if (Agent.AtDestination)
+        if(!noNav)
         {
-            FacePlayer();
-            OnActivated(LinkedGoal); // Continue following the player
+            if (agent.AtDestination)
+            {
+                FacePlayer();
+                OnActivated(LinkedGoal); // Continue following the player
+            }
         }
+        else
+        {
+            if (Agent.AtDestination)
+            {
+                FacePlayer();
+                OnActivated(LinkedGoal); // Continue following the player
+            }
+        }
+      
     }
   
     private void FacePlayer()
     {
-        Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
-
-        directionToPlayer.y = 0;
-
-        if (directionToPlayer != Vector3.zero)
+        if (!noNav)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-            Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f); 
+            Vector3 directionToPlayer = (stalkGoal.MoveTarget - agent.transform.position).normalized;
+
+            directionToPlayer.y = 0;
+
+            if (directionToPlayer != Vector3.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
+                agent.transform.rotation = Quaternion.Slerp(agent.transform.rotation, lookRotation, Time.deltaTime * 5f);
+            }
         }
+        else
+        {
+            Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
+
+            directionToPlayer.y = 0;
+
+            if (directionToPlayer != Vector3.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
+                Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f);
+            }
+        }
+
+       
     }
 }

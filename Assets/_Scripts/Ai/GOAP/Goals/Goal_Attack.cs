@@ -90,11 +90,24 @@ public class Goal_Attack : Goal_Base
             {
                 //if (IsPlayerLookingAtEnemy(candidate.rawPosition))
                 {
-                    if (Vector3.Distance(controller.transform.position, candidate.rawPosition) < attackRange)
+                    if(noNav)
                     {
+                        if (Vector3.Distance(controller.transform.position, candidate.rawPosition) < attackRange)
+                        {
 
-                       return true;
+                            return true;
+                        }
                     }
+                    else
+                    {
+                        if (Vector3.Distance(Agent.transform.position, candidate.rawPosition) < attackRange)
+                        {
+
+                            return true;
+                        }
+                    }
+
+                  
                 }
 
             }

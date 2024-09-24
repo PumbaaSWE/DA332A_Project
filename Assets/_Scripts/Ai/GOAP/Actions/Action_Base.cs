@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Action_Base : MonoBehaviour
 {
-    //protected CharacterAgent Agent;
+    protected CharacterAgent agent;
     protected CharacterClimber Agent;
     protected AwarenessSystem Sensors;
     protected Goal_Base LinkedGoal;
+    public bool noNav;
 
     void Awake()
     {
-        Agent = GetComponent<CharacterClimber>();
-        //Agent = GetComponent<CharacterAgent>();
+        if(!noNav)
+        {
+            agent = GetComponent<CharacterAgent>();
+        }
+        else
+        {
+            Agent = GetComponent<CharacterClimber>();
+        }
+       
+        
         Sensors = GetComponent<AwarenessSystem>();
     }
 

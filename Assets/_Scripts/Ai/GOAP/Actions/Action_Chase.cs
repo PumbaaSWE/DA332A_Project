@@ -26,7 +26,15 @@ public class Action_Chase : Action_Base
         // cache the chase goal
         ChaseGoal = (Goal_Chase)LinkedGoal;
 
-      Agent.MoveTo(ChaseGoal.MoveTarget);
+        if(!noNav)
+        {
+            agent.MoveTo(ChaseGoal.MoveTarget);
+        }
+        else
+        {
+
+            Agent.MoveTo(ChaseGoal.MoveTarget);
+        }
     }
 
     public override void OnDeactivated()
@@ -54,7 +62,17 @@ public class Action_Chase : Action_Base
 
     private void MoveAgentToTarget()
     {
-        lastMoveTarget = ChaseGoal.MoveTarget; 
-        Agent.MoveTo(lastMoveTarget); 
+        lastMoveTarget = ChaseGoal.MoveTarget;
+
+        if (!noNav)
+        {
+            agent.MoveTo(lastMoveTarget);
+        }
+        else
+        {
+            Agent.MoveTo(lastMoveTarget); 
+
+        }
+
     }
 }
