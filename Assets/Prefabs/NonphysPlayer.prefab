@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 2479122937964993845}
   FOV: 60
-  sprintFOV: 65
+  sprintFOV: 70
   fovLerpTime: 25
   minLookUpAngle: -90
   maxLookUpAngle: 90
@@ -221,6 +221,7 @@ MonoBehaviour:
   drag: 5
   jumpVel: 4
   gravity: 9.81
+  slopeAngle: 35
   crouchSpeed: 5
   maxCrouchSpeed: 1.5
   crouchHeight: 1
@@ -231,8 +232,8 @@ MonoBehaviour:
     m_Bits: 123
   skinWidth: 0.015
   maxBounces: 3
-  radiusDiff: -0.1
-  distDiff: 0.12
+  radiusDiff: -0.01
+  distDiff: 0.03
   drawGizmos: 1
   grounded: 0
   velocity: {x: 0, y: 0, z: 0}

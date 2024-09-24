@@ -23,6 +23,7 @@ public class NonphysController : MonoBehaviour
     [SerializeField] float drag;
     [SerializeField] float jumpVel;
     [SerializeField] float gravity;
+    [SerializeField] float slopeAngle;
 
     [Header("Crouch")]
     [Tooltip("Time it takes to fully crouch / uncrouch")]
@@ -57,6 +58,7 @@ public class NonphysController : MonoBehaviour
     Vector2 move;
     bool crouch;
     bool sprint;
+    bool jump;
 
     // components
     CapsuleCollider cc;
@@ -64,6 +66,8 @@ public class NonphysController : MonoBehaviour
     // misc member variables
     float xRot;
     bool isCrouched;
+    Vector3 groundNormal;
+    bool wasGrounded;
 
     void Start()
     {
@@ -81,6 +85,7 @@ public class NonphysController : MonoBehaviour
         Debug.Assert(height >= radius * 2, "Height is too small! Has to be at least twice as big as radius.");
         Debug.Assert(crouchHeight >= radius * 2, "Crouch height is too small! Has to be at least twice as big as radius.");
 
+        wasGrounded = grounded;
         grounded = IsGrounded();
         Move(Time.deltaTime);
         Crouch(crouch, Time.deltaTime);
@@ -90,7 +95,14 @@ public class NonphysController : MonoBehaviour
     {
         float r = cc.radius;
         float halfHeight = cc.height / 2;
-        return Physics.SphereCast(transform.position + Vector3.up * halfHeight, r + radiusDiff, Vector3.down, out RaycastHit _, halfHeight - r + distDiff, collideWith, QueryTriggerInteraction.Ignore);
+        bool grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r + radiusDiff, Vector3.down, out RaycastHit hit, halfHeight - r + distDiff, collideWith, QueryTriggerInteraction.Ignore);
+
+        groundNormal = hit.normal;
+
+        if (grounded)
+            return Vector3.Angle(hit.normal, Vector3.up) <= slopeAngle;
+
+        return false;
     }
 
     void Move(float dt)
@@ -128,11 +140,14 @@ public class NonphysController : MonoBehaviour
 
         velocity += deltaVel;
 
+        if (!wasGrounded && grounded)
+            velocity = velocity.WithY();
+
         // Apply gravity
         if (!grounded)
             velocity += Vector3.down * gravity * dt;
-        else if (velocity.y < 0)
-            velocity = velocity.WithY();
+        else if (!jump)
+            velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
         float fov = FOV;
@@ -152,6 +167,8 @@ public class NonphysController : MonoBehaviour
 
         // Set position
         transform.position += deltaPos;
+
+        jump = false;
     }
 
     void Crouch(bool crouch, float dt)
@@ -296,6 +313,7 @@ public class NonphysController : MonoBehaviour
         if (isCrouched) return;
 
         velocity = velocity.WithY(jumpVel);
+        jump = true;
     }
 
     public void Sprint(CallbackContext c)
