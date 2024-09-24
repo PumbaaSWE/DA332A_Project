@@ -1,10 +1,13 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 using static UnityEngine.InputSystem.InputAction;
 
 public class NonphysController : MonoBehaviour
 {
     [SerializeField] Transform head;
+
+    [SerializeField] float FOV;
+    [SerializeField] float sprintFOV;
+    [SerializeField] float fovLerpTime;
 
     [Header("Looking")]
     [SerializeField] float minLookUpAngle;
@@ -92,30 +95,9 @@ public class NonphysController : MonoBehaviour
 
     void Move(float dt)
     {
-        Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
-        //if (Vector3.Dot(wishDir, velocity.normalized) <= 0)
-        {
-            // Apply drag
-            Vector3 dragForce = -velocity.WithY() * drag * dt;
-
-            if (dragForce.sqrMagnitude > velocity.WithY().sqrMagnitude)
-                dragForce = -velocity.WithY();
-
-            velocity += dragForce;
-        }
-
-        // Apply acceleration
-        //Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
-        velocity += wishDir * acceleration * dt;
-
-        // Apply gravity
-        if (!grounded)
-            velocity += Vector3.down * gravity * dt;
-        else if (velocity.y < 0)
-            velocity = velocity.WithY();
-
         // What is our current max speed?
         float maxSpeed = maxWalkSpeed;
+        float forwardSpeed = Vector3.Dot(velocity, transform.forward);
 
         if (isCrouched)
         {
@@ -124,19 +106,48 @@ public class NonphysController : MonoBehaviour
         }
         else if (sprint)
         {
-            if (Vector3.Dot(velocity.normalized, transform.forward) > 0)
+            if (forwardSpeed > 0)
             {
                 maxSpeed = maxSprintSpeed;
             }
         }
 
-        // Clamp speed in X and Z
-        if (velocity.WithY().sqrMagnitude > maxSpeed * maxSpeed)
-            velocity = velocity.WithY().normalized * maxSpeed + velocity.y * Vector3.up;
+        // Apply drag
+        Vector3 dragForce = -velocity.WithY() * drag * dt;
+
+        if (dragForce.sqrMagnitude > velocity.WithY().sqrMagnitude)
+            dragForce = -velocity.WithY();
+
+        velocity += dragForce;
+
+        // Apply acceleration
+        Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
+        Vector3 deltaVel = wishDir * acceleration * dt;
+
+        deltaVel = deltaVel.normalized * Mathf.Min(deltaVel.magnitude, Mathf.Max(0, maxSpeed - Vector3.Dot(velocity, deltaVel.normalized)));
+
+        velocity += deltaVel;
+
+        // Apply gravity
+        if (!grounded)
+            velocity += Vector3.down * gravity * dt;
+        else if (velocity.y < 0)
+            velocity = velocity.WithY();
+
+        // FOV (will probably change this later depending on which other system interact with FOV)
+        float fov = FOV;
+        if (forwardSpeed > maxWalkSpeed)
+        {
+            float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, forwardSpeed);
+            fov = Mathf.Lerp(FOV, sprintFOV, t);
+        }
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, fovLerpTime * Time.deltaTime);
 
         // Collide and slide algorithm
+        float velY = velocity.y;
         Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0);
         velocity = deltaPos / dt;
+        velocity.y = Mathf.Min(velocity.y, velY); // Otherwise we might slide up alot in the air. For example if we jump and hit a corner, not very grounded!
         speed = velocity.WithY().magnitude;
 
         // Set position

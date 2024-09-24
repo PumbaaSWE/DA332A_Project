@@ -208,6 +208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 2479122937964993845}
+  FOV: 60
+  sprintFOV: 65
+  fovLerpTime: 25
   minLookUpAngle: -90
   maxLookUpAngle: 90
   mouseSensitivity: 0.05
@@ -216,7 +219,7 @@ MonoBehaviour:
   maxWalkSpeed: 3
   maxSprintSpeed: 6
   drag: 5
-  jumpVel: 3
+  jumpVel: 4
   gravity: 9.81
   crouchSpeed: 5
   maxCrouchSpeed: 1.5
