@@ -1,25 +1,38 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.InputSystem.InputAction;
 
 public class NonphysController : MonoBehaviour
 {
     [SerializeField] Transform head;
 
-    [Header("Look")]
+    [Header("Looking")]
     [SerializeField] float minLookUpAngle;
     [SerializeField] float maxLookUpAngle;
     [SerializeField] float mouseSensitivity;
 
-    [Header("Move")]
+    [Header("Movement")]
     [SerializeField] float acceleration;
     [SerializeField] float walkSpeed;
     [Tooltip("Only applies to horizontal movement")]
     [SerializeField] float drag;
     [SerializeField] float jumpVel;
     [SerializeField] float gravity;
-    [SerializeField] LayerMask collideWith;
 
-    [Header("Debug")]
+    [Header("Collision")]
+    [Tooltip("Which layers will the player collide with?")]
+    [SerializeField] LayerMask collideWith;
+    [Tooltip("To prevent float point errors, keep a low value (< 0.1) or it will behave weirdly")]
+    [SerializeField] float skinWidth;
+    [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
+    [SerializeField] int maxBounces;
+
+    [Header("IsGrounded")]
+    [SerializeField] float radiusDiff;
+    [SerializeField] float distDiff;
+
+    [Header("Debugging")]
+    [SerializeField] bool drawGizmos;
     [SerializeField] bool grounded;
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
@@ -40,18 +53,21 @@ public class NonphysController : MonoBehaviour
         cc = GetComponent<CapsuleCollider>();
     }
 
+
     void Update()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        grounded = IsGrounded();
+        Move(Time.deltaTime);
+    }
+
+    bool IsGrounded()
+    {
         float r = cc.radius;
         float halfHeight = cc.height / 2;
-        grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r, Vector3.down, out RaycastHit hit, halfHeight - r, collideWith, QueryTriggerInteraction.Ignore);
-        if (grounded && hit.point.y < transform.position.y)
-            transform.position = transform.position.WithY(hit.point.y);
-
-        Move(Time.deltaTime);
+        return Physics.SphereCast(transform.position + Vector3.up * halfHeight, r + radiusDiff, Vector3.down, out RaycastHit _, halfHeight - r + distDiff, collideWith, QueryTriggerInteraction.Ignore);
     }
 
     void Move(float dt)
@@ -78,32 +94,81 @@ public class NonphysController : MonoBehaviour
         if (velocity.WithY().sqrMagnitude > walkSpeed * walkSpeed)
             velocity = velocity.WithY().normalized * walkSpeed + velocity.y * Vector3.up;
 
+        // Collide and slide algorithm
+        Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0);
+        velocity = deltaPos / dt;
         speed = velocity.WithY().magnitude;
 
         // Set position
-        // This works by casting your capsule towards your next desired position
-        // If the capsule collides with anything, it will project the velocity using the hit normal and try to move again (otherwise you get stuck in the wall)
-        // It tries to move and project max 3 times
-        Vector3 deltaPos = velocity * dt;
+        transform.position += deltaPos;
+    }
+
+    Vector3 CollideAndSlide(Vector3 vel, Vector3 pos, int depth)
+    {
+        if (depth >= maxBounces)
+            return Vector3.zero;
+
+        float dist = vel.magnitude + skinWidth;
         float r = cc.radius;
         float height = cc.height;
-        for (int i = 0; i < 3; i++)
-        {
-            Vector3 point1 = transform.position + Vector3.up * r;
-            Vector3 point2 = point1 + Vector3.up * (height - r - r);
-            bool collides = Physics.CapsuleCast(point1, point2, r, deltaPos, out RaycastHit hit, deltaPos.magnitude, collideWith, QueryTriggerInteraction.Ignore);
+        Vector3 point1 = pos + Vector3.up * r;
+        Vector3 point2 = point1 + Vector3.up * (height - r - r);
 
-            if (collides)
-            {
-                transform.position += deltaPos.normalized * hit.distance;
-                deltaPos = Vector3.ProjectOnPlane(deltaPos, hit.normal);
-            }
-            else
-            {
-                transform.position += deltaPos;
-                break;
-            }
+        bool collides = Physics.CapsuleCast(point2, point1, r, vel.normalized, out RaycastHit hit, dist, collideWith, QueryTriggerInteraction.Ignore);
+
+        if (collides)
+        {
+            Vector3 snap = vel.normalized * (hit.distance - skinWidth);
+            Vector3 leftOver = vel - snap;
+            leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal)/*.normalized * leftOver.magnitude*/; // Uncomment this if you want more sliding action. I don't like it because player can slide up walls!
+
+            return snap + CollideAndSlide(leftOver, pos + snap, depth + 1);
         }
+
+        return vel;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmos) return;
+
+        if (cc == null)
+        {
+            if (TryGetComponent(out CapsuleCollider c))
+                cc = c;
+            else
+                return;
+        }
+
+        // Collider
+        Gizmos.color = Color.yellow;
+        Vector3 point1 = transform.position + Vector3.up * cc.radius;
+        Vector3 point2 = point1 + Vector3.up * (cc.height - cc.radius - cc.radius);
+        DrawCapsule(point1, point2, cc.radius);
+
+        // Look direction
+        Gizmos.DrawRay(head.position, head.forward);
+
+        // IsGrounded
+        Gizmos.color = grounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * (cc.radius - distDiff), cc.radius + radiusDiff);
+    }
+
+    void DrawCapsule(Vector3 point1, Vector3 point2, float radius)
+    {
+        Gizmos.DrawWireSphere(point1, radius);
+        Gizmos.DrawWireSphere(point2, radius);
+
+        Vector3[] dirs = new Vector3[]
+        {
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right
+        };
+
+        foreach (var dir in dirs)
+            Gizmos.DrawLine(point1 + dir * radius, point2 + dir * radius);
     }
 
     /// <summary>
