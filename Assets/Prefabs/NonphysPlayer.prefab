@@ -211,11 +211,18 @@ MonoBehaviour:
   minLookUpAngle: -90
   maxLookUpAngle: 90
   mouseSensitivity: 0.05
-  acceleration: 50
-  walkSpeed: 5
-  drag: 10
+  camOffset: 0.35
+  acceleration: 30
+  maxWalkSpeed: 3
+  maxSprintSpeed: 6
+  drag: 5
   jumpVel: 3
   gravity: 9.81
+  crouchSpeed: 5
+  maxCrouchSpeed: 1.5
+  crouchHeight: 1
+  radius: 0.5
+  height: 1.85
   collideWith:
     serializedVersion: 2
     m_Bits: 123

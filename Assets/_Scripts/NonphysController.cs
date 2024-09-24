@@ -10,16 +10,29 @@ public class NonphysController : MonoBehaviour
     [SerializeField] float minLookUpAngle;
     [SerializeField] float maxLookUpAngle;
     [SerializeField] float mouseSensitivity;
+    [SerializeField] float camOffset;
 
     [Header("Movement")]
     [SerializeField] float acceleration;
-    [SerializeField] float walkSpeed;
+    [SerializeField] float maxWalkSpeed;
+    [SerializeField] float maxSprintSpeed;
     [Tooltip("Only applies to horizontal movement")]
     [SerializeField] float drag;
     [SerializeField] float jumpVel;
     [SerializeField] float gravity;
 
+    [Header("Crouch")]
+    [Tooltip("Time it takes to fully crouch / uncrouch")]
+    [SerializeField] float crouchSpeed;
+    [Tooltip("The players max speed when crouching")]
+    [SerializeField] float maxCrouchSpeed;
+    [Tooltip("Has to be at least twice as big as collider radius")]
+    [SerializeField] float crouchHeight;
+
     [Header("Collision")]
+    [SerializeField] float radius;
+    [Tooltip("Has to be at least twice as big as radius")]
+    [SerializeField] float height;
     [Tooltip("Which layers will the player collide with?")]
     [SerializeField] LayerMask collideWith;
     [Tooltip("To prevent float point errors, keep a low value (< 0.1) or it will behave weirdly")]
@@ -47,6 +60,7 @@ public class NonphysController : MonoBehaviour
 
     // misc member variables
     float xRot;
+    bool isCrouched;
 
     void Start()
     {
@@ -59,8 +73,14 @@ public class NonphysController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        cc.radius = radius;
+
+        Debug.Assert(height >= radius * 2, "Height is too small! Has to be at least twice as big as radius.");
+        Debug.Assert(crouchHeight >= radius * 2, "Crouch height is too small! Has to be at least twice as big as radius.");
+
         grounded = IsGrounded();
         Move(Time.deltaTime);
+        Crouch(crouch, Time.deltaTime);
     }
 
     bool IsGrounded()
@@ -72,16 +92,20 @@ public class NonphysController : MonoBehaviour
 
     void Move(float dt)
     {
-        // Apply drag
-        Vector3 dragForce = -velocity.WithY() * drag * dt;
+        Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
+        //if (Vector3.Dot(wishDir, velocity.normalized) <= 0)
+        {
+            // Apply drag
+            Vector3 dragForce = -velocity.WithY() * drag * dt;
 
-        if (dragForce.sqrMagnitude > velocity.WithY().sqrMagnitude)
-            dragForce = -velocity.WithY();
+            if (dragForce.sqrMagnitude > velocity.WithY().sqrMagnitude)
+                dragForce = -velocity.WithY();
 
-        velocity += dragForce;
+            velocity += dragForce;
+        }
 
         // Apply acceleration
-        Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
+        //Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
         velocity += wishDir * acceleration * dt;
 
         // Apply gravity
@@ -90,9 +114,25 @@ public class NonphysController : MonoBehaviour
         else if (velocity.y < 0)
             velocity = velocity.WithY();
 
+        // What is our current max speed?
+        float maxSpeed = maxWalkSpeed;
+
+        if (isCrouched)
+        {
+            float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
+            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, t);
+        }
+        else if (sprint)
+        {
+            if (Vector3.Dot(velocity.normalized, transform.forward) > 0)
+            {
+                maxSpeed = maxSprintSpeed;
+            }
+        }
+
         // Clamp speed in X and Z
-        if (velocity.WithY().sqrMagnitude > walkSpeed * walkSpeed)
-            velocity = velocity.WithY().normalized * walkSpeed + velocity.y * Vector3.up;
+        if (velocity.WithY().sqrMagnitude > maxSpeed * maxSpeed)
+            velocity = velocity.WithY().normalized * maxSpeed + velocity.y * Vector3.up;
 
         // Collide and slide algorithm
         Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0);
@@ -101,6 +141,29 @@ public class NonphysController : MonoBehaviour
 
         // Set position
         transform.position += deltaPos;
+    }
+
+    void Crouch(bool crouch, float dt)
+    {
+        // Crouch and uncrouch
+        if (crouch)
+        {
+            cc.height = Mathf.Max(cc.height - crouchSpeed * dt, crouchHeight);
+            cc.center = Vector3.up * cc.height / 2f;
+        }
+        else
+        {
+            // Check if we can uncrouch
+            bool hitHead = Physics.SphereCast(transform.position + Vector3.up * cc.radius, cc.radius, Vector3.up, out RaycastHit hit, cc.height + crouchSpeed * Time.deltaTime - cc.radius * 2f, collideWith, QueryTriggerInteraction.Ignore);
+
+            if (!hitHead)
+            {
+                cc.height = Mathf.Min(cc.height + crouchSpeed * Time.deltaTime, height);
+                cc.center = Vector3.up * cc.height / 2f;
+            }
+        }
+        head.position = transform.position + Vector3.up * (cc.height - camOffset);
+        isCrouched = cc.height != height;
     }
 
     Vector3 CollideAndSlide(Vector3 vel, Vector3 pos, int depth)
@@ -219,13 +282,18 @@ public class NonphysController : MonoBehaviour
 
         if (!grounded) return;
 
+        if (isCrouched) return;
+
         velocity = velocity.WithY(jumpVel);
     }
 
     public void Sprint(CallbackContext c)
     {
-        //bool input = c.ReadValue<bool>();
-        Debug.Log("sprint");
+        if (c.started)
+            sprint = true;
+
+        if (c.canceled)
+            sprint = false;
     }
     #endregion
 }
