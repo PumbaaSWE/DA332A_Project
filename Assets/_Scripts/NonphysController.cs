@@ -162,10 +162,10 @@ public class NonphysController : MonoBehaviour
             cc.height = Mathf.Max(cc.height - crouchSpeed * dt, crouchHeight);
             cc.center = Vector3.up * cc.height / 2f;
         }
-        else
+        else if (isCrouched)
         {
             // Check if we can uncrouch
-            bool hitHead = Physics.SphereCast(transform.position + Vector3.up * cc.radius, cc.radius, Vector3.up, out RaycastHit hit, cc.height + crouchSpeed * Time.deltaTime - cc.radius * 2f, collideWith, QueryTriggerInteraction.Ignore);
+            bool hitHead = Physics.SphereCast(transform.position + Vector3.up * cc.radius, cc.radius, Vector3.up, out RaycastHit hit, cc.height + crouchSpeed * dt - cc.radius * 2f, collideWith, QueryTriggerInteraction.Ignore);
 
             if (!hitHead)
             {
