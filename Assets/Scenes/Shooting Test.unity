@@ -1085,6 +1085,7 @@ MonoBehaviour:
   RoundInTheChamber: 1
   AutoReload: 0
   ProportionalAmmoConsumption: 0
+  UseLocalAmmoPool: 0
   UseAdsSpread: 1
   Ads: 0
   ShootableLayers:
@@ -1094,6 +1095,8 @@ MonoBehaviour:
   Player: {fileID: 2745199073733906212}
   CurrentMode: 0
   AvailableModes: 000000000100000002000000
+  AmmoType: 0
+  Handler: {fileID: 0}
 --- !u!4 &2479122937451904695
 Transform:
   m_ObjectHideFlags: 0
@@ -1129,7 +1132,6 @@ MonoBehaviour:
   head: {fileID: 2479122937451904695}
   velocity: {x: 0, y: 0, z: 0}
   speed: 0
-  timeScale: 1
 --- !u!114 &4102645545203065342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1221,8 +1223,8 @@ MonoBehaviour:
     m_ActionName: Player/Look[/Mouse/delta]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1877312302}
-        m_TargetAssemblyTypeName: Firearm, Assembly-CSharp
+      - m_Target: {fileID: 9105539321818316514}
+        m_TargetAssemblyTypeName: WeaponHandler, Assembly-CSharp
         m_MethodName: Shoot
         m_Mode: 0
         m_Arguments:
@@ -1253,8 +1255,8 @@ MonoBehaviour:
     m_ActionName: Player/Sprint[/Keyboard/leftShift]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1877312302}
-        m_TargetAssemblyTypeName: Firearm, Assembly-CSharp
+      - m_Target: {fileID: 9105539321818316514}
+        m_TargetAssemblyTypeName: WeaponHandler, Assembly-CSharp
         m_MethodName: AimDownSights
         m_Mode: 0
         m_Arguments:
@@ -1269,8 +1271,8 @@ MonoBehaviour:
     m_ActionName: Player/SecondaryUse[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1877312302}
-        m_TargetAssemblyTypeName: Firearm, Assembly-CSharp
+      - m_Target: {fileID: 9105539321818316514}
+        m_TargetAssemblyTypeName: WeaponHandler, Assembly-CSharp
         m_MethodName: Reload
         m_Mode: 0
         m_Arguments:
@@ -1323,6 +1325,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0fac0eb1-3ff0-4123-8090-24973ae59635
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 057bac8f-cd26-46e7-9394-94a33098e85b
+    m_ActionName: Player/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1463,6 +1469,7 @@ GameObject:
   - component: {fileID: 2745199073733906212}
   - component: {fileID: 4102645545203065342}
   - component: {fileID: 4797629195988171256}
+  - component: {fileID: 9105539321818316514}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -1574,6 +1581,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &9105539321818316514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031869547333607452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93308bce5f0368f4e8558f51152cbc04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Guns:
+  - {fileID: 1877312302}
+  Debug: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

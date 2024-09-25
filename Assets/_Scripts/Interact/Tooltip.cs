@@ -1,6 +1,6 @@
 using System;
 
-public static class Tooltip
+public static class TooltipUtil
 {
     public static event Action<string> OnTooltip;
     public static event Action<string, float> OnTimedTooltip;
