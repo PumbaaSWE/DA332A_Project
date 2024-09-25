@@ -7,7 +7,7 @@ public class Action_FindFood : Action_Base
     [SerializeField] float SearchRange = 10f;
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Eat) });
-
+    Goal_Eat eatGoal;
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -22,7 +22,7 @@ public class Action_FindFood : Action_Base
     {
         base.OnActivated(linkedGoal);
 
-
+        eatGoal = (Goal_Eat)LinkedGoal;
         Food[] foods = FindObjectsOfType<Food>();
 
         if (foods.Length > 0)
@@ -51,6 +51,10 @@ public class Action_FindFood : Action_Base
                 {
                     Agent.MoveTo(closestFood.transform.position);
                 }
+            }
+            else
+            {
+                eatGoal.prio -= 30;
             }
              
         }

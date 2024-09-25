@@ -7,7 +7,8 @@ public class Action_Wander : Action_Base
     [SerializeField] float SearchRange = 20f;
     [SerializeField] float WanderCooldown = 2f; // Tid mellan nya målpunkter
     private float cooldownTimer = 0f;
-
+    float MaxTimeAtDestination = 5f;
+    private float timeSpentAtDestination = 0f;
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Wander) });
 
   
@@ -40,8 +41,8 @@ public class Action_Wander : Action_Base
         //    cooldownTimer -= Time.deltaTime;
         //    return;
         //}
-
-        if(!noNav)
+        timeSpentAtDestination += Time.deltaTime;
+        if (!noNav)
         {
             if (agent.AtDestination)
             {
@@ -53,6 +54,10 @@ public class Action_Wander : Action_Base
             if (Agent.AtDestination)
             {
                 PickNewLocation();
+            }
+            else if (timeSpentAtDestination >= MaxTimeAtDestination) 
+            {
+                PickNewLocation(); 
             }
         }
        
@@ -71,7 +76,8 @@ public class Action_Wander : Action_Base
             Vector3 location = Agent.PickLocationInRange(SearchRange);
             Agent.MoveTo(location);
         }
-      
+
+        timeSpentAtDestination = 0f;
         //cooldownTimer = WanderCooldown;
     }
 }

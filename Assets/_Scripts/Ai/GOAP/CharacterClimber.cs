@@ -37,7 +37,10 @@ public class CharacterClimber : CharacterBase
 
     public WallClimber wallClimber;
     public NavMeshAgent navAgent;
-
+    public Transform newTarget;
+    private Vector3 lastPosition;
+    private float idleTime = 0f;
+    private float idleThreshold = 0.8f;
     private void Awake()
     {
         controller = GetComponent<MoveTowardsController>();
@@ -117,11 +120,29 @@ public class CharacterClimber : CharacterBase
         //    ReachedDestination = true;
         //    // make agent idle
         //}
+        if(DestinationSet)
+        {
+            if (transform.position == lastPosition)
+            {
+                idleTime += Time.deltaTime;
+            }
+            else
+            {
+                idleTime = 0f;
+            }
+        }
+       
+        if ( idleTime > idleThreshold)
+        {
 
-
-
+            Vector3 randomDirection = Random.insideUnitSphere * 2;
+            randomDirection += transform.position;
+            SetDestinationNav(randomDirection);
+        }
+        lastPosition = transform.position;
         UpdateState();
     }
+   
     void WallMovment(Vector3 destination)
     {
         Vector3 wallPosition = Vector3.zero;
@@ -185,7 +206,7 @@ public class CharacterClimber : CharacterBase
         {
             Vector3 corner = path.corners[i];
             Debug.Log("Moving to corner " + i);
-
+    
             NavMeshHit hit;
             if (NavMesh.SamplePosition(corner, out hit, 1f, NavMesh.AllAreas))
             {
