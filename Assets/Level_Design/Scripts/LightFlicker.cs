@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-//please work
 public class LightFlicker : MonoBehaviour
 {
     public Light myLight;
@@ -14,7 +15,6 @@ public class LightFlicker : MonoBehaviour
 
     private void Start()
     {
-        if(!myLight) myLight = GetComponent<Light>();
         defaultIntensity = myLight.intensity;
     }
 
