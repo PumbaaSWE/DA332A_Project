@@ -37,6 +37,11 @@ public class Firearm : MonoBehaviour
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
     [SerializeField] bool UseLocalAmmoPool;
+    /// <summary>
+    /// True: Reload magazine one cartridge at a time
+    /// False: Reload whole magazine at once
+    /// </summary>
+    [SerializeField] bool IndividualReloading;
     [SerializeField] bool UseAdsSpread = false;
     [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
@@ -47,6 +52,7 @@ public class Firearm : MonoBehaviour
     [SerializeField] FireMode[] AvailableModes;
     [SerializeField] Cartridgetype AmmoType;
     [SerializeField] WeaponHandler Handler;
+    Animator Animator;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +60,7 @@ public class Firearm : MonoBehaviour
         LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
         HipFireSpread = MinHipFireSpread;
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
+        Animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -90,6 +97,7 @@ public class Firearm : MonoBehaviour
         if (CanFire && Firing)
         {
             Fire();
+            PerformAnimation(Animation.Firing);
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
@@ -217,35 +225,46 @@ public class Firearm : MonoBehaviour
         }
     }
 
+    public void Reload()
+    {
+        if (UseLocalAmmoPool)
+        {
+            if (ReserveAmmo == 0 || Firing)
+                return;
+
+            int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
+            LoadedAmmo -= returnedAmmo;
+            ReserveAmmo += returnedAmmo;
+
+            int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, MagazineSize);
+            LoadedAmmo += ammoToLoad;
+            ReserveAmmo -= ammoToLoad;
+        }
+
+        else
+        {
+            if (!Handler.AmmoLeft(AmmoType) || Firing)
+                return;
+
+            int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
+            LoadedAmmo -= returnedAmmo;
+            Handler.AddAmmo(AmmoType, returnedAmmo);
+
+            LoadedAmmo += Handler.TakeAmmo(AmmoType, MagazineSize);
+        }
+    }
+
     public void Reload(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing)
         {
-            if (UseLocalAmmoPool)
-            {
-                if (ReserveAmmo == 0 || Firing)
-                    return;
-
-                int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
-                LoadedAmmo -= returnedAmmo;
-                ReserveAmmo += returnedAmmo;
-
-                int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, MagazineSize);
-                LoadedAmmo += ammoToLoad;
-                ReserveAmmo -= ammoToLoad;
-            }
+            if (LoadedAmmo == 0)
+                PerformAnimation(Animation.ReloadingEmpty);
 
             else
-            {
-                if (!Handler.AmmoLeft(AmmoType) || Firing)
-                    return;
+                PerformAnimation(Animation.Reloading);
 
-                int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
-                LoadedAmmo -= returnedAmmo;
-                Handler.AddAmmo(AmmoType, returnedAmmo);
-
-                LoadedAmmo += Handler.TakeAmmo(AmmoType, MagazineSize);
-            }
+            //Reload();
         }
     }
 
@@ -278,6 +297,22 @@ public class Firearm : MonoBehaviour
     {
         // Drop gun onto floor
     }
+
+    void PerformAnimation(Animation animation)
+    {
+        switch (animation)
+        {
+            case Animation.Firing:
+                Animator.SetTrigger("Shoot");
+                break;
+            case Animation.Reloading:
+                Animator.SetTrigger("Reload");
+                break;
+            case Animation.ReloadingEmpty:
+                Animator.SetTrigger("Reload Empty");
+                break;
+        }
+    }
 }
 
 public enum FireMode
@@ -287,11 +322,12 @@ public enum FireMode
     FullAuto
 }
 
-//public enum AnimState
-//{
-//    Idle,
-//    Firing,
-//    Reloading,
-//    Holstering,
-//    PullingOut
-//}
+public enum Animation
+{
+    Idle,
+    Firing,
+    Reloading,
+    ReloadingEmpty,
+    Holstering,
+    PullingOut
+}
