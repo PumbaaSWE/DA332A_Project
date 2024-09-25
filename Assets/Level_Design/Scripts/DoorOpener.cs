@@ -13,7 +13,7 @@ public class DoorOpener : Objective
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && CheckRequiredItems(other.GetComponent<HiddenInventory>().ReturnItemsAsArray()))
         {
             anim.SetTrigger("Exit");
         }
