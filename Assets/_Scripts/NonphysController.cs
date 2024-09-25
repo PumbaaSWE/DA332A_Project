@@ -125,15 +125,25 @@ public class NonphysController : MonoBehaviour
         }
 
         // Apply drag
-        Vector3 dragForce = -velocity.WithY() * drag * dt;
+        Vector3 velocityInGroundPlane = velocity.WithY();
 
-        if (dragForce.sqrMagnitude > velocity.WithY().sqrMagnitude)
-            dragForce = -velocity.WithY();
+        if (grounded)
+            velocityInGroundPlane = Vector3.ProjectOnPlane(velocity, groundNormal);
+
+        Vector3 dragForce = -velocityInGroundPlane * drag * dt;
+
+        if (dragForce.sqrMagnitude > velocityInGroundPlane.sqrMagnitude)
+            dragForce = -velocityInGroundPlane;
 
         velocity += dragForce;
 
         // Apply acceleration
         Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
+
+        float acceleration = this.acceleration;
+        if (sprint && Vector3.Dot(wishDir, transform.forward) > 0)
+            acceleration *= maxSprintSpeed / maxWalkSpeed;
+
         Vector3 deltaVel = wishDir * acceleration * dt;
 
         deltaVel = deltaVel.normalized * Mathf.Min(deltaVel.magnitude, Mathf.Max(0, maxSpeed - Vector3.Dot(velocity, deltaVel.normalized)));
