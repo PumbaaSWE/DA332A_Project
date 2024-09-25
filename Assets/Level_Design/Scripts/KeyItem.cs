@@ -12,12 +12,9 @@ public class KeyItem : MonoBehaviour
         get { return m_SO; }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void PickUpCard(Transform interactor)
     {
-        if (other.CompareTag("Player"))
-        {
-            other.GetComponent<HiddenInventory>().AddItem(this);
-            this.gameObject.SetActive(false);
-        }
+        interactor.GetComponent<HiddenInventory>().AddItem(this);
+        this.gameObject.SetActive(false);
     }
 }
