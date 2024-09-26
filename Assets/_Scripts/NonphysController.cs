@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
-public class NonphysController : MonoBehaviour
+public class NonphysController : MovementController
 {
     [SerializeField] Transform head;
 
@@ -160,13 +160,13 @@ public class NonphysController : MonoBehaviour
             velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
-        float fov = FOV;
-        if (forwardSpeed > maxWalkSpeed)
-        {
-            float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, forwardSpeed);
-            fov = Mathf.Lerp(FOV, sprintFOV, t);
-        }
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, fovLerpTime * Time.deltaTime);
+        //float fov = FOV;
+        //if (forwardSpeed > maxWalkSpeed)
+        //{
+        //    float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, forwardSpeed);
+        //    fov = Mathf.Lerp(FOV, sprintFOV, t);
+        //}
+        //Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, fovLerpTime * Time.deltaTime);
 
         // Collide and slide algorithm
         float velY = velocity.y;
@@ -277,7 +277,7 @@ public class NonphysController : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void Rotate(float x = 0f, float y = 0f)
+    public override void Rotate(float x = 0f, float y = 0f)
     {
         // Rotate body Y
         transform.Rotate(Vector3.up, y);
