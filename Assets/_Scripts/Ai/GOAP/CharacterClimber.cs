@@ -186,10 +186,11 @@ public class CharacterClimber : CharacterBase
     public virtual void SetDestinationNav(Vector3 destination)
     {
         NavMeshHit hitResult;
-        if (NavMesh.SamplePosition(destination, out hitResult, NearestPointSearchRange, NavMesh.AllAreas))
+        int avoidLinkMask = ~NavMesh.GetAreaFromName("Link"); 
+        if (NavMesh.SamplePosition(destination, out hitResult, NearestPointSearchRange, avoidLinkMask))
         {
             NavMeshPath path = new NavMeshPath();
-            if (NavMesh.CalculatePath(transform.position, hitResult.position, NavMesh.AllAreas, path))
+            if (NavMesh.CalculatePath(transform.position, hitResult.position, avoidLinkMask, path))
             {
                 StartCoroutine(FollowNavMeshPath(path));
 
@@ -341,13 +342,20 @@ public class CharacterClimber : CharacterBase
         Vector3 searchLocation = transform.position;
         searchLocation += Random.Range(-range, range) * Vector3.forward;
         searchLocation += Random.Range(-range, range) * Vector3.right;
+
         NavMeshHit hitResult;
-        if (NavMesh.SamplePosition(searchLocation, out hitResult, NearestPointSearchRange, NavMesh.AllAreas))
+
+   
+        int avoidLinkMask = ~NavMesh.GetAreaFromName("Link"); 
+
+        if (NavMesh.SamplePosition(searchLocation, out hitResult, NearestPointSearchRange, avoidLinkMask))
         {
             return hitResult.position;
         }
+
         return transform.position;
     }
+
     //public Vector3 PickLocationInRange(float range)
     //{
     //    Vector3 searchLocation = transform.position;
@@ -460,4 +468,16 @@ public class CharacterClimber : CharacterBase
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * controller.wallClimber.Speed);
         }
     }
+    //void OnDrawGizmos()
+    //{
+      
+    //    {
+    //        Gizmos.color = Color.red;
+    //        var path = navMeshPath;
+    //        for (int i = 0; i < path.corners.Length - 1; i++)
+    //        {
+    //            Gizmos.DrawLine(path.corners[i], path.corners[i + 1]);
+    //        }
+    //    }
+    //}
 }

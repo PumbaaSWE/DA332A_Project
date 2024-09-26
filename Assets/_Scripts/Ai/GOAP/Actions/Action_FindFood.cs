@@ -8,11 +8,18 @@ public class Action_FindFood : Action_Base
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Eat) });
     Goal_Eat eatGoal;
+
+    float MaxTimeAtDestination = 20f;
+    private float timeSpentAtDestination = 0f;
+    WallClimber controller;
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
     }
-
+    private void Start()
+    {
+        controller = GetComponent<WallClimber>();
+    }
     public override float GetCost()
     {
         return 1f;
@@ -77,6 +84,7 @@ public class Action_FindFood : Action_Base
 
     public override void OnTick()
     {
+        timeSpentAtDestination += Time.deltaTime;
         if (!noNav)
         {
             if (agent.AtDestination)
@@ -90,8 +98,34 @@ public class Action_FindFood : Action_Base
             {
                 OnActivated(LinkedGoal);
             }
+            
+            if (controller.Speed <= 0)
+            {
+                PickNewLocation();
+            }
+            if (timeSpentAtDestination >= MaxTimeAtDestination)
+            {
+                PickNewLocation();
+            }
         }
 
        
+    }
+    private void PickNewLocation()
+    {
+
+        if (!noNav)
+        {
+            Vector3 location = agent.PickLocationInRange(SearchRange);
+            agent.MoveTo(location);
+        }
+        else
+        {
+            Vector3 location = Agent.PickLocationInRange(SearchRange);
+            Agent.MoveTo(location);
+        }
+
+        timeSpentAtDestination = 0f;
+        //cooldownTimer = WanderCooldown;
     }
 }
