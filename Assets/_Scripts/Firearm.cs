@@ -37,11 +37,6 @@ public class Firearm : MonoBehaviour
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
     [SerializeField] bool UseLocalAmmoPool;
-    /// <summary>
-    /// True: Reload magazine one cartridge at a time
-    /// False: Reload whole magazine at once
-    /// </summary>
-    [SerializeField] bool IndividualReloading;
     [SerializeField] bool UseAdsSpread = false;
     [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
@@ -270,6 +265,30 @@ public class Firearm : MonoBehaviour
 
             //Reload();
         }
+    }
+
+    public void LoadShells(int shellsToLoad)
+    {
+        if (UseLocalAmmoPool)
+        {
+            if (ReserveAmmo == 0 || Firing)
+                return;
+
+            int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, shellsToLoad);
+            LoadedAmmo += ammoToLoad;
+            ReserveAmmo -= ammoToLoad;
+        }
+
+        else
+        {
+            if (!Handler.AmmoLeft(AmmoType) || Firing)
+                return;
+
+            LoadedAmmo += Handler.TakeAmmo(AmmoType, shellsToLoad);
+        }
+
+        if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
+            Animator.SetTrigger("Reload Finished");
     }
 
     public void ToggleFireMode(CallbackContext context)
