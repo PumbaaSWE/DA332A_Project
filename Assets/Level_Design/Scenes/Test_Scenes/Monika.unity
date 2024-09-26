@@ -12888,7 +12888,6 @@ GameObject:
   - component: {fileID: 1175070989}
   - component: {fileID: 1175070988}
   - component: {fileID: 1175070987}
-  - component: {fileID: 1175070992}
   - component: {fileID: 1175070991}
   m_Layer: 0
   m_Name: KeyCard1
@@ -13023,18 +13022,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1175070992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1175070986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be7f3592d1aba564cb0fb118ef79183c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1227512517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8200d2779ee36a149b8ca8b942690ac7,
@@ -21363,6 +21350,8 @@ GameObject:
   - component: {fileID: 1986486603}
   - component: {fileID: 1986486602}
   - component: {fileID: 1986486601}
+  - component: {fileID: 1986486605}
+  - component: {fileID: 1986486604}
   m_Layer: 0
   m_Name: Destroyable1
   m_TagString: Untagged
@@ -21456,6 +21445,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1986486599}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1986486604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986486599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848dc0d62ac3d054a822a231b7738a39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1986486605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986486599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6baf8de39c53a7849b8a88ced7a9ff1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1986486604}
+        m_TargetAssemblyTypeName: BoxItem, Assembly-CSharp
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!43 &2019903768
 Mesh:
   m_ObjectHideFlags: 0
