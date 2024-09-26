@@ -21,6 +21,7 @@ public class AdvancedController : Controller
     private Vector3 targetDelta;
     EnemyNavigation navigation;
     PathQueue pathQueue = new();
+    Vector3 goal;
 
     void Awake()
     {
@@ -33,8 +34,18 @@ public class AdvancedController : Controller
 
     public void SetTarget(Vector3 point)
     {
-        this.point = point;
-        navigation.Pathfind(transform.position, point, SetPath);
+        
+        if(point.InRangeOf(goal, 2))
+        {
+
+        }
+        else
+        {
+            this.point = point;
+            navigation.Pathfind(transform.position, point, SetPath);
+        }
+        goal = point;
+        
     }
 
     //private Vector3 ToVector3((int x, int y, int z) i)
@@ -72,6 +83,10 @@ public class AdvancedController : Controller
                 {
                     point = pathQueue.Pop() + Vector3.up * (minYDist * Random.value);
 
+                }
+                else
+                {
+                    point = goal;
                 }
                 return;
             }
