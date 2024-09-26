@@ -53,6 +53,7 @@ public class Firearm : MonoBehaviour
     [SerializeField] Cartridgetype AmmoType;
     [SerializeField] WeaponHandler Handler;
     Animator Animator;
+    Action SwitchAction;
 
     // Start is called before the first frame update
     void Start()
@@ -200,13 +201,16 @@ public class Firearm : MonoBehaviour
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
 
-            HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
+            //if (!Ads)
+                HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
 
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
+        //if (!Ads)
+            HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
+
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
     }
 
@@ -256,7 +260,7 @@ public class Firearm : MonoBehaviour
 
     public void Reload(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && Handler.AmmoLeft(AmmoType))
         {
             if (LoadedAmmo == 0)
                 PerformAnimation(Animation.ReloadingEmpty);
@@ -278,13 +282,24 @@ public class Firearm : MonoBehaviour
 
     public void Equip()
     {
+        //Debug.Log("Pulling out");
         // Play animation of pulling up gun
         gameObject.SetActive(true);
+        PerformAnimation(Animation.PullingOut);
     }
 
-    public void Unequip()
+    public void Unequip(Action equip)
     {
+        //Debug.Log("Holstering");
         // Play animation of putting away gun
+        PerformAnimation(Animation.Holstering);
+        SwitchAction = equip;
+    }
+
+    void Switch()
+    {
+        //Debug.Log("Switching weapons");
+        SwitchAction.Invoke();
         gameObject.SetActive(false);
     }
 
@@ -310,6 +325,9 @@ public class Firearm : MonoBehaviour
                 break;
             case Animation.ReloadingEmpty:
                 Animator.SetTrigger("Reload Empty");
+                break;
+            case Animation.Holstering:
+                Animator.SetTrigger("Holster");
                 break;
         }
     }
