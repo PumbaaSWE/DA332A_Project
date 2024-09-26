@@ -18,7 +18,16 @@ public class FirearmHUD : MonoBehaviour
     {
         if (!firearm)
         {
-            firearm = FindAnyObjectByType<Firearm>();
+            //firearm = FindAnyObjectByType<Firearm>();
+            FindEquippedFireArm();
+        }
+    }
+    void FindEquippedFireArm()
+    {
+        GameObject playerParent = GameObject.Find("Player");
+        if (playerParent) {
+            firearm = playerParent.GetComponentInChildren<Firearm>();
+            TooltipUtil.Display("Press left click to shoot", 10.0f);
         }
     }
 
