@@ -59,18 +59,18 @@ public class AdvancedController : Controller
         Vector3 up = transform.up;
         float d = Vector3.Dot(up, delta);
         Vector3 flatDist = Vector3.ProjectOnPlane(delta, up);
-
-        if(flatDist.sqrMagnitude < minDist * minDist)
+        bool onCieling = Vector3.Dot(Vector3.up, delta) < 0;
+        if (flatDist.sqrMagnitude < minDist * minDist)
         {
             //we are close flatWise
-            if(Mathf.Abs(d) < minYDist)
+            if (Mathf.Abs(d) < minYDist + (onCieling ? 2 : 0))
             {
                 // close y dist
                 move = Vector2.zero;
                 look = Vector2.zero;
                 if (pathQueue.HasNext())
                 {
-                    point = pathQueue.Pop();
+                    point = pathQueue.Pop() + Vector3.up * (minYDist * Random.value);
 
                 }
                 return;
@@ -82,14 +82,19 @@ public class AdvancedController : Controller
             }
         }
 
-        move = Vector2.up;
         
 
 
         Vector3 dir = delta.normalized;
 
+        Vector3 avoid = Avoid();
+
+        float speed = Mathf.Sign(Vector3.Dot(-avoid, transform.forward)) * .2f;
+
+        move = Vector2.up * (0.9f + speed);
+
         //dir += Avoid() * avoidStrength;
-        dir += Avoid() * avoidStrength;
+        dir += avoid * avoidStrength;
 
         float angle = Vector3.SignedAngle(transform.forward, dir, up);
 
@@ -124,7 +129,7 @@ public class AdvancedController : Controller
             avgPos -= d * 1 / d.sqrMagnitude;
             Debug.DrawLine(otherPos, pos, Color.blue);
         }
-        return close;
+        return close / close.sqrMagnitude;
         //return avgPos / (n - 1);
         //Vector3 d = avgPos / n;
         //return Vector3.SignedAngle(transform.forward, d, transform.up);

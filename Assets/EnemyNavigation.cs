@@ -10,7 +10,7 @@ public class EnemyNavigation : MonoBehaviour
     Action<Vector3[]> pathCallback;
     bool computing;
 
-    public int q = 0;
+    //public int q = 0;
     //NavMeshPath path;
 
     record PathQueueItem
@@ -40,7 +40,7 @@ public class EnemyNavigation : MonoBehaviour
     public void Pathfind(Vector3 start, Vector3 end, Action<Vector3[]> pathCallback)
     {
         pathQueue.Enqueue(new PathQueueItem(start, end, pathCallback));
-        q = pathQueue.Count;
+       // q = pathQueue.Count;
     }
 
     public bool ComputePath(Vector3 pos)
@@ -71,7 +71,7 @@ public class EnemyNavigation : MonoBehaviour
                 computing = true;
                 agent.SetDestination(item.end);
                 pathCallback = item.pathCallback;
-                q = pathQueue.Count;
+                //q = pathQueue.Count;
             }
         }
         //if (agent.pathStatus is NavMeshPathStatus.PathComplete or NavMeshPathStatus.PathPartial)
