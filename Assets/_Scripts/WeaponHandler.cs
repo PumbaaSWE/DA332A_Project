@@ -11,12 +11,12 @@ public class WeaponHandler : MonoBehaviour
     public Dictionary<Cartridgetype, int> AmmoPool = new();
     public List<Firearm> Guns;
     Firearm EquippedGun;
-    public bool Debug;
+    public bool DebugTest;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (Debug)
+        if (DebugTest)
             foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
                 AmmoPool.Add(type, 1000);
     }
@@ -25,7 +25,10 @@ public class WeaponHandler : MonoBehaviour
     void Update()
     {
         if (EquippedGun == null && Guns.Count > 0)
+        {
             EquippedGun = Guns[0];
+            EquippedGun.Equip();
+        }
     }
 
     public int TakeAmmo(Cartridgetype type, int ammoToTake)
@@ -52,13 +55,18 @@ public class WeaponHandler : MonoBehaviour
         return AmmoPool[type] > 0;
     }
 
+    public void CycleWeapons(CallbackContext context)
+    {
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+            SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
+    }
+
     public void SwitchGun(int gun)
     {
-        if (gun < Guns.Count && Guns[gun] != EquippedGun)
+        if (gun < Guns.Count && Guns[gun] != EquippedGun && Guns[gun] != null)
         {
-            EquippedGun.Unequip();
+            EquippedGun.Unequip(() => Guns[gun].Equip());
             EquippedGun = Guns[gun];
-            EquippedGun.Equip();
         }
     }
 
