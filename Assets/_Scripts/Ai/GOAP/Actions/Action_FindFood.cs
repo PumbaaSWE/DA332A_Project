@@ -105,7 +105,7 @@ public class Action_FindFood : Action_Base
             }
             if (timeSpentAtDestination >= MaxTimeAtDestination)
             {
-                PickNewLocation();
+               PickNewLocation();
             }
         }
 
