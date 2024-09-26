@@ -15,4 +15,8 @@ public class InteractableButton : MonoBehaviour, IInteractable
         OnPress?.Invoke(interactor);
     }
 
+    public void SpeculateInteract(Transform interactor)
+    {
+        //noop
+    }
 }

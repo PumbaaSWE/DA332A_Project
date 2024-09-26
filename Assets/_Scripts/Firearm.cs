@@ -20,7 +20,8 @@ public class Firearm : MonoBehaviour
     [SerializeField] float Damage;
     [SerializeField] float MaxRange = 100;
     [SerializeField] int ProjectilesPerShot = 1;
-    [SerializeField] float HipFireSpread, MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
+    public float HipFireSpread;
+    [SerializeField] float MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
     [SerializeField] float AdsSpread;
     [SerializeField] float RecoilDuration;
     public Vector2 RecoilImpulse;
@@ -35,6 +36,7 @@ public class Firearm : MonoBehaviour
     /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
+    [SerializeField] bool UseLocalAmmoPool;
     [SerializeField] bool UseAdsSpread = false;
     [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
@@ -43,6 +45,10 @@ public class Firearm : MonoBehaviour
 
     [SerializeField] FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
+    [SerializeField] Cartridgetype AmmoType;
+    [SerializeField] WeaponHandler Handler;
+    Animator Animator;
+    Action SwitchAction;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +56,7 @@ public class Firearm : MonoBehaviour
         LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
         HipFireSpread = MinHipFireSpread;
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
+        Animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -86,6 +93,7 @@ public class Firearm : MonoBehaviour
         if (CanFire && Firing)
         {
             Fire();
+            PerformAnimation(Animation.Firing);
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
@@ -188,13 +196,16 @@ public class Firearm : MonoBehaviour
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
 
-            HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
+            //if (!Ads)
+                HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
 
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
+        //if (!Ads)
+            HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
+
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
     }
 
@@ -213,9 +224,9 @@ public class Firearm : MonoBehaviour
         }
     }
 
-    public void Reload(CallbackContext context)
+    public void Reload()
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (UseLocalAmmoPool)
         {
             if (ReserveAmmo == 0 || Firing)
                 return;
@@ -227,9 +238,57 @@ public class Firearm : MonoBehaviour
             int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, MagazineSize);
             LoadedAmmo += ammoToLoad;
             ReserveAmmo -= ammoToLoad;
-
-            Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
         }
+
+        else
+        {
+            if (!Handler.AmmoLeft(AmmoType) || Firing)
+                return;
+
+            int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
+            LoadedAmmo -= returnedAmmo;
+            Handler.AddAmmo(AmmoType, returnedAmmo);
+
+            LoadedAmmo += Handler.TakeAmmo(AmmoType, MagazineSize);
+        }
+    }
+
+    public void Reload(CallbackContext context)
+    {
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && Handler.AmmoLeft(AmmoType))
+        {
+            if (LoadedAmmo == 0)
+                PerformAnimation(Animation.ReloadingEmpty);
+
+            else
+                PerformAnimation(Animation.Reloading);
+
+            //Reload();
+        }
+    }
+
+    public void LoadShells(int shellsToLoad)
+    {
+        if (UseLocalAmmoPool)
+        {
+            if (ReserveAmmo == 0 || Firing)
+                return;
+
+            int ammoToLoad = Mathf.Clamp(ReserveAmmo, 0, shellsToLoad);
+            LoadedAmmo += ammoToLoad;
+            ReserveAmmo -= ammoToLoad;
+        }
+
+        else
+        {
+            if (!Handler.AmmoLeft(AmmoType) || Firing)
+                return;
+
+            LoadedAmmo += Handler.TakeAmmo(AmmoType, shellsToLoad);
+        }
+
+        if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
+            Animator.SetTrigger("Reload Finished");
     }
 
     public void ToggleFireMode(CallbackContext context)
@@ -237,6 +296,58 @@ public class Firearm : MonoBehaviour
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
         {
             CurrentMode = AvailableModes[(Array.IndexOf(AvailableModes, CurrentMode) + 1) % AvailableModes.Length];
+        }
+    }
+
+    public void Equip()
+    {
+        //Debug.Log("Pulling out");
+        // Play animation of pulling up gun
+        gameObject.SetActive(true);
+        PerformAnimation(Animation.PullingOut);
+    }
+
+    public void Unequip(Action equip)
+    {
+        //Debug.Log("Holstering");
+        // Play animation of putting away gun
+        PerformAnimation(Animation.Holstering);
+        SwitchAction = equip;
+    }
+
+    void Switch()
+    {
+        //Debug.Log("Switching weapons");
+        SwitchAction.Invoke();
+        gameObject.SetActive(false);
+    }
+
+    public void Pickup()
+    {
+        // Pickup Gun into inventory
+    }
+
+    public void Drop()
+    {
+        // Drop gun onto floor
+    }
+
+    void PerformAnimation(Animation animation)
+    {
+        switch (animation)
+        {
+            case Animation.Firing:
+                Animator.SetTrigger("Shoot");
+                break;
+            case Animation.Reloading:
+                Animator.SetTrigger("Reload");
+                break;
+            case Animation.ReloadingEmpty:
+                Animator.SetTrigger("Reload Empty");
+                break;
+            case Animation.Holstering:
+                Animator.SetTrigger("Holster");
+                break;
         }
     }
 }
@@ -248,11 +359,12 @@ public enum FireMode
     FullAuto
 }
 
-//public enum AnimState
-//{
-//    Idle,
-//    Firing,
-//    Reloading,
-//    Holstering,
-//    PullingOut
-//}
+public enum Animation
+{
+    Idle,
+    Firing,
+    Reloading,
+    ReloadingEmpty,
+    Holstering,
+    PullingOut
+}

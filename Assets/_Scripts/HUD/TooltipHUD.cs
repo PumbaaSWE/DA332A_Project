@@ -12,8 +12,8 @@ public class TooltipHUD : MonoBehaviour
 
     private void OnEnable()
     {
-        Tooltip.OnTimedTooltip += ShowText;
-        Tooltip.OnTooltip += ShowText;
+        TooltipUtil.OnTimedTooltip += ShowText;
+        TooltipUtil.OnTooltip += ShowText;
 
         interactor = FindAnyObjectByType<Interactor>();
         if (interactor)
@@ -24,8 +24,8 @@ public class TooltipHUD : MonoBehaviour
 
     private void OnDisable()
     {
-        Tooltip.OnTimedTooltip -= ShowText;
-        Tooltip.OnTooltip -= ShowText;
+        TooltipUtil.OnTimedTooltip -= ShowText;
+        TooltipUtil.OnTooltip -= ShowText;
         if (interactor)
         {
             interactor.OnCanInteract -= ShowText;
