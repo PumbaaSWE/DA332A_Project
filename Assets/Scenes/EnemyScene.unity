@@ -22519,16 +22519,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TriggerEnemy (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3835898080067906757, guid: 8fd0db0c36d26a6469414c35930f9b0a,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3835898080067906757, guid: 8fd0db0c36d26a6469414c35930f9b0a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5143956483854485508, guid: 8fd0db0c36d26a6469414c35930f9b0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -33788,45 +33778,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 177364750}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1191816671 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-    type: 3}
-  m_PrefabInstance: {fileID: 2040448633}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1191816672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4263756048903440485, guid: c394dbb2ce4861547a0261fc38ebde28,
     type: 3}
   m_PrefabInstance: {fileID: 2040448633}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1191816673
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191816671}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!43 &1196840372
 Mesh:
   m_ObjectHideFlags: 0
@@ -36632,39 +36589,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1421205937 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-    type: 3}
-  m_PrefabInstance: {fileID: 1492751425}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &1421205938
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421205937}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!4 &1421205943 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4263756048903440485, guid: c394dbb2ce4861547a0261fc38ebde28,
@@ -36899,24 +36823,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1421205938}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c394dbb2ce4861547a0261fc38ebde28, type: 3}
 --- !u!1001 &1502403757
 PrefabInstance:
@@ -38439,45 +38349,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3550696576423756101, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: visionAwarenessBuildRate
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3550696576423756101, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: proximityAwarenessBuildRate
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4466679455157297304, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: _VisionConeAngle
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 5258990469777088083, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: minDist
-      value: 0.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 5258990469777088083, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: turnSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5258990469777088083, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: stoppingDistance
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5692006578333516754, guid: 2c45409df14b41d489f4739ab7565880,
         type: 3}
       propertyPath: m_Name
       value: 'EnemyN '
-      objectReference: {fileID: 0}
-    - target: {fileID: 5692006578333516754, guid: 2c45409df14b41d489f4739ab7565880,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -48898,24 +48773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1191816673}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c394dbb2ce4861547a0261fc38ebde28, type: 3}
 --- !u!43 &2045295894
 Mesh:
