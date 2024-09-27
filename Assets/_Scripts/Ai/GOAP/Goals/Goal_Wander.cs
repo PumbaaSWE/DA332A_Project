@@ -14,15 +14,7 @@ public class Goal_Wander : Goal_Base
     {
        
 
-        if(!noNav)
-        {
-            if (Agent.IsMoving)
-                CurrentPriority -= PriorityDecayRate * Time.deltaTime;
-            else
-                CurrentPriority += PriorityBuildRate * Time.deltaTime;
-        }
-        else
-        {
+        
             if (controller.Move != Vector2.zero)
             {
                 CurrentPriority -= PriorityDecayRate * Time.deltaTime;
@@ -32,7 +24,7 @@ public class Goal_Wander : Goal_Base
                 CurrentPriority += PriorityBuildRate * Time.deltaTime;
 
             }
-        }
+        
        
     }
 

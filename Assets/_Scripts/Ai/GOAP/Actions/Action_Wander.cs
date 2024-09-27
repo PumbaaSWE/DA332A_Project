@@ -5,7 +5,7 @@ using UnityEngine;
 public class Action_Wander : Action_Base
 {
     [SerializeField] float SearchRange = 20f;
-    [SerializeField] float WanderCooldown = 2f; // Tid mellan nya målpunkter
+    [SerializeField] float WanderCooldown = 2f; 
     private float cooldownTimer = 0f;
     float MaxTimeAtDestination = 5f;
     private float timeSpentAtDestination = 0f;
@@ -42,15 +42,7 @@ public class Action_Wander : Action_Base
         //    return;
         //}
         timeSpentAtDestination += Time.deltaTime;
-        if (!noNav)
-        {
-            if (agent.AtDestination)
-            {
-                PickNewLocation();
-            }
-        }
-        else 
-        {
+       
             if (Agent.AtDestination)
             {
                 PickNewLocation();
@@ -59,23 +51,17 @@ public class Action_Wander : Action_Base
             {
                 PickNewLocation(); 
             }
-        }
+        
        
     }
 
     private void PickNewLocation()
     {
 
-        if (!noNav)
-        {
-            Vector3 location = agent.PickLocationInRange(SearchRange);
-            agent.MoveTo(location);
-        }
-        else
-        {
+       
             Vector3 location = Agent.PickLocationInRange(SearchRange);
             Agent.MoveTo(location);
-        }
+        
 
         timeSpentAtDestination = 0f;
         //cooldownTimer = WanderCooldown;

@@ -55,52 +55,7 @@ public class CharacterClimber : CharacterBase
       
         linkedAI = GetComponent<EnemyAI>();
     }
-    private float CalculateNavMeshPath(Vector3 destination)
-    {
-        if (NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, navMeshPath))
-        {
-            pathDistance = GetPathLength(navMeshPath);
-            return pathDistance;
-        }
-        return Mathf.Infinity;
-    }
-
-    private float GetPathLength(NavMeshPath path)
-    {
-        float totalLength = 0.0f;
-        for (int i = 0; i < path.corners.Length - 1; i++)
-        {
-            totalLength += Vector3.Distance(path.corners[i], path.corners[i + 1]);
-        }
-        return totalLength;
-    }
-
-    private float CalculateClimbOverDistance(Vector3 wallPosition, Vector3 destination)
-    {
-        float distanceToWall = Vector3.Distance(transform.position, wallPosition);
-
-        RaycastHit hitTop;
-        if (Physics.Raycast(wallPosition, Vector3.forward, out hitTop, Mathf.Infinity, LayerMask.GetMask("Wall")))
-        {
-
-            GameObject wallObject = hitTop.collider.gameObject;
-
-
-            float wallHeight = wallObject.GetComponent<Collider>().bounds.size.y;
-            Debug.Log("Wall height: " + wallHeight);
-
-            float distanceAfterClimb = Vector3.Distance(wallPosition + Vector3.up * wallHeight, destination);
-
-            return distanceToWall + wallHeight + distanceAfterClimb;
-        }
-        else
-        {
-           
-            return Mathf.Infinity;  
-        }
-    }
-
-
+ 
     protected override void Update()
     {
         base.Update();
@@ -143,46 +98,7 @@ public class CharacterClimber : CharacterBase
         UpdateState();
     }
    
-    void WallMovment(Vector3 destination)
-    {
-        Vector3 wallPosition = Vector3.zero;
-
-        int steps = 10;
-        Vector3 direction = (destination - transform.position).normalized;
-        float distanceToDestination = Vector3.Distance(transform.position, destination);
-        float stepSize = distanceToDestination / steps;
-
-        //for (int i = 1; i <= steps; i++)
-        //{
-        //    Vector3 stepPosition = transform.position + direction * stepSize * i;
-        //    if (Physics.Raycast(stepPosition, direction, out RaycastHit hit, stepSize, LayerMask.GetMask("Wall")))
-        //    {
-        //        wallPosition = hit.point;
-        //        break; 
-        //    }
-        //}
-        //if (wallPosition == Vector3.zero)
-        //{
-         
-        //    SetDestinationNav(destination);
-        //    return;
-        //}
-
-        //float navMeshPathDistance = CalculateNavMeshPath(destination);
-        //float climbOverDistance = CalculateClimbOverDistance(wallPosition, destination);
-
-        //if (climbOverDistance < navMeshPathDistance)
-        //{
-        //    StartClimbing(wallPosition);
-        //}
-        //else
-        {
-            
-            SetDestinationNav(destination);
-        }
-    }
-   
-
+ 
     public virtual void SetDestinationNav(Vector3 destination)
     {
         NavMeshHit hitResult;
@@ -233,44 +149,7 @@ public class CharacterClimber : CharacterBase
         }
     }
 
-    public Vector3 GetClosestNavMeshPoint(Vector3 currentPosition)
-    {
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(currentPosition, out hit, 10, NavMesh.AllAreas))
-        {
-
-            return hit.position;
-        }
-        else
-        {
-
-            return currentPosition;  
-        }
-    }
-
-
-
-    private void StartClimbing(Vector3 wallPosition)
-    {
-        StartCoroutine(ClimbOverWall(wallPosition));
-    }
-
-    private IEnumerator ClimbOverWall(Vector3 wallPosition)
-    {
-        while (Vector3.Distance(transform.position, wallPosition) > 0.1f)
-        {
-          
-            Vector3 climbDirection = Vector3.up;
-            controller.SetTarget(transform.position + climbDirection * Time.deltaTime);
-
-            yield return null;  
-        }
-
-  
-    }
-
- 
-
+   
     private bool IsAtDestination()
     {
         float sqrDistanceToDestination = (transform.position - controller.point).sqrMagnitude;
@@ -323,7 +202,14 @@ public class CharacterClimber : CharacterBase
 
     public virtual void SetDestination(Vector3 destination)
     {
-        WallMovment(destination);
+        Vector3 wallPosition = Vector3.zero;
+
+        int steps = 10;
+        Vector3 direction = (destination - transform.position).normalized;
+        float distanceToDestination = Vector3.Distance(transform.position, destination);
+        float stepSize = distanceToDestination / steps;
+
+        SetDestinationNav(destination);
         //controller.SetTarget(destination);
         //DestinationSet = true;
         //ReachedDestination = false;
@@ -356,38 +242,7 @@ public class CharacterClimber : CharacterBase
         return transform.position;
     }
 
-    //public Vector3 PickLocationInRange(float range)
-    //{
-    //    Vector3 searchLocation = transform.position;
-
-    //    searchLocation += Random.Range(-range, range) * transform.forward;
-    //    searchLocation += Random.Range(-range, range) * transform.right;
-
-    //    float raycastDistance = 10f; 
-    //    LayerMask groundMask = LayerMask.GetMask("Default"); 
-
-    //    RaycastHit hitResult;
-
-    //    List<Vector3> directions = new List<Vector3>()
-    //{
-    //    Vector3.down,       
-    //    transform.forward,  
-    //    -transform.forward, 
-    //    transform.right,    
-    //    -transform.right    
-    //};
-
-
-    //    foreach (Vector3 direction in directions)
-    //    {
-    //        if (Physics.Raycast(searchLocation, direction, out hitResult, raycastDistance, groundMask))
-    //        {
-    //            return hitResult.point;
-    //        }
-    //    }
-
-    //    return searchLocation;
-    //}
+   
 
     public void Attack()
     {
@@ -440,21 +295,6 @@ public class CharacterClimber : CharacterBase
         //knockback = false;
     }
 
-    void CheckGroundUpright()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDistance))
-        {
-            Vector3 groundNormal = hit.normal;
-            float dotProduct = Vector3.Dot(groundNormal, Vector3.up);
-            isUpp = dotProduct >= uprightThreshold;
-        }
-        else
-        {
-            isUpp = false;
-        }
-    }
-
     public void SetLookDirection(Vector3 direction)
     {
         Vector3 targetDirection = (direction - transform.position).normalized;
@@ -468,16 +308,5 @@ public class CharacterClimber : CharacterBase
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * controller.wallClimber.Speed);
         }
     }
-    //void OnDrawGizmos()
-    //{
-      
-    //    {
-    //        Gizmos.color = Color.red;
-    //        var path = navMeshPath;
-    //        for (int i = 0; i < path.corners.Length - 1; i++)
-    //        {
-    //            Gizmos.DrawLine(path.corners[i], path.corners[i + 1]);
-    //        }
-    //    }
-    //}
+   
 }

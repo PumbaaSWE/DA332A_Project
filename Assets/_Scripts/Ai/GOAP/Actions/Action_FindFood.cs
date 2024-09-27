@@ -50,14 +50,10 @@ public class Action_FindFood : Action_Base
          
             if (closestFood != null)
             {
-                if(!noNav)
-                {
-                    agent.MoveTo(closestFood.transform.position);
-                }
-                else
-                {
+              
+                
                     Agent.MoveTo(closestFood.transform.position);
-                }
+                
             }
             else
             {
@@ -67,16 +63,10 @@ public class Action_FindFood : Action_Base
         }
         else
         {
-            if (!noNav)
-            {
-                Vector3 location = agent.PickLocationInRange(SearchRange);
-                agent.MoveTo(location);
-            }
-            else
-            {
+           
                 Vector3 location = Agent.PickLocationInRange(SearchRange);
                 Agent.MoveTo(location);
-            }
+            
 
            
         }
@@ -85,15 +75,7 @@ public class Action_FindFood : Action_Base
     public override void OnTick()
     {
         timeSpentAtDestination += Time.deltaTime;
-        if (!noNav)
-        {
-            if (agent.AtDestination)
-            {
-                OnActivated(LinkedGoal);
-            }
-        }
-        else
-        {
+       
             if (Agent.AtDestination)
             {
                 OnActivated(LinkedGoal);
@@ -107,23 +89,18 @@ public class Action_FindFood : Action_Base
             {
                PickNewLocation();
             }
-        }
+        
 
        
     }
     private void PickNewLocation()
     {
 
-        if (!noNav)
-        {
-            Vector3 location = agent.PickLocationInRange(SearchRange);
-            agent.MoveTo(location);
-        }
-        else
-        {
+        
+        
             Vector3 location = Agent.PickLocationInRange(SearchRange);
             Agent.MoveTo(location);
-        }
+        
 
         timeSpentAtDestination = 0f;
         //cooldownTimer = WanderCooldown;
