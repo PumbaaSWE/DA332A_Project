@@ -41,7 +41,7 @@ public class Firearm : MonoBehaviour
     [SerializeField] bool Ads = false;
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
-    [SerializeField] FPSController Player;
+    [SerializeField] MovementController Player;
 
     [SerializeField] FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
@@ -55,7 +55,7 @@ public class Firearm : MonoBehaviour
     {
         LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
         HipFireSpread = MinHipFireSpread;
-        OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
+        OriginalFov = Camera.main.fieldOfView;
         Animator = GetComponent<Animator>();
     }
 
@@ -214,13 +214,13 @@ public class Firearm : MonoBehaviour
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
         {
             Ads = true;
-            GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov / AdsZoom;
+            Camera.main.fieldOfView = OriginalFov / AdsZoom;
         }
 
         else if (context.canceled)
         {
             Ads = false;
-            GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov;
+            Camera.main.fieldOfView = OriginalFov;
         }
     }
 
