@@ -31,7 +31,7 @@ public class CharacterClimber : CharacterBase
     EnemyAI linkedAI;
 
     internal Animator animator;
-    [SerializeField] float NearestPointSearchRange = 7f;
+    [SerializeField] float NearestPointSearchRange = 3f;
     private NavMeshPath navMeshPath;
     private float pathDistance;
 
@@ -112,7 +112,7 @@ public class CharacterClimber : CharacterBase
 
                 DestinationSet = true;
                 ReachedDestination = false;
-                Debug.Log("Destination set to: " + hitResult.position);
+               // Debug.Log("Destination set to: " + hitResult.position);
             }
         }
     }
@@ -122,21 +122,13 @@ public class CharacterClimber : CharacterBase
         for (int i = 1; i < path.corners.Length; i++)
         {
             Vector3 corner = path.corners[i];
-            Debug.Log("Moving to corner " + i);
+          //Debug.Log("Moving to corner " + i);
     
             NavMeshHit hit;
             if (NavMesh.SamplePosition(corner, out hit, 1f, NavMesh.AllAreas))
             {
                 int areaMask = hit.mask;
 
-                if (NavMesh.GetAreaFromName("Wall") == areaMask)
-                {
-                  
-                }
-                else if (NavMesh.GetAreaFromName("Walkable") == areaMask)
-                {
-                    
-                }
             }
 
      
