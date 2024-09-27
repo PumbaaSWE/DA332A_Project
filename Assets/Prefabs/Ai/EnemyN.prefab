@@ -2401,10 +2401,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point: {x: 0, y: 0, z: 0}
-  minDist: 0.5
-  turnSpeed: 1
+  minDist: 0.48
+  turnSpeed: 2
   wallClimber: {fileID: 279728567298950939}
-  stoppingDistance: 0.55
+  stoppingDistance: 0.5
   selfLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -2500,7 +2500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FeedbackDisplay: {fileID: 0}
-  _VisionConeAngle: 60
+  _VisionConeAngle: 70
   _VisionConeRange: 55
   _VisionConeColour: {r: 1, g: 0, b: 0, a: 0.09803922}
   _HearingRange: 45
@@ -2527,11 +2527,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   visionMinimumAwareness: 1
-  visionAwarenessBuildRate: 12
+  visionAwarenessBuildRate: 15
   hearingMinimumAwareness: 0
   hearingAwarnessBuildRate: 1
   proximityMinimumAwareness: 0
-  proximityAwarenessBuildRate: 1
+  proximityAwarenessBuildRate: 5
   awarenessDecayDelay: 0.1
   awarenessDecaRate: 0.1
   soundLocation: {x: 0, y: 0, z: 0}
@@ -2811,6 +2811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noNav: 1
   SearchRange: 10
+  RetreatDistance: 5
   positionUpdateTolerance: 0.5
 --- !u!114 &2761027145263258629
 MonoBehaviour:
