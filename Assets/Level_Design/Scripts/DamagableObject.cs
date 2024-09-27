@@ -8,7 +8,7 @@ public class DamagableObject : MonoBehaviour, IDamageble
     
     public UnityEvent onDamage;
 
-    public void TakeDamage(Vector3 point, Vector3 direction, float damage)
+    public virtual void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
         onDamage?.Invoke();
     }
