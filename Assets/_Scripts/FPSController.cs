@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.EnhancedTouch;
 /// Partly stolen from BaseController by pumbaaswe, partly stolen from Sourcelike FPS Character Controller by Majikayo Games and partly original af.
 /// Author: Winn1337 / Johannes
 /// </summary>
-public class FPSController : MonoBehaviour
+public class FPSController : MovementController
 {
     public struct MoveCommand
     {
@@ -66,7 +66,7 @@ public class FPSController : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void Rotate(float x, float y)
+    public override void Rotate(float x, float y)
     {
         // Rotate body Y
         transform.Rotate(Vector3.up, y);
