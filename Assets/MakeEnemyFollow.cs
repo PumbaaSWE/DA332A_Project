@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MakeEnemyFollow : MonoBehaviour
 {
-    Transform toFollow;
+    public Transform toFollow;
 
     public MoveTowardsController[] enemies;
 

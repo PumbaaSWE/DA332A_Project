@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2024575084720890738}
   - component: {fileID: 647467686351934616}
   - component: {fileID: 8155693354867266561}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7278872526832582902}
   - component: {fileID: 3928278340467997547}
-  m_Layer: 0
+  - component: {fileID: 6230345785733076096}
+  m_Layer: 6
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,8 +133,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2245847593458295276}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.047299013, y: 0.10451984, z: -0.43117014, w: 0.8949473}
-  m_LocalPosition: {x: 7.598977, y: 1.54, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -141,7 +142,7 @@ Transform:
   - {fileID: 7794301850398698788}
   - {fileID: 6129731557326405019}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0.313, y: 13.172, z: -51.412}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3928278340467997547
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,7 +153,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -167,8 +168,29 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 32
   m_CollisionDetection: 1
+--- !u!114 &6230345785733076096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2245847593458295276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f2801cc0f56c4499905f6e4bbfec42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToLive: 20
+  fadeTime: 6
+  flickerSpeed: 10
+  lightRangeMax: 10
+  lightRangeMin: 10
+  lightIntensityMax: 1.5
+  lightIntensityMin: 0.5
+  lightColor1: {r: 1, g: 0.29713687, b: 0, a: 1}
+  lightColor2: {r: 1, g: 0.5070822, b: 0.015686274, a: 1}
 --- !u!1 &3158562001890615121
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +202,7 @@ GameObject:
   - component: {fileID: 7794301850398698788}
   - component: {fileID: 2972684895711157575}
   - component: {fileID: 2159492199617545760}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5010,8 +5032,7 @@ GameObject:
   - component: {fileID: 6129731557326405019}
   - component: {fileID: 4238307392627064559}
   - component: {fileID: 7407590330275719311}
-  - component: {fileID: 3792971694999142932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5044,14 +5065,14 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.22822624, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.37329325, b: 0, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -5118,22 +5139,3 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!114 &3792971694999142932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7802353268553747551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f2801cc0f56c4499905f6e4bbfec42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flickerSpeed: 10
-  lightRangeMax: 12
-  lightRangeMin: 12
-  lightIntensityMax: 1.5
-  lightIntensityMin: 0.5
-  lightColor1: {r: 1, g: 0.24174622, b: 0, a: 1}
-  lightColor2: {r: 1, g: 0.46193555, b: 0.015686274, a: 1}
