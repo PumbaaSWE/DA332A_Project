@@ -133,10 +133,11 @@ public class EnemyAIEditor : Editor
         //Handles.DrawSolidArc(ai.transform.position, Vector3.up, startPoint, ai.VisionConeAngle * 2f, ai.VisionConeRange);
 
 
- // 3d
-        Vector3 startPoint = Quaternion.Euler(0, -ai.VisionConeAngle, 0) * ai.transform.forward;
+        // 3d
+        Vector3 startPoint = Mathf.Cos(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.forward +
+                              Mathf.Sin(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.right;
 
-  
+    
         Handles.color = ai.VisionConeColour;
 
 
