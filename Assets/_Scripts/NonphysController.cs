@@ -43,6 +43,7 @@ public class NonphysController : MovementController
     [SerializeField] float skinWidth;
     [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
     [SerializeField] int maxBounces;
+    [SerializeField] float pushForce;
 
     [Header("IsGrounded")]
     [SerializeField] float radiusDiff;
@@ -107,6 +108,8 @@ public class NonphysController : MovementController
 
     void Move(float dt)
     {
+        // recharge stamina
+
         // What is our current max speed?
         float maxSpeed = maxWalkSpeed;
         float forwardSpeed = Vector3.Dot(velocity, transform.forward);
@@ -120,6 +123,7 @@ public class NonphysController : MovementController
         {
             if (forwardSpeed > 0)
             {
+                // deplete stamina
                 maxSpeed = maxSprintSpeed;
             }
         }
@@ -170,7 +174,7 @@ public class NonphysController : MovementController
 
         // Collide and slide algorithm
         float velY = velocity.y;
-        Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0);
+        Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0, dt);
         velocity = deltaPos / dt;
         velocity.y = Mathf.Min(velocity.y, velY); // Otherwise we might slide up alot in the air. For example if we jump and hit a corner, not very grounded!
         speed = velocity.WithY().magnitude;
@@ -204,7 +208,7 @@ public class NonphysController : MovementController
         isCrouched = cc.height != height;
     }
 
-    Vector3 CollideAndSlide(Vector3 vel, Vector3 pos, int depth)
+    Vector3 CollideAndSlide(Vector3 vel, Vector3 pos, int depth, float dt)
     {
         if (depth >= maxBounces)
             return Vector3.zero;
@@ -223,7 +227,27 @@ public class NonphysController : MovementController
             Vector3 leftOver = vel - snap;
             leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal)/*.normalized * leftOver.magnitude*/; // Uncomment this if you want more sliding action. I don't like it because player can slide up walls!
 
-            return snap + CollideAndSlide(leftOver, pos + snap, depth + 1);
+            if (hit.transform.TryGetComponent(out Rigidbody rb))
+            {
+                //rb.AddForceAtPosition(snap, hit.point, ForceMode.VelocityChange);
+
+                // F = ma
+                // a = v/dt
+
+                //rb.SweepTest
+
+                float requiredForce = (rb.mass * snap / dt).magnitude;
+                float strength = Mathf.Lerp(1, 0, requiredForce / pushForce);
+
+                Vector3 pushSnap = snap * strength;
+                rb.AddForceAtPosition(snap * strength / dt, hit.point, ForceMode.VelocityChange);
+                leftOver = vel - pushSnap;
+                leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal);
+                return pushSnap + CollideAndSlide(leftOver, pos + pushSnap, depth + 1, dt);
+            }
+
+
+            return snap + CollideAndSlide(leftOver, pos + snap, depth + 1, dt);
         }
 
         return vel;
@@ -321,6 +345,8 @@ public class NonphysController : MovementController
         if (!grounded) return;
 
         if (isCrouched) return;
+
+        // deplete stamina
 
         velocity = velocity.WithY(jumpVel);
         jump = true;
