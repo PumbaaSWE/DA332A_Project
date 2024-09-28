@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 4713593483004627177}
   - component: {fileID: 2024575084720890738}
   - component: {fileID: 647467686351934616}
-  - component: {fileID: 8155693354867266561}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,29 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8155693354867266561
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1040347033109158997}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2245847593458295276
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +94,8 @@ GameObject:
   - component: {fileID: 7278872526832582902}
   - component: {fileID: 3928278340467997547}
   - component: {fileID: 6230345785733076096}
-  m_Layer: 6
+  - component: {fileID: 3973356648964412480}
+  m_Layer: 11
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,6 +168,29 @@ MonoBehaviour:
   lightIntensityMin: 0.5
   lightColor1: {r: 1, g: 0.29713687, b: 0, a: 1}
   lightColor2: {r: 1, g: 0.5070822, b: 0.015686274, a: 1}
+--- !u!136 &3973356648964412480
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2245847593458295276}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.025
+  m_Height: 0.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3158562001890615121
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 7794301850398698788}
   - component: {fileID: 2972684895711157575}
   - component: {fileID: 2159492199617545760}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5032,7 +5032,7 @@ GameObject:
   - component: {fileID: 6129731557326405019}
   - component: {fileID: 4238307392627064559}
   - component: {fileID: 7407590330275719311}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
