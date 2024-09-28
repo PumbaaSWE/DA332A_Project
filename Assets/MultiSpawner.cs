@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MultiSpawner : MonoBehaviour
 {
 
-    public GameObject prefab;
+    public GameObject prefabToSpawn;
+    public float spawnDelay = 0;
     public Spawner[] spawners;
     public bool spawnOnStart;
     
@@ -29,6 +28,8 @@ public class MultiSpawner : MonoBehaviour
             for (int i = 0; i < spawners.Length; i++)
             {
                 spawners[i].spawnOnStart = spawnOnStart;
+                spawners[i].spawnDelay = spawnDelay;
+                spawners[i].prefabToSpawn = prefabToSpawn;
             }
         }
     }

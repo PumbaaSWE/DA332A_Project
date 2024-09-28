@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class Spawner : MonoBehaviour
 {
-    public GameObject PrefabToSpawn;
+    public GameObject prefabToSpawn;
     [Tooltip("Start spawn timer when the Start method is called")]
     public bool spawnOnStart = true;
     [Tooltip("Delay for X amount of seconds before spawning")]
@@ -68,12 +68,12 @@ public class Spawner : MonoBehaviour
     /// </summary>
     public void SpawnImmidiate()
     {
-        if (PrefabToSpawn)
+        if (prefabToSpawn)
         {
             switch (blockedBehaviour)
             {
                 case BlockedBehaviour.ForceSpawn:
-                    Instantiate(PrefabToSpawn, transform.position, transform.rotation);
+                    Instantiate(prefabToSpawn, transform.position, transform.rotation);
                     break;
                 case BlockedBehaviour.WaitThenSpawn:
                     StartCoroutine(SpawnInWhenCleared());
@@ -98,7 +98,7 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnInWhenCleared()
     {
         yield return new WaitUntil(()=>!CheckIfBlocked());
-        Instantiate(PrefabToSpawn, transform.position, transform.rotation);
+        Instantiate(prefabToSpawn, transform.position, transform.rotation);
     }
 
     void CreateMesh()

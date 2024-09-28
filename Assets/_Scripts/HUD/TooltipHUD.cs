@@ -5,8 +5,8 @@ public class TooltipHUD : MonoBehaviour
 {
 
     [SerializeField]  private TMP_Text textArea;
-
-    float timer;
+    [SerializeField] private PlayerDataSO playerData;
+     float timer;
 
     Interactor interactor;
 
@@ -15,10 +15,22 @@ public class TooltipHUD : MonoBehaviour
         TooltipUtil.OnTimedTooltip += ShowText;
         TooltipUtil.OnTooltip += ShowText;
 
-        interactor = FindAnyObjectByType<Interactor>();
-        if (interactor)
+        playerData.NotifyOnPlayerChanged(PlayerData_OnPlayerChanged);
+    }
+
+    private void PlayerData_OnPlayerChanged(Transform obj)
+    {
+        if (obj)
         {
-            interactor.OnCanInteract += ShowText;
+            if (interactor)
+            {
+                interactor.OnCanInteract -= ShowText;
+            }
+            interactor = obj.GetComponent<Interactor>();
+            if (interactor)
+            {
+                interactor.OnCanInteract += ShowText;
+            } 
         }
     }
 
@@ -26,6 +38,7 @@ public class TooltipHUD : MonoBehaviour
     {
         TooltipUtil.OnTimedTooltip -= ShowText;
         TooltipUtil.OnTooltip -= ShowText;
+        playerData.UnsubscribeOnPlayerChanged(PlayerData_OnPlayerChanged);
         if (interactor)
         {
             interactor.OnCanInteract -= ShowText;
