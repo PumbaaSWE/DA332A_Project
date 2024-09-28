@@ -27,7 +27,7 @@ public class FirearmHUD : MonoBehaviour
         GameObject playerParent = GameObject.Find("Player");
         if (playerParent) {
             firearm = playerParent.GetComponentInChildren<Firearm>();
-            TooltipUtil.Display("Press left click to shoot", 10.0f);
+            //TooltipUtil.Display("Press left click to shoot", 10.0f);
         }
     }
 

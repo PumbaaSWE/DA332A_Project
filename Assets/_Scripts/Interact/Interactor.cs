@@ -7,8 +7,10 @@ using UnityEngine.InputSystem;
 
 public class Interactor : MonoBehaviour
 {
-    public Action<string, float> OnCanInteract;
+    public Action<string> OnCanInteract;
+    public Action<string, float> OnCanInteractTimed;
     public Action<string, float> OnInteracted;
+    public Action<string, float, int> OnInteractedPriority;
 
     [Tooltip("Will auto reference child with name LookDir")][SerializeField] private Transform lookDir;
     [SerializeField] private LayerMask layerMask;
@@ -46,11 +48,15 @@ public class Interactor : MonoBehaviour
                     interactable = item;
                     item.SpeculateInteract(transform);
                 }
-                OnCanInteract?.Invoke(string.Format(item.Tooltip, key), 0);
+                OnCanInteract?.Invoke(string.Format(item.Tooltip, key));
+                OnCanInteractTimed?.Invoke(string.Format(item.Tooltip, key), 0.0f);
                 //Debug.Log("Item != null");
                 if (action.triggered)
                 {
-                    OnInteracted?.Invoke(item.Tooltip, 0);
+                    if (item.ShowInteractMessage)
+                    {
+                        OnInteractedPriority?.Invoke(item.InteractedTooltip, 5.0f, 1);
+                    }
                     item.Interact(transform);
                 }
             }

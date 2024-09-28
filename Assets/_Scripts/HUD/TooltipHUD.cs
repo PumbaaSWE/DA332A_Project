@@ -24,7 +24,8 @@ public class TooltipHUD : MonoBehaviour
         interactor = FindAnyObjectByType<Interactor>();
         if (interactor)
         {
-            interactor.OnCanInteract += ShowText;
+            interactor.OnCanInteractTimed += ShowText;
+            interactor.OnInteractedPriority += ShowText;
         }
     }
 
@@ -75,7 +76,10 @@ public class TooltipHUD : MonoBehaviour
         }
         else
         {
-            QueueText(text, time);
+            if(time > 0)
+            {
+                QueueText(text, time);
+            }   
         }
     }
 
@@ -100,6 +104,7 @@ public class TooltipHUD : MonoBehaviour
             }
             else
             {
+                priority = 0;
                 textArea.enabled = false;
             }
         }
