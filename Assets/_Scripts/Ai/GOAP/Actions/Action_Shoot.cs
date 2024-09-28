@@ -7,7 +7,7 @@ using UnityEngine.XR;
 public class Action_Shoot : Action_Base
 {
     //[SerializeField] float bullets = 10f;
-    [SerializeField] float SearchCoverRange = 10f;
+    //[SerializeField] float SearchCoverRange = 10f;
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_RangedAttack) });
     Goal_RangedAttack attackGoal;
 

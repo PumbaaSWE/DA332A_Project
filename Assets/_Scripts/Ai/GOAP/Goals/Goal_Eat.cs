@@ -7,7 +7,7 @@ public class Goal_Eat : Goal_Base
     public int prio = 30;
 
     [SerializeField] float PriorityBuildRate = 1f;
-    [SerializeField] float PriorityDecayRate = 0.1f;
+    //[SerializeField] float PriorityDecayRate = 0.1f;
     public float CurrentPriority = 0f;
 
     public override void OnTickGoal()

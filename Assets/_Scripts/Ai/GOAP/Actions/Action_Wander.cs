@@ -5,8 +5,8 @@ using UnityEngine;
 public class Action_Wander : Action_Base
 {
     [SerializeField] float SearchRange = 20f;
-    [SerializeField] float WanderCooldown = 2f; 
-    private float cooldownTimer = 0f;
+    //[SerializeField] float WanderCooldown = 2f; 
+    //private float cooldownTimer = 0f;
     float MaxTimeAtDestination = 5f;
     private float timeSpentAtDestination = 0f;
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Wander) });

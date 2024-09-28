@@ -10,7 +10,7 @@ public class Action_Stalk : Action_Base
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Stalk) });
     Goal_Stalk stalkGoal;
     private Vector3 lastMoveTarget;
-    [SerializeField] private float positionUpdateTolerance = 0.5f;
+    //[SerializeField] private float positionUpdateTolerance = 0.5f;
 
     public override List<System.Type> GetSupportedGoals()
     {

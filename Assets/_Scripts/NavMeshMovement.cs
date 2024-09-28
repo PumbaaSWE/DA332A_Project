@@ -21,7 +21,7 @@ public class NavMeshMovement : MonoBehaviour
 
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    bool knockback;
+    //bool knockback;
     bool wasGrounded;
 
     private void Awake()
@@ -238,7 +238,7 @@ public class NavMeshMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        knockback = false;
+        //knockback = false;
     }
 
     private void OnAnimatorMove()

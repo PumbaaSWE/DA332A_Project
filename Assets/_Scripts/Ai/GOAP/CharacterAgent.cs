@@ -24,7 +24,7 @@ public class CharacterAgent : CharacterBase
     private LookAt lookAt;
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    bool knockback;
+    //bool knockback;
     bool wasGrounded;
 
     public bool isCrawling;
@@ -519,7 +519,7 @@ public class CharacterAgent : CharacterBase
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        knockback = false;
+        //knockback = false;
     }
 
     void CheckGroundUpright()

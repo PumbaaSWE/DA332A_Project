@@ -53,7 +53,7 @@ public class EnemyAI : MonoBehaviour
     {
         Awareness.ReportCanSee(seen);
 
-        Debug.Log("can see");
+        //Debug.Log("can see");
     }
 
     public void ReportCanHear(GameObject source, Vector3 location, EHeardSoundCategory category, float intensity)
@@ -71,37 +71,37 @@ public class EnemyAI : MonoBehaviour
 
     public void OnSuspicious()
     {
-        Debug.Log("I hear you");
+        //Debug.Log("I hear you");
         //FeedbackDisplay.text = "I hear you";
     }
 
     public void OnDetected(GameObject target)
     {
-        Debug.Log("I see you ");
+        //Debug.Log("I see you ");
         //FeedbackDisplay.text = "I see you " + target.gameObject.name;
     }
 
     public void OnFullyDetected(GameObject target)
     {
-        Debug.Log("Charge! ");
+        //Debug.Log("Charge! ");
         //FeedbackDisplay.text = "Charge! " + target.gameObject.name;
     }
 
     public void OnLostDetect(GameObject target)
     {
-        Debug.Log("Where are you ");
+        //Debug.Log("Where are you ");
         //FeedbackDisplay.text = "Where are you " + target.gameObject.name;
     }
 
     public void OnLostSuspicion()
     {
-        Debug.Log("Where did you go");
+        //Debug.Log("Where did you go");
         //FeedbackDisplay.text = "Where did you go";
     }
 
     public void OnFullyLost()
     {
-        Debug.Log("Must be nothing");
+        //Debug.Log("Must be nothing");
         //FeedbackDisplay.text = "Must be nothing";
     }
 

@@ -6,7 +6,7 @@ public class Goal_Investagate : Goal_Base
 {
     [SerializeField] int priority = 45;
     [SerializeField] float MinAwarenessToChase = 1.4f;
-    [SerializeField] float AwarenessToStopChase = 1f;
+    //[SerializeField] float AwarenessToStopChase = 1f;
 
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;

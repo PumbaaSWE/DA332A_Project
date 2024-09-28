@@ -19,8 +19,8 @@ public class CharacterClimber : CharacterBase
     bool DestinationSet = false;
     bool ReachedDestination = false;
     public bool isUpp;
-    [SerializeField] float uprightThreshold = 0.9f;
-    [SerializeField] float rayDistance = 3.0f;
+    //[SerializeField] float uprightThreshold = 0.9f;
+    //[SerializeField] float rayDistance = 3.0f;
     private float rotationThreshold = 1f;
 
     public Vector3 LookDirection;
@@ -66,7 +66,7 @@ public class CharacterClimber : CharacterBase
             DestinationSet = false;
             ReachedDestination = true;
 
-            Debug.Log("Destination reached.");
+            //Debug.Log("Destination reached.");
         }
 
         //if (!navAgent.pathPending && !navAgent.isOnOffMeshLink && DestinationSet && (navAgent.remainingDistance <= navAgent.stoppingDistance))
@@ -205,8 +205,8 @@ public class CharacterClimber : CharacterBase
         //controller.SetTarget(destination);
         //DestinationSet = true;
         //ReachedDestination = false;
-        Debug.Log("Destination set to: " + destination);
-        Debug.Log("Pos is: " + this.transform.position);
+        //Debug.Log("Destination set to: " + destination);
+        //Debug.Log("Pos is: " + this.transform.position);
     }
 
     protected virtual void CancelCurrentCommand()
