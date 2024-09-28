@@ -11,10 +11,11 @@ public class FreeCam : MonoBehaviour
 
     private void Awake()
     {
+        float x = transform.localEulerAngles.x;
         transform.localEulerAngles = transform.localEulerAngles.With(x: 0, z: 0);
         cam = Camera.main.transform;
         cam.localPosition = Vector3.zero;
-        cam.localEulerAngles = cam.localEulerAngles.With(y: 0, z: 0);
+        cam.localEulerAngles = cam.localEulerAngles.With(x: x, y: 0, z: 0);
     }
 
     //private void CorrectRoration()
