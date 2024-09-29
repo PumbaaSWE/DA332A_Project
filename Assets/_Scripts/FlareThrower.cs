@@ -12,6 +12,10 @@ public class FlareThrower : MonoBehaviour
     public float throwForce = 15;
     public float torqueForce = 1;
 
+    public int numFlares;
+    public int maxNumFlares = 5;
+    bool hasThrownFlare;
+
     [SerializeField] PlayerInput playerInput;
     InputAction action;
     string key = "<nope>";
@@ -20,21 +24,21 @@ public class FlareThrower : MonoBehaviour
     void Start()
     {
         action = playerInput.actions.FindAction("F");
-        //playerInput.actions.
-        //InputBinding binding 
         key = "[" + action.bindings.First().ToDisplayString() + "]";
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (action.triggered)
+        if (action.triggered && numFlares > 0)
         {
+            numFlares--;
+            hasThrownFlare = true;
             Quaternion q = Quaternion.Euler(15f, 0f, 0f);
             Vector3 dir = q * lookDir.forward;
             Vector3 pos = lookDir.position;
-
-            if(Physics.Raycast(pos, dir, out RaycastHit hit, collideDist))
+            if (Physics.Raycast(pos, dir, out RaycastHit hit, collideDist))
             {
                 pos = hit.point;
             }
@@ -49,6 +53,13 @@ public class FlareThrower : MonoBehaviour
             //rb.velocity = dir * throwForce;
             rb.AddForce(dir * throwForce, ForceMode.Impulse);
             rb.AddTorque(new Vector3(torqueForce, 0, torqueForce), ForceMode.Impulse);
+        }
+
+        //only call once when you first pick up or smth...
+        if(!hasThrownFlare && numFlares > 0)
+        {
+            TooltipUtil.Display("Press " + key + " to trow flare!", 5);
+            hasThrownFlare = true;
         }
     }
 }

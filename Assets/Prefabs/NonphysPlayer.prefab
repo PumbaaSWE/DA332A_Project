@@ -238,7 +238,7 @@ MonoBehaviour:
   height: 1.85
   collideWith:
     serializedVersion: 2
-    m_Bits: 4057
+    m_Bits: 2961
   skinWidth: 0.015
   maxBounces: 3
   pushForce: 0
@@ -561,6 +561,8 @@ MonoBehaviour:
   collideDist: 1.2
   throwForce: 9
   torqueForce: 0.01
+  numFlares: 0
+  maxNumFlares: 5
   playerInput: {fileID: 4797629196548446842}
 --- !u!114 &392248901502460414
 MonoBehaviour:
@@ -1054,6 +1056,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
         type: 3}
+      propertyPath: Damage
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
+        type: 3}
       propertyPath: Player
       value: 
       objectReference: {fileID: 3255697892988700779}
@@ -1096,6 +1103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: MinHipFireSpread
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
+        type: 3}
+      propertyPath: ProjectilesPerShot
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
         type: 3}
