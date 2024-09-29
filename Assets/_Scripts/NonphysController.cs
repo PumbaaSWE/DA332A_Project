@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 using static UnityEngine.InputSystem.InputAction;
 
 public class NonphysController : MovementController
@@ -225,32 +226,59 @@ public class NonphysController : MovementController
         {
             Vector3 snap = vel.normalized * (hit.distance - skinWidth);
             Vector3 leftOver = vel - snap;
-            leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal)/*.normalized * leftOver.magnitude*/; // Uncomment this if you want more sliding action. I don't like it because player can slide up walls!
 
+            // lots of messy code here, but basically rigidbody interaction stuff
             if (hit.transform.TryGetComponent(out Rigidbody rb))
             {
-                //rb.AddForceAtPosition(snap, hit.point, ForceMode.VelocityChange);
-
-                // F = ma
-                // a = v/dt
-
-                //rb.SweepTest
-
-                float requiredForce = (rb.mass * snap / dt).magnitude;
-                float strength = Mathf.Lerp(1, 0, requiredForce / pushForce);
-
-                Vector3 pushSnap = snap * strength;
-                rb.AddForceAtPosition(snap * strength / dt, hit.point, ForceMode.VelocityChange);
+                Vector3 distance = RigidbodyCollide(rb, hit.point, leftOver, pushForce, 0, dt);
+                rb.transform.position += distance;
+                rb.AddForceAtPosition(-distance.magnitude * hit.normal / dt, hit.point, ForceMode.VelocityChange);
+                Vector3 pushSnap = snap + distance;
                 leftOver = vel - pushSnap;
                 leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal);
                 return pushSnap + CollideAndSlide(leftOver, pos + pushSnap, depth + 1, dt);
             }
 
-
+            // recursive stuff!
+            leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal);
             return snap + CollideAndSlide(leftOver, pos + snap, depth + 1, dt);
         }
 
+        // don't have to do anything fancy because we didn't hit anything
         return vel;
+    }
+
+    /// <summary>
+    /// Returns the distance you can move an object. Depends if it hits other rigidbodies or solids etc.
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 RigidbodyCollide(Rigidbody rb, Vector3 point, Vector3 distance, float pushForce, int depth, float dt)
+    {
+        // rigidbody collide and not slide... maybe it should slide
+
+        if (depth >= maxBounces)
+            return Vector3.zero;
+
+        float requiredForce = (rb.mass * distance / dt).magnitude;
+        float strength = Mathf.Lerp(1, 0, requiredForce / pushForce);
+        pushForce -= requiredForce;
+
+        float dist = distance.magnitude * strength + skinWidth;
+
+        if (rb.SweepTest(distance, out RaycastHit hitInfo, dist, QueryTriggerInteraction.Ignore))
+        {
+            Vector3 clearedDistance = distance.normalized * (hitInfo.distance - skinWidth);
+
+            // rb hits another rb
+            if (hitInfo.transform.TryGetComponent(out Rigidbody otherRb))
+                return clearedDistance + RigidbodyCollide(otherRb, hitInfo.point, distance - clearedDistance, pushForce, depth +1, dt);
+
+            // rb hits a solid
+            return clearedDistance;
+        }
+
+        // rb doesn't hit anything
+        return distance * strength;
     }
 
     private void OnDrawGizmos()
