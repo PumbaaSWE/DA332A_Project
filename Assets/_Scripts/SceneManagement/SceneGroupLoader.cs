@@ -6,7 +6,9 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
 
     [SerializeField] private SceneGroup[] sceneGroups;
     [SerializeField] private SceneGroupManager sceneGroupManager;
+    [SerializeField] private PlayerDataSO playerData;
 
+    public event Action OnLoadingComplete;
 
     protected override void Awake()
     {
@@ -25,6 +27,8 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
         //sceneGroupManager.OnSceneUnloaded+= (s) => Debug.Log("Compleded unload of: " + s);
         //sceneGroupManager.OnSceneGroupLoaded += () => Debug.Log("GroupLoading Completed");
 
+
+
         sceneGroupManager.OnSceneGroupLoaded += LoadedCallback;
         LoadGroup(0);
     }
@@ -32,11 +36,19 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
 
     private void LoadedCallback()
     {
-        Debug.Log("OnLoadingComplete?.Invoke();");
+        
         OnLoadingComplete?.Invoke();
     }
 
-    public event Action OnLoadingComplete;
+    public void ReloadGroup(int index)
+    {
+        if (!AssertRange(index, sceneGroups))
+        {
+            return;
+        }
+        playerData.Loading = true;
+        sceneGroupManager.LoadScenes(sceneGroups[index], this, true);
+    }
 
     public void LoadGroup(int index)
     {
@@ -44,7 +56,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
         {
             return;
         }
-        //Debug.Log("Loading: " + index);
+        playerData.Loading = true;
         sceneGroupManager.LoadScenes(sceneGroups[index], this);
     }
 

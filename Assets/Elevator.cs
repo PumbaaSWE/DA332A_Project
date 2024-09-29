@@ -10,6 +10,7 @@ public class Elevator : MonoBehaviour
 {
 
     private ElevatorDoors doors;
+    private ElevatorLightEffect effect;
     [SerializeField] private BoxCollider insideTrigger;
     [SerializeField] private int nextSceneGroup = 1;
     [SerializeField] private GameObject insideButton;
@@ -24,6 +25,7 @@ public class Elevator : MonoBehaviour
     {
         doors = GetComponent<ElevatorDoors>();
         doors.OnDoorsClosed += Doors_OnDoorsClosed;
+        effect = GetComponent<ElevatorLightEffect>();
     }
 
     
@@ -39,7 +41,7 @@ public class Elevator : MonoBehaviour
             {
                 playerFound = true;
                 gameObjectsToMove.Add(collider.transform.root.gameObject);
-                Debug.Log("Elevator - Playr found inside elevator");
+                //Debug.Log("Elevator - Playr found inside elevator");
             }
             //do more checks here
             //gameObjectsToMove.Add(collider.transform.root.gameObject);
@@ -95,6 +97,7 @@ public class Elevator : MonoBehaviour
         //    doors.OpenDoors();
         //}
         //load next scene!!!
+        effect.StartDown(6);
         doors.Locked = true;
         loading = true;
         SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
@@ -113,12 +116,14 @@ public class Elevator : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneGroupLoader.Instance.OnLoadingComplete -= Instance_OnLoadingComplete;
+        //can I not unsub here?
+       
     }
 
     private void Instance_OnLoadingComplete()
     {
         loading = false;
+        SceneGroupLoader.Instance.OnLoadingComplete -= Instance_OnLoadingComplete;
         //doors.Locked = false;
     }
 

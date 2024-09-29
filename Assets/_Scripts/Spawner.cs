@@ -73,7 +73,7 @@ public class Spawner : MonoBehaviour
             switch (blockedBehaviour)
             {
                 case BlockedBehaviour.ForceSpawn:
-                    Instantiate(prefabToSpawn, transform.position, transform.rotation);
+                    GameObject go = Instantiate(prefabToSpawn, transform.position, transform.rotation);
                     break;
                 case BlockedBehaviour.WaitThenSpawn:
                     StartCoroutine(SpawnInWhenCleared());

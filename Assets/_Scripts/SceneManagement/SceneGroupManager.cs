@@ -110,19 +110,26 @@ public class SceneGroupManager : MonoBehaviour
 
         Scene activeScene = SceneManager.GetSceneByName(activeSceneGroup.FindSceneNameByType(SceneType.ActiveScene));
 
-        if (loadingSceneUp)
-        {
-            SceneManager.UnloadSceneAsync(loadingScene);
-        }
+        
 
         if (activeScene.IsValid())
         {
             SceneManager.SetActiveScene(activeScene);
         }
 
-        
+        if (loadingSceneUp)
+        {
+            AsyncOperation ao = SceneManager.UnloadSceneAsync(loadingScene);
+            ao.completed += LoadingScene_completed;
+            yield return new WaitUntil(() => ao.isDone);
+        }
 
         OnSceneGroupLoaded.Invoke();
+    }
+
+    private void LoadingScene_completed(AsyncOperation obj)
+    {
+        
     }
 
     public IEnumerator UnloadScenesCouroutine()

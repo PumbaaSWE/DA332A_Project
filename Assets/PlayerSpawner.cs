@@ -1,20 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
+    Spawner spawner;
+    [SerializeField] PlayerDataSO player;
+
+    public Spawner Spawner => spawner;
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("PlayerSpawner");
-        //GetComponent<Spawner>().SpawnImmidiate();
-        Instantiate(new GameObject("Spawn!"));
+        spawner = GetComponent<Spawner>();
+        SceneGroupLoader.Instance.OnLoadingComplete += OnLoadingComplete;
+
+        //what if the loading completes before start is called? If unloading is quick af of other scene?
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnLoadingComplete()
     {
-        
+        if (!player.PlayerTransform)
+        {
+            Camera cam = Camera.main;
+            if (cam)
+                cam.gameObject.SetActive(false);
+
+            spawner.SpawnImmidiate();
+        }
     }
 }
