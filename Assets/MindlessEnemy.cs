@@ -15,6 +15,7 @@ public class MindlessEnemy : MonoBehaviour
 
     Vector3 avoid = Vector3.zero;
     List<Transform> avoids = new();
+    float attckTimer;
 
     void Start()
     {
@@ -64,7 +65,7 @@ public class MindlessEnemy : MonoBehaviour
     {
         if (target)
         {
-            //Vector3 delta = eye.position - transform.position+Vector3.up;
+            Vector3 targetDelta = target.position - transform.position;
 
             //if(Physics.Raycast(eye.position, delta, out RaycastHit hit, 100, ~0, QueryTriggerInteraction.Ignore))
             //{
@@ -100,11 +101,23 @@ public class MindlessEnemy : MonoBehaviour
             }
             else
             {
-                controller.SetTarget(target.position);
+                controller.SetTarget(target.position - targetDelta.normalized * 0.8f); ;
 
             }
             avoid = Vector3.zero;
             lookAt.lookAtTargetPosition = target.position;
+
+
+            attckTimer -= Time.deltaTime;
+            if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+            {
+                //Debug.Log("Attack!!");
+                if(target.TryGetComponent(out IDamageble damageble)){
+                    damageble.TakeDamage(transform.position, targetDelta, 10);
+                    attckTimer = 2;
+                    //Debug.Log("Do damage!!");
+                }
+            }
         }
         else
         {
