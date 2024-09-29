@@ -10,7 +10,7 @@ public enum EOffmeshLinkStatus
 
 public class FSM : MonoBehaviour
 {
-    EOffmeshLinkStatus OffMeshLinkStatus = EOffmeshLinkStatus.NotStarted;
+    //EOffmeshLinkStatus OffMeshLinkStatus = EOffmeshLinkStatus.NotStarted;
     protected AwarenessSystem sensors;
     DetectableTarget currentTarget;
     [SerializeField] float detectedAwarness = 1.2f;
@@ -37,7 +37,7 @@ public class FSM : MonoBehaviour
 
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    bool knockback;
+    //bool knockback;
     bool wasGrounded;
 
     private void Awake()
@@ -201,7 +201,7 @@ public class FSM : MonoBehaviour
 
         reachedDestination = false;
         destinationSet = false;
-        OffMeshLinkStatus = EOffmeshLinkStatus.NotStarted;
+        //OffMeshLinkStatus = EOffmeshLinkStatus.NotStarted;
     }
 
     public virtual void MoveTo(Vector3 destination)
@@ -375,7 +375,7 @@ public class FSM : MonoBehaviour
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        knockback = false;
+        //knockback = false;
     }
 
     private void OnAnimatorMove()

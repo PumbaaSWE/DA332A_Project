@@ -16,7 +16,6 @@ public class BoxItem : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        Debug.Log(health);
         
         ChangeColor();
         if(health <= 0f)

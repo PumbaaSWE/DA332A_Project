@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class MoveAll : MonoBehaviour
 {
-    MoveTowardsController[] controllers;
+    AdvancedController[] controllers;
     void Start()
     {
-        controllers = FindObjectsByType<MoveTowardsController>(FindObjectsInactive.Include ,FindObjectsSortMode.None);
+        controllers = FindObjectsByType<AdvancedController>(FindObjectsInactive.Include ,FindObjectsSortMode.None);
     }
 
     public void SetTarget(Vector3 point)
