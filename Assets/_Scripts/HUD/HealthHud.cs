@@ -8,7 +8,7 @@ public class HealthHud : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!player)
+        if (!playerData)
         {
             playerData = FindAnyObjectByType<PlayerDataSO>();
         }
@@ -17,7 +17,7 @@ public class HealthHud : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player)
+        if (playerData)
         {
             text.text = playerData.PlayerHealth.ToString();
         }
