@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MoveItem : MonoBehaviour, IDamageble
+public class MoveableObject : MonoBehaviour, IDamageble
 {
     public GameObject cube;
  
