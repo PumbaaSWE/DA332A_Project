@@ -10,7 +10,8 @@ public class HealthHud : MonoBehaviour
     {
         if (!playerData)
         {
-            playerData = FindAnyObjectByType<PlayerDataSO>();
+            PlayerDataHUDHolder data = GetComponentInParent<PlayerDataHUDHolder>();
+            playerData = data.playerData;
         }
     }
 

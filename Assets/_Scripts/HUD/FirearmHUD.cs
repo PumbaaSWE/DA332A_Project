@@ -19,8 +19,13 @@ public class FirearmHUD : MonoBehaviour
     {
         if (!playerData)
         {
-            playerData = FindAnyObjectByType<PlayerDataSO>();
+            PlayerDataHUDHolder data = GetComponentInParent<PlayerDataHUDHolder>();
+            playerData = data.playerData;
         }
+        //if (!playerData)
+        //{
+        //    playerData = FindAnyObjectByType<PlayerDataSO>();
+        //}
         if (!firearm && playerData)
         {
             FindEquippedFireArm();
