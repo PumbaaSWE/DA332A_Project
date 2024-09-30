@@ -45,7 +45,7 @@ public class Firearm : MonoBehaviour
     [SerializeField] float AdsTime = 0.5f;
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
-    [SerializeField] FPSController Player;
+    [SerializeField] NonphysController Player;
 
     public FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
