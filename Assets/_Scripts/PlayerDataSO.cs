@@ -9,14 +9,20 @@ public class PlayerDataSO : ScriptableObject
 
     private Transform playerTransform;
 
+    public float PlayerHealth => health ? health.Value : 0;
+    public Health health;
+    public Health Health => health;
+
     public Transform PlayerTransform
     {
         get { return playerTransform; }
-        set { 
+        set
+        {
             if(playerTransform != value)
             {
                 playerTransform = value;
                 OnPlayerChanged?.Invoke(playerTransform);
+                health = playerTransform.GetComponent<Health>();
             }
         }
     }
