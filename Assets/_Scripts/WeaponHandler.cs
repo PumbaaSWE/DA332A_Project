@@ -19,6 +19,9 @@ public class WeaponHandler : MonoBehaviour
         if (DebugTest)
             foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
                 AmmoPool.Add(type, 1000);
+
+        foreach (Firearm gun in Guns)
+            gun.Set(this);
     }
 
     // Update is called once per frame
@@ -53,6 +56,18 @@ public class WeaponHandler : MonoBehaviour
     public bool AmmoLeft(Cartridgetype type)
     {
         return AmmoPool[type] > 0;
+    }
+
+    /// <returns>Remaining ammo in magazine of current gun</returns>
+    public int GetMagazineCount()
+    {
+        return EquippedGun.LoadedAmmo;
+    }
+
+    /// <returns>Reserve ammo for current gun</returns>
+    public int GetAmmoCount()
+    {
+        return AmmoPool[EquippedGun.AmmoType];
     }
 
     public void CycleWeapons(CallbackContext context)

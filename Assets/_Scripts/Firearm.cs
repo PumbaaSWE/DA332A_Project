@@ -10,7 +10,6 @@ using Random = UnityEngine.Random;
 public class Firearm : MonoBehaviour
 {
     public Transform CameraView;
-    public Transform ShotOrigin;
     public int LoadedAmmo, MagazineSize, ReserveAmmo, MaxReserveAmmo;
     public int RPM;
     int CurrentBurst;
@@ -38,14 +37,19 @@ public class Firearm : MonoBehaviour
     [SerializeField] bool ProportionalAmmoConsumption = false;
     [SerializeField] bool UseLocalAmmoPool;
     [SerializeField] bool UseAdsSpread = false;
-    [SerializeField] bool Ads = false;
+    public bool Ads = false;
+    /// <summary>
+    /// How far the gun is being aim down the sights. 0 = not ads | 1 = fully ads
+    /// </summary>
+    public float AdsProcentage = 0;
+    [SerializeField] float AdsTime = 0.5f;
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
     [SerializeField] FPSController Player;
 
-    [SerializeField] FireMode CurrentMode;
+    public FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
-    [SerializeField] Cartridgetype AmmoType;
+    public Cartridgetype AmmoType;
     [SerializeField] WeaponHandler Handler;
     Animator Animator;
     Action SwitchAction;
@@ -65,6 +69,33 @@ public class Firearm : MonoBehaviour
         if (HipFireSpread > MinHipFireSpread && !Firing)
         {
             HipFireSpread = Mathf.Clamp(HipFireSpread - HipFireDecay * Time.deltaTime, MinHipFireSpread, MaxHipFireSpread);
+        }
+
+        if (Ads)
+        {
+            float t = Mathf.InverseLerp(0, AdsTime, Time.deltaTime);
+
+            // AdsProcentage = InverseLerp
+            // Lerp(0, AdsTime, currentTime + t) | AdsValue
+            // Lerp = t(0,1) * (max-min)
+            // 
+
+            AdsProcentage = Mathf.Clamp(AdsProcentage + t, 0, 1);
+        }
+
+        else
+        {
+            float t = Mathf.InverseLerp(0, AdsTime, Time.deltaTime);
+
+            AdsProcentage = Mathf.Clamp(AdsProcentage - t, 0, 1);
+        }
+
+        if (AdsProcentage > 0)
+        {
+            Camera.main.fieldOfView = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
+
+            //if (UseAdsSpread)
+            //    HipFireSpread = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
         }
 
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
@@ -131,24 +162,23 @@ public class Firearm : MonoBehaviour
 
         for (int x = 0; x < projectilesToFire; x++)
         {
-            Vector3 shotDirection = ShotOrigin.forward;
+            Vector3 shotDirection = CameraView.forward;
+            Vector2 randomPoint = Random.insideUnitCircle;
+            
+            float spread;
 
-            if (!Ads)
-            {
-                Vector2 randomPoint = Random.insideUnitCircle;
-                shotDirection = Quaternion.Euler(randomPoint.x * HipFireSpread, randomPoint.y * HipFireSpread, 0) * shotDirection;
-            }
+            if (UseAdsSpread)
+                spread = Mathf.Lerp(HipFireSpread, AdsSpread, AdsProcentage);
 
-            else if (UseAdsSpread)
-            {
-                Vector2 randomPoint = Random.insideUnitCircle;
-                shotDirection = Quaternion.Euler(randomPoint.x * AdsSpread, randomPoint.y * AdsSpread, 0) * shotDirection;
-            }
+            else
+                spread = Mathf.Lerp(HipFireSpread, 0, AdsProcentage);
+
+            shotDirection = Quaternion.Euler(randomPoint.x * spread, randomPoint.y * spread, 0) * shotDirection;
 
             RaycastHit hit;
-            if (Physics.Raycast(ShotOrigin.position, shotDirection, out hit, MaxRange))
+            if (Physics.Raycast(CameraView.position, shotDirection, out hit, MaxRange, ShootableLayers))
             {
-                Debug.DrawLine(ShotOrigin.position, hit.point, Color.red, 10f);
+                Debug.DrawLine(CameraView.position, hit.point, Color.red, 10f);
 
                 if (hit.collider.TryGetComponent(out IDamageble target))
                     target.TakeDamage(hit.point, shotDirection, Damage);
@@ -166,7 +196,7 @@ public class Firearm : MonoBehaviour
             }
 
             else
-                Debug.DrawRay(ShotOrigin.position, shotDirection, Color.red, 10f);
+                Debug.DrawRay(CameraView.position, shotDirection, Color.red, 10f);
         }
 
         if (ProportionalAmmoConsumption)
@@ -197,16 +227,17 @@ public class Firearm : MonoBehaviour
             previousYRecoil = recoil.y;
 
             //if (!Ads)
-                HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
+            HipFireSpread = Mathf.Lerp(startHipFireAngle, startHipFireAngle + HipFireGain, timeElapsed / recoilDuration);
 
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
         //if (!Ads)
-            HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
+        HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
 
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
+        RecoilImpulse += new Vector2(xRecoil, yRecoil);
     }
 
     public void AimDownSights(CallbackContext context)
@@ -214,15 +245,30 @@ public class Firearm : MonoBehaviour
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
         {
             Ads = true;
-            GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov / AdsZoom;
+            //Camera.main.fieldOfView = OriginalFov / AdsZoom;
         }
 
         else if (context.canceled)
         {
             Ads = false;
-            GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView = OriginalFov;
+            //Camera.main.fieldOfView = OriginalFov;
         }
     }
+
+    //IEnumerator ChangeFov(float start, float end, float duration)
+    //{
+    //    float timeElapsed = 0f;
+
+    //    while (timeElapsed < duration)
+    //    {
+    //        Camera.main.fieldOfView = Mathf.Lerp(start, end, timeElapsed / duration);
+
+    //        timeElapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    Camera.main.fieldOfView = end;
+    //}
 
     public void Reload()
     {
@@ -260,7 +306,7 @@ public class Firearm : MonoBehaviour
             if (LoadedAmmo == 0)
                 PerformAnimation(Animation.ReloadingEmpty);
 
-            else
+            else if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
                 PerformAnimation(Animation.Reloading);
 
             //Reload();
@@ -349,6 +395,11 @@ public class Firearm : MonoBehaviour
                 Animator.SetTrigger("Holster");
                 break;
         }
+    }
+
+    public void Set(WeaponHandler handler)
+    {
+        Handler = handler;
     }
 }
 
