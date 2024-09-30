@@ -26,10 +26,10 @@ public class SaveLevelProgress : ScriptableObject
         string fullPath = Path.Combine(dataPath, fileName);
         try
         {
-            if (!File.Exists(fullPath))
-            {
-                File.Create(fullPath);
-            }
+            //if (!File.Exists(fullPath))
+            //{
+            //    File.Create(fullPath);
+            //}
             string data = JsonUtility.ToJson(this, true);
             File.WriteAllText(fullPath, data);
         }
