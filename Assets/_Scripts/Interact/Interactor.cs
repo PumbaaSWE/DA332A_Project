@@ -48,14 +48,14 @@ public class Interactor : MonoBehaviour
                     interactable = item;
                     item.SpeculateInteract(transform);
                 }
-                OnCanInteract?.Invoke(string.Format(item.Tooltip, key));
-                OnCanInteractTimed?.Invoke(string.Format(item.Tooltip, key), 0.0f);
-                //Debug.Log("Item != null");
+                OnCanInteractTimed?.Invoke(string.Format(item.Tooltip, key), 0.0f); // when hovering over an interactable object tooltip is displayed for 0 seconds (one frame i think)
+                //OnCanInteract?.Invoke(string.Format(item.Tooltip, key)); // this Action works as well, time is automatically set to 0
+
                 if (action.triggered)
                 {
                     if (item.ShowInteractMessage)
                     {
-                        OnInteractedPriority?.Invoke(item.InteractedTooltip, 5.0f, 1);
+                        OnInteractedPriority?.Invoke(item.InteractedTooltip, item.InteractedTipDisplayTime, item.InteractedDisplayPriority);
                     }
                     item.Interact(transform);
                 }

@@ -12,9 +12,11 @@ public class FollowPlayer : MonoBehaviour, IInteractable
     public string tooltip = "Press {0} button!";
     public string interactedTooltip = string.Empty;
     public string Tooltip => tooltip;
-    public string InteractedTooltip => tooltip;
+    public string InteractedTooltip => interactedTooltip;
     public bool CanInteract => true;
     public bool ShowInteractMessage { get { return interactedTooltip != string.Empty; } }
+    public int InteractedDisplayPriority => 0;
+    public float InteractedTipDisplayTime => 0;
 
     Transform toFollow;
 

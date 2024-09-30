@@ -5,7 +5,8 @@ public class FirearmHUD : MonoBehaviour
 {
 
     Firearm firearm;
-    [SerializeField] TMP_Text text;
+    [SerializeField] TMP_Text loadedAmmo;
+    [SerializeField] TMP_Text reserveAmmo;
 
 
     public void SetFirearm(Firearm firearm)
@@ -36,7 +37,8 @@ public class FirearmHUD : MonoBehaviour
     {
         if (firearm)
         {
-            text.text = firearm.LoadedAmmo.ToString();
+            loadedAmmo.text = firearm.LoadedAmmo.ToString();
+            reserveAmmo.text = $"/  {firearm.ReserveAmmo.ToString()}";
         }
     }
 }

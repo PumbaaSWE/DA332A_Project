@@ -24,7 +24,9 @@ public class TooltipHUD : MonoBehaviour
         interactor = FindAnyObjectByType<Interactor>();
         if (interactor)
         {
+            interactor.OnCanInteract += ShowText;
             interactor.OnCanInteractTimed += ShowText;
+            interactor.OnInteracted += ShowText;
             interactor.OnInteractedPriority += ShowText;
         }
     }
