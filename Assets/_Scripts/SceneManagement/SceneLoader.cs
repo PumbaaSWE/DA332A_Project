@@ -54,7 +54,7 @@ public class SceneLoader : MonoBehaviour
         {
             EnableLoadingScreen(true);
         }
-        sceneGroupManager.LoadScenes(sceneGroups[0], progress);
+        sceneGroupManager.LoadScenes(sceneGroups[0]);
     }
 
     private void OnLoaded()

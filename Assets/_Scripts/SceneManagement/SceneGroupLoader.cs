@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress<float>
+public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
 {
 
     [SerializeField] private SceneGroup[] sceneGroups;
@@ -9,6 +9,9 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
     [SerializeField] private PlayerDataSO playerData;
 
     public event Action OnLoadingComplete;
+
+    int lastLoaded;
+
 
     protected override void Awake()
     {
@@ -30,7 +33,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
 
 
         sceneGroupManager.OnSceneGroupLoaded += LoadedCallback;
-        LoadGroup(0);
+        //LoadGroup(0);
     }
 
 
@@ -39,25 +42,31 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
         
         OnLoadingComplete?.Invoke();
     }
-
+    [MakeButton(false)]
     public void ReloadGroup(int index)
+    {
+        LoadGroup(index, true);
+    }
+    [MakeButton(false)]
+    public void ReloadLast()
+    {
+        ReloadGroup(lastLoaded);
+    }
+    [MakeButton(false)]
+    public void LoadGroup(int index)
+    {
+        LoadGroup(index, false);
+    }
+
+    public void LoadGroup(int index, bool reloadDuplicates)
     {
         if (!AssertRange(index, sceneGroups))
         {
             return;
         }
         playerData.Loading = true;
-        sceneGroupManager.LoadScenes(sceneGroups[index], this, true);
-    }
-
-    public void LoadGroup(int index)
-    {
-        if(!AssertRange(index, sceneGroups))
-        {
-            return;
-        }
-        playerData.Loading = true;
-        sceneGroupManager.LoadScenes(sceneGroups[index], this);
+        lastLoaded = index;
+        sceneGroupManager.LoadScenes(sceneGroups[index], reloadDuplicates);
     }
 
     public bool AssertRange<T>(int i, T[] array)
@@ -69,8 +78,4 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>, IProgress
         return true;
     }
 
-    public void Report(float value)
-    {
-        
-    }
 }

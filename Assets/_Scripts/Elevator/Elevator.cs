@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +15,7 @@ public class Elevator : MonoBehaviour
     [SerializeField] private BoxCollider insideTrigger;
     [SerializeField] private int nextSceneGroup = 1;
     [SerializeField] private GameObject insideButton;
+    [SerializeField] private SaveLevelProgress progress;
 
     Transform player;
     bool loading;
@@ -92,11 +94,16 @@ public class Elevator : MonoBehaviour
                 
             }
         }
+        else
+        {
+            return;
+        }
         //else
         //{
         //    doors.OpenDoors();
         //}
         //load next scene!!!
+        progress.Level = nextSceneGroup;
         effect.StartDown(6);
         doors.Locked = true;
         loading = true;

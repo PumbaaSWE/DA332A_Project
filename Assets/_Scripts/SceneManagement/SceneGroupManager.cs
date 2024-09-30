@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,9 +26,16 @@ public class SceneGroupManager : MonoBehaviour
     public string ignoreOnUnload = string.Empty;
     public bool unloadUnusedAssets = true;
 
-    public void LoadScenes(SceneGroup group, IProgress<float> progress, bool reloadDuplicates = false)
+    bool loading;
+
+    public void LoadScenes(SceneGroup group, bool reloadDuplicates = false)
     {
-        StartCoroutine(LoadScenesCouroutine(group, progress, reloadDuplicates));
+        if (loading)
+        {
+            Debug.LogError("SceneGroupManager - LoadScenes called before loading was done, please find the reason!");
+            return;
+        }
+        StartCoroutine(LoadScenesCouroutine(group, reloadDuplicates));
     }
 
     public void UnloadScenes()
@@ -34,35 +43,71 @@ public class SceneGroupManager : MonoBehaviour
         StartCoroutine(UnloadScenesCouroutine());
     }
 
-    public IEnumerator LoadScenesCouroutine(SceneGroup group, IProgress<float> progress, bool reloadDuplicates = false)
+    public IEnumerator LoadScenesCouroutine(SceneGroup group, bool reloadDuplicates = false)
     {
+        loading = true;
+        Spawner.blockedBecauseLoading = true;
+        //Debug.Log("*************LoadScenesCouroutine***********");
         activeSceneGroup = group;
         List<string> loadedScenes = new();
         List<string> scenesToUnload = new();
-        //List<string> scenesToLoad = new();
-        //yield return UnloadScenesCouroutine();
 
         int sceneCount = SceneManager.sceneCount;
 
-        for (int i = 0; i < sceneCount; i++)
+        int numScenesToLoad = activeSceneGroup.Count;
+        StringBuilder stringBuilder = new();
+        stringBuilder.Append("\nactiveSceneGroup contains "+ numScenesToLoad + " to load:\n");
+        for (int i = 0; i < numScenesToLoad; i++)
         {
-            string sceneName = SceneManager.GetSceneAt(i).name;
-            loadedScenes.Add(sceneName);
-            if (!group.scenes.Any(sceneData => sceneData.Name == sceneName)) //add condition to not unload some scenes?
+            stringBuilder.AppendLine(activeSceneGroup.scenes[i].Name);
+        }
+        Debug.Log(stringBuilder.ToString());
+
+        if (reloadDuplicates) //we should unload all scenes all scenes
+        {           
+            for (int i = 0; i < sceneCount; i++)
             {
-                scenesToUnload.Add(sceneName); //the loaded scene does not appear in our group to load
+                Scene scene = SceneManager.GetSceneAt(i);
+                string sceneName = scene.name;
+                //Debug.Log("reloadDuplicates - to unload = " + sceneName);
+
+                scenesToUnload.Add(sceneName);     
+                
             }
         }
-        bool loadingSceneUp = false;
-        if(scenesToUnload.Count == sceneCount)
+        else
         {
-            //this is not allowed! Load
+            for (int i = 0; i < sceneCount; i++)
+            {
+                string sceneName = SceneManager.GetSceneAt(i).name;
+                //SceneManager.GetSceneAt(i).isLoaded
+                if (!activeSceneGroup.scenes.Any(sceneData => sceneData.Name == sceneName)) //
+                {
+                    scenesToUnload.Add(sceneName); //the loaded scene does NOT appear in our group to load, mark it to unload
+                    //Debug.Log("to unload = " + sceneName);
+                }
+                else
+                {
+                    loadedScenes.Add(sceneName); //the loaded scene does appear in our group to load, do not unload
+                    //Debug.Log("to keep loaded = " + sceneName);
+                }
+            }
+        }
+
+
+        //Debug.Log("***************See if we need loading scene***************");
+        //Debug.Log(scenesToUnload.Count + "==" + sceneCount);
+        bool loadingSceneUp = false;
+        if(scenesToUnload.Count == sceneCount) //we are trying to unload all scenes
+        {
+            //this is not allowed! Load the loading scene
             SceneManager.LoadScene(loadingScene);
             loadingSceneUp = true;
         }
-
-        if(!loadingSceneUp && scenesToUnload.Count > 0)
+        //We do not have the loading screen up and we have scenes to unload
+        if (!loadingSceneUp && scenesToUnload.Count > 0)
         {
+            //Debug.Log("***************Do unloading***************");
             AsyncOperationsGroup unloadGroup = new(scenesToUnload.Count);
             foreach (var scene in scenesToUnload)
             {
@@ -70,6 +115,13 @@ public class SceneGroupManager : MonoBehaviour
                 //Debug.Log("Trying to unload " + s);
                 if (scene == null) continue;
                 AsyncOperation operation = SceneManager.UnloadSceneAsync(scene);
+                if(operation == null)
+                {
+                    Debug.Log("sceneCount:" + sceneCount);
+                    PrintList("Loaded Scenes", loadedScenes);
+                    PrintList("Scenes To Unload Scenes", scenesToUnload);
+                    continue;
+                }
                 OnSceneUnloading.Invoke(s);
                 operation.completed += obj => { OnSceneUnloaded.Invoke(s); };
                 unloadGroup.Add(operation);
@@ -81,20 +133,20 @@ public class SceneGroupManager : MonoBehaviour
             yield return new WaitUntil(() => unloadGroup.IsDone); //what if we dont wait before loading? faster? chaos?
         }
 
-        int numScenesToLoad = activeSceneGroup.Count;
+        //all unloading complete, do the loading
+        //int numScenesToLoad = activeSceneGroup.Count;
         AsyncOperationsGroup operationsGroup = new(numScenesToLoad);
-
 
         for (int i = 0; i < numScenesToLoad; i++)
         {
             SceneData sceneData = group.scenes[i];
-            if(!reloadDuplicates && loadedScenes.Contains(sceneData.Name))
+            if(loadedScenes.Contains(sceneData.Name))
             {
                 continue;
             }
 
             AsyncOperation operation = SceneManager.LoadSceneAsync(sceneData.scene, LoadSceneMode.Additive);
-
+            operation.allowSceneActivation = !loadingSceneUp;
             operation.completed += obj => { OnSceneLoaded.Invoke(sceneData.Name); };
 
             operationsGroup.Add(operation);
@@ -104,27 +156,41 @@ public class SceneGroupManager : MonoBehaviour
         while (!operationsGroup.IsDone)
         {
             
-            progress?.Report(operationsGroup.Progress);
-            yield return new WaitForSecondsRealtime(0.1f);
-        }
-
-        Scene activeScene = SceneManager.GetSceneByName(activeSceneGroup.FindSceneNameByType(SceneType.ActiveScene));
-
-        
-
-        if (activeScene.IsValid())
-        {
-            SceneManager.SetActiveScene(activeScene);
+            //progress?.Report(operationsGroup.Progress);
+            yield return null;
         }
 
         if (loadingSceneUp)
         {
+            //Debug.Log("*********LoadScenesCouroutine Unload loading Scene***********");
+            operationsGroup.operations.ForEach(op => op.allowSceneActivation = true);
+            ActiveAudioListener.enabled = false;
+        }
+
+        //Debug.Log("*********LoadScenesCouroutine Set Active***********");
+        Scene activeScene = SceneManager.GetSceneByName(activeSceneGroup.FindSceneNameByType(SceneType.ActiveScene));
+        if (activeScene.IsValid())
+        {
+            yield return new WaitUntil(() => activeScene.isLoaded);
+            yield return null; // Unity thinks you need to wait one frame...
+            SceneManager.SetActiveScene(activeScene);
+        }
+
+
+
+        if (loadingSceneUp)
+        {
+            //Debug.Log("*********LoadScenesCouroutine Unload loading Scene***********");
             AsyncOperation ao = SceneManager.UnloadSceneAsync(loadingScene);
             ao.completed += LoadingScene_completed;
             yield return new WaitUntil(() => ao.isDone);
         }
 
+
+        Spawner.blockedBecauseLoading = false;
         OnSceneGroupLoaded.Invoke();
+        //Debug.Log("**********LoadScenesCouroutine ENDS***********");
+        loading = false;
     }
 
     private void LoadingScene_completed(AsyncOperation obj)
@@ -171,6 +237,33 @@ public class SceneGroupManager : MonoBehaviour
         {
             AsyncOperation operation = Resources.UnloadUnusedAssets();
             yield return new WaitUntil(() => operation.isDone);
+        }
+    }
+
+    public static void PrintList(string text, List<string> strings)
+    {
+        Debug.Log(text);
+        for (int i = 0; i < strings.Count; i++)
+        {
+            Debug.Log("1. " + strings[i]);
+
+        }
+    }
+
+
+    private static AudioListener _activeAudioListener;
+    public static AudioListener ActiveAudioListener
+    {
+        get
+        {
+            if (!_activeAudioListener
+                || !_activeAudioListener.isActiveAndEnabled)
+            {
+                var audioListeners = FindObjectsOfType<AudioListener>(false);
+                _activeAudioListener = Array.Find(audioListeners, audioListener => audioListener.enabled); // No need to check isActiveAndEnabled, FindObjectsOfType already filters out inactive objects.
+            }
+
+            return _activeAudioListener;
         }
     }
 }

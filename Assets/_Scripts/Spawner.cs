@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 /// <summary>
@@ -36,6 +37,8 @@ public class Spawner : MonoBehaviour
 
     static readonly Vector3[] arrowTransformed = new Vector3[7];
 
+    public static bool blockedBecauseLoading;
+
     private void Awake()
     {
         
@@ -73,7 +76,8 @@ public class Spawner : MonoBehaviour
             switch (blockedBehaviour)
             {
                 case BlockedBehaviour.ForceSpawn:
-                    GameObject go = Instantiate(prefabToSpawn, transform.position, transform.rotation);
+                   
+                    StartCoroutine(SpawnInWhenLoadingDone());
                     break;
                 case BlockedBehaviour.WaitThenSpawn:
                     StartCoroutine(SpawnInWhenCleared());
@@ -87,6 +91,15 @@ public class Spawner : MonoBehaviour
 
             
         }
+    }
+
+    private IEnumerator SpawnInWhenLoadingDone()
+    {
+        while (blockedBecauseLoading)
+        {
+            yield return 0;
+        }
+        Instantiate(prefabToSpawn, transform.position, transform.rotation);
     }
 
     IEnumerator SpawnIn(float seconds)

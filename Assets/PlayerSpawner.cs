@@ -11,8 +11,7 @@ public class PlayerSpawner : MonoBehaviour
     void Start()
     {
         spawner = GetComponent<Spawner>();
-        SceneGroupLoader.Instance.OnLoadingComplete += OnLoadingComplete;
-
+        OnLoadingComplete();
         //what if the loading completes before start is called? If unloading is quick af of other scene?
     }
 
@@ -20,10 +19,6 @@ public class PlayerSpawner : MonoBehaviour
     {
         if (!player.PlayerTransform)
         {
-            Camera cam = Camera.main;
-            if (cam)
-                cam.gameObject.SetActive(false);
-
             spawner.SpawnImmidiate();
         }
     }
