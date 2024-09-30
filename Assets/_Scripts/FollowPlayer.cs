@@ -62,4 +62,9 @@ public class FollowPlayer : MonoBehaviour, IInteractable
             SetTarget(toFollow.position);
         }
     }
+
+    public void SpeculateInteract(Transform interactor)
+    {
+        //noop
+    }
 }

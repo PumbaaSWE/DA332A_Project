@@ -18,6 +18,8 @@ public class Interactor : MonoBehaviour
     InputAction action;
     string key = "[error]";
 
+    IInteractable interactable;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,9 +38,14 @@ public class Interactor : MonoBehaviour
         {
             IInteractable item = hit.transform.GetComponentInParent<IInteractable>();
             //Debug.Log("Hit:" + hit.transform.gameObject.name);
+            
             if (item != null)
             {
-                //OnCanInteract?.Invoke("Press [E] to interact with " + item.Name, 0);
+                if(interactable != item)
+                {
+                    interactable = item;
+                    item.SpeculateInteract(transform);
+                }
                 OnCanInteract?.Invoke(string.Format(item.Tooltip, key), 0);
                 //Debug.Log("Item != null");
                 if (action.triggered)
@@ -47,6 +54,10 @@ public class Interactor : MonoBehaviour
                     item.Interact(transform);
                 }
             }
+        }
+        else
+        {
+            interactable = null;
         }
     }
 }
