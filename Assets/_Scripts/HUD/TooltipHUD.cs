@@ -5,7 +5,8 @@ using TMPro;
 public class TooltipHUD : MonoBehaviour
 {
 
-    [SerializeField]  private TMP_Text textArea;
+    [SerializeField] private TMP_Text textArea;
+    [SerializeField] private PlayerDataSO playerData;
 
     int priority = 0;
 
@@ -21,6 +22,8 @@ public class TooltipHUD : MonoBehaviour
         TooltipUtil.OnTimedTooltip += ShowText;
         TooltipUtil.OnTooltip += ShowText;
 
+        playerData.NotifyOnPlayerChanged(PlayerData_OnPlayerChanged);
+
         interactor = FindAnyObjectByType<Interactor>();
         if (interactor)
         {
@@ -31,13 +34,39 @@ public class TooltipHUD : MonoBehaviour
         }
     }
 
+    private void PlayerData_OnPlayerChanged(Transform obj)
+    {
+        if (obj)
+        {
+            if (interactor)
+            {
+                interactor.OnCanInteract -= ShowText;
+                interactor.OnCanInteractTimed -= ShowText;
+                interactor.OnInteracted -= ShowText;
+                interactor.OnInteractedPriority -= ShowText;
+            }
+            interactor = obj.GetComponent<Interactor>();
+            if (interactor)
+            {
+                interactor.OnCanInteract += ShowText;
+                interactor.OnCanInteractTimed += ShowText;
+                interactor.OnInteracted += ShowText;
+                interactor.OnInteractedPriority += ShowText;
+            }
+        }
+    }
+
     private void OnDisable()
     {
         TooltipUtil.OnTimedTooltip -= ShowText;
         TooltipUtil.OnTooltip -= ShowText;
+        playerData.UnsubscribeOnPlayerChanged(PlayerData_OnPlayerChanged);
         if (interactor)
         {
             interactor.OnCanInteract -= ShowText;
+            interactor.OnCanInteractTimed -= ShowText;
+            interactor.OnInteracted -= ShowText;
+            interactor.OnInteractedPriority -= ShowText;
         }
     }
 
@@ -78,17 +107,17 @@ public class TooltipHUD : MonoBehaviour
         }
         else
         {
-            if(time > 0)
+            if (time > 0)
             {
                 QueueText(text, time);
-            }   
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(timer < 0)
+        if (timer < 0)
         {
             if (texts != null)
             {
