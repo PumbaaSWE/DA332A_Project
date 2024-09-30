@@ -55,13 +55,13 @@ public class SceneGroupManager : MonoBehaviour
         int sceneCount = SceneManager.sceneCount;
 
         int numScenesToLoad = activeSceneGroup.Count;
-        StringBuilder stringBuilder = new();
-        stringBuilder.Append("\nactiveSceneGroup contains "+ numScenesToLoad + " to load:\n");
-        for (int i = 0; i < numScenesToLoad; i++)
-        {
-            stringBuilder.AppendLine(activeSceneGroup.scenes[i].Name);
-        }
-        Debug.Log(stringBuilder.ToString());
+        //StringBuilder stringBuilder = new();
+        //stringBuilder.Append("\nactiveSceneGroup contains "+ numScenesToLoad + " to load:\n");
+        //for (int i = 0; i < numScenesToLoad; i++)
+        //{
+        //    stringBuilder.AppendLine(activeSceneGroup.scenes[i].Name);
+        //}
+        //Debug.Log(stringBuilder.ToString());
 
         if (reloadDuplicates) //we should unload all scenes all scenes
         {           
