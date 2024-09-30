@@ -375,7 +375,7 @@ public class NonphysController : MovementController
 
     Vector2 Rotation()
     {
-        return new Vector2(-head.localRotation.eulerAngles.x, transform.rotation.eulerAngles.y);
+        return new Vector2(-xRot, transform.rotation.eulerAngles.y);
     }
 
     #region Inputs
