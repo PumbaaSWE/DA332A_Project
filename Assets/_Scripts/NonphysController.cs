@@ -66,8 +66,6 @@ public class NonphysController : MovementController
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
 
-    public Vector2 LookDelta {  get; private set; }
-
     // inputs
     Vector2 move;
     bool crouch;
