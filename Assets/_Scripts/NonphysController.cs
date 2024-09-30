@@ -67,6 +67,7 @@ public class NonphysController : MovementController
     [SerializeField] float speed;
 
     // inputs
+    Vector2 look;
     Vector2 move;
     bool crouch;
     bool sprint;
@@ -99,6 +100,14 @@ public class NonphysController : MovementController
 
         wasGrounded = grounded;
         grounded = IsGrounded();
+
+        // look
+        Vector2 preRot = Rotation();
+        look *= mouseSensitivity;
+        Rotate(look.y, look.x);
+        LookDelta = Rotation() - preRot;
+        look = Vector2.zero;
+
         Move(Time.deltaTime);
         Crouch(crouch, Time.deltaTime);
     }
@@ -366,7 +375,7 @@ public class NonphysController : MovementController
 
     Vector2 Rotation()
     {
-        return new Vector2(head.localRotation.eulerAngles.x, transform.rotation.eulerAngles.y);
+        return new Vector2(-head.localRotation.eulerAngles.x, transform.rotation.eulerAngles.y);
     }
 
     #region Inputs
@@ -380,11 +389,7 @@ public class NonphysController : MovementController
 
     public void Look(CallbackContext c)
     {
-        Vector2 look = c.ReadValue<Vector2>() * mouseSensitivity;
-
-        Vector2 preRot = Rotation();
-        Rotate(look.y, look.x);
-        LookDelta = Rotation() - preRot;
+        look += c.ReadValue<Vector2>();
     }
 
     public void Crouch(CallbackContext c)
