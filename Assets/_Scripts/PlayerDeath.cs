@@ -26,21 +26,28 @@ public class PlayerDeath : MonoBehaviour
     {
         float timer = time;
 
-        Vector3 pos = transform.position + Vector3.up * 0.4f;
-        Vector3 camPos = Camera.main.transform.position;
-        Vector3 camRot = Camera.main.transform.rotation.eulerAngles;
-        Vector3 rot = Camera.main.transform.rotation.eulerAngles.WithZ(65);
-        while (timer >= 0)
+
+        Camera cam = GetComponentInChildren<Camera>();
+        if (cam)
         {
-            float t = timer / time;
-            timer -= Time.deltaTime;
+            Vector3 pos = transform.position + Vector3.up * 0.4f;
+            Vector3 camPos = cam.transform.position;
+            Vector3 camRot = cam.transform.rotation.eulerAngles;
+            Vector3 rot = cam.transform.rotation.eulerAngles.WithZ(65);
+            while (timer >= 0)
+            {
+                float t = timer / time;
+                timer -= Time.deltaTime;
 
-            Vector3 p = Vector3.Lerp(pos, camPos, t);
-            Vector3 r = Vector3.Lerp(rot, camRot, t);
+                Vector3 p = Vector3.Lerp(pos, camPos, t);
+                Vector3 r = Vector3.Lerp(rot, camRot, t);
 
-            Camera.main.transform.SetPositionAndRotation(p, Quaternion.Euler(r));
-            yield return null;
+                Camera.main.transform.SetPositionAndRotation(p, Quaternion.Euler(r));
+                yield return null;
+            }
         }
+
+        
 
         yield return new WaitForSeconds(3);
 
