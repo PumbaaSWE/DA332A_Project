@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class MovementController : MonoBehaviour
 {
+    public Vector2 LookDelta {  get; protected set; }
+
     /// <summary>
     /// Rotate player camera by <paramref name="x"/> (pitch) and <paramref name="y"/> (yaw) degrees.
     /// </summary>

@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 4771732235552947834}
   - component: {fileID: 6326128159116785442}
   - component: {fileID: 6980571298605528958}
+  - component: {fileID: 3526935682740121516}
   m_Layer: 2
   m_Name: NonphysPlayer
   m_TagString: Player
@@ -242,6 +243,7 @@ MonoBehaviour:
   skinWidth: 0.015
   maxBounces: 3
   pushForce: 0
+  physicsMode: 0
   radiusDiff: -0.01
   distDiff: 0.03
   drawGizmos: 1
@@ -644,6 +646,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3526935682740121516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031869545899754398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05572ca766deeaa43b7186cf02f4deef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 2
+  input: {fileID: 4797629196548446842}
 --- !u!1 &8683155676769794460
 GameObject:
   m_ObjectHideFlags: 0
