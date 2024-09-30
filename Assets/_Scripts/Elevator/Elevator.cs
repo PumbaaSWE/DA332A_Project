@@ -112,6 +112,10 @@ public class Elevator : MonoBehaviour
         time = Time.time;
         insideButton.SetActive(false); // replave with in active button?
         StartCoroutine(WaitUntilLoadCompletes());
+        if(TryGetComponent(out ElevatorWarp warp))
+        {
+            warp.Warp(gameObjectsToMove);
+        }
     }
 
     private IEnumerator WaitUntilLoadCompletes()

@@ -28,13 +28,18 @@ public class ElevatorDoors : MonoBehaviour
 
     void Start()
     {
+        ComputeDoorPos();
+        doorPercent = 0;
+        SetDoorPositions(doorPercent);
+        status = DoorStatus.Closed;
+    }
+
+    public void ComputeDoorPos()
+    {
         leftClosePos = leftDoor.position;
         rightClosePos = rightDoor.position;
         leftOpenPos = leftClosePos - transform.right;
         rightOpenPos = rightClosePos + transform.right;
-        doorPercent = 0;
-        SetDoorPositions(doorPercent);
-        status = DoorStatus.Closed;
     }
 
     // Update is called once per frame
