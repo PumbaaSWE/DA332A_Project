@@ -57,7 +57,7 @@ public class PlayerDeath : MonoBehaviour
     private void ShowMenu()
     {
 
-        //input.ActivateInput();
+        GameManager.GameOver();
     }
 
 
