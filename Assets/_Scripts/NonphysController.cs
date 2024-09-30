@@ -66,6 +66,8 @@ public class NonphysController : MovementController
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
 
+    public Vector2 LookDelta {  get; private set; }
+
     // inputs
     Vector2 move;
     bool crouch;
@@ -364,6 +366,11 @@ public class NonphysController : MovementController
         }
     }
 
+    Vector2 Rotation()
+    {
+        return new Vector2(head.localRotation.eulerAngles.x, transform.rotation.eulerAngles.y);
+    }
+
     #region Inputs
     public void Move(CallbackContext c)
     {
@@ -376,7 +383,10 @@ public class NonphysController : MovementController
     public void Look(CallbackContext c)
     {
         Vector2 look = c.ReadValue<Vector2>() * mouseSensitivity;
+
+        Vector2 preRot = Rotation();
         Rotate(look.y, look.x);
+        LookDelta = Rotation() - preRot;
     }
 
     public void Crouch(CallbackContext c)
