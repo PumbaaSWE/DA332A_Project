@@ -25605,6 +25605,60 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &607696227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607696229}
+  - component: {fileID: 607696228}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &607696228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607696227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c92d7b4462a6464aae59966668f098c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabToSpawn: {fileID: 5692006578333516754, guid: 2c45409df14b41d489f4739ab7565880,
+    type: 3}
+  spawnOnStart: 1
+  spawnDelay: 0.3
+  blockedBehaviour: 0
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  blockedVolume: {x: 1, y: 2, z: 1}
+  showBlockBounds: 1
+--- !u!4 &607696229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607696227}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -28.4, y: 0.269, z: 193.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &616799809 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8715220282180264494, guid: c394dbb2ce4861547a0261fc38ebde28,
@@ -38136,6 +38190,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_WarningMessage
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2648471873048292821, guid: 2c45409df14b41d489f4739ab7565880,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2761027145263258629, guid: 2c45409df14b41d489f4739ab7565880,
         type: 3}
@@ -53880,6 +53939,7 @@ SceneRoots:
   - {fileID: 7134542354810634128}
   - {fileID: 1021710149}
   - {fileID: 1520706434}
+  - {fileID: 607696229}
   - {fileID: 1533334215}
   - {fileID: 1027994910}
   - {fileID: 265775205}
