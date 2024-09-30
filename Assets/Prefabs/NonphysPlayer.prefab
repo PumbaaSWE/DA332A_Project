@@ -604,7 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd4f44d57b9484a805bac84293f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 100
   maxHealth: 100
 --- !u!114 &6326128159116785442
 MonoBehaviour:
@@ -724,6 +724,11 @@ PrefabInstance:
       propertyPath: ShotOrigin
       value: 
       objectReference: {fileID: 2479122937964993845}
+    - target: {fileID: 427548161505424944, guid: c811de605d33ccc42a2e42b6d55683dc,
+        type: 3}
+      propertyPath: ShootableLayers.m_Bits
+      value: 4049
+      objectReference: {fileID: 0}
     - target: {fileID: 6984651983437493625, guid: c811de605d33ccc42a2e42b6d55683dc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -885,6 +890,11 @@ PrefabInstance:
       propertyPath: ShotOrigin
       value: 
       objectReference: {fileID: 2479122937964993845}
+    - target: {fileID: 5045840482818623613, guid: 09b714377ab36cf4689ad813e3921127,
+        type: 3}
+      propertyPath: ShootableLayers.m_Bits
+      value: 4049
+      objectReference: {fileID: 0}
     - target: {fileID: 7925063954581642370, guid: 09b714377ab36cf4689ad813e3921127,
         type: 3}
       propertyPath: m_Name
@@ -1124,6 +1134,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ProjectilesPerShot
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
+        type: 3}
+      propertyPath: ShootableLayers.m_Bits
+      value: 4049
       objectReference: {fileID: 0}
     - target: {fileID: 8183809511057377187, guid: 5ded9b5eaf15bbc43bd824a74c66d3f0,
         type: 3}
