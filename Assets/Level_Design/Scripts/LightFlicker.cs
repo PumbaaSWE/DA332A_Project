@@ -13,13 +13,21 @@ public class LightFlicker : MonoBehaviour
     float timer;
     float delay;
 
-    private void Start()
+    void Start()
     {
+        myLight = GetComponent<Light>();
         defaultIntensity = myLight.intensity;
+
+
+        //
     }
 
     void Update()
     {
+        if (myLight == null)
+        {
+            return;
+        }
         timer += Time.deltaTime;
         if (timer > delay)
         {
