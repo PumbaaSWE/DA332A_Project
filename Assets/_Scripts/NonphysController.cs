@@ -1,9 +1,18 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 using static UnityEngine.InputSystem.InputAction;
 
 public class NonphysController : MovementController
 {
+    public enum PhysicsMode
+    {
+        [Tooltip("Ignore physics objects, meaning you run straight through them.")]
+        Ignore,
+        [Tooltip("Treat physics objects as solid static objects.")]
+        Solid,
+        [Tooltip("Attempt to simulate physics interactions.")]
+        Simulated
+    }
+
     [SerializeField] Transform head;
 
     [SerializeField] float FOV;
@@ -45,6 +54,7 @@ public class NonphysController : MovementController
     [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
     [SerializeField] int maxBounces;
     [SerializeField] float pushForce;
+    [SerializeField] PhysicsMode physicsMode;
 
     [Header("IsGrounded")]
     [SerializeField] float radiusDiff;
@@ -55,6 +65,8 @@ public class NonphysController : MovementController
     [SerializeField] bool grounded;
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
+
+    public Vector2 LookDelta {  get; private set; }
 
     // inputs
     Vector2 move;
@@ -230,13 +242,25 @@ public class NonphysController : MovementController
             // lots of messy code here, but basically rigidbody interaction stuff
             if (hit.transform.TryGetComponent(out Rigidbody rb))
             {
-                Vector3 distance = RigidbodyCollide(rb, hit.point, leftOver, pushForce, 0, dt);
-                rb.transform.position += distance;
-                rb.AddForceAtPosition(-distance.magnitude * hit.normal / dt, hit.point, ForceMode.VelocityChange);
-                Vector3 pushSnap = snap + distance;
-                leftOver = vel - pushSnap;
-                leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal);
-                return pushSnap + CollideAndSlide(leftOver, pos + pushSnap, depth + 1, dt);
+                switch (physicsMode)
+                {
+                    case PhysicsMode.Ignore:
+                            snap += vel.normalized * skinWidth;
+                            leftOver = vel - snap;
+                            return snap + CollideAndSlide(leftOver, pos + snap, depth + 1, dt);
+
+                    case PhysicsMode.Simulated:
+                        Vector3 distance = RigidbodyCollide(rb, hit.point, leftOver, pushForce, 0, dt);
+                        rb.transform.position += distance;
+                        rb.AddForceAtPosition(-distance.magnitude * hit.normal / dt, hit.point, ForceMode.VelocityChange);
+                        Vector3 pushSnap = snap + distance;
+                        leftOver = vel - pushSnap;
+                        leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal);
+                        return pushSnap + CollideAndSlide(leftOver, pos + pushSnap, depth + 1, dt);
+
+                    case PhysicsMode.Solid:
+                        break;
+                }
             }
 
             // recursive stuff!
@@ -342,6 +366,11 @@ public class NonphysController : MovementController
         }
     }
 
+    Vector2 Rotation()
+    {
+        return new Vector2(head.localRotation.eulerAngles.x, transform.rotation.eulerAngles.y);
+    }
+
     #region Inputs
     public void Move(CallbackContext c)
     {
@@ -354,7 +383,10 @@ public class NonphysController : MovementController
     public void Look(CallbackContext c)
     {
         Vector2 look = c.ReadValue<Vector2>() * mouseSensitivity;
+
+        Vector2 preRot = Rotation();
         Rotate(look.y, look.x);
+        LookDelta = Rotation() - preRot;
     }
 
     public void Crouch(CallbackContext c)
