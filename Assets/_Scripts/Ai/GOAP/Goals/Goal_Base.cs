@@ -21,16 +21,13 @@ public class Goal_Base : MonoBehaviour, IGoal
     protected GOAPUI DebugUI;
     protected Action_Base LinkedAction;
     protected RangeWeapon rangeWeapon;
+    protected RagdollController ragdoll;
     void Awake()
     {
-        if (!noNav)
-        {
-            Agent = GetComponent<CharacterAgent>();
-        }
-        else
-        {
-            controller = GetComponent<MoveTowardsController>();
-        }
+
+        ragdoll = GetComponent <RagdollController>();
+        controller = GetComponent<MoveTowardsController>();
+        
 
         Sensors = GetComponent<AwarenessSystem>();
     }
@@ -47,7 +44,7 @@ public class Goal_Base : MonoBehaviour, IGoal
     {
         OnTickGoal();
       
-        //DebugUI.UpdateGoal(this, GetType().Name, LinkedAction ? "Running" : "Paused", CalculatePriority());
+        DebugUI.UpdateGoal(this, GetType().Name, LinkedAction ? "Running" : "Paused", CalculatePriority());
 
 
     }

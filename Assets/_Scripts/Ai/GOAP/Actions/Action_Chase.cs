@@ -26,9 +26,9 @@ public class Action_Chase : Action_Base
         // cache the chase goal
         ChaseGoal = (Goal_Chase)LinkedGoal;
 
-       
-        
 
+
+        animator.SetBool("Attack", false);
             Agent.MoveTo(ChaseGoal.MoveTarget);
         
     }

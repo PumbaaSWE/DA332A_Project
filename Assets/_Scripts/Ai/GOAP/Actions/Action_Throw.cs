@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Action_Throw : Action_Base
 {
@@ -12,13 +13,27 @@ public class Action_Throw : Action_Base
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Stalk) });
     Goal_Stalk stalkGoal;
-    Transform player;
-
+    //Transform player;
+    public PlayerDataSO player;
+    [SerializeField] Transform target;
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+       // player = GameObject.FindGameObjectWithTag("Player").transform;
+        player.NotifyOnPlayerChanged(OnPlayer);
     }
-
+    private void OnDestroy()
+    {
+        player.UnsubscribeOnPlayerChanged(OnPlayer);
+    }
+    private void OnPlayer(Transform obj)
+    {
+        target = obj;
+        if (target)
+        {
+            
+            //do if not null
+        }
+    }
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -57,8 +72,8 @@ public class Action_Throw : Action_Base
 
     private bool IsPlayerLookingAtAI()
     {
-        Vector3 directionToAI = (transform.position - player.position).normalized;
-        float angle = Vector3.Angle(player.forward, directionToAI);
+        Vector3 directionToAI = (transform.position - player.PlayerTransform.position).normalized;
+        float angle = Vector3.Angle(player.PlayerTransform.forward, directionToAI);
         return angle < 90f;
     }
 
@@ -69,7 +84,7 @@ public class Action_Throw : Action_Base
 
         if (rb != null)
         {
-            Vector3 direction = (player.position - throwPoint.position).normalized;
+            Vector3 direction = (player.PlayerTransform.position - throwPoint.position).normalized;
             rb.AddForce(direction * throwForce, ForceMode.VelocityChange);
         }
         Destroy(projectile, 5f);  

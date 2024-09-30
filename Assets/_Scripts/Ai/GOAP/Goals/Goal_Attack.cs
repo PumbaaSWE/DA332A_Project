@@ -5,7 +5,7 @@ using UnityEngine;
 public class Goal_Attack : Goal_Base
 {
 
-    [SerializeField] int attackPriority = 100;
+    [SerializeField] int attackPriority = 95;
 
 
     [SerializeField] float MinAwarenessToAttack = 2f;
