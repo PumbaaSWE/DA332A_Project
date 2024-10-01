@@ -23,13 +23,12 @@ public class Firearm : MonoBehaviour
     [SerializeField] float MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
     [SerializeField] float AdsSpread;
     [SerializeField] float RecoilDuration;
-    public Vector2 RecoilImpulse;
-    [SerializeField] float ImpulseDuration;
+    public float ImpulseDuration = 0.3f;
 
     [SerializeField] bool RoundInTheChamber = true;
     [SerializeField] bool AutoReload = false;
     bool CanFire = true;
-    bool Firing = false;
+    public bool Firing = false;
     /// <summary>
     /// True: Ammo consumption per shot depends on how many projectiles are shot
     /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
@@ -45,12 +44,13 @@ public class Firearm : MonoBehaviour
     [SerializeField] float AdsTime = 0.5f;
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
-    [SerializeField] FPSController Player;
+    [SerializeField] MovementController Player;
 
     public FireMode CurrentMode;
     [SerializeField] FireMode[] AvailableModes;
     public Cartridgetype AmmoType;
-    [SerializeField] WeaponHandler Handler;
+    [SerializeField] WeaponHandler WHandler;
+    [SerializeField] RecoilHandler RHandler;
     Animator Animator;
     Action SwitchAction;
 
@@ -151,6 +151,9 @@ public class Firearm : MonoBehaviour
 
             StartCoroutine(Shoot());
         }
+
+        else if (!Firing)
+            RHandler.StartImpulse(); ;
     }
 
     void Fire()
@@ -223,6 +226,8 @@ public class Firearm : MonoBehaviour
 
             Player.Rotate(recoil.x - previousXRecoil, recoil.y - previousYRecoil);
 
+            RHandler.AddImpluse(new Vector2(recoil.x - previousXRecoil, recoil.y - previousYRecoil));
+
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
 
@@ -237,7 +242,7 @@ public class Firearm : MonoBehaviour
         HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
 
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
-        RecoilImpulse += new Vector2(xRecoil, yRecoil);
+        RHandler.AddImpluse(new Vector2(xRecoil - previousXRecoil, yRecoil - previousYRecoil));
     }
 
     public void AimDownSights(CallbackContext context)
@@ -288,20 +293,20 @@ public class Firearm : MonoBehaviour
 
         else
         {
-            if (!Handler.AmmoLeft(AmmoType) || Firing)
+            if (!WHandler.AmmoLeft(AmmoType) || Firing)
                 return;
 
             int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
             LoadedAmmo -= returnedAmmo;
-            Handler.AddAmmo(AmmoType, returnedAmmo);
+            WHandler.AddAmmo(AmmoType, returnedAmmo);
 
-            LoadedAmmo += Handler.TakeAmmo(AmmoType, MagazineSize);
+            LoadedAmmo += WHandler.TakeAmmo(AmmoType, MagazineSize);
         }
     }
 
     public void Reload(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && Handler.AmmoLeft(AmmoType))
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType))
         {
             if (LoadedAmmo == 0)
                 PerformAnimation(Animation.ReloadingEmpty);
@@ -327,10 +332,10 @@ public class Firearm : MonoBehaviour
 
         else
         {
-            if (!Handler.AmmoLeft(AmmoType) || Firing)
+            if (!WHandler.AmmoLeft(AmmoType) || Firing)
                 return;
 
-            LoadedAmmo += Handler.TakeAmmo(AmmoType, shellsToLoad);
+            LoadedAmmo += WHandler.TakeAmmo(AmmoType, shellsToLoad);
         }
 
         if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
@@ -397,9 +402,10 @@ public class Firearm : MonoBehaviour
         }
     }
 
-    public void Set(WeaponHandler handler)
+    public void Set(WeaponHandler wHandler, RecoilHandler rHandler)
     {
-        Handler = handler;
+        WHandler = wHandler;
+        RHandler = rHandler;
     }
 }
 

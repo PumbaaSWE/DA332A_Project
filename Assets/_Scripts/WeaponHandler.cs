@@ -10,7 +10,7 @@ public class WeaponHandler : MonoBehaviour
 {
     public Dictionary<Cartridgetype, int> AmmoPool = new();
     public List<Firearm> Guns;
-    Firearm EquippedGun;
+    public Firearm EquippedGun;
     public bool DebugTest;
 
     // Start is called before the first frame update
@@ -21,7 +21,7 @@ public class WeaponHandler : MonoBehaviour
                 AmmoPool.Add(type, 1000);
 
         foreach (Firearm gun in Guns)
-            gun.Set(this);
+            gun.Set(this, GetComponent<RecoilHandler>());
     }
 
     // Update is called once per frame
@@ -107,6 +107,11 @@ public class WeaponHandler : MonoBehaviour
     {
         if (EquippedGun != null)
             EquippedGun.Reload(context);
+    }
+
+    public bool IsFiring()
+    {
+        return EquippedGun.Firing;
     }
 }
 
