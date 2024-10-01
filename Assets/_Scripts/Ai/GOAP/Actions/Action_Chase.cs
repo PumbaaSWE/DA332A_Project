@@ -45,6 +45,7 @@ public class Action_Chase : Action_Base
 
     public override void OnTick()
     {
+        SoundManager.Instance.salamanderChannel.PlayOneShot(SoundManager.Instance.salamanderChase);
         if (ShouldUpdateMoveTarget(ChaseGoal.MoveTarget))
         {
             MoveAgentToTarget();
