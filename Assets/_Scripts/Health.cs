@@ -9,7 +9,7 @@ public class Health : MonoBehaviour
     public Action<Health, float> OnHealthChanged;
     public Action<Health> OnDeath;
 
-    private bool dead;
+    public bool dead;
 
     public float Value => health;
     public float MaxHealth => maxHealth;

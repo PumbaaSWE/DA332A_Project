@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class FirearmHUD : MonoBehaviour
 {
-
+    PlayerDataSO playerData;
     Firearm firearm;
-    [SerializeField] TMP_Text text;
+    [SerializeField] TMP_Text loadedAmmo;
+    [SerializeField] TMP_Text reserveAmmo;
 
 
     public void SetFirearm(Firearm firearm)
@@ -16,9 +17,26 @@ public class FirearmHUD : MonoBehaviour
 
     void Start()
     {
-        if (!firearm)
+        if (!playerData)
         {
-            firearm = FindAnyObjectByType<Firearm>();
+            PlayerDataHUDHolder data = GetComponentInParent<PlayerDataHUDHolder>();
+            playerData = data.playerData;
+        }
+        //if (!playerData)
+        //{
+        //    playerData = FindAnyObjectByType<PlayerDataSO>();
+        //}
+        if (!firearm && playerData)
+        {
+            FindEquippedFireArm();
+        }
+    }
+    void FindEquippedFireArm()
+    {
+        Transform playerParent = playerData.PlayerTransform;
+        if (playerParent != null) {
+            firearm = playerParent.GetComponentInChildren<Firearm>();
+            //TooltipUtil.Display("Press left click to shoot", 10.0f);
         }
     }
 
@@ -27,7 +45,8 @@ public class FirearmHUD : MonoBehaviour
     {
         if (firearm)
         {
-            text.text = firearm.LoadedAmmo.ToString();
+            loadedAmmo.text = firearm.LoadedAmmo.ToString();
+            reserveAmmo.text = $"/  {firearm.ReserveAmmo.ToString()}";
         }
     }
 }

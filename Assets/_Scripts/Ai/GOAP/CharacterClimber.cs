@@ -47,7 +47,9 @@ public class CharacterClimber : CharacterBase
         wallClimber = GetComponent<WallClimber>();
         navMeshPath = new NavMeshPath();
         navAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
     }
+
 
     protected override void Start()
     {
@@ -241,37 +243,41 @@ public class CharacterClimber : CharacterBase
         //temp
         //sword.Orbit();
         //
-
+        // animator.SetBool("Attack", true);
 
         //animator.SetInteger("Attack", Random.Range(1, 4));
-        //StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+        /*StartCoroutine(AttackCooldown(.5f));*/ //wait for animation to end instead?
     }
     public void AttackBehaviour(Vector3 currentTarget, float minAttackRange)
     {
 
         //if (!currentTarget.transform)
         //{
-        //    //swap state?
+        //    swap state?
         //    agentState = AgentState.Idle;
         //    return;
         //}
-        //if (currentTarget.InRangeOf(transform.position, 2.5f))
+        //if (currentTarget.InRangeOf(transform.position, 1.5f))
         //{
         //    Attack();
         //    Vector3 dir = currentTarget - transform.position;
-        //    transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
+        //    //transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
         //    if (currentTarget.InRangeOf(transform.position, minAttackRange))
         //    {
-        //        //we are too close = pushback self!
+        //        //  we are too close = pushback self!
         //        transform.position -= transform.forward * Time.deltaTime;
         //    }
         //}
         //else
         //{
-        //    //Debug.Log("Switcfhing startte");
+        //    animator.SetBool("Attack", false);
+        //}
+        //else
+        //{
+        //    Debug.Log("Switcfhing startte");
         //    agent.SetDestination(currentTarget);
         //    agent.isStopped = false;
-        //    //agentState = AgentState.Chasing;
+        //    agentState = AgentState.Chasing;
         //}
 
     }

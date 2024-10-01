@@ -365,7 +365,7 @@ MonoBehaviour:
   arcResolution: 4
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 657
   stickyDistance: 0.2
   controller: {fileID: 9160781070082958680}
   debugDraw: 1
@@ -408,7 +408,7 @@ MonoBehaviour:
   sensorAmount: 4
   sensorMask:
     serializedVersion: 2
-    m_Bits: 1041
+    m_Bits: 1681
   debugDraw: 0
 --- !u!114 &1588967484528087614
 MonoBehaviour:
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd4f44d57b9484a805bac84293f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 100
   maxHealth: 100
 --- !u!114 &1909319085738514037
 MonoBehaviour:
@@ -896,6 +896,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 7757ff26799234341bd13788d27087a3, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 708ac19db413103499866b32b20330b4,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6240733294840144465, guid: 708ac19db413103499866b32b20330b4,
         type: 3}
       propertyPath: m_Layer
@@ -2682,6 +2687,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1909319085738514037}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6595275822200246484}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

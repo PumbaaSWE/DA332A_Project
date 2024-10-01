@@ -4,8 +4,14 @@ using UnityEngine;
 public class AmmoBox : MonoBehaviour, IInteractable
 {
     public string Tooltip { get; private set; }
+    public string InteractedTooltip { get; private set; }
+    public int displayPriority { get; private set; }
+    public float tipDisplayTime { get; private set; }
 
     public bool CanInteract => true;
+    public bool ShowInteractMessage { get { return InteractedTooltip != string.Empty; } }
+    public int InteractedDisplayPriority => displayPriority;
+    public float InteractedTipDisplayTime => tipDisplayTime;
 
     public void Interact(Transform interactor)
     {

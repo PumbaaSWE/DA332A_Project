@@ -12,7 +12,7 @@ public class RagdollController : MonoBehaviour
     public Transform Hip => hip;
 
     //public UnityEvent OnRagDol
-
+    public bool active;
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,6 +21,7 @@ public class RagdollController : MonoBehaviour
         rbs = hip.GetComponentsInChildren<Rigidbody>();
         EnableProjection();
         DisableRagdoll();
+        
     }
 
     // Update is called once per frame
@@ -44,6 +45,7 @@ public class RagdollController : MonoBehaviour
                 disableList[i].enabled = true;
             }
         }
+        active = true;
 
     }
 
@@ -63,7 +65,9 @@ public class RagdollController : MonoBehaviour
                 disableList[i].enabled = false;
             }
         }
-        
+        active = false;
+
+
     }
 
     [ContextMenu("Enable Projection..")]

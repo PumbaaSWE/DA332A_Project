@@ -9,17 +9,14 @@ public class Action_Base : MonoBehaviour
     protected AwarenessSystem Sensors;
     protected Goal_Base LinkedGoal;
     public bool noNav;
+    protected Animator animator;
 
     void Awake()
     {
-        if(!noNav)
-        {
-            agent = GetComponent<CharacterAgent>();
-        }
-        else
-        {
-            Agent = GetComponent<CharacterClimber>();
-        }
+
+        animator = GetComponentInChildren<Animator>();
+        Agent = GetComponent<CharacterClimber>();
+        
        
         
         Sensors = GetComponent<AwarenessSystem>();
