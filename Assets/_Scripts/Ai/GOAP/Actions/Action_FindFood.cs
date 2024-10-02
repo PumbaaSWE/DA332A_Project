@@ -52,7 +52,7 @@ public class Action_FindFood : Action_Base
             {
               
                 
-                    Agent.MoveTo(closestFood.transform.position);
+                    Agent.MoveTo(closestFood.transform.position, false);
                 
             }
             else
@@ -65,7 +65,7 @@ public class Action_FindFood : Action_Base
         {
            
                 Vector3 location = Agent.PickLocationInRange(SearchRange);
-                Agent.MoveTo(location);
+                Agent.MoveTo(location, false);
             
 
            
@@ -99,7 +99,7 @@ public class Action_FindFood : Action_Base
         
         
             Vector3 location = Agent.PickLocationInRange(SearchRange);
-            Agent.MoveTo(location);
+            Agent.MoveTo(location, false);
         
 
         timeSpentAtDestination = 0f;

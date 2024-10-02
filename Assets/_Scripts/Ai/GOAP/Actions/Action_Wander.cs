@@ -60,7 +60,7 @@ public class Action_Wander : Action_Base
 
        
             Vector3 location = Agent.PickLocationInRange(SearchRange);
-            Agent.MoveTo(location);
+            Agent.MoveTo(location, false);
         
 
         timeSpentAtDestination = 0f;

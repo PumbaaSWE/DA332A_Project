@@ -29,7 +29,7 @@ public class Action_Chase : Action_Base
 
 
         animator.SetBool("Attack", false);
-            Agent.MoveTo(ChaseGoal.MoveTarget);
+            Agent.MoveTo(ChaseGoal.MoveTarget, false);
         
     }
 
@@ -63,6 +63,6 @@ public class Action_Chase : Action_Base
 
       
         
-            Agent.MoveTo(lastMoveTarget); 
+            Agent.MoveTo(lastMoveTarget, false); 
     }
 }

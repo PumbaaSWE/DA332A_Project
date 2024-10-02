@@ -10,7 +10,7 @@ public class Goal_Stalk : Goal_Base
 
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
-
+   
 
 
     public Vector3 MoveTarget => CurrentTarget != null ? CurrentTarget.transform.position : transform.position;
@@ -75,5 +75,11 @@ public class Goal_Stalk : Goal_Base
        
 
         return true;
+    }
+
+    public void LowerPrio()
+    {
+        prio -= 20;
+      
     }
 }

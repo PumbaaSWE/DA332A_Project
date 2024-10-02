@@ -34,7 +34,7 @@ public class Action_Stalk : Action_Base
         if (Agent.AtDestination)
         {
             FacePlayer();
-            MoveOrRetreat(); 
+            MoveOrRetreat();
         }
     }
 
@@ -46,22 +46,22 @@ public class Action_Stalk : Action_Base
             Vector3 directionAwayFromPlayer = (Agent.transform.position - stalkGoal.MoveTarget).normalized;
             Vector3 retreatPosition = Agent.transform.position + directionAwayFromPlayer * RetreatDistance;
 
-            Agent.MoveTo(retreatPosition); 
+            Agent.MoveTo(retreatPosition, true);
         }
-    
+
         else
         {
             Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
             Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
 
-            Agent.MoveTo(targetPosition); 
+            Agent.MoveTo(targetPosition, true);
         }
     }
 
     private void FacePlayer()
     {
         Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
-        directionToPlayer.y = 0; 
+        directionToPlayer.y = 0;
 
         if (directionToPlayer != Vector3.zero)
         {
@@ -69,4 +69,9 @@ public class Action_Stalk : Action_Base
             Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
     }
+
+    
+
+
+
 }

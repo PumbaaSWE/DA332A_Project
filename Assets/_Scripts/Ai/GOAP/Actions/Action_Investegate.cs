@@ -39,7 +39,7 @@ public class Action_Investegate : Action_Base
         }
         else
         {
-            Agent.MoveTo(Sensors.soundLocation);
+            Agent.MoveTo(Sensors.soundLocation, false);
 
         }
 

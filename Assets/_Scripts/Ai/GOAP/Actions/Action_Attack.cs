@@ -13,9 +13,9 @@ public class Action_Attack : Action_Base
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Attack) });
     Goal_Attack attackGoal;
     float attckTimer;
+    public ParticleSystem attackParticles;
     [SerializeField] Transform target;
     public PlayerDataSO player;
-    public ParticleSystem attackParticles;
     private void Start()
     {
         player.NotifyOnPlayerChanged(OnPlayer); ;
