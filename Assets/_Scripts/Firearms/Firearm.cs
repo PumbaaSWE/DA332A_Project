@@ -136,7 +136,7 @@ public class Firearm : MonoBehaviour
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
-            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, EHeardSoundCategory.EGunshot, 50.0f);
+           // HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, EHeardSoundCategory.EGunshot, 50.0f);
 
             CanFire = false;
             //Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
