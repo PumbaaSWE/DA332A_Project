@@ -3,45 +3,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static HearingManager;
 using static UnityEngine.InputSystem.InputAction;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Random = UnityEngine.Random;
 
 public class Firearm : MonoBehaviour
 {
-    public Transform CameraView;
-    public int LoadedAmmo, MagazineSize, ReserveAmmo, MaxReserveAmmo;
-    public int RPM;
-    int CurrentBurst;
-
-    [SerializeField] float VerticalRecoil, MinHorizontalRecoil, MaxHorizontalRecoil;
-    public float AdsZoom, OriginalFov;
+    [Header("Shooting")]
     [SerializeField] float Damage;
+    public int RPM;
     [SerializeField] float MaxRange = 100;
     [SerializeField] int ProjectilesPerShot = 1;
-    public float HipFireSpread;
-    [SerializeField] float MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
-    [SerializeField] float AdsSpread;
+    bool CanFire = true;
+    public bool Firing = false;
+
+    [Header("Recoil")]
+    [SerializeField] float VerticalRecoil;
+    [SerializeField] float MinHorizontalRecoil, MaxHorizontalRecoil;
     [SerializeField] float RecoilDuration;
     public float ImpulseDuration = 0.3f;
 
+    [Header("Ammo & Reloading")]
+    public int LoadedAmmo;
+    int MagazineSize;
+    public int ReserveAmmo, MaxReserveAmmo;
+    int CurrentBurst;
     [SerializeField] bool RoundInTheChamber = true;
     [SerializeField] bool AutoReload = false;
-    bool CanFire = true;
-    public bool Firing = false;
     /// <summary>
     /// True: Ammo consumption per shot depends on how many projectiles are shot
     /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
-    [SerializeField] bool UseLocalAmmoPool;
+    [SerializeField] bool UseLocalAmmoPool = false;
+
+    [Header("Hipfire & ADS")]
+    public float HipFireSpread;
+    [SerializeField] float MinHipFireSpread, MaxHipFireSpread, HipFireGain, HipFireDecay;
+    [SerializeField] float AdsSpread;
+    [SerializeField] float AdsTime = 0.5f;
+    public float AdsZoom;
+    float OriginalFov;
     [SerializeField] bool UseAdsSpread = false;
     public bool Ads = false;
+    public bool CanAds = true;
     /// <summary>
     /// How far the gun is being aim down the sights. 0 = not ads | 1 = fully ads
     /// </summary>
-    public float AdsProcentage = 0;
-    [SerializeField] float AdsTime = 0.5f;
+    float AdsProcentage = 0;
+
+    [Header("Other")]
     [SerializeField] LayerMask ShootableLayers;
     [SerializeField] GameObject Decal;
     [SerializeField] MovementController Player;
@@ -53,6 +65,8 @@ public class Firearm : MonoBehaviour
     [SerializeField] RecoilHandler RHandler;
     Animator Animator;
     Action SwitchAction;
+    Transform CameraView;
+    public GameObject DropPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -71,22 +85,15 @@ public class Firearm : MonoBehaviour
             HipFireSpread = Mathf.Clamp(HipFireSpread - HipFireDecay * Time.deltaTime, MinHipFireSpread, MaxHipFireSpread);
         }
 
-        if (Ads)
+        if (Ads && CanAds)
         {
             float t = Mathf.InverseLerp(0, AdsTime, Time.deltaTime);
-
-            // AdsProcentage = InverseLerp
-            // Lerp(0, AdsTime, currentTime + t) | AdsValue
-            // Lerp = t(0,1) * (max-min)
-            // 
-
             AdsProcentage = Mathf.Clamp(AdsProcentage + t, 0, 1);
         }
 
         else
         {
             float t = Mathf.InverseLerp(0, AdsTime, Time.deltaTime);
-
             AdsProcentage = Mathf.Clamp(AdsProcentage - t, 0, 1);
         }
 
@@ -108,6 +115,7 @@ public class Firearm : MonoBehaviour
             if (LoadedAmmo > 0 && CanFire)
             {
                 Firing = true;
+                CanAds = true;
                 StartCoroutine(Shoot());
             }
         }
@@ -127,6 +135,8 @@ public class Firearm : MonoBehaviour
             PerformAnimation(Animation.Firing);
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
+
+            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, EHeardSoundCategory.EGunshot, 50.0f);
 
             CanFire = false;
             //Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
@@ -153,7 +163,7 @@ public class Firearm : MonoBehaviour
         }
 
         else if (!Firing)
-            RHandler.StartImpulse(); ;
+            RHandler.StartImpulse();
     }
 
     void Fire()
@@ -167,7 +177,7 @@ public class Firearm : MonoBehaviour
         {
             Vector3 shotDirection = CameraView.forward;
             Vector2 randomPoint = Random.insideUnitCircle;
-            
+
             float spread;
 
             if (UseAdsSpread)
@@ -186,7 +196,7 @@ public class Firearm : MonoBehaviour
                 if (hit.collider.TryGetComponent(out IDamageble target))
                     target.TakeDamage(hit.point, shotDirection, Damage);
 
-                else //bonus...
+                else
                 {
                     target = hit.collider.GetComponentInParent<IDamageble>();
                     if (target != null)
@@ -248,39 +258,20 @@ public class Firearm : MonoBehaviour
     public void AimDownSights(CallbackContext context)
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
-        {
             Ads = true;
-            //Camera.main.fieldOfView = OriginalFov / AdsZoom;
-        }
 
         else if (context.canceled)
-        {
             Ads = false;
-            //Camera.main.fieldOfView = OriginalFov;
-        }
     }
-
-    //IEnumerator ChangeFov(float start, float end, float duration)
-    //{
-    //    float timeElapsed = 0f;
-
-    //    while (timeElapsed < duration)
-    //    {
-    //        Camera.main.fieldOfView = Mathf.Lerp(start, end, timeElapsed / duration);
-
-    //        timeElapsed += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    Camera.main.fieldOfView = end;
-    //}
 
     public void Reload()
     {
+        CanAds = true;
+
         if (UseLocalAmmoPool)
         {
-            if (ReserveAmmo == 0 || Firing)
-                return;
+            //if (ReserveAmmo == 0 || Firing)
+            //    return;
 
             int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
             LoadedAmmo -= returnedAmmo;
@@ -293,8 +284,8 @@ public class Firearm : MonoBehaviour
 
         else
         {
-            if (!WHandler.AmmoLeft(AmmoType) || Firing)
-                return;
+            //if (!WHandler.AmmoLeft(AmmoType) || Firing)
+            //    return;
 
             int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
             LoadedAmmo -= returnedAmmo;
@@ -309,12 +300,16 @@ public class Firearm : MonoBehaviour
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType))
         {
             if (LoadedAmmo == 0)
+            {
                 PerformAnimation(Animation.ReloadingEmpty);
+                CanAds = false;
+            }
 
             else if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
+            {
                 PerformAnimation(Animation.Reloading);
-
-            //Reload();
+                CanAds = false;
+            }
         }
     }
 
@@ -355,7 +350,7 @@ public class Firearm : MonoBehaviour
         //Debug.Log("Pulling out");
         // Play animation of pulling up gun
         gameObject.SetActive(true);
-        PerformAnimation(Animation.PullingOut);
+        //PerformAnimation(Animation.PullingOut);
     }
 
     public void Unequip(Action equip)
@@ -371,16 +366,6 @@ public class Firearm : MonoBehaviour
         //Debug.Log("Switching weapons");
         SwitchAction.Invoke();
         gameObject.SetActive(false);
-    }
-
-    public void Pickup()
-    {
-        // Pickup Gun into inventory
-    }
-
-    public void Drop()
-    {
-        // Drop gun onto floor
     }
 
     void PerformAnimation(Animation animation)
@@ -402,10 +387,12 @@ public class Firearm : MonoBehaviour
         }
     }
 
-    public void Set(WeaponHandler wHandler, RecoilHandler rHandler)
+    public void Set(WeaponHandler wHandler, RecoilHandler rHandler, MovementController player)
     {
         WHandler = wHandler;
         RHandler = rHandler;
+        CameraView = Camera.main.transform;
+        Player = player;
     }
 }
 
