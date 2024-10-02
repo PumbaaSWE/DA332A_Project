@@ -55,6 +55,7 @@ public class LimbHealth : MonoBehaviour
                 health = maxHealth;
                 amount = 0;
             }
+            //LimbHealthEvent?.Invoke(heal);
             amount -= heal;
             yield return null;
         }
