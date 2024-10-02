@@ -1,0 +1,231 @@
+using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
+
+public class ClimbController : MonoBehaviour
+{
+    [SerializeField] Transform head;
+
+    [Header("Looking")]
+    [SerializeField] float minLookUpAngle;
+    [SerializeField] float maxLookUpAngle;
+    [SerializeField] float mouseSensitivity;
+    [SerializeField] float camOffset;
+    [SerializeField] float rotationSpeed;
+
+    [Header("Movement")]
+    [SerializeField] float acceleration;
+    [SerializeField] float maxSpeed;
+    [Tooltip("Only applies to horizontal movement")]
+    [SerializeField] float drag;
+    [SerializeField] float gravity;
+
+    [Header("Collision")]
+    [SerializeField] float radius;
+    [Tooltip("Which layers will the player collide with?")]
+    [SerializeField] LayerMask collideWith;
+    [Tooltip("To prevent float point errors, keep a low value (< 0.1) or it will behave weirdly")]
+    [SerializeField] float skinWidth;
+    [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
+    [SerializeField] int maxBounces;
+
+    [Header("IsGrounded")]
+    [SerializeField] float radiusDiff;
+    [SerializeField] float distDiff;
+
+    [Header("Debugging")]
+    [SerializeField] bool drawGizmos;
+    [SerializeField] bool grounded;
+    [SerializeField] Vector3 velocity;
+    [SerializeField] float speed;
+
+    public Vector2 LookDelta { get; private set; }
+
+    // inputs
+    Vector2 look;
+    Vector2 move;
+
+    // components
+    CapsuleCollider cc;
+
+    float xRot;
+    bool wasGrounded;
+
+    void Start()
+    {
+        cc = GetComponent<CapsuleCollider>();
+    }
+
+    void Update()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        cc.radius = radius;
+        cc.height = radius * 2;
+        cc.center = Vector3.zero;
+
+        head.localPosition = camOffset * Vector3.up;
+
+        wasGrounded = grounded;
+        grounded = IsGrounded();
+
+        if (!grounded)
+            SetUp(Vector3.up);
+
+        Look();
+        Move(Time.deltaTime);
+    }
+
+    bool IsGrounded()
+    {
+        float r = cc.radius;
+        //bool grounded = Physics.SphereCast(transform.position, r + radiusDiff, -groundNormal, out RaycastHit hit, distDiff, collideWith, QueryTriggerInteraction.Ignore);
+        bool grounded = Physics.SphereCast(transform.position + transform.up * skinWidth, r + radiusDiff, -transform.up, out RaycastHit hit, distDiff, collideWith, QueryTriggerInteraction.Ignore);
+
+        //if (/*this.grounded && */!grounded)
+        //{
+        //    grounded = Physics.SphereCast(transform.position - transform.up * distDiff, r + radiusDiff, -transform.forward, out hit, distDiff, collideWith, QueryTriggerInteraction.Ignore);
+        //}
+
+        if (grounded)
+        {
+            SetUp(hit.normal);
+            transform.position = hit.point + transform.up * radius;
+        }
+
+        return grounded;
+    }
+
+    void Look()
+    {
+        Vector2 preRot = Rotation();
+        look *= mouseSensitivity;
+        Rotate(look.y, look.x);
+        LookDelta = Rotation() - preRot;
+        look = Vector2.zero;
+    }
+
+    void Move(float dt)
+    {
+        // Apply drag
+        Vector3 horizontalVelocity = Vector3.ProjectOnPlane(velocity, transform.up);
+
+
+        Vector3 dragForce = -horizontalVelocity * drag * dt;
+
+        if (dragForce.sqrMagnitude > horizontalVelocity.sqrMagnitude)
+            dragForce = -horizontalVelocity;
+
+        velocity += dragForce;
+
+        // Apply acceleration
+        Vector3 wishDir = transform.right * move.x + transform.forward * move.y;
+        Vector3 deltaVel = wishDir * acceleration * dt;
+        deltaVel = deltaVel.normalized * Mathf.Min(deltaVel.magnitude, Mathf.Max(0, maxSpeed - Vector3.Dot(velocity, deltaVel.normalized)));
+        velocity += deltaVel;
+
+        if (!wasGrounded && grounded)
+            velocity = horizontalVelocity;
+
+        // Apply gravity
+        if (!grounded)
+            velocity += Vector3.down * gravity * dt;
+
+        // Collide and slide algorithm
+        Vector3 deltaPos = CollideAndRotate(velocity * dt, transform.position, 0, dt);
+        speed = velocity.magnitude;
+
+        if (grounded)
+            velocity = Vector3.ProjectOnPlane(velocity, transform.up);
+
+        // Set position
+        transform.position += deltaPos;
+    }
+
+    Vector3 CollideAndRotate(Vector3 vel, Vector3 pos, int depth, float dt)
+    {
+        if (depth >= maxBounces)
+            return Vector3.zero;
+
+        float dist = vel.magnitude + skinWidth;
+        float r = cc.radius;
+
+        bool collides = Physics.SphereCast(pos, r, vel.normalized, out RaycastHit hit, dist, collideWith, QueryTriggerInteraction.Ignore);
+
+        if (collides)
+        {
+            Vector3 snap = vel.normalized * (hit.distance - skinWidth);
+            Vector3 leftOver = vel - snap;
+
+            grounded = true;
+
+            float fwdVel = Vector3.Dot(velocity, transform.forward);
+            float rghVel = Vector3.Dot(velocity, transform.right);
+
+            SetUp(hit.normal);
+            velocity = transform.forward * fwdVel + transform.right * rghVel;
+
+            return snap;
+        }
+
+        // don't have to do anything fancy because we didn't hit anything
+        return vel;
+    }
+
+    void SetUp(Vector3 direction)
+    {
+        transform.MatchUp(direction);
+    }
+
+    void Rotate(float x = 0f, float y = 0f)
+    {
+        // Rotate body Y
+        transform.Rotate(Vector3.up, y);
+
+        // Rotate head X
+        if (head != null)
+        {
+            xRot -= x;
+            //xRot = Mathf.Clamp(xRot - x, minLookUpAngle, maxLookUpAngle);
+            head.localRotation = Quaternion.Euler(xRot, 0f, 0f);
+        }
+    }
+
+    Vector2 Rotation()
+    {
+        return new Vector2(-xRot, transform.rotation.eulerAngles.y);
+    }
+
+    public void Move(CallbackContext c)
+    {
+        move = c.ReadValue<Vector2>();
+
+        if (move.sqrMagnitude > 1)
+            move.Normalize();
+    }
+
+    public void Look(CallbackContext c)
+    {
+        look += c.ReadValue<Vector2>();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmos) return;
+
+        if (cc == null)
+        {
+            if (TryGetComponent(out CapsuleCollider c))
+                cc = c;
+            else
+                return;
+        }
+
+        // Look direction
+        Gizmos.DrawRay(head.position, head.forward);
+
+        // IsGrounded
+        Gizmos.color = grounded ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(transform.position - transform.up * distDiff, cc.radius + radiusDiff);
+    }
+}
