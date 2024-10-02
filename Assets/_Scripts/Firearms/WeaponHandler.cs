@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEngine.InputSystem.InputAction;
@@ -9,9 +10,12 @@ using static UnityEngine.InputSystem.InputAction;
 public class WeaponHandler : MonoBehaviour
 {
     public Dictionary<Cartridgetype, int> AmmoPool = new();
+    //public List<CartridgePool> AmmoPool;
     public List<Firearm> Guns;
     public Firearm EquippedGun;
     public bool DebugTest;
+    public Transform FirearmRoot;
+    [SerializeField] int MaxGuns;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +25,7 @@ public class WeaponHandler : MonoBehaviour
                 AmmoPool.Add(type, 1000);
 
         foreach (Firearm gun in Guns)
-            gun.Set(this, GetComponent<RecoilHandler>());
+            gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
     }
 
     // Update is called once per frame
@@ -85,6 +89,36 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
+    public bool PickupGun(GameObject newGun)
+    {
+        if (Guns.Any(gun => newGun.name == gun.name))
+            return false;
+
+        if (Guns.Count == MaxGuns)
+        {
+            int index = Guns.IndexOf(EquippedGun);
+
+            Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+            Destroy(EquippedGun.gameObject);
+
+            GameObject gun = Instantiate(newGun, FirearmRoot);
+            Guns[index] = gun.GetComponent<Firearm>();
+            EquippedGun = Guns[index];
+        }
+
+        else
+        {
+            GameObject gun = Instantiate(newGun, FirearmRoot);
+            EquippedGun.gameObject.SetActive(false);
+            EquippedGun = gun.GetComponent<Firearm>();
+            Guns.Add(EquippedGun);
+        }
+
+        EquippedGun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
+        EquippedGun.Equip();
+        return true;
+    }
+
     public void Shoot(CallbackContext context)
     {
         if (EquippedGun != null)
@@ -120,4 +154,17 @@ public enum Cartridgetype
     Rifle,
     Pistol,
     ShotgunShell
+}
+
+[Serializable]
+public class CartridgePool
+{
+    Cartridgetype AmmoType { get; set; }
+    public int CurrentAmmo { get; set; }
+    public int MaxAmmo { get; set; }
+}
+
+public class AmmunitionPool
+{
+
 }
