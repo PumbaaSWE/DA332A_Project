@@ -26,7 +26,7 @@ public class Firearm : MonoBehaviour
 
     [Header("Ammo & Reloading")]
     public int LoadedAmmo;
-    int MagazineSize;
+    public int MagazineSize;
     public int ReserveAmmo, MaxReserveAmmo;
     int CurrentBurst;
     [SerializeField] bool RoundInTheChamber = true;
@@ -67,6 +67,7 @@ public class Firearm : MonoBehaviour
     Action SwitchAction;
     Transform CameraView;
     public GameObject DropPrefab;
+
 
     // Start is called before the first frame update
     void Start()
