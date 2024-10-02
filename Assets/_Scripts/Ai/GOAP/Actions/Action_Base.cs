@@ -5,20 +5,25 @@ using UnityEngine;
 public class Action_Base : MonoBehaviour
 {
     protected CharacterAgent agent;
-    protected CharacterClimber Agent;
+    protected CharacterClimber climberAgent;
     protected AwarenessSystem Sensors;
     protected Goal_Base LinkedGoal;
-    public bool noNav;
+    public bool climer;
     protected Animator animator;
 
     void Awake()
     {
 
         animator = GetComponentInChildren<Animator>();
-        Agent = GetComponent<CharacterClimber>();
-        
-       
-        
+        if (climer)
+        {
+            climberAgent = GetComponent<CharacterClimber>();
+        }
+        else
+        {
+            agent = GetComponentInChildren<CharacterAgent>();
+        }
+
         Sensors = GetComponent<AwarenessSystem>();
     }
 

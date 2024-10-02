@@ -33,13 +33,13 @@ public class Action_Investegate : Action_Base
     {
         base.OnActivated(linkedGoal);
 
-        if(!noNav)
+        if(!climer)
         {
             agent.MoveTo(Sensors.soundLocation);
         }
         else
         {
-            Agent.MoveTo(Sensors.soundLocation, false);
+            climberAgent.MoveTo(Sensors.soundLocation, false);
 
         }
 
@@ -48,14 +48,14 @@ public class Action_Investegate : Action_Base
     public override void OnTick()
     {
         // arrived at destination?
-        if (!noNav)
+        if (!climer)
         {
             if (agent.AtDestination)
                 OnActivated(LinkedGoal);
         }
         else
         {
-            if (Agent.AtDestination)
+            if (climberAgent.AtDestination)
                 OnActivated(LinkedGoal);
 
         }

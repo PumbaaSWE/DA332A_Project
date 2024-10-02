@@ -29,14 +29,14 @@ public class Action_Chase : Action_Base
 
 
         animator.SetBool("Attack", false);
-            Agent.MoveTo(ChaseGoal.MoveTarget, false);
+        climberAgent.MoveTo(ChaseGoal.MoveTarget, false);
         
     }
 
     public override void OnDeactivated()
     {
         // Keep this?
-        //Agent.MoveTo(Agent.transform.position);
+        //climberAgent.MoveTo(climberAgent.transform.position);
         //
         base.OnDeactivated();
 
@@ -63,6 +63,6 @@ public class Action_Chase : Action_Base
 
       
         
-            Agent.MoveTo(lastMoveTarget, false); 
+        climberAgent.MoveTo(lastMoveTarget, false); 
     }
 }

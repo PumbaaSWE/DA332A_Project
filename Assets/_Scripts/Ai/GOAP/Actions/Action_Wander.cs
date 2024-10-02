@@ -43,7 +43,7 @@ public class Action_Wander : Action_Base
         //}
         timeSpentAtDestination += Time.deltaTime;
        
-            if (Agent.AtDestination)
+            if (climberAgent.AtDestination)
             {
                 PickNewLocation();
             }
@@ -59,8 +59,8 @@ public class Action_Wander : Action_Base
     {
 
        
-            Vector3 location = Agent.PickLocationInRange(SearchRange);
-            Agent.MoveTo(location, false);
+            Vector3 location = climberAgent.PickLocationInRange(SearchRange);
+            climberAgent.MoveTo(location, false);
         
 
         timeSpentAtDestination = 0f;

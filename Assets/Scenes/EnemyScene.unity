@@ -54175,9 +54175,7 @@ GameObject:
   - component: {fileID: 5760980121333895958}
   - component: {fileID: 4027598821610923977}
   - component: {fileID: 3588523250054029313}
-  - component: {fileID: 4017451077409778504}
-  - component: {fileID: 2990202619227458631}
-  - component: {fileID: 3005505193271886070}
+  - component: {fileID: 5760980121333895959}
   m_Layer: 6
   m_Name: mixamorig:RightUpLeg
   m_TagString: Untagged
@@ -54753,19 +54751,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1260563860705346644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610427123730377996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  limbHealth: {fileID: 2990202619227458631}
 --- !u!1 &1339318668706493560
 GameObject:
   m_ObjectHideFlags: 0
@@ -54889,7 +54874,7 @@ GameObject:
   - component: {fileID: 7776004134911439101}
   - component: {fileID: 924044232760892463}
   - component: {fileID: 4253163840509706768}
-  - component: {fileID: 1260563860705346644}
+  - component: {fileID: 7776004134911439102}
   m_Layer: 6
   m_Name: mixamorig:RightLeg
   m_TagString: Untagged
@@ -55474,7 +55459,7 @@ GameObject:
   - component: {fileID: 190258672689969805}
   - component: {fileID: 2286853391359845421}
   - component: {fileID: 2274860951953342999}
-  - component: {fileID: 6821339640459162102}
+  - component: {fileID: 2840535924235335384}
   m_Layer: 6
   m_Name: mixamorig:LeftLeg
   m_TagString: Untagged
@@ -55482,6 +55467,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2840535924235335384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2840535924235335383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disposableJoint: {fileID: 1408082896965272138, guid: f5e49d3402d78e947a4c8b900ad5a0d1,
+    type: 3}
+  detached: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  legg: 0
+  head: 0
+  arm: 0
 --- !u!136 &2909636016112644549
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -55540,54 +55545,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2990202619227458631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48561228723074255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fe2036b3cb2b144d96dc942ad86c8c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 0
-  maxHealth: 100
-  hitboxes:
-  - {fileID: 3005505193271886070}
-  - {fileID: 1260563860705346644}
-  LimbDeathEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4017451077409778504}
-        m_TargetAssemblyTypeName: Limb, Assembly-CSharp
-        m_MethodName: SeverLimb
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  LimbHealthEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3005505193271886070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48561228723074255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  limbHealth: {fileID: 2990202619227458631}
 --- !u!1 &3009713151805169344
 GameObject:
   m_ObjectHideFlags: 0
@@ -55945,51 +55902,6 @@ Transform:
   - {fileID: 487508207243878209}
   m_Father: {fileID: 5805890396534231083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4017451077409778504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 48561228723074255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3fb354079d0fb945b6d92bd31b5d2e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToBeginRegrow: 5
-  regrowTime: 5
-  limbHealth: {fileID: 0}
-  LimbSeveredEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Body, Assembly-CSharp
-        m_MethodName: LooseLeg
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  LimbRegownEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Body, Assembly-CSharp
-        m_MethodName: RegrownLeg
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!54 &4027598821610923977
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -56760,6 +56672,26 @@ CapsuleCollider:
   m_Height: 0.4059943
   m_Direction: 1
   m_Center: {x: 0, y: 0.20299715, z: 0}
+--- !u!114 &5760980121333895959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48561228723074255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disposableJoint: {fileID: 1151682748504152941, guid: 8e329b38a776d9d42b855f04b52e5fbf,
+    type: 3}
+  detached: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  legg: 0
+  head: 0
+  arm: 0
 --- !u!1 &5780789369898117220
 GameObject:
   m_ObjectHideFlags: 0
@@ -57009,7 +56941,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6433155947235327254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57100,7 +57032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70023413ef2b694f8756fb729ead903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
   SearchRange: 20
 --- !u!114 &6433155947235327259
 MonoBehaviour:
@@ -57114,7 +57046,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d55f5918b27f944867ae3ab86aaf7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
 --- !u!114 &6433155947235327260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57127,7 +57059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aaf8a74afe270348859ea937c2178a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
   SearchRange: 10
   RetreatDistance: 5
 --- !u!114 &6433155947235327261
@@ -57142,12 +57074,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdb2bb24cf825842b358fe9618dcbf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
   attackRange: 2.5
   minAttackRange: 1
   attackParticles: {fileID: 0}
   target: {fileID: 0}
-  player: {fileID: 0}
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
 --- !u!114 &6433155947235327262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57160,7 +57092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841fd5ad6583fc94ea8545b8fd925eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
   positionUpdateTolerance: 0.5
 --- !u!114 &6433155947235327263
 MonoBehaviour:
@@ -57174,7 +57106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bddd32c3e9a3d4bb5d0a54c9ef8f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climer: 0
 --- !u!114 &6433155947235327264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57187,7 +57119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6000aa4619aa646b8a60b919f44795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   prio: 50
   MinAwarenessTostalk: 1.5
   AwarenessToStopChase: 1
@@ -57203,7 +57135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390a50786629a5442b642390f7dbff0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   priority: 45
   MinAwarenessToChase: 1.4
 --- !u!114 &6433155947235327266
@@ -57218,7 +57150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b652982ff8178c34bbd16f9ab2e39f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   attackPriority: 95
   MinAwarenessToAttack: 2
   AwarenessToStopAttack: 1
@@ -57236,7 +57168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fddb3d28ec87bc34096e6ea3f4a0ecf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   ChasePriority: 50
   MinAwarenessToChase: 1.5
   AwarenessToStopChase: 1
@@ -57252,7 +57184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6825f5930c95e1543adf0a842422d24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   WanderPriority: 30
   PriorityBuildRate: 1
   PriorityDecayRate: 0.1
@@ -57268,7 +57200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9ce70396404343b58136208fbb936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noNav: 0
+  climber: 0
   Priority: 10
 --- !u!143 &6433155947235327270
 CharacterController:
@@ -57593,7 +57525,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.09123871, y: -0.06657191, z: -0.0005540864}
+  m_ConnectedAnchor: {x: -0.09123823, y: -0.06657191, z: -0.0005501525}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -57699,19 +57631,6 @@ Transform:
   - {fileID: 9079253900004497132}
   m_Father: {fileID: 1838765133502615198}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6821339640459162102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2840535924235335383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2793685b37c113f4b871c13ae6e021f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  limbHealth: {fileID: 0}
 --- !u!4 &6840844544715858029
 Transform:
   m_ObjectHideFlags: 0
@@ -58432,6 +58351,26 @@ CapsuleCollider:
   m_Height: 0.4861304
   m_Direction: 1
   m_Center: {x: 0, y: 0.2430652, z: 0}
+--- !u!114 &7776004134911439102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610427123730377996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disposableJoint: {fileID: 4132598509695674963, guid: cfb075ef21e280644836cc77d247b107,
+    type: 3}
+  detached: 0
+  parent: {fileID: 0}
+  child: {fileID: 0}
+  legg: 0
+  head: 0
+  arm: 0
 --- !u!144 &7802374574983272289
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -58719,7 +58658,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  disposableJoint: {fileID: 0}
+  disposableJoint: {fileID: 3965025545250289210, guid: 490c9e4a986af5944806421bb25165fe,
+    type: 3}
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}

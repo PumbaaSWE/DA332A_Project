@@ -18,7 +18,7 @@ public class Action_Attack : Action_Base
     public PlayerDataSO player;
     private void Start()
     {
-        player.NotifyOnPlayerChanged(OnPlayer); ;
+        player.NotifyOnPlayerChanged(OnPlayer); 
     }
     private void OnDestroy()
     {
@@ -71,14 +71,14 @@ public class Action_Attack : Action_Base
     //}
     public override void OnTick()
     {
-        //if (!noNav)
-        //{
-        //    agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
-        //}
-        //else
+        if (!climer)
+        {
+            agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+        }
+        else
         {
 
-            Agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+            climberAgent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
 
             //StartCoroutine(AttackCooldown(.5f));
 

@@ -228,7 +228,7 @@ public class CharacterAgent : CharacterBase
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("Agent is not on NavMesh");
+            Debug.LogWarning("climberAgent is not on NavMesh");
             return;
         }
 
@@ -260,7 +260,7 @@ public class CharacterAgent : CharacterBase
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("Agent is not on NavMesh");
+            Debug.LogWarning("climberAgent is not on NavMesh");
             return;
         }
 
