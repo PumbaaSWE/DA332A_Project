@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 6326128159116785442}
   - component: {fileID: 6980571298605528958}
   - component: {fileID: 3526935682740121516}
+  - component: {fileID: 4723912495871497212}
   m_Layer: 2
   m_Name: NonphysPlayer
   m_TagString: Player
@@ -513,6 +514,7 @@ MonoBehaviour:
   - {fileID: 4637345030133722959}
   - {fileID: 1481362896068903835}
   - {fileID: 729929711829497437}
+  EquippedGun: {fileID: 0}
   DebugTest: 1
 --- !u!114 &-3896209869120403148
 MonoBehaviour:
@@ -606,6 +608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   maxHealth: 100
+  dead: 0
 --- !u!114 &6326128159116785442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +663,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 2
   input: {fileID: 4797629196548446842}
+--- !u!114 &4723912495871497212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031869545899754398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adebfb0ebaa94734ea8d2b5ef482aff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  WHandler: {fileID: 0}
+  RecoilImpulse: {x: 0, y: 0}
 --- !u!1 &8683155676769794460
 GameObject:
   m_ObjectHideFlags: 0
