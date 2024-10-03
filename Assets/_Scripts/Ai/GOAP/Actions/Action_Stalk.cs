@@ -26,16 +26,24 @@ public class Action_Stalk : Action_Base
     {
         base.OnActivated(linkedGoal);
         stalkGoal = (Goal_Stalk)LinkedGoal;
-        MoveOrRetreat();
+        if (climer)
+        {
+
+            MoveOrRetreat();
+        }
     }
 
     public override void OnTick()
     {
-        if (climberAgent.AtDestination)
+        if (climer)
         {
-            FacePlayer();
-            MoveOrRetreat();
+            if (climberAgent.AtDestination)
+            {
+                FacePlayer();
+                MoveOrRetreat();
+            }
         }
+        
     }
 
     private void MoveOrRetreat()

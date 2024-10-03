@@ -40,7 +40,6 @@ public class Action_Investegate : Action_Base
         else
         {
             climberAgent.MoveTo(Sensors.soundLocation, false);
-
         }
 
     }
@@ -57,9 +56,6 @@ public class Action_Investegate : Action_Base
         {
             if (climberAgent.AtDestination)
                 OnActivated(LinkedGoal);
-
-        }
-
-        
+        }        
     }
 }
