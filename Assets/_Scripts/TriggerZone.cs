@@ -28,7 +28,8 @@ public class TriggerZone : MonoBehaviour
     }
     
     public void TriggerTheZone(Transform trigger)
-    {  
+    {
+        if (!enabled) return;
         if (cooldown > 0) return;
         cooldown = resetTriggerTime;
         maxTriggers--;
