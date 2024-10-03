@@ -27069,6 +27069,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1312244666}
+    - target: {fileID: 3875398577644162577, guid: 95e13bf14856f3a4a8ef34f57cb69bd3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 95.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4200677857911979374, guid: 95e13bf14856f3a4a8ef34f57cb69bd3,
         type: 3}
       propertyPath: m_Mesh
@@ -56735,7 +56740,7 @@ Transform:
   m_GameObject: {fileID: 6433155947235327253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 47.427, y: 0.317, z: 205.63}
+  m_LocalPosition: {x: 121.62, y: 0.02, z: 248.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -56968,18 +56973,18 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6433155947235327253}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 360
+  m_StoppingDistance: 1.7
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: -0.09
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &6433155947235327256
@@ -57008,9 +57013,9 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6433155947235327253}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
+  m_Avatar: {fileID: 9000000, guid: 708ac19db413103499866b32b20330b4, type: 3}
+  m_Controller: {fileID: 9100000, guid: 6cdb1e9b462173d43b45a68bf39e2b46, type: 2}
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -57255,7 +57260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FeedbackLabel: {fileID: 0}
-  sword: {fileID: 0}
   isCrawling: 0
   isBlind: 0
   isArmless: 0
@@ -58491,6 +58495,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5631801961016332250, guid: 44a6b7d0500cef34082cc770df46174a,
+        type: 3}
+      propertyPath: m_VoxelSize
+      value: 0.16666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631801961016332250, guid: 44a6b7d0500cef34082cc770df46174a,
+        type: 3}
+      propertyPath: m_AgentTypeID
+      value: -334000983
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631801961016332250, guid: 44a6b7d0500cef34082cc770df46174a,
+        type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 381238070bf5ff74ca6306459c72968b,
+        type: 2}
     - target: {fileID: 8721753966620128604, guid: 44a6b7d0500cef34082cc770df46174a,
         type: 3}
       propertyPath: m_Name
