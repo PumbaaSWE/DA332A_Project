@@ -1,4 +1,7 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class FallingLamp : MonoBehaviour
 {
@@ -7,6 +10,7 @@ public class FallingLamp : MonoBehaviour
 
     [SerializeField] Light lamp;
     [SerializeField] AudioClip[] playSound;
+    [SerializeField] UnityEvent OnDone;
 
     Vector3 vel;
 
@@ -39,6 +43,7 @@ public class FallingLamp : MonoBehaviour
                     AudioSource.PlayClipAtPoint(sound, transform.position);
             }
 
+            OnDone.Invoke();
             enabled = false;
         }
     }

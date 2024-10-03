@@ -399,6 +399,8 @@ public class NonphysController : MovementController
 
         if (c.canceled)
             crouch = false;
+
+        Blackboard.Instance.Set("hasCrouched", true);
     }
 
     public void Jump(CallbackContext c)

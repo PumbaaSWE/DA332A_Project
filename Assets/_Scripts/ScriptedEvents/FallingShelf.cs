@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FallingShelf : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class FallingShelf : MonoBehaviour
     [SerializeField] float length;
     [SerializeField] AnimationCurve posCurve;
     [SerializeField] AnimationCurve rotCurve;
+    [SerializeField] UnityEvent OnDone;
 
     float t;
     Vector3 localStartPos;
@@ -28,6 +30,7 @@ public class FallingShelf : MonoBehaviour
         {
             t = length;
             enabled = false;
+            OnDone.Invoke();
         }
 
         float tPos = posCurve.Evaluate(t / length);
