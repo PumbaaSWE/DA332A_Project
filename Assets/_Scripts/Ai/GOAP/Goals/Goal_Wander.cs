@@ -13,8 +13,8 @@ public class Goal_Wander : Goal_Base
     public override void OnTickGoal()
     {
        
-
-        
+        if(climber)
+        {
             if (controller.Move != Vector2.zero)
             {
                 CurrentPriority -= PriorityDecayRate * Time.deltaTime;
@@ -24,6 +24,16 @@ public class Goal_Wander : Goal_Base
                 CurrentPriority += PriorityBuildRate * Time.deltaTime;
 
             }
+        }
+        else
+        {
+            if (Agent.IsMoving)
+                CurrentPriority -= PriorityDecayRate * Time.deltaTime;
+            else
+                CurrentPriority += PriorityBuildRate * Time.deltaTime;
+        }
+        
+            
         
        
     }

@@ -9,14 +9,18 @@ public class Goal_Idle : Goal_Base
 
     public override int CalculatePriority()
     {
-        if (ragdoll.active)
+        if(climber)
         {
-            Priority = 10;
+            if (ragdoll.active)
+            {
+                Priority = 10;
+            }
+            else
+            {
+                Priority = 100;
+            }
         }
-        else
-        {
-            Priority = 100;
-        }
+       
         return Priority;
     }
     public override bool CanRun()

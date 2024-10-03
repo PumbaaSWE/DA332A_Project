@@ -49,14 +49,19 @@ public class Action_Attack : Action_Base
     {
         base.OnActivated(linkedGoal);
         attackGoal = (Goal_Attack)LinkedGoal;
-        animator.SetBool("Attack", true);
+        if(climer)
+        {
+            animator.SetBool("Attack", true);
+        }
         
     }
     public override void OnDeactivated()
     {
         base.OnDeactivated();
-
-        animator.SetBool("Attack", false);
+        if(climer)
+        {
+            animator.SetBool("Attack", false);
+        }
     }
     //private IEnumerator AttackCooldown(float t)
     //{

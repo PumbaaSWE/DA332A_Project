@@ -11,11 +11,6 @@ public class Action_Wander : Action_Base
     private float timeSpentAtDestination = 0f;
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Wander) });
 
-  
-   
-
- 
-
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -30,7 +25,19 @@ public class Action_Wander : Action_Base
     {
         base.OnActivated(linkedGoal);
 
-        PickNewLocation();
+        if(climberAgent)
+        {
+            PickNewLocation();
+
+        }
+        else
+        {
+
+            Vector3 location = agent.PickLocationInRange(SearchRange);
+            agent.MoveTo(location);
+        }
+
+
     }
 
     public override void OnTick()
@@ -43,14 +50,25 @@ public class Action_Wander : Action_Base
         //}
         timeSpentAtDestination += Time.deltaTime;
        
+        if(climberAgent)
+        {
             if (climberAgent.AtDestination)
             {
                 PickNewLocation();
             }
-            else if (timeSpentAtDestination >= MaxTimeAtDestination) 
+            else if (timeSpentAtDestination >= MaxTimeAtDestination)
             {
-                PickNewLocation(); 
+                PickNewLocation();
             }
+        }
+        else
+        {
+            // arrived at destination?
+            if (agent.AtDestination)
+                OnActivated(LinkedGoal);
+        }
+
+           
         
        
     }
@@ -58,10 +76,8 @@ public class Action_Wander : Action_Base
     private void PickNewLocation()
     {
 
-       
-            Vector3 location = climberAgent.PickLocationInRange(SearchRange);
-            climberAgent.MoveTo(location, false);
-        
+        Vector3 location = climberAgent.PickLocationInRange(SearchRange);
+        climberAgent.MoveTo(location, false);
 
         timeSpentAtDestination = 0f;
         //cooldownTimer = WanderCooldown;

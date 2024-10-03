@@ -29,6 +29,10 @@ public class Goal_Base : MonoBehaviour, IGoal
             controller = GetComponent<MoveTowardsController>();
             ragdoll = GetComponent<RagdollController>();
         }
+        else
+        {
+            Agent = GetComponent<CharacterAgent>();
+        }
        
       
         

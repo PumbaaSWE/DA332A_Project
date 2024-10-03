@@ -368,14 +368,11 @@ public class CharacterAgent : CharacterBase
 
         if (NavMesh.SamplePosition(searchLocation, out hitResult, NearestPointSearchRange, coverAreaMask))
         {
-            Debug.Log("Found cover at: " + hitResult.position);
+            //Debug.Log("Found cover at: " + hitResult.position);
             debug = hitResult.position;
             return hitResult.position;
         }
-        else
-        {
-            Debug.LogWarning("No cover found within range.");
-        }
+       
 
         return transform.position;
     }
@@ -417,12 +414,9 @@ public class CharacterAgent : CharacterBase
             agent.SetDestination(hitResult.position);
             DestinationSet = true;
             ReachedDestination = false;
-            Debug.Log("Destination set to: " + hitResult.position);
+            //Debug.Log("Destination set to: " + hitResult.position);
         }
-        else
-        {
-            Debug.LogWarning("Failed to find valid NavMesh position for destination: " + destination);
-        }
+       
     }
     //private void OnAnimatorMove()
     //{
