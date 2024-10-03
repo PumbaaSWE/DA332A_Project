@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SocialPlatforms.Impl;
 
 //public enum EOffmeshLinkStatus
 //{
@@ -16,15 +15,12 @@ using UnityEngine.SocialPlatforms.Impl;
 public class CharacterAgent : CharacterBase
 {
 
-    //Tempo
-    public SwordOrbit sword;
-
     private Vector2 velocity;
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    //bool knockback;
+    bool knockback;
     bool wasGrounded;
 
     public bool isCrawling;
@@ -82,14 +78,14 @@ public class CharacterAgent : CharacterBase
         base.Start();
 
         linkedAI = GetComponent<EnemyAI>();
-       
+
     }
 
     protected override void Update()
     {
 
         base.Update();
-       
+
 
 
         CheckGroundUpright();
@@ -102,7 +98,6 @@ public class CharacterAgent : CharacterBase
         }
 
         UpdateState();
-        TempCCUpdate();
 
 
         // are we on an offmesh link?
@@ -115,46 +110,14 @@ public class CharacterAgent : CharacterBase
             }
         }
     }
-
-    void TempCCUpdate()
-    {
-        CharacterController cc = GetComponent<CharacterController>();
-
-        if (cc)
-        {
-            Vector3 desiredMove = agent.desiredVelocity;  
-
-         
-            cc.Move(desiredMove * Time.deltaTime);
-
-            if (cc.isGrounded)
-            {
-                if (!wasGrounded)
-                {
-                    agent.Warp(transform.position);
-                }
-                else
-                {
-                    agent.nextPosition = transform.position;
-                }
-                wasGrounded = true;
-            }
-            else
-            {
-                wasGrounded = false;
-                agent.nextPosition = transform.position;
-            }
-        }
-    }
-
     void UpdateState()
     {
         switch (agentState)
         {
             case AgentState.Normal:
 
-                    //SynchronizeAnimatorAndAgent();
-                
+                SynchronizeAnimatorAndAgent();
+
                 break;
             case AgentState.Armless:
                 // HandleArmless();
@@ -178,7 +141,7 @@ public class CharacterAgent : CharacterBase
                 {
                     HandleCrawling();
                 }
-                
+
                 break;
         }
     }
@@ -228,7 +191,7 @@ public class CharacterAgent : CharacterBase
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("climberAgent is not on NavMesh");
+            Debug.LogWarning("Agent is not on NavMesh");
             return;
         }
 
@@ -254,13 +217,13 @@ public class CharacterAgent : CharacterBase
         animator.SetBool("crawl", shouldMove);
         animator.SetBool("move", false);
 
-        animator.SetFloat("vely", agent.velocity.magnitude); 
+        animator.SetFloat("vely", agent.velocity.magnitude);
     }
     private void SynchronizeAnimatorAndAgent()
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("climberAgent is not on NavMesh");
+            Debug.LogWarning("Agent is not on NavMesh");
             return;
         }
 
@@ -268,7 +231,7 @@ public class CharacterAgent : CharacterBase
         worldDeltaPosition.y = 0;
 
         float manualRemainingDistance = Vector3.Distance(agent.transform.position, agent.destination);
-    
+
 
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
         float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
@@ -280,11 +243,11 @@ public class CharacterAgent : CharacterBase
 
         velocity = smoothDeltaPosition / Time.deltaTime;
 
-        
+
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
 
-       
+
         animator.SetBool("move", shouldMove);
         animator.SetBool("crawl", false);
         animator.SetFloat("vely", agent.velocity.magnitude);
@@ -368,11 +331,14 @@ public class CharacterAgent : CharacterBase
 
         if (NavMesh.SamplePosition(searchLocation, out hitResult, NearestPointSearchRange, coverAreaMask))
         {
-            //Debug.Log("Found cover at: " + hitResult.position);
+            Debug.Log("Found cover at: " + hitResult.position);
             debug = hitResult.position;
             return hitResult.position;
         }
-       
+        else
+        {
+            Debug.LogWarning("No cover found within range.");
+        }
 
         return transform.position;
     }
@@ -414,54 +380,57 @@ public class CharacterAgent : CharacterBase
             agent.SetDestination(hitResult.position);
             DestinationSet = true;
             ReachedDestination = false;
-            //Debug.Log("Destination set to: " + hitResult.position);
+            Debug.Log("Destination set to: " + hitResult.position);
         }
-       
+        else
+        {
+            Debug.LogWarning("Failed to find valid NavMesh position for destination: " + destination);
+        }
     }
-    //private void OnAnimatorMove()
-    //{
-    //    Vector3 rootPosition = animator.rootPosition;
+    private void OnAnimatorMove()
+    {
+        Vector3 rootPosition = animator.rootPosition;
 
-    //    rootPosition.y = agent.nextPosition.y;
+        rootPosition.y = agent.nextPosition.y;
 
-    //    CharacterController cc = GetComponent<CharacterController>();
-    //    if (cc)
-    //    {
-    //        bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc)
+        {
+            bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
 
-    //        if (grouned)
-    //        {
-    //            if (!wasGrounded)
-    //            {
-    //                //agent.nextPosition = transform.position;
-    //                Debug.Log("Warping!!!!!!!!!!!");
-    //                agent.Warp(transform.position);
-    //            }
-    //            else
-    //            {
-    //                transform.position = transform.position.WithY(agent.nextPosition.y);
-    //                agent.nextPosition = transform.position;
-    //            }
-    //            wasGrounded = true;
-    //        }
-    //        else
-    //        {
-    //            wasGrounded = false;
-    //            //agent.Warp(transform.position);
-    //            //Debug.Log("NOT GROUNDED");
-    //            agent.nextPosition = transform.position;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        Rigidbody rb = GetComponent<Rigidbody>();
-    //        rb.MovePosition(rootPosition);
-    //        agent.nextPosition = rootPosition;
-    //    }
+            if (grouned)
+            {
+                if (!wasGrounded)
+                {
+                    //agent.nextPosition = transform.position;
+                    Debug.Log("Warping!!!!!!!!!!!");
+                    agent.Warp(transform.position);
+                }
+                else
+                {
+                    transform.position = transform.position.WithY(agent.nextPosition.y);
+                    agent.nextPosition = transform.position;
+                }
+                wasGrounded = true;
+            }
+            else
+            {
+                wasGrounded = false;
+                //agent.Warp(transform.position);
+                //Debug.Log("NOT GROUNDED");
+                agent.nextPosition = transform.position;
+            }
+        }
+        else
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.MovePosition(rootPosition);
+            agent.nextPosition = rootPosition;
+        }
 
-    //    //agent.Warp(transform.position);
-    //    //agent.nextPosition = transform.position;
-    //}
+        //agent.Warp(transform.position);
+        //agent.nextPosition = transform.position;
+    }
 
     public void AttackBehaviour(Vector3 currentTarget, float minAttackRange)
     {
@@ -495,13 +464,8 @@ public class CharacterAgent : CharacterBase
 
     public void Attack()
     {
-        //temp
-        sword.Orbit();
-        //
-
-
-        //animator.SetInteger("Attack", Random.Range(1, 4));
-        //StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+        animator.SetInteger("Attack", Random.Range(1, 4));
+        StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
     }
 
     private IEnumerator AttackCooldown(float t)
@@ -513,7 +477,7 @@ public class CharacterAgent : CharacterBase
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        //knockback = false;
+        knockback = false;
     }
 
     void CheckGroundUpright()
@@ -548,18 +512,24 @@ public class CharacterAgent : CharacterBase
 
     public void SetLookDirection(Vector3 direction)
     {
-        Vector3 targetDirection = (direction - transform.position).normalized;
-        targetDirection.y = 0;
+
+
+
+        Vector3 targetDirection = direction - transform.position;
 
         float angleToTarget = Vector3.Angle(transform.forward, targetDirection);
-
         if (angleToTarget > rotationThreshold)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * agent.angularSpeed);
-        }
-    }
 
+            LookDirection = targetDirection.normalized;
+
+            Quaternion targetRotation = Quaternion.LookRotation(LookDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * agent.angularSpeed);
+
+
+        }
+
+    }
 
 
 
