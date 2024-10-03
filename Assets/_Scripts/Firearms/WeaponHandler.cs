@@ -59,6 +59,9 @@ public class WeaponHandler : MonoBehaviour
     /// <returns>True if any ammo of type left, false if not</returns>
     public bool AmmoLeft(Cartridgetype type)
     {
+        if (!AmmoPool.ContainsKey(type))
+            return false;
+
         return AmmoPool[type] > 0;
     }
 
@@ -71,6 +74,9 @@ public class WeaponHandler : MonoBehaviour
     /// <returns>Reserve ammo for current gun</returns>
     public int GetAmmoCount()
     {
+        if (!AmmoPool.ContainsKey(EquippedGun.AmmoType))
+            return 0;
+        
         return AmmoPool[EquippedGun.AmmoType];
     }
 
@@ -145,6 +151,9 @@ public class WeaponHandler : MonoBehaviour
 
     public bool IsFiring()
     {
+        if (EquippedGun == null)
+            return false;
+
         return EquippedGun.Firing;
     }
 }
