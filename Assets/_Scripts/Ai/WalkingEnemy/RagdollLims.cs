@@ -59,9 +59,10 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
     AwarenessSystem senssors;
 
-
+    Health health;
     void Awake()
     {
+        health = GetComponent<Health>();
         senssors = GetComponent<AwarenessSystem>();
         enemyAi = GetComponent<EnemyAI>();
         animator = GetComponent<Animator>();
@@ -144,8 +145,6 @@ public class RagdollLims : MonoBehaviour, IDamageble
             {
                 return true;
             }
-
-
         }
 
         return false;
@@ -232,6 +231,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
         }
         else
         {
+            health.Heal(300);
             characterAgent.SetAgentActive(true);
             planner.deactivate = false;
         }
@@ -321,7 +321,12 @@ public class RagdollLims : MonoBehaviour, IDamageble
     }
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        TriggerRagdoll(direction , point);
+        health.Damage( damage);
+        if(health.Value <= 0)
+        {
+            TriggerRagdoll(direction, point);
+        }
+       
     }
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {

@@ -79,34 +79,33 @@ public class Action_Attack : Action_Base
         if (!climer)
         {
             agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+            DoDmg(1.4f);
         }
         else
         {
 
             climberAgent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
-
+            //DoDmg(1.35f);
             //StartCoroutine(AttackCooldown(.5f));
+        }
+       
+    }
 
-            Vector3 targetDelta = target.position - transform.position;
-            attckTimer -= Time.deltaTime;
-            if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+    void DoDmg(float attackTime)
+    {
+        Vector3 targetDelta = target.position - transform.position;
+        attckTimer -= Time.deltaTime;
+        if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+        {
+
+            //Debug.Log("Attack!!");
+            if (target.TryGetComponent(out IDamageble damageble))
             {
-                if (attackParticles != null)
-                {
-                    var main = attackParticles.main;
-                    main.startSize = 1.5f;  
-                    main.startColor = Color.red;
-                    attackParticles.Play();
-                }
-
-                //Debug.Log("Attack!!");
-                if (target.TryGetComponent(out IDamageble damageble))
-                {
-                    damageble.TakeDamage(transform.position, targetDelta, 15);
-                    attckTimer = 1.4f;
-                    //Debug.Log("Do damage!!");
-                }
+                damageble.TakeDamage(transform.position, targetDelta, 15);
+                attckTimer = attackTime;
+                //Debug.Log("Do damage!!");
             }
         }
+
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 //public enum EOffmeshLinkStatus
 //{
@@ -18,8 +19,8 @@ public class CharacterAgent : CharacterBase
     private Vector2 velocity;
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
-    int knockbackHash = Animator.StringToHash("Knockback");
-    int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
+    //int knockbackHash = Animator.StringToHash("Knockback");
+    //int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
     //bool knockback;
     bool wasGrounded;
 
@@ -41,6 +42,9 @@ public class CharacterAgent : CharacterBase
 
     public Vector3 LookDirection; /*{ get; private set; }*/
     public Transform LookPoint;/*{ get; private set; }*/
+    [SerializeField] Transform target;
+    public PlayerDataSO player;
+ 
 
     public Vector3 debug;
     public enum NavMeshArea
@@ -86,7 +90,14 @@ public class CharacterAgent : CharacterBase
 
         base.Update();
 
-
+        if (isCrawling)
+        {
+            agentState = AgentState.Crawl;
+        }
+        else
+        {
+            agentState = AgentState.Normal;
+        }
 
         CheckGroundUpright();
         // have a path and near the end point?
@@ -116,15 +127,10 @@ public class CharacterAgent : CharacterBase
         {
             case AgentState.Normal:
 
-               
-                if (isCrawling)
-                {
-                    HandleCrawling();
-                }
-                else
-                {
+            
+                
                     SynchronizeAnimatorAndAgent();
-                }
+                
 
                 break;
             case AgentState.Armless:
@@ -145,7 +151,7 @@ public class CharacterAgent : CharacterBase
                 break;
             case AgentState.Crawl:
 
-                
+                HandleCrawling();
 
                 break;
         }
@@ -196,6 +202,7 @@ public class CharacterAgent : CharacterBase
         {
             isCrawling = true;
             animator.SetBool("crawl", true);
+            animator.Play("Base Layer.Crawl");
         }
     }
     private void HandleCrawling()
@@ -452,6 +459,7 @@ public class CharacterAgent : CharacterBase
         if (currentTarget.InRangeOf(transform.position, 2.5f))
         {
             Attack();
+
             Vector3 dir = currentTarget - transform.position;
             transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
             if (currentTarget.InRangeOf(transform.position, minAttackRange))
@@ -472,14 +480,41 @@ public class CharacterAgent : CharacterBase
 
     public void Attack()
     {
-        animator.SetInteger("Attack", Random.Range(1, 4));
-        StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
-    }
+        if (agentState == AgentState.Crawl)
+        {
+            animator.Play("Base Layer.Crawl");
+            StartCoroutine(CrawlAttackCooldown(.5f)); //wait for animation to end instead?
+        }
+        else
+        {
+          
 
+            animator.SetInteger("Attack", Random.Range(1, 4));
+            StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+
+          
+
+        }
+
+       
+    }
+    private IEnumerator CrawlAttackCooldown(float t)
+    {
+        yield return new WaitForSeconds(t);
+        animator.SetBool("CrawlAttack", true);
+
+     
+     
+    }
     private IEnumerator AttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger("Attack", 0);
+        Vector3 targetDelta = target.position - transform.position;
+        if (target.TryGetComponent(out IDamageble damageble))
+        {
+            damageble.TakeDamage(transform.position, targetDelta, 15);
+        }
     }
     private IEnumerator AnimationCooldown(int idx, float t)
     {
