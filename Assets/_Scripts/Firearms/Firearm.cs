@@ -162,9 +162,6 @@ public class Firearm : MonoBehaviour
 
             StartCoroutine(Shoot());
         }
-
-        else if (!Firing)
-            RHandler.StartImpulse();
     }
 
     void Fire()
@@ -231,13 +228,13 @@ public class Firearm : MonoBehaviour
         float previousYRecoil = 0;
         float startHipFireAngle = HipFireSpread;
 
+        RHandler.AddImpluse(new(xRecoil, yRecoil));
+
         while (timeElapsed < recoilDuration)
         {
             Vector2 recoil = new(Mathf.Lerp(0, xRecoil, timeElapsed / recoilDuration), Mathf.Lerp(0, yRecoil, timeElapsed / recoilDuration));
 
             Player.Rotate(recoil.x - previousXRecoil, recoil.y - previousYRecoil);
-
-            RHandler.AddImpluse(new Vector2(recoil.x - previousXRecoil, recoil.y - previousYRecoil));
 
             previousXRecoil = recoil.x;
             previousYRecoil = recoil.y;
@@ -253,7 +250,9 @@ public class Firearm : MonoBehaviour
         HipFireSpread = Mathf.Clamp(startHipFireAngle + HipFireGain, MinHipFireSpread, MaxHipFireSpread);
 
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
-        RHandler.AddImpluse(new Vector2(xRecoil - previousXRecoil, yRecoil - previousYRecoil));
+
+        //if (!Firing)
+            RHandler.StartImpulse();
     }
 
     public void AimDownSights(CallbackContext context)
@@ -288,10 +287,10 @@ public class Firearm : MonoBehaviour
             //if (!WHandler.AmmoLeft(AmmoType) || Firing)
             //    return;
 
-            int returnedAmmo = Mathf.Clamp(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0, LoadedAmmo);
-            LoadedAmmo -= returnedAmmo;
+            int returnedAmmo = Mathf.Max(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0);
             WHandler.AddAmmo(AmmoType, returnedAmmo);
 
+            LoadedAmmo -= returnedAmmo;
             LoadedAmmo += WHandler.TakeAmmo(AmmoType, MagazineSize);
         }
     }
@@ -351,7 +350,7 @@ public class Firearm : MonoBehaviour
         //Debug.Log("Pulling out");
         // Play animation of pulling up gun
         gameObject.SetActive(true);
-        //PerformAnimation(Animation.PullingOut);
+        PerformAnimation(Animation.PullingOut);
     }
 
     public void Unequip(Action equip)
@@ -360,11 +359,13 @@ public class Firearm : MonoBehaviour
         // Play animation of putting away gun
         PerformAnimation(Animation.Holstering);
         SwitchAction = equip;
+        CanFire = true;
     }
 
     void Switch()
     {
         //Debug.Log("Switching weapons");
+        CanFire = false;
         SwitchAction.Invoke();
         gameObject.SetActive(false);
     }
@@ -394,6 +395,11 @@ public class Firearm : MonoBehaviour
         RHandler = rHandler;
         CameraView = Camera.main.transform;
         Player = player;
+    }
+
+    public void SetCanFire(int canFire)
+    {
+        CanFire = Convert.ToBoolean(canFire);
     }
 }
 
