@@ -15,10 +15,10 @@ public class Goal_Idle : Goal_Base
             {
                 Priority = 10;
             }
-            else
-            {
-                Priority = 100;
-            }
+            //else
+            //{
+            //    Priority = 100;
+            //}
         }
        
         return Priority;

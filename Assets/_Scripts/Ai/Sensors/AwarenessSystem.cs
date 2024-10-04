@@ -101,12 +101,12 @@ public class AwarenessSystem : MonoBehaviour
 
     public Dictionary<GameObject, Trackedtarget> ActiveTargets => targets;
 
-    FSM fsm;
+    //FSM fsm;
     //CharacterAgent characterAgent;
     void Start()
     {
         //characterAgent = GetComponent<CharacterAgent>();
-        fsm = GetComponent<FSM>();
+        //fsm = GetComponent<FSM>();
         linkedAI = GetComponent<EnemyAI>();
     }
 

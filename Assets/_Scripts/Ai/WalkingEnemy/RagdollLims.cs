@@ -58,10 +58,11 @@ public class RagdollLims : MonoBehaviour, IDamageble
     EnemyAI enemyAi;
 
     AwarenessSystem senssors;
-
+    Goal_Stalk_W goal_Stalk_W;
     Health health;
     void Awake()
-    {
+    {   
+        goal_Stalk_W = GetComponent<Goal_Stalk_W>();
         health = GetComponent<Health>();
         senssors = GetComponent<AwarenessSystem>();
         enemyAi = GetComponent<EnemyAI>();
@@ -304,7 +305,8 @@ public class RagdollLims : MonoBehaviour, IDamageble
         }
     }
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
-    {
+    { 
+        goal_Stalk_W.prio -= 30;
         health.Damage( damage);
         if(health.Value <= 0)
         {

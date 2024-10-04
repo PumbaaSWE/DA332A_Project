@@ -6,7 +6,7 @@ public class Goal_Wander : Goal_Base
 {
     [SerializeField] int WanderPriority = 30;
 
-    [SerializeField] float PriorityBuildRate = 1f;
+    [SerializeField] float PriorityBuildRate = 0.11f;
     [SerializeField] float PriorityDecayRate = 0.1f;
     float CurrentPriority = 0f;
 

@@ -45,7 +45,7 @@ public class CharacterAgent : CharacterBase
     [SerializeField] Transform target;
     public PlayerDataSO player;
     CharacterController characterController;
-
+    
     public Vector3 debug;
     public enum NavMeshArea
     {
@@ -100,7 +100,7 @@ public class CharacterAgent : CharacterBase
             agentState = AgentState.Normal;
         }
 
-        CheckGroundUpright();
+        //CheckGroundUpright();
         // have a path and near the end point?
         if (!agent.pathPending && !agent.isOnOffMeshLink && DestinationSet && (agent.remainingDistance <= agent.stoppingDistance))
         {

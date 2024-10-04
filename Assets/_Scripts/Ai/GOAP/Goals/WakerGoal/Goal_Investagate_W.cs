@@ -2,26 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goal_Investagate : Goal_Base
+public class Goal_Investagate_W : Goal_Base
 {
-    public int priority = 45;
-    [SerializeField] float MinAwarenessToChase = 1.4f;
-    //[SerializeField] float AwarenessToStopChase = 1f;
-
+    [SerializeField] float priority = 35;
+    [SerializeField] float MinAwarenessToChase = 0.7f;
+    [SerializeField] float AwarenessToStopChase = 0.5f;
+    [SerializeField] float PriorityDecayRate = 2f;
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
-    public bool canRun = true;
+
     public override void OnTickGoal()
     {
         // add agent at target 
-       
-        CurrentPriority = priority;
+      
+        CurrentPriority = (int)priority;
     }
 
     public override void OnGoalDeactivated()
     {
         base.OnGoalDeactivated();
-
+       
         CurrentTarget = null;
     }
 
@@ -36,12 +36,15 @@ public class Goal_Investagate : Goal_Base
         if (Sensors.soundLocation == null || Sensors.ActiveTargets.Count == 0)
             return false;
 
-       
         // check if we have anything we are aware of
         foreach (var candidate in Sensors.ActiveTargets.Values)
         {
             if (candidate.Awarness >= MinAwarenessToChase)
+            {
+                
                 return true;
+            }
+                
         }
 
         return false;
