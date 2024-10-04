@@ -20,7 +20,7 @@ public class CharacterAgent : CharacterBase
     private LookAt lookAt;
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    bool knockback;
+    //bool knockback;
     bool wasGrounded;
 
     public bool isCrawling;
@@ -116,8 +116,8 @@ public class CharacterAgent : CharacterBase
         {
             case AgentState.Normal:
 
-              // SynchronizeAnimatorAndAgent();
-                HandleCrawling();
+                SynchronizeAnimatorAndAgent();
+               
                 break;
             case AgentState.Armless:
                 // HandleArmless();
@@ -214,7 +214,7 @@ public class CharacterAgent : CharacterBase
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-        animator.SetBool("Crawl", shouldMove);
+        animator.SetBool("crawl", shouldMove);
         animator.SetBool("move", false);
 
         animator.SetFloat("vely", agent.velocity.magnitude);
@@ -223,7 +223,7 @@ public class CharacterAgent : CharacterBase
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("Agent is not on NavMesh");
+      
             return;
         }
 
@@ -249,7 +249,7 @@ public class CharacterAgent : CharacterBase
 
 
         animator.SetBool("move", shouldMove);
-        animator.SetBool("Crawl", false);
+        animator.SetBool("crawl", false);
         animator.SetFloat("vely", agent.velocity.magnitude);
 
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
@@ -380,12 +380,9 @@ public class CharacterAgent : CharacterBase
             agent.SetDestination(hitResult.position);
             DestinationSet = true;
             ReachedDestination = false;
-            Debug.Log("Destination set to: " + hitResult.position);
+          
         }
-        else
-        {
-            Debug.LogWarning("Failed to find valid NavMesh position for destination: " + destination);
-        }
+     
     }
     private void OnAnimatorMove()
     {
@@ -477,7 +474,7 @@ public class CharacterAgent : CharacterBase
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        knockback = false;
+        //knockback = false;
     }
 
     void CheckGroundUpright()

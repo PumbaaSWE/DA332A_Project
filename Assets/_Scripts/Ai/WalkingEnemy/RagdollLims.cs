@@ -11,7 +11,7 @@ using UnityEngine;
  * https://www.youtube.com/watch?v=B_NnQQKiw6I
  * 
  */
-public class RagdollLims : MonoBehaviour
+public class RagdollLims : MonoBehaviour, IDamageble
 {
 
     private class BoneTransform
@@ -319,7 +319,10 @@ public class RagdollLims : MonoBehaviour
             resetTimer = 0;
         }
     }
-
+    public void TakeDamage(Vector3 point, Vector3 direction, float damage)
+    {
+        TriggerRagdoll(direction * 0.001f, point);
+    }
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
 

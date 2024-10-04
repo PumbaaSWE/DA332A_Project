@@ -56739,8 +56739,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6433155947235327253}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 56.2, y: 0.02, z: 203.4}
+  m_LocalRotation: {x: -0, y: -0.8852607, z: -0, w: 0.46509522}
+  m_LocalPosition: {x: 59.66, y: 0.02, z: 203.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -56748,7 +56748,7 @@ Transform:
   - {fileID: 8646670837633541248}
   - {fileID: 2187811946908682043}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -124.567, z: 0}
 --- !u!4 &6011995516956137998
 Transform:
   m_ObjectHideFlags: 0
@@ -56940,9 +56940,10 @@ GameObject:
   - component: {fileID: 6433155947235327260}
   - component: {fileID: 6433155947235327259}
   - component: {fileID: 6433155947235327258}
+  - component: {fileID: 6433155947235327280}
   m_Layer: 6
   m_Name: WalkingEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57351,13 +57352,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   visionMinimumAwareness: 1
-  visionAwarenessBuildRate: 10
+  visionAwarenessBuildRate: 14
   hearingMinimumAwareness: 0
   hearingAwarnessBuildRate: 0.5
   proximityMinimumAwareness: 0
-  proximityAwarenessBuildRate: 1
+  proximityAwarenessBuildRate: 2
   awarenessDecayDelay: 0.1
-  awarenessDecaRate: 0.1
+  awarenessDecaRate: 0.05
   soundLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &6433155947235327278
 MonoBehaviour:
@@ -57386,6 +57387,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ef835ad265b6e4fb751352957b0ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6433155947235327280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433155947235327253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee99d9ec48744a4d99cc79dce34cf04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToGetUp: 3
+  resetBonesTime: 1
+  standUpStateName: Stand Up
+  standUpClipName: Stand Up
+  faceDownStateName: Standing Up
+  faceDownClipName: Standing Up
+  GOAP: 1
 --- !u!4 &6475966607609373914
 Transform:
   m_ObjectHideFlags: 0

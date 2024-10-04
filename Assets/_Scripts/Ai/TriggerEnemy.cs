@@ -28,7 +28,7 @@ public class TriggerEnemy : MonoBehaviour
             if (enemyScript != null)
             {
                 // Anropa en metod på fiendens script eller ändra en variabel
-                enemyScript.prio -= 5;
+                enemyScript.prio -= 10;
             }
         }
 
