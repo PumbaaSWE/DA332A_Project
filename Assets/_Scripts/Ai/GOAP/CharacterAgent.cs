@@ -116,8 +116,8 @@ public class CharacterAgent : CharacterBase
         {
             case AgentState.Normal:
 
-                SynchronizeAnimatorAndAgent();
-
+              // SynchronizeAnimatorAndAgent();
+                HandleCrawling();
                 break;
             case AgentState.Armless:
                 // HandleArmless();
@@ -214,7 +214,7 @@ public class CharacterAgent : CharacterBase
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-        animator.SetBool("crawl", shouldMove);
+        animator.SetBool("Crawl", shouldMove);
         animator.SetBool("move", false);
 
         animator.SetFloat("vely", agent.velocity.magnitude);
@@ -249,7 +249,7 @@ public class CharacterAgent : CharacterBase
 
 
         animator.SetBool("move", shouldMove);
-        animator.SetBool("crawl", false);
+        animator.SetBool("Crawl", false);
         animator.SetFloat("vely", agent.velocity.magnitude);
 
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
