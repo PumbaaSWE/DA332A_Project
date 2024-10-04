@@ -44,7 +44,7 @@ public class CharacterAgent : CharacterBase
     public Transform LookPoint;/*{ get; private set; }*/
     [SerializeField] Transform target;
     public PlayerDataSO player;
- 
+    CharacterController characterController;
 
     public Vector3 debug;
     public enum NavMeshArea
@@ -64,6 +64,7 @@ public class CharacterAgent : CharacterBase
 
     private void Awake()
     {
+        characterController = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         lookAt = GetComponent<LookAt>();
@@ -196,10 +197,12 @@ public class CharacterAgent : CharacterBase
         agent.enabled = active;
         if (active)
         {
+            characterController.height = 1.76f;
             agent.isStopped = false;
         }
         else if(!active) 
         {
+            characterController.height = 0.5f;
             isCrawling = true;
             animator.SetBool("crawl", true);
             animator.Play("Base Layer.Crawl");
@@ -209,7 +212,7 @@ public class CharacterAgent : CharacterBase
     {
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("Agent is not on NavMesh");
+            //Debug.LogWarning("Agent is not on NavMesh");
             return;
         }
 
@@ -349,7 +352,7 @@ public class CharacterAgent : CharacterBase
 
         if (NavMesh.SamplePosition(searchLocation, out hitResult, NearestPointSearchRange, coverAreaMask))
         {
-            Debug.Log("Found cover at: " + hitResult.position);
+            //Debug.Log("Found cover at: " + hitResult.position);
             debug = hitResult.position;
             return hitResult.position;
         }
@@ -418,7 +421,7 @@ public class CharacterAgent : CharacterBase
                 if (!wasGrounded)
                 {
                     //agent.nextPosition = transform.position;
-                    Debug.Log("Warping!!!!!!!!!!!");
+                    //Debug.Log("Warping!!!!!!!!!!!");
                     agent.Warp(transform.position);
                 }
                 else

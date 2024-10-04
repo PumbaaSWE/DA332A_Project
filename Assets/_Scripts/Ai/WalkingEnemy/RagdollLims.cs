@@ -52,7 +52,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
     private List<Detachable> detached = new List<Detachable>();
 
     [SerializeField] bool GOAP;
-    private FSM fsm;
+
     private CharacterAgent characterAgent;
     private GOAPPlanner planner;
     EnemyAI enemyAi;
@@ -103,11 +103,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
             characterAgent = GetComponent<CharacterAgent>();
             planner = GetComponent<GOAPPlanner>();
         }
-        else
-        {
-            fsm = GetComponent<FSM>();
-        }
-        //
+      
 
         DisableRagdoll();
     }
@@ -210,31 +206,23 @@ public class RagdollLims : MonoBehaviour, IDamageble
             state = RagdollState.Default;
             // change this later
             // give back controll to Ai
-            if (!GOAP)
-            {
-                fsm.agentState = FSM.AgentState.Idle;
-            }
-            else
-            {
+          
+            
 
                 planner.deactivate = false;
                 characterAgent.isCrawling = false;
-            }
+            
         }
     }
 
     private void DisableRagdoll()
     {
-        if (!GOAP)
-        {
-            fsm.SetAgentActive(true);
-        }
-        else
-        {
-            health.Heal(300);
+      
+        
+            health.Heal(health.MaxHealth);
             characterAgent.SetAgentActive(true);
             planner.deactivate = false;
-        }
+        
 
 
 
@@ -248,15 +236,11 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
     private void EnableRagdoll()
     {
-        if (!GOAP)
-        {
-            fsm.SetAgentActive(false);
-        }
-        else
-        {
+       
+        
             characterAgent.SetAgentActive(false);
             planner.deactivate = true;
-        }
+        
 
 
         for (int i = 0; i < rbs.Length; i++)
