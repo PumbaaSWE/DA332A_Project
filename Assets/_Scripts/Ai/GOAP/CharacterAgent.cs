@@ -116,8 +116,16 @@ public class CharacterAgent : CharacterBase
         {
             case AgentState.Normal:
 
-                SynchronizeAnimatorAndAgent();
                
+                if (isCrawling)
+                {
+                    HandleCrawling();
+                }
+                else
+                {
+                    SynchronizeAnimatorAndAgent();
+                }
+
                 break;
             case AgentState.Armless:
                 // HandleArmless();
@@ -137,10 +145,7 @@ public class CharacterAgent : CharacterBase
                 break;
             case AgentState.Crawl:
 
-                if (isCrawling)
-                {
-                    HandleCrawling();
-                }
+                
 
                 break;
         }
@@ -181,10 +186,16 @@ public class CharacterAgent : CharacterBase
     }
     public void SetAgentActive(bool active)
     {
+       
         agent.enabled = active;
         if (active)
         {
             agent.isStopped = false;
+        }
+        else if(!active) 
+        {
+            isCrawling = true;
+            animator.SetBool("crawl", true);
         }
     }
     private void HandleCrawling()

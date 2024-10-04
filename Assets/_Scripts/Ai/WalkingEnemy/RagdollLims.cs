@@ -321,12 +321,12 @@ public class RagdollLims : MonoBehaviour, IDamageble
     }
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        TriggerRagdoll(direction * 0.001f, point);
+        TriggerRagdoll(direction , point);
     }
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
 
-        EnableRagdoll();
+     
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
         rb.AddForceAtPosition(force, point, ForceMode.Impulse);
@@ -336,7 +336,10 @@ public class RagdollLims : MonoBehaviour, IDamageble
             detachable.Detatch();
             detached.Add(detachable);
         }
-
+        if(IsLeggDetached())
+        {
+            EnableRagdoll();
+        }
         state = RagdollState.Ragdoll;
         getUpTimer = timeToGetUp;
     }
