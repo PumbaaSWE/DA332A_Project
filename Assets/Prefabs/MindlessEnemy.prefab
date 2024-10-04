@@ -456,6 +456,7 @@ MonoBehaviour:
   - {fileID: 3935840845115223314}
   - {fileID: 1588967484528087614}
   - {fileID: 3055401607485224881}
+  active: 0
 --- !u!114 &4973769279931550626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,6 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   maxHealth: 100
+  dead: 0
 --- !u!114 &1909319085738514037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1785,7 +1787,19 @@ MonoBehaviour:
         m_CallState: 2
   LimbHealthEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4195068269223172069}
+        m_TargetAssemblyTypeName: Health, Assembly-CSharp
+        m_MethodName: Damage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5851001461419180952
 MonoBehaviour:
   m_ObjectHideFlags: 0
