@@ -9,7 +9,26 @@ public class Action_Stalk_W : Action_Base
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Stalk_W) });
     Goal_Stalk_W stalkGoal;
+    public PlayerDataSO player;
+    [SerializeField] Transform target;
+    private void Start()
+    {
+        // player = GameObject.FindGameObjectWithTag("Player").transform;
+        player.NotifyOnPlayerChanged(OnPlayer);
+    }
+    private void OnDestroy()
+    {
+        player.UnsubscribeOnPlayerChanged(OnPlayer);
+    }
+    private void OnPlayer(Transform obj)
+    {
+        target = obj;
+        if (target)
+        {
 
+            //do if not null
+        }
+    }
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -45,6 +64,10 @@ public class Action_Stalk_W : Action_Base
             FacePlayer();
             OnActivated(LinkedGoal); // Continue following the player
         }
+        if(IsPlayerLookingAtAI())
+        {
+            stalkGoal.prio -= 1;
+        }
     }
 
     private void FacePlayer()
@@ -61,5 +84,12 @@ public class Action_Stalk_W : Action_Base
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
             agent.transform.rotation = Quaternion.Slerp(agent.transform.rotation, lookRotation, Time.deltaTime * 5f); // Smooth rotation
         }
+    }
+
+    private bool IsPlayerLookingAtAI()
+    {
+        Vector3 directionToAI = (transform.position - player.PlayerTransform.position).normalized;
+        float angle = Vector3.Angle(player.PlayerTransform.forward, directionToAI);
+        return angle < 3f;
     }
 }

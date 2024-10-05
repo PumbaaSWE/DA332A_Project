@@ -9,7 +9,7 @@ public class Goal_Stalk_W : Goal_Base
     [SerializeField] float AwarenessToStopChase = 1f;
 
     DetectableTarget CurrentTarget;
-    int CurrentPriority = 0;
+    float CurrentPriority = 0;
 
 
 
@@ -63,7 +63,7 @@ public class Goal_Stalk_W : Goal_Base
 
     public override int CalculatePriority()
     {
-        return CurrentPriority;
+        return Mathf.FloorToInt(CurrentPriority);
     }
 
     public override bool CanRun()
