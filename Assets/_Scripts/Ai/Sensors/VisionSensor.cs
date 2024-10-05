@@ -27,7 +27,7 @@ public class VisionSensor : MonoBehaviour
             {
                 continue;
             }
-            var vectorToTarget = candiadateTarget.transform.position - linkedAI.EyeLocation;
+            var vectorToTarget = candiadateTarget.transform.position + Vector3.up - linkedAI.EyeLocation;
 
             //if out of range
             if (vectorToTarget.sqrMagnitude > linkedAI.VisionConeRange * linkedAI.VisionConeRange)

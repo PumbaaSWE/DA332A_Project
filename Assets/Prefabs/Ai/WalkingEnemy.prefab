@@ -2205,14 +2205,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  visionMinimumAwareness: 1.1
+  visionMinimumAwareness: 1
   visionAwarenessBuildRate: 18
   hearingMinimumAwareness: 0
   hearingAwarnessBuildRate: 1.5
   proximityMinimumAwareness: 1
   proximityAwarenessBuildRate: 4
   awarenessDecayDelay: 0.1
-  awarenessDecaRate: 0.05
+  awarenessDecaRate: 0.1
   soundLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &2342688422884350641
 MonoBehaviour:
@@ -2525,7 +2525,6 @@ MonoBehaviour:
   priority: 35
   MinAwarenessToChase: 0.7
   AwarenessToStopChase: 0.5
-  PriorityDecayRate: 2
 --- !u!114 &5441933533429877689
 MonoBehaviour:
   m_ObjectHideFlags: 0

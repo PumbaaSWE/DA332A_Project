@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Goal_Investagate_W : Goal_Base
 {
-    public float priority = 35;
+    public int priority = 35;
     [SerializeField] float MinAwarenessToChase = 0.7f;
     [SerializeField] float AwarenessToStopChase = 0.5f;
-    [SerializeField] float PriorityDecayRate = 2f;
+ 
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
 
@@ -15,7 +15,7 @@ public class Goal_Investagate_W : Goal_Base
     {
         // add agent at target 
       
-        CurrentPriority = (int)priority;
+        CurrentPriority = priority;
     }
 
     public override void OnGoalDeactivated()

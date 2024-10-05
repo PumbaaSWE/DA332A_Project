@@ -160,6 +160,7 @@ GameObject:
   - component: {fileID: 6980571298605528958}
   - component: {fileID: 3526935682740121516}
   - component: {fileID: 4723912495871497212}
+  - component: {fileID: 3845308940590111951}
   m_Layer: 2
   m_Name: NonphysPlayer
   m_TagString: Player
@@ -680,6 +681,20 @@ MonoBehaviour:
   Player: {fileID: 0}
   WHandler: {fileID: 0}
   RecoilImpulse: {x: 0, y: 0}
+--- !u!114 &3845308940590111951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031869545899754398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a89b4f3818f1124ab274d3543575458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkingSound: {fileID: 0}
+  walkingThreshold: 0.1
 --- !u!1 &8683155676769794460
 GameObject:
   m_ObjectHideFlags: 0
