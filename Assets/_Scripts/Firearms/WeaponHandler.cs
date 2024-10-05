@@ -72,6 +72,9 @@ public class WeaponHandler : MonoBehaviour
     /// <returns>Remaining ammo in magazine of current gun</returns>
     public int GetMagazineCount()
     {
+        if (EquippedGun == null)
+            return 0;
+        
         return EquippedGun.LoadedAmmo;
     }
 
