@@ -57,8 +57,8 @@ public struct Precondition
 {
     public string blackboardEntry;
     //public Unity
-    public delegate bool PreconditionPredicate();
-    public event PreconditionPredicate Predicate;
+    //public delegate bool PreconditionPredicate();
+    //public event PreconditionPredicate Predicate;
 
     public bool Check()
     {
