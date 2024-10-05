@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Goal_Investagate : Goal_Base
 {
-    [SerializeField] int priority = 45;
+    public int priority = 45;
     [SerializeField] float MinAwarenessToChase = 1.4f;
     //[SerializeField] float AwarenessToStopChase = 1f;
 
     DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
-
+    public bool canRun = true;
     public override void OnTickGoal()
     {
         // add agent at target 
@@ -36,6 +36,7 @@ public class Goal_Investagate : Goal_Base
         if (Sensors.soundLocation == null || Sensors.ActiveTargets.Count == 0)
             return false;
 
+       
         // check if we have anything we are aware of
         foreach (var candidate in Sensors.ActiveTargets.Values)
         {

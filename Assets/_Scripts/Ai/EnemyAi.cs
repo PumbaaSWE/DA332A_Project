@@ -124,24 +124,24 @@ public class EnemyAIEditor : Editor
         Handles.color = ai.HearingRangeColour;
         Handles.DrawSolidDisc(ai.transform.position, Vector3.up, ai.HearingRange);
 
-        //// work out the start point of the vision cone
-        //Vector3 startPoint = Mathf.Cos(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.forward +
-        //                     Mathf.Sin(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.right;
+        // work out the start point of the vision cone
+        Vector3 startPoint = Mathf.Cos(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.forward +
+                             Mathf.Sin(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.right;
 
-        //// draw the vision cone
-        //Handles.color = ai.VisionConeColour;
-        //Handles.DrawSolidArc(ai.transform.position, Vector3.up, startPoint, ai.VisionConeAngle * 2f, ai.VisionConeRange);
+        // draw the vision cone
+        Handles.color = ai.VisionConeColour;
+        Handles.DrawSolidArc(ai.transform.position, Vector3.up, startPoint, ai.VisionConeAngle * 2f, ai.VisionConeRange);
 
 
         // 3d
-        Vector3 startPoint = Mathf.Cos(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.forward +
-                              Mathf.Sin(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.right;
-
-    
-        Handles.color = ai.VisionConeColour;
+        //Vector3 startPoint = Mathf.Cos(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.forward +
+        //                      Mathf.Sin(-ai.VisionConeAngle * Mathf.Deg2Rad) * ai.transform.right;
 
 
-        Handles.DrawSolidArc(ai.transform.position, Vector3.up, startPoint, ai.VisionConeAngle * 2f, ai.VisionConeRange);
+        //Handles.color = ai.VisionConeColour;
+
+
+        //Handles.DrawSolidArc(ai.transform.position, Vector3.up, startPoint, ai.VisionConeAngle * 2f, ai.VisionConeRange);
     }
 }
 #endif // UNITY_EDITOR

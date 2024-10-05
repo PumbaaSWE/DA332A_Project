@@ -27,16 +27,23 @@ public class Action_Chase : Action_Base
         ChaseGoal = (Goal_Chase)LinkedGoal;
 
 
-
-        animator.SetBool("Attack", false);
-            Agent.MoveTo(ChaseGoal.MoveTarget, false);
+        if(climer)
+        {
+            animator.SetBool("Attack", false);
+            climberAgent.MoveTo(ChaseGoal.MoveTarget, false);
+        }
+        else
+        {
+            agent.MoveTo(ChaseGoal.MoveTarget);
+        }
+       
         
     }
 
     public override void OnDeactivated()
     {
         // Keep this?
-        //Agent.MoveTo(Agent.transform.position);
+        //climberAgent.MoveTo(climberAgent.transform.position);
         //
         base.OnDeactivated();
 
@@ -45,11 +52,20 @@ public class Action_Chase : Action_Base
 
     public override void OnTick()
     {
-       // SoundManager.Instance.salamanderChannel.PlayOneShot(SoundManager.Instance.salamanderChase);
-        if (ShouldUpdateMoveTarget(ChaseGoal.MoveTarget))
+        // SoundManager.Instance.salamanderChannel.PlayOneShot(SoundManager.Instance.salamanderChase);
+
+        if (climer)
         {
-            MoveAgentToTarget();
+            if (ShouldUpdateMoveTarget(ChaseGoal.MoveTarget))
+            {
+                MoveAgentToTarget();
+            }
         }
+        else
+        {
+            agent.MoveTo(ChaseGoal.MoveTarget);
+        }
+       
     }
 
     private bool ShouldUpdateMoveTarget(Vector3 newMoveTarget)
@@ -60,9 +76,6 @@ public class Action_Chase : Action_Base
     private void MoveAgentToTarget()
     {
         lastMoveTarget = ChaseGoal.MoveTarget;
-
-      
-        
-            Agent.MoveTo(lastMoveTarget, false); 
+        climberAgent.MoveTo(lastMoveTarget, false); 
     }
 }
