@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +9,17 @@ public class NumPad : MonoBehaviour
     private string input = "----";
 
     public UnityEvent OnCodeAccepted;
+
+    public string Code { 
+        get { return code; } 
+        set { 
+            if (value.Length == 4) 
+            { 
+                //also make sure its only numbers...
+                code = value; 
+            } 
+        } 
+    }
 
     // Start is called before the first frame update
     void Start()
