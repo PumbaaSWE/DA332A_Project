@@ -52,7 +52,7 @@ public class Goal_Base : MonoBehaviour, IGoal
     {
         OnTickGoal();
       
-        DebugUI.UpdateGoal(this, GetType().Name, LinkedAction ? "Running" : "Paused", CalculatePriority());
+        //DebugUI.UpdateGoal(this, GetType().Name, LinkedAction ? "Running" : "Paused", CalculatePriority());
 
 
     }

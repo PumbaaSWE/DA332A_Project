@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 public class Action_Investegate_W : Action_Base
 {
-    [SerializeField] float SearchRange = 10f;
+    //[SerializeField] float SearchRange = 10f;
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Investagate_W) });
     int cost = 0;

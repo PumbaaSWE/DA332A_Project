@@ -8,7 +8,7 @@ public class Goal_Investagate : Goal_Base
     [SerializeField] float MinAwarenessToChase = 1.4f;
     //[SerializeField] float AwarenessToStopChase = 1f;
 
-    DetectableTarget CurrentTarget;
+    //DetectableTarget CurrentTarget;
     int CurrentPriority = 0;
     public bool canRun = true;
     public override void OnTickGoal()
@@ -22,7 +22,7 @@ public class Goal_Investagate : Goal_Base
     {
         base.OnGoalDeactivated();
 
-        CurrentTarget = null;
+        //CurrentTarget = null;
     }
 
     public override int CalculatePriority()
