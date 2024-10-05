@@ -16,13 +16,14 @@ public class Angry : MonoBehaviour
     Goal_Attack_W attackW;
     Goal_Chase_W chaseW;
     Goal_Stalk_W stalkW;
+    Goal_Investagate_W investagateW;
     private bool isAngry; 
 
     private void Awake()
     {
         planner = GetComponent<GOAPPlanner>();
 
-        
+        investagateW = GetComponent<Goal_Investagate_W>();
         attack = GetComponent<Goal_Attack>(); 
         chase = GetComponent<Goal_Chase>();
         attackW = GetComponent<Goal_Attack_W>();
@@ -33,7 +34,7 @@ public class Angry : MonoBehaviour
     private void Update()
     {
 
-        if (planner.ActiveGoal == attack || planner.ActiveGoal == chase|| planner.ActiveGoal == attackW || planner.ActiveGoal == chaseW)
+        if (planner.ActiveGoal == attack || planner.ActiveGoal == chase|| planner.ActiveGoal == attackW || planner.ActiveGoal == chaseW || planner.ActiveGoal == investagateW)
         {
             if (!isAngry) 
             {
@@ -45,12 +46,12 @@ public class Angry : MonoBehaviour
         {
 
                 BleuEye();
-                
-            
+            isAngry = false;
+
         }
         else
         {
-            if (isAngry) 
+            //if (isAngry) 
             {
                 NormalEye();
                 isAngry = false; 

@@ -306,8 +306,8 @@ public class RagdollLims : MonoBehaviour, IDamageble
     }
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     { 
-        goal_Stalk_W.prio -= 30;
         health.Damage( damage);
+        goal_Stalk_W.prio -= 30;
         if(health.Value <= 0)
         {
             TriggerRagdoll(direction, point);
@@ -330,8 +330,9 @@ public class RagdollLims : MonoBehaviour, IDamageble
         if(IsLeggDetached())
         {
             EnableRagdoll();
+            state = RagdollState.Ragdoll;
+           
         }
-        state = RagdollState.Ragdoll;
         getUpTimer = timeToGetUp;
     }
 

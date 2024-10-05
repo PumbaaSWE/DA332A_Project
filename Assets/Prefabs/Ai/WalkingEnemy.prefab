@@ -2249,7 +2249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8191
 --- !u!114 &9069964867767883110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2432,7 +2432,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   climer: 0
-  SearchRange: 10
 --- !u!114 &2020608455981816851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2446,7 +2445,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   climer: 0
-  SearchRange: 10
+  SearchRange: 15
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  target: {fileID: 4841743169882539351, guid: 7585016485698a6458b3f50bf1f855c8, type: 3}
 --- !u!114 &1246999753027606546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2524,7 +2525,6 @@ MonoBehaviour:
   climber: 0
   priority: 35
   MinAwarenessToChase: 0.7
-  AwarenessToStopChase: 0.5
 --- !u!114 &5441933533429877689
 MonoBehaviour:
   m_ObjectHideFlags: 0

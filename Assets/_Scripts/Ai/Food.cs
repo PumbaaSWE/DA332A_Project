@@ -39,7 +39,7 @@ public class Food : MonoBehaviour
     //    {
     //        enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-    //        ActivateEnemies();
+    //        Spawners();
     //    }
     //    else if (collision.collider.CompareTag("Enemy"))
     //    {

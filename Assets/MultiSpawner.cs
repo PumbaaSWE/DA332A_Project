@@ -33,4 +33,13 @@ public class MultiSpawner : MonoBehaviour
             }
         }
     }
+
+    public void Spawn()
+    {
+        foreach (Spawner spawner in spawners)
+        {
+            //spawner.blockedBehaviour = Spawner.BlockedBehaviour.ForceSpawn;
+            spawner.SpawnImmidiate();
+        }
+    }
 }
