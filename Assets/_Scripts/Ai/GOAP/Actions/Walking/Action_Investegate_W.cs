@@ -9,6 +9,7 @@ public class Action_Investegate_W : Action_Base
 
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Investagate_W) });
     int cost = 0;
+    Goal_Investagate_W goal;
     public override List<System.Type> GetSupportedGoals()
     {
         return SupportedGoals;
@@ -33,13 +34,24 @@ public class Action_Investegate_W : Action_Base
     {
         base.OnActivated(linkedGoal);
 
-
+        goal = (Goal_Investagate_W)LinkedGoal;
 
         agent.MoveTo(Sensors.soundLocation);
     }
 
     public override void OnTick()
     {
+        Vector3 directionToPlayer = (Sensors.soundLocation - agent.transform.position).normalized;
+        float distanceToSound = Vector3.Distance(Sensors.soundLocation, agent.transform.position);
+
+        if (distanceToSound < 5f)
+        {
+            goal.priority = 0;
+        }
+        else
+        {
+            goal.priority = 40;
+        }
         // arrived at destination?
         if (agent.AtDestination)
             OnActivated(LinkedGoal);
