@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Goal_Idle_W : Goal_Base
 {
-    [SerializeField] int Priority = 10;
+    public int Priority = 10;
     public override int CalculatePriority()
     {
         return Priority;
