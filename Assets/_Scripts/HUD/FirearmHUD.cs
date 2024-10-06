@@ -45,8 +45,8 @@ public class FirearmHUD : MonoBehaviour
     {
         if (weaponHandler)
         {
-            loadedAmmo.text = weaponHandler.GetAmmoCount().ToString();
-            reserveAmmo.text = $"/  {weaponHandler.GetMagazineCount().ToString()}";
+            loadedAmmo.text = weaponHandler.GetMagazineCount().ToString();
+            reserveAmmo.text = $"/  {weaponHandler.GetAmmoCount().ToString()}";
         }
         else
         {
