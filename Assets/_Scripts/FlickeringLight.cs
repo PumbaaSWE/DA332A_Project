@@ -9,7 +9,7 @@ public class FlickeringLight : MonoBehaviour
     [SerializeField] int MinFlickers, MaxFlickers;
     [SerializeField] Material OnMaterial, OffMaterial;
     [SerializeField] List<Light> Lights;
-    bool IsOn;
+    [SerializeField] bool IsOn;
     [SerializeField] bool FlickerOnStartup = true;
     [SerializeField] bool Burnout = false;
     [SerializeField] int IntervalsLeft;
@@ -17,6 +17,9 @@ public class FlickeringLight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GetComponent<Renderer>().material == OnMaterial)
+            IsOn = true;
+
         if (FlickerOnStartup)
             StartCoroutine(Flicker());
     }
@@ -81,5 +84,11 @@ public class FlickeringLight : MonoBehaviour
     public void Toggle()
     {
         Toggle(!IsOn);
+    }
+
+    public void InstantBurnout()
+    {
+        StopAllCoroutines();
+        Toggle(false);
     }
 }
