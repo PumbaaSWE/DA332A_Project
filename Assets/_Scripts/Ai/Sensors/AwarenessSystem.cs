@@ -101,12 +101,12 @@ public class AwarenessSystem : MonoBehaviour
 
     public Dictionary<GameObject, Trackedtarget> ActiveTargets => targets;
 
-    //FSM fsm;
+    FSM fsm;
     //CharacterAgent characterAgent;
     void Start()
     {
         //characterAgent = GetComponent<CharacterAgent>();
-        //fsm = GetComponent<FSM>();
+        fsm = GetComponent<FSM>();
         linkedAI = GetComponent<EnemyAI>();
     }
 
@@ -191,14 +191,14 @@ public class AwarenessSystem : MonoBehaviour
         UpdateAwarness(source, null, location, awareness, hearingMinimumAwareness);
         if(category == EHeardSoundCategory.EGunshot)
         {
-            //fsm.HeardSomthing(location);
             soundLocation = location;
+            fsm.HeardSomthing(location);
             UpdateAwarness(source, null, location, awareness, 1);
         }
         if(intensity > 0.7f || awareness > 0.4f)
         {
             soundLocation = location;
-            //fsm.HeardSomthing(location);
+            fsm.HeardSomthing(location);
         }
        
        
