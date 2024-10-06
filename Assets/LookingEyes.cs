@@ -45,7 +45,7 @@ public class LookingEyes : MonoBehaviour
 
         if(dir.sqrMagnitude < 25)
         {
-            Debug.Log("player to close in the area");
+            //Debug.Log("player to close in the area");
             enabled = false;
             slide.SlideToStart();
             StartCoroutine(SetActiveDelay(1));
@@ -60,7 +60,7 @@ public class LookingEyes : MonoBehaviour
         }
         if(Physics.CheckSphere(eyeHead.position, 20, layerMask))
         {
-            Debug.Log("flares in the area");
+            //Debug.Log("flares in the area");
             enabled = false;
             slide.SlideToStart();
             StartCoroutine(SetActiveDelay(1));
