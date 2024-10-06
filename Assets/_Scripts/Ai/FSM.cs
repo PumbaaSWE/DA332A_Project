@@ -125,8 +125,8 @@ public class FSM : MonoBehaviour
         {
             case AgentHit.Normal:
 
-
-
+                //characterController.height = 1.76f;
+                
                 SynchronizeAnimatorAndAgent();
 
 
@@ -148,7 +148,7 @@ public class FSM : MonoBehaviour
                 //}
                 break;
             case AgentHit.Crawl:
-
+                //characterController.height = 0.05f;
                 HandleCrawling();
 
                 break;
@@ -193,12 +193,12 @@ public class FSM : MonoBehaviour
         agent.enabled = active;
         if (active)
         {
-            characterController.height = 1.76f;
+            //characterController.height = 1.76f;
             agent.isStopped = false;
         }
         else if (!active)
         {
-            characterController.height = 0.1f;
+            //characterController.height = 0.05f;
             isCrawling = true;
             animator.SetBool("crawl", true);
             animator.Play("Base Layer.Crawl");
@@ -240,7 +240,7 @@ public class FSM : MonoBehaviour
     private void InvestegateBehavior()
     {
         MoveTo(soundLocation);
-        Debug.Log("investegate");
+       
     }
     public Vector3 PickLocationInRange(float range)
     {
@@ -382,7 +382,7 @@ public class FSM : MonoBehaviour
         }
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && agent.remainingDistance > agent.stoppingDistance;
-
+        animator.SetBool("crawl", false);
         if (run)
         {
             animator.SetBool("move", shouldMove);
@@ -433,7 +433,6 @@ public class FSM : MonoBehaviour
    
     private void AttackBehaviour()
     {
-        
         if (!currentTarget.transform)
         {
             //swap state?

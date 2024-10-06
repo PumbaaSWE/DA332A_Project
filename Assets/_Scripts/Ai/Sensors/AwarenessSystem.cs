@@ -98,7 +98,7 @@ public class AwarenessSystem : MonoBehaviour
 
     Dictionary<GameObject, Trackedtarget> targets = new Dictionary<GameObject, Trackedtarget>();
     EnemyAI linkedAI;
-
+    Vector3 targ;
     public Dictionary<GameObject, Trackedtarget> ActiveTargets => targets;
 
     FSM fsm;
@@ -158,19 +158,25 @@ public class AwarenessSystem : MonoBehaviour
             if (targets[targetGO].Awarness >= 2f)
             {
                 linkedAI.OnFullyDetected(targetGO);
+                targ = position;
             }
             else if (targets[targetGO].Awarness >= 1f)
             {
                 linkedAI.OnDetected(targetGO);
+                targ = position;
             }
             else
             {
+                targ = Vector3.zero;
                 linkedAI.OnSuspicious();
             }
             // Debug.Log("Threshold change for" + targetGO.name + " " + targets[targetGO].Awarness);
         }
     }
-
+    public Vector3 GetSoundPos()
+    {
+        return targ;
+    }
     public void ReportCanSee(DetectableTarget seen)
     {
 
@@ -192,13 +198,13 @@ public class AwarenessSystem : MonoBehaviour
         if(category == EHeardSoundCategory.EGunshot)
         {
             soundLocation = location;
-            fsm.HeardSomthing(location);
+            //fsm.HeardSomthing(location);
             UpdateAwarness(source, null, location, awareness, 1);
         }
         if(intensity > 0.7f || awareness > 0.4f)
         {
             soundLocation = location;
-            fsm.HeardSomthing(location);
+            //fsm.HeardSomthing(location);
         }
        
        
