@@ -503,7 +503,7 @@ public class FSM : MonoBehaviour
                 if (!wasGrounded)
                 {
                     //agent.nextPosition = transform.position;
-                    Debug.Log("Warping!!!!!!!!!!!");
+                    //Debug.Log("Warping!!!!!!!!!!!");
                     agent.Warp(transform.position);
                 }
                 else

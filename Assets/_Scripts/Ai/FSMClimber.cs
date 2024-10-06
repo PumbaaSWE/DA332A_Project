@@ -105,6 +105,7 @@ public class FSMClimber : MonoBehaviour
     {
         Found();
         CheckIfAIsAboveAndFar();
+        //HeardSomthing();
         //if(hasReachedDestination)
         //{
         //    agentState = AgentState.Idle;
@@ -268,6 +269,7 @@ public class FSMClimber : MonoBehaviour
               UpdateStatePatrolling();
                 break;
             case AgentState.Investegate:
+               
                 InvestegateBehavior();
                 break;
             case AgentState.Chasing:
@@ -326,20 +328,34 @@ public class FSMClimber : MonoBehaviour
         //}
    
     }
-    public void HeardSomthing(Vector3 location)
+    public void HeardSomthing(Vector3 loc)
     {
-        if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
+        if (soundLocation != Vector3.zero)
         {
-            soundLocation = location;
-            agentState = AgentState.Investegate;
-            // 
-            //MoveTo(location);
+            if (agentState != AgentState.Attacking || agentState != AgentState.Chasing || agentState != AgentState.Jump)
+            {
+
+                agentState = AgentState.Investegate;
+               if (atDestination) 
+                    {
+                    MoveTo(loc, false);
+
+                }
+               
+            }
+
         }
+       
 
     }
     private void InvestegateBehavior()
     {
-        MoveTo(soundLocation, false);
+        if (atDestination)
+        {
+           
+            MoveTo(soundLocation, false);
+        }
+       
     
     }
 
@@ -351,7 +367,11 @@ public class FSMClimber : MonoBehaviour
 
             if (!transform.position.InRangeOf(currentTarget.transform.position, minAttackRange))
             {
-                MoveTo(currentTarget.transform.position, false);
+                if (atDestination)
+                {
+                    MoveTo(currentTarget.transform.position, false);
+                }
+             
                 //agent.SetDestination(currentTarget.transform.position);
             }
             if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
@@ -394,7 +414,7 @@ public class FSMClimber : MonoBehaviour
 
         Vector3 adjustedTargetPosition = new Vector3(
        player.PlayerTransform.position.x,               
-       player.PlayerTransform.position.y ,          
+       player.PlayerTransform.position.y -1,          
        player.PlayerTransform.position.z              
    );
 
@@ -405,7 +425,7 @@ public class FSMClimber : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, player.PlayerTransform.position) < 0.1f)
+        if (Vector3.Distance(transform.position, player.PlayerTransform.position) < 0.3f)
         {
             animator.SetBool("Jump", false);
             ragController.EnableRagdoll();

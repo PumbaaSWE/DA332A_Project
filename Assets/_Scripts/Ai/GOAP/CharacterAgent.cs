@@ -278,7 +278,7 @@ public class CharacterAgent : CharacterBase
         }
         else
         {
-            animator.SetBool("Jog", shouldMove);
+            animator.SetBool("jog", shouldMove);
             animator.SetBool("crawl", false);
             animator.SetFloat("vely", agent.velocity.magnitude);
         }
