@@ -81,6 +81,9 @@ public class WeaponHandler : MonoBehaviour
     /// <returns>Reserve ammo for current gun</returns>
     public int GetAmmoCount()
     {
+        if (EquippedGun == null)
+            return 0;
+
         if (!AmmoPool.ContainsKey(EquippedGun.AmmoType))
             return 0;
 
