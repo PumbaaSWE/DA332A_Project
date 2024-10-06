@@ -45,6 +45,7 @@ public class FSM : MonoBehaviour
     public bool isCrawling;
     Vector3 soundLocation;
     CharacterController characterController;
+    public bool run;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -197,7 +198,7 @@ public class FSM : MonoBehaviour
         }
         else if (!active)
         {
-            characterController.height = 0.2f;
+            characterController.height = 0.1f;
             isCrawling = true;
             animator.SetBool("crawl", true);
             animator.Play("Base Layer.Crawl");
@@ -382,7 +383,15 @@ public class FSM : MonoBehaviour
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && agent.remainingDistance > agent.stoppingDistance;
 
-        animator.SetBool("move", shouldMove);
+        if (run)
+        {
+            animator.SetBool("move", shouldMove);
+        }
+        else
+        {
+            animator.SetBool("jog", shouldMove);
+        }
+
 
 
         //this does nothing FIX!!!!
@@ -454,10 +463,19 @@ public class FSM : MonoBehaviour
 
     public void Attack()
     {
+        if (agentStatehit == AgentHit.Crawl)
+        {
+            animator.Play("Base Layer.Crawl");
+            StartCoroutine(CrawlAttackCooldown(.5f)); //wait for animation to end instead?
+        }
         animator.SetInteger("Attack", Random.Range(1, 4));
         StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
     }
-
+    private IEnumerator CrawlAttackCooldown(float t)
+    {
+        yield return new WaitForSeconds(t);
+        animator.SetBool("CrawlAttack", true);
+    }
     private IEnumerator AttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
