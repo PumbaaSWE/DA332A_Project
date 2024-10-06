@@ -223,37 +223,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraView: {fileID: 0}
-  ShotOrigin: {fileID: 0}
+  Damage: 50
+  RPM: 600
+  MaxRange: 100
+  ProjectilesPerShot: 1
+  Firing: 0
+  VerticalRecoil: 1.3
+  MinHorizontalRecoil: -0.5
+  MaxHorizontalRecoil: 0.5
+  RecoilDuration: 0.1
+  ImpulseDuration: 0
   LoadedAmmo: 0
   MagazineSize: 30
   ReserveAmmo: 300
   MaxReserveAmmo: 300
-  RPM: 600
-  VerticalRecoil: 1.3
-  MinHorizontalRecoil: -0.5
-  MaxHorizontalRecoil: 0.5
-  AdsZoom: 1.5
-  OriginalFov: 0
-  Damage: 50
-  MaxRange: 100
-  ProjectilesPerShot: 1
+  RoundInTheChamber: 1
+  AutoReload: 0
+  ProportionalAmmoConsumption: 0
+  UseLocalAmmoPool: 0
   HipFireSpread: 0
   MinHipFireSpread: 2
   MaxHipFireSpread: 6
   HipFireGain: 0.5
   HipFireDecay: 2
   AdsSpread: 1
-  RecoilDuration: 0.1
-  RecoilImpulse: {x: 0, y: 0}
-  ImpulseDuration: 0
-  RoundInTheChamber: 1
-  AutoReload: 0
-  ProportionalAmmoConsumption: 0
-  UseLocalAmmoPool: 0
-  IndividualReloading: 0
+  AdsTime: 0.5
+  AdsZoom: 1.5
   UseAdsSpread: 0
   Ads: 0
+  CanAds: 1
   ShootableLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -262,7 +260,9 @@ MonoBehaviour:
   CurrentMode: 2
   AvailableModes: 0200000000000000
   AmmoType: 0
-  Handler: {fileID: 0}
+  WHandler: {fileID: 0}
+  RHandler: {fileID: 0}
+  DropPrefab: {fileID: 0}
 --- !u!1 &6615547172542173099
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,37 +545,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraView: {fileID: 0}
-  ShotOrigin: {fileID: 0}
+  Damage: 50
+  RPM: 600
+  MaxRange: 100
+  ProjectilesPerShot: 1
+  Firing: 0
+  VerticalRecoil: 1.3
+  MinHorizontalRecoil: -0.5
+  MaxHorizontalRecoil: 0.5
+  RecoilDuration: 0.1
+  ImpulseDuration: 0
   LoadedAmmo: 0
   MagazineSize: 30
   ReserveAmmo: 300
   MaxReserveAmmo: 300
-  RPM: 600
-  VerticalRecoil: 1.3
-  MinHorizontalRecoil: -0.5
-  MaxHorizontalRecoil: 0.5
-  AdsZoom: 1.5
-  OriginalFov: 0
-  Damage: 50
-  MaxRange: 100
-  ProjectilesPerShot: 1
+  RoundInTheChamber: 1
+  AutoReload: 0
+  ProportionalAmmoConsumption: 0
+  UseLocalAmmoPool: 0
   HipFireSpread: 0
   MinHipFireSpread: 2
   MaxHipFireSpread: 6
   HipFireGain: 0.5
   HipFireDecay: 2
   AdsSpread: 1
-  RecoilDuration: 0.1
-  RecoilImpulse: {x: 0, y: 0}
-  ImpulseDuration: 0
-  RoundInTheChamber: 1
-  AutoReload: 0
-  ProportionalAmmoConsumption: 0
-  UseLocalAmmoPool: 0
-  IndividualReloading: 0
+  AdsTime: 0.5
+  AdsZoom: 1.5
   UseAdsSpread: 0
   Ads: 0
+  CanAds: 1
   ShootableLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -584,7 +582,10 @@ MonoBehaviour:
   CurrentMode: 2
   AvailableModes: 0200000000000000
   AmmoType: 0
-  Handler: {fileID: 0}
+  WHandler: {fileID: 0}
+  RHandler: {fileID: 0}
+  DropPrefab: {fileID: 7904471523466938192, guid: 6a7a7fe66c2adfd4483fb27d273a0a8b,
+    type: 3}
 --- !u!95 &9142123936652681233
 Animator:
   serializedVersion: 5

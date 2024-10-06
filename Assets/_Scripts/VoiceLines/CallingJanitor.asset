@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48a749e926386640b88e450106a9604, type: 3}
+  m_Name: CallingJanitor
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 73106e16e7169934c855623c5ad4727f, type: 3}
+  subtitle: "Calling janitor to reception\r"
+  time: 3
+  color: {r: 1, g: 1, b: 1, a: 1}
+  preconditions:
+  - blackboardEntry: GeneratorOn
+  effects:
+  - blackboardEntry: GeneratorOnWoop
+    eventTimeNormalized: 1
+  - blackboardEntry: GeneratorOnEy
+    eventTimeNormalized: 0

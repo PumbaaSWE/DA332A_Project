@@ -43,17 +43,17 @@ public class Action_Shoot : Action_Base
     {
         base.OnActivated(linkedGoal);
         attackGoal = (Goal_RangedAttack)LinkedGoal;
-       // Vector3 location = Agent.PickCoverInRange(SearchCoverRange);
-        //Debug.Log("agent pos" + Agent.transform.position);
+       // Vector3 location = climberAgent.PickCoverInRange(SearchCoverRange);
+        //Debug.Log("agent pos" + climberAgent.transform.position);
         //Debug.Log("cover pos" + location);
-        //Agent.MoveTo(location);
+        //climberAgent.MoveTo(location);
 
     }
 
     public override void OnTick()
     {
    
-        Agent.SetLookDirection(attackGoal.AttackTarget);
+        climberAgent.SetLookDirection(attackGoal.AttackTarget);
 
       
         if (rangeWeapon != null && attackGoal != null)

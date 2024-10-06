@@ -7,52 +7,46 @@ public class AmmoBox : MonoBehaviour, IInteractable
     public string InteractedTooltip { get; private set; }
     public int displayPriority { get; private set; }
     public float tipDisplayTime { get; private set; }
-
     public bool CanInteract => true;
     public bool ShowInteractMessage { get { return InteractedTooltip != string.Empty; } }
     public int InteractedDisplayPriority => displayPriority;
     public float InteractedTipDisplayTime => tipDisplayTime;
 
+    public Cartridgetype AmmoType;
+    public int Ammo;
+
     public void Interact(Transform interactor)
     {
-        Firearm firearm = interactor.GetComponentInChildren<Firearm>();
-        if (firearm)
-        {
-            if(firearm.ReserveAmmo == firearm.MaxReserveAmmo)
-            {
-                return;
-            }
-            firearm.ReserveAmmo = Math.Min(firearm.ReserveAmmo + 100, firearm.MaxReserveAmmo);
-            Destroy(gameObject);
-        }
+        interactor.GetComponent<WeaponHandler>().AddAmmo(AmmoType, Ammo);
+        Destroy(gameObject);
     }
 
     public void SpeculateInteract(Transform interactor)
     {
-        
-        Firearm firearm = interactor.GetComponentInChildren<Firearm>();
-        if (firearm)
+        switch(AmmoType)
         {
-            if (firearm.ReserveAmmo == firearm.MaxReserveAmmo)
-            {
-                //TooltipUtil.Display("Ammo full", 2);
-                Tooltip = "Ammo full";
-                return;
-            }
-            Tooltip = "Press {0} to pickup 100 ammo";
+            case Cartridgetype.Rifle:
+                Tooltip = "Pickup Rifle Bullets";
+                break;
+            case Cartridgetype.Pistol:
+                Tooltip = "Pickup Pistol Bullets";
+                break;
+            case Cartridgetype.ShotgunShell:
+                Tooltip = "Pickup Shotgun Shells";
+                break;
         }
-        
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        //Firearm firearm = interactor.GetComponentInChildren<Firearm>();
+        //if (firearm)
+        //{
+        //    if (firearm.ReserveAmmo == firearm.MaxReserveAmmo)
+        //    {
+        //        //TooltipUtil.Display("Ammo full", 2);
+        //        Tooltip = "Ammo full";
+        //        return;
+        //    }
+        //    Tooltip = "Press {0} to pickup 100 ammo";
+        //}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

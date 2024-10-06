@@ -26,47 +26,60 @@ public class Action_Stalk : Action_Base
     {
         base.OnActivated(linkedGoal);
         stalkGoal = (Goal_Stalk)LinkedGoal;
-        MoveOrRetreat();
+        if (climer)
+        {
+
+            MoveOrRetreat();
+        }
     }
 
     public override void OnTick()
     {
-        if (Agent.AtDestination)
+        if (climer)
         {
-            FacePlayer();
-            MoveOrRetreat(); 
+            if (climberAgent.AtDestination)
+            {
+                FacePlayer();
+                MoveOrRetreat();
+            }
         }
+        
     }
 
     private void MoveOrRetreat()
     {
-        float distanceToPlayer = Vector3.Distance(Agent.transform.position, stalkGoal.MoveTarget);
+        float distanceToPlayer = Vector3.Distance(climberAgent.transform.position, stalkGoal.MoveTarget);
         if (distanceToPlayer < SearchRange)
         {
-            Vector3 directionAwayFromPlayer = (Agent.transform.position - stalkGoal.MoveTarget).normalized;
-            Vector3 retreatPosition = Agent.transform.position + directionAwayFromPlayer * RetreatDistance;
+            Vector3 directionAwayFromPlayer = (climberAgent.transform.position - stalkGoal.MoveTarget).normalized;
+            Vector3 retreatPosition = climberAgent.transform.position + directionAwayFromPlayer * RetreatDistance;
 
-            Agent.MoveTo(retreatPosition); 
+            climberAgent.MoveTo(retreatPosition, true);
         }
-    
+
         else
         {
-            Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
+            Vector3 directionToPlayer = (stalkGoal.MoveTarget - climberAgent.transform.position).normalized;
             Vector3 targetPosition = stalkGoal.MoveTarget - directionToPlayer * SearchRange;
 
-            Agent.MoveTo(targetPosition); 
+            climberAgent.MoveTo(targetPosition, true);
         }
     }
 
     private void FacePlayer()
     {
-        Vector3 directionToPlayer = (stalkGoal.MoveTarget - Agent.transform.position).normalized;
-        directionToPlayer.y = 0; 
+        Vector3 directionToPlayer = (stalkGoal.MoveTarget - climberAgent.transform.position).normalized;
+        directionToPlayer.y = 0;
 
         if (directionToPlayer != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-            Agent.transform.rotation = Quaternion.Slerp(Agent.transform.rotation, lookRotation, Time.deltaTime * 5f);
+            climberAgent.transform.rotation = Quaternion.Slerp(climberAgent.transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
     }
+
+    
+
+
+
 }

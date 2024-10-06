@@ -21,7 +21,7 @@ public class Flashlight : MonoBehaviour
         //InputBinding binding 
         key = "[" + action.bindings.First().ToDisplayString() + "]";
         m_light = GetComponent<Light>();
-        StartCoroutine(TooltipTest());
+        //StartCoroutine(TooltipTest());
         m_light.enabled = false;
     }
 
@@ -40,6 +40,7 @@ public class Flashlight : MonoBehaviour
         {
             m_light.enabled = !m_light.enabled;
             lightHasBeenOn = true;
+            Blackboard.Instance.Set("lightHasBeenOn", true);
         }
     }
 }

@@ -13,7 +13,7 @@ public interface IGoal
 }
 public class Goal_Base : MonoBehaviour, IGoal
 {
-    public bool noNav;
+    public bool climber;
     protected MoveTowardsController controller; 
 
     protected CharacterAgent Agent;
@@ -24,9 +24,17 @@ public class Goal_Base : MonoBehaviour, IGoal
     protected RagdollController ragdoll;
     void Awake()
     {
-
-        ragdoll = GetComponent <RagdollController>();
-        controller = GetComponent<MoveTowardsController>();
+        if(climber)
+        {
+            controller = GetComponent<MoveTowardsController>();
+            ragdoll = GetComponent<RagdollController>();
+        }
+        else
+        {
+            Agent = GetComponent<CharacterAgent>();
+        }
+       
+      
         
 
         Sensors = GetComponent<AwarenessSystem>();

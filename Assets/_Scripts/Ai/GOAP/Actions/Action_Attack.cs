@@ -13,12 +13,12 @@ public class Action_Attack : Action_Base
     List<System.Type> SupportedGoals = new List<System.Type>(new System.Type[] { typeof(Goal_Attack) });
     Goal_Attack attackGoal;
     float attckTimer;
+
     [SerializeField] Transform target;
     public PlayerDataSO player;
-    public ParticleSystem attackParticles;
     private void Start()
     {
-        player.NotifyOnPlayerChanged(OnPlayer); ;
+        player.NotifyOnPlayerChanged(OnPlayer); 
     }
     private void OnDestroy()
     {
@@ -49,14 +49,19 @@ public class Action_Attack : Action_Base
     {
         base.OnActivated(linkedGoal);
         attackGoal = (Goal_Attack)LinkedGoal;
-        animator.SetBool("Attack", true);
+        if(climer)
+        {
+            animator.SetBool("Attack", true);
+        }
         
     }
     public override void OnDeactivated()
     {
         base.OnDeactivated();
-
-        animator.SetBool("Attack", false);
+        if(climer)
+        {
+            animator.SetBool("Attack", false);
+        }
     }
     //private IEnumerator AttackCooldown(float t)
     //{
@@ -71,37 +76,36 @@ public class Action_Attack : Action_Base
     //}
     public override void OnTick()
     {
-        //if (!noNav)
-        //{
-        //    agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
-        //}
-        //else
+        if (!climer)
+        {
+            agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+            DoDmg(1.4f);
+        }
+        else
         {
 
-            Agent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
-
+            climberAgent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
+            //DoDmg(1.35f);
             //StartCoroutine(AttackCooldown(.5f));
+        }
+       
+    }
 
-            Vector3 targetDelta = target.position - transform.position;
-            attckTimer -= Time.deltaTime;
-            if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+    void DoDmg(float attackTime)
+    {
+        Vector3 targetDelta = target.position - transform.position;
+        attckTimer -= Time.deltaTime;
+        if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+        {
+
+            //Debug.Log("Attack!!");
+            if (target.TryGetComponent(out IDamageble damageble))
             {
-                if (attackParticles != null)
-                {
-                    var main = attackParticles.main;
-                    main.startSize = 1.5f;  
-                    main.startColor = Color.red;
-                    attackParticles.Play();
-                }
-
-                //Debug.Log("Attack!!");
-                if (target.TryGetComponent(out IDamageble damageble))
-                {
-                    damageble.TakeDamage(transform.position, targetDelta, 15);
-                    attckTimer = 1.4f;
-                    //Debug.Log("Do damage!!");
-                }
+                damageble.TakeDamage(transform.position, targetDelta, 15);
+                attckTimer = attackTime;
+                //Debug.Log("Do damage!!");
             }
         }
+
     }
 }

@@ -17,7 +17,7 @@ public class DestroyabaleItem : MonoBehaviour
     {
         health -= damage;
         
-        ChangeColor();
+        //ChangeColor();
         if(health <= 0f)
         {
             Break();

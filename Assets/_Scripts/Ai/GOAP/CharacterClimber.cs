@@ -25,6 +25,8 @@ public class CharacterClimber : CharacterBase
 
     public Vector3 LookDirection;
     public Transform LookPoint;
+    Vector3 avoidThis;
+    bool avoidPlayer;
 
     public bool IsMoving => controller.wallClimber.Speed > float.Epsilon;
     public bool AtDestination => ReachedDestination;
@@ -41,6 +43,22 @@ public class CharacterClimber : CharacterBase
     private Vector3 lastPosition;
     private float idleTime = 0f;
     private float idleThreshold = 0.8f;
+    [SerializeField] Transform target;
+    public PlayerDataSO player;
+   
+    private void OnDestroy()
+    {
+        player.UnsubscribeOnPlayerChanged(OnPlayer);
+    }
+    private void OnPlayer(Transform obj)
+    {
+        target = obj;
+        if (target)
+        {
+
+            //do if not null
+        }
+    }
     private void Awake()
     {
         controller = GetComponent<MoveTowardsController>();
@@ -54,7 +72,7 @@ public class CharacterClimber : CharacterBase
     protected override void Start()
     {
         base.Start();
-      
+        player.NotifyOnPlayerChanged(OnPlayer);
         linkedAI = GetComponent<EnemyAI>();
     }
  
@@ -121,29 +139,41 @@ public class CharacterClimber : CharacterBase
 
     private IEnumerator FollowNavMeshPath(NavMeshPath path)
     {
+        
+
         for (int i = 1; i < path.corners.Length; i++)
         {
             Vector3 corner = path.corners[i];
-          //Debug.Log("Moving to corner " + i);
-    
+
+            
+            float currentDistanceToThreat = Vector3.Distance(transform.position, player.PlayerTransform.position);
+            float cornerDistanceToThreat = Vector3.Distance(corner, player.PlayerTransform.position);
+
+            // Kontrollera om detta hörn skulle leda till att karaktären kommer närmare spelaren
+            if (cornerDistanceToThreat < currentDistanceToThreat && avoidPlayer == true)
+            {
+                Debug.Log("This corner brings the character closer to the player. Stopping movement.");
+                yield break; 
+            }
+
             NavMeshHit hit;
             if (NavMesh.SamplePosition(corner, out hit, 1f, NavMesh.AllAreas))
             {
                 int areaMask = hit.mask;
-
             }
 
-     
             controller.SetTarget(corner);
 
+            // Vänta tills karaktären når hörnet innan vi går vidare till nästa hörn
             while (Vector3.Distance(transform.position, corner) > controller.stoppingDistance + 0.1f)
             {
-                yield return new WaitForSeconds(0.1f);  
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
 
-   
+
+
     private bool IsAtDestination()
     {
         float sqrDistanceToDestination = (transform.position - controller.point).sqrMagnitude;
@@ -188,10 +218,11 @@ public class CharacterClimber : CharacterBase
         }
     }
 
-    public virtual void MoveTo(Vector3 destination)
+    public virtual void MoveTo(Vector3 destination, bool avoidPlayer)
     {
         CancelCurrentCommand();
         SetDestination(destination);
+       
     }
 
     public virtual void SetDestination(Vector3 destination)

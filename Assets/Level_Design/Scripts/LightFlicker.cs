@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-//please work
 public class LightFlicker : MonoBehaviour
 {
     public Light myLight;
@@ -12,14 +13,21 @@ public class LightFlicker : MonoBehaviour
     float timer;
     float delay;
 
-    private void Start()
+    void Start()
     {
-        if(!myLight) myLight = GetComponent<Light>();
+        myLight = GetComponent<Light>();
         defaultIntensity = myLight.intensity;
+
+
+        //
     }
 
     void Update()
     {
+        if (myLight == null)
+        {
+            return;
+        }
         timer += Time.deltaTime;
         if (timer > delay)
         {

@@ -52,7 +52,7 @@ public class Action_FindFood : Action_Base
             {
               
                 
-                    Agent.MoveTo(closestFood.transform.position);
+                    climberAgent.MoveTo(closestFood.transform.position, false);
                 
             }
             else
@@ -64,8 +64,8 @@ public class Action_FindFood : Action_Base
         else
         {
            
-                Vector3 location = Agent.PickLocationInRange(SearchRange);
-                Agent.MoveTo(location);
+                Vector3 location = climberAgent.PickLocationInRange(SearchRange);
+                climberAgent.MoveTo(location, false);
             
 
            
@@ -76,7 +76,7 @@ public class Action_FindFood : Action_Base
     {
         timeSpentAtDestination += Time.deltaTime;
        
-            if (Agent.AtDestination)
+            if (climberAgent.AtDestination)
             {
                 OnActivated(LinkedGoal);
             }
@@ -98,8 +98,8 @@ public class Action_FindFood : Action_Base
 
         
         
-            Vector3 location = Agent.PickLocationInRange(SearchRange);
-            Agent.MoveTo(location);
+            Vector3 location = climberAgent.PickLocationInRange(SearchRange);
+            climberAgent.MoveTo(location, false);
         
 
         timeSpentAtDestination = 0f;

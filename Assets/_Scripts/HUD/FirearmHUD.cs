@@ -4,14 +4,14 @@ using UnityEngine;
 public class FirearmHUD : MonoBehaviour
 {
     PlayerDataSO playerData;
-    Firearm firearm;
+    WeaponHandler weaponHandler;
     [SerializeField] TMP_Text loadedAmmo;
     [SerializeField] TMP_Text reserveAmmo;
 
 
-    public void SetFirearm(Firearm firearm)
+    public void SetFirearm(WeaponHandler weaponHandler)
     {
-        this.firearm = firearm;
+        this.weaponHandler = weaponHandler;
     }
 
 
@@ -26,7 +26,7 @@ public class FirearmHUD : MonoBehaviour
         //{
         //    playerData = FindAnyObjectByType<PlayerDataSO>();
         //}
-        if (!firearm && playerData)
+        if (!weaponHandler && playerData)
         {
             FindEquippedFireArm();
         }
@@ -35,7 +35,7 @@ public class FirearmHUD : MonoBehaviour
     {
         Transform playerParent = playerData.PlayerTransform;
         if (playerParent != null) {
-            firearm = playerParent.GetComponentInChildren<Firearm>();
+            weaponHandler = playerParent.GetComponent<WeaponHandler>();
             //TooltipUtil.Display("Press left click to shoot", 10.0f);
         }
     }
@@ -43,10 +43,14 @@ public class FirearmHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (firearm)
+        if (weaponHandler)
         {
-            loadedAmmo.text = firearm.LoadedAmmo.ToString();
-            reserveAmmo.text = $"/  {firearm.ReserveAmmo.ToString()}";
+            loadedAmmo.text = weaponHandler.GetMagazineCount().ToString();
+            reserveAmmo.text = $"/  {weaponHandler.GetAmmoCount().ToString()}";
+        }
+        else
+        {
+            FindEquippedFireArm();
         }
     }
 }

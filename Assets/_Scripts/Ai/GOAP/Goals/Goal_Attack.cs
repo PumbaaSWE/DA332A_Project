@@ -79,7 +79,7 @@ public class Goal_Attack : Goal_Base
         // no targets
         if (Sensors.ActiveTargets == null || Sensors.ActiveTargets.Count == 0)
             return false;
-        //if (!Agent.isUpp)
+        //if (!climberAgent.isUpp)
         //{
         //    return false;
         //}
@@ -90,7 +90,7 @@ public class Goal_Attack : Goal_Base
             {
                 //if (IsPlayerLookingAtEnemy(candidate.rawPosition))
                 {
-                    if(noNav)
+                    if(climber)
                     {
                         if (Vector3.Distance(controller.transform.position, candidate.rawPosition) < attackRange)
                         {
