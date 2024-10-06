@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -39,6 +40,9 @@ public class ClimbController : MonoBehaviour
     [SerializeField] float speed;
 
     public Vector2 LookDelta { get; private set; }
+
+    public float Radius => radius;
+    public float CamOffset => camOffset;
 
     // inputs
     Vector2 look;
@@ -103,6 +107,10 @@ public class ClimbController : MonoBehaviour
         Rotate(look.y, look.x);
         LookDelta = Rotation() - preRot;
         look = Vector2.zero;
+
+        head.MatchUp(Vector3.Lerp(head.transform.up, transform.up, rotationSpeed * Time.deltaTime));
+
+        head.localRotation = Quaternion.Euler(head.localRotation.eulerAngles.WithY());
     }
 
     void Move(float dt)
@@ -162,6 +170,9 @@ public class ClimbController : MonoBehaviour
             float fwdVel = Vector3.Dot(velocity, transform.forward);
             float rghVel = Vector3.Dot(velocity, transform.right);
 
+            if (Vector3.Distance(transform.up, head.up) > 0.1f)
+                return snap;
+
             SetUp(hit.normal);
             velocity = transform.forward * fwdVel + transform.right * rghVel;
 
@@ -174,7 +185,9 @@ public class ClimbController : MonoBehaviour
 
     void SetUp(Vector3 direction)
     {
+        Vector3 headUp = head.transform.up;
         transform.MatchUp(direction);
+        head.MatchUp(headUp);
     }
 
     void Rotate(float x = 0f, float y = 0f)
@@ -186,12 +199,24 @@ public class ClimbController : MonoBehaviour
         if (head != null)
         {
             xRot -= x;
-            //xRot = Mathf.Clamp(xRot - x, minLookUpAngle, maxLookUpAngle);
-            head.localRotation = Quaternion.Euler(xRot, 0f, 0f);
+            xRot = Mathf.Clamp(xRot - x, minLookUpAngle, maxLookUpAngle);
+            Camera.main.transform.localRotation = Quaternion.Euler(xRot, 0, 0);
         }
     }
 
-    Vector2 Rotation()
+    public void SetRotation(float x, float y)
+    {
+        xRot = Mathf.Clamp(x, minLookUpAngle, maxLookUpAngle);
+        transform.rotation = Quaternion.Euler(0, y, 0);
+        Rotate();
+    }
+
+    public void SetVelocity(Vector3 newVel)
+    {
+        velocity = newVel;
+    }
+
+    public Vector2 Rotation()
     {
         return new Vector2(-xRot, transform.rotation.eulerAngles.y);
     }
@@ -206,6 +231,9 @@ public class ClimbController : MonoBehaviour
 
     public void Look(CallbackContext c)
     {
+        if (!enabled)
+            return;
+
         look += c.ReadValue<Vector2>();
     }
 
