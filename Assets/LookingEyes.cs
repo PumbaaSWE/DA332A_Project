@@ -7,7 +7,8 @@ public class LookingEyes : MonoBehaviour
     public PlayerDataSO playerData;
     public Transform eyeHead;
     public SlideObject slide;
-    public LayerMask layerMask;
+    public LayerMask throwableMask;
+    public float minflaresDist = 14;
     Player player;
     float timer;
     static readonly Collider[] colliders = new Collider[4];
@@ -58,7 +59,7 @@ public class LookingEyes : MonoBehaviour
             slide.SlideToStart();
             StartCoroutine(SetActiveDelay(1));
         }
-        if(Physics.CheckSphere(eyeHead.position, 20, layerMask))
+        if(Physics.CheckSphere(eyeHead.position, minflaresDist, throwableMask))
         {
             //Debug.Log("flares in the area");
             enabled = false;
