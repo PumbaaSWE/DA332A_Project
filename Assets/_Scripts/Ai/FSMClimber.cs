@@ -119,7 +119,7 @@ public class FSMClimber : MonoBehaviour
             //Debug.Log("Destination reached.");
         }
 
-        if (CheckIfAIsAboveAndFar())
+        if (CheckIfAIsAboveAndFar() && IsPlayerLookingAtAI(10))
         {
             agentState = AgentState.Jump;
         }
@@ -286,6 +286,7 @@ public class FSMClimber : MonoBehaviour
     }
     private void IdleBehaviour()
     {
+        animator.Play("Base Layer.Running Crawl");
         idleTime = Random.Range(5f, 15f);
         StartCoroutine(IdleTimer(idleTime));
     }
@@ -369,6 +370,9 @@ public class FSMClimber : MonoBehaviour
             {
                 if (atDestination)
                 {
+                    
+                    animator.Play("Base Layer.Running Crawl");
+                    animator.SetBool("Jump", false);
                     MoveTo(currentTarget.transform.position, false);
                 }
              
@@ -407,7 +411,7 @@ public class FSMClimber : MonoBehaviour
     }
     public void JumpBehavior()
     {
-        MoveTo(targetPosition.position, false);
+        MoveTo(player.PlayerTransform.position, false);
         animator.SetBool("Jump", true);
         //animator.Play("Base Layer.Jump", 0, 1f);
         //animator.speed = -1;
@@ -434,6 +438,12 @@ public class FSMClimber : MonoBehaviour
             agentState = AgentState.Wander;
         }
     }
+    private bool IsPlayerLookingAtAI(float angleThresh)
+    {
+        Vector3 directionToAI = (transform.position - player.PlayerTransform.position).normalized;
+        float angle = Vector3.Angle(player.PlayerTransform.forward, directionToAI);
+        return angle < angleThresh;
+    }
     void Found()
     {
         if (awarenessSystem.ActiveTargets == null || awarenessSystem.ActiveTargets.Count == 0)
@@ -455,7 +465,7 @@ public class FSMClimber : MonoBehaviour
     }
     private void AttackBehaviour()
     {
-        animator.Play("Base Layer.Crawl");
+        //animator.Play("Base Layer.Crawl");
         if (!currentTarget.transform)
         {
             //swap state?
