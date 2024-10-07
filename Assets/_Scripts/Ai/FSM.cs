@@ -70,8 +70,9 @@ public class FSM : MonoBehaviour
     }
     void Start()
     {
-
+        player.NotifyOnPlayerChanged(OnPlayer);
     }
+
 
     void Update()
     {
@@ -102,7 +103,21 @@ public class FSM : MonoBehaviour
         }
 
     }
+   
+       
+    private void OnDestroy()
+    {
+        player.UnsubscribeOnPlayerChanged(OnPlayer);
+    }
+    private void OnPlayer(Transform obj)
+    {
+        target = obj;
+        if (target)
+        {
 
+            //do if not null
+        }
+    }
     void UpdateState()
     {
         switch (agentState)
@@ -491,7 +506,8 @@ public class FSM : MonoBehaviour
         Vector3 targetDelta = target.position - transform.position;
         if (target.TryGetComponent(out IDamageble damageble))
         {
-            damageble.TakeDamage(transform.position, targetDelta, 15);
+            damageble.TakeDamage(transform.position, targetDelta, 20);
+
         }
         animator.SetInteger("Attack", 0);
     }
