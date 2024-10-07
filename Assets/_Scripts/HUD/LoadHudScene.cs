@@ -7,6 +7,15 @@ public class LoadHudScene : MonoBehaviour
 {
     string hud = "HUD";
     public SceneField hudScene;
+    public bool loadOnStart = true;
+
+    private void Start()
+    {
+        if (loadOnStart)
+        {
+            LoadHud();
+        }
+    }
 
     [MakeButton]
     public void LoadHud()
