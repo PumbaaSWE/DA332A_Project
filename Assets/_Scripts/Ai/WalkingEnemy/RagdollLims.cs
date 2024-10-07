@@ -364,7 +364,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
             else
             {
                 //fSM.isCrawling = false;
-                fSM.SetAgentActive(false);
+                //fSM.SetAgentActive(false);
             }
             TriggerRagdoll(direction, point);
         }

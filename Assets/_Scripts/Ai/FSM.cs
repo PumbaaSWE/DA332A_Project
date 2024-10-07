@@ -49,6 +49,7 @@ public class FSM : MonoBehaviour
     public bool run;
     [SerializeField] Transform target;
     public PlayerDataSO player;
+    float attckTimer;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -503,12 +504,7 @@ public class FSM : MonoBehaviour
     private IEnumerator AttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
-        Vector3 targetDelta = target.position - transform.position;
-        if (target.TryGetComponent(out IDamageble damageble))
-        {
-            damageble.TakeDamage(transform.position, targetDelta, 20);
-
-        }
+        DoDmg(1f);
         animator.SetInteger("Attack", 0);
     }
     private IEnumerator AnimationCooldown(int idx, float t)
@@ -517,7 +513,23 @@ public class FSM : MonoBehaviour
         animator.SetInteger(idx, 0);
         //knockback = false;
     }
+    void DoDmg(float attackTime)
+    {
+        Vector3 targetDelta = target.position - transform.position;
+        attckTimer -= Time.deltaTime;
+        if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+        {
 
+            //Debug.Log("Attack!!");
+            if (target.TryGetComponent(out IDamageble damageble))
+            {
+                damageble.TakeDamage(transform.position, targetDelta, 20);
+                attckTimer = attackTime;
+                //Debug.Log("Do damage!!");
+            }
+        }
+
+    }
     private void OnAnimatorMove()
     {
         Vector3 rootPosition = animator.rootPosition;

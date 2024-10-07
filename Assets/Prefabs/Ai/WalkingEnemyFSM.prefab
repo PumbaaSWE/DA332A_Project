@@ -213,7 +213,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 1
+  leg: 1
   head: 0
   arm: 0
 --- !u!1 &187474787794780301
@@ -463,12 +463,10 @@ GameObject:
   - component: {fileID: 4698765534291108443}
   - component: {fileID: 5308056713204280495}
   - component: {fileID: 9009292413205994934}
-  - component: {fileID: 9099073110859590362}
   - component: {fileID: 2814571522901813976}
   - component: {fileID: 307226710682814904}
-  - component: {fileID: 1621143472611239323}
   - component: {fileID: 3556707548999022129}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: WalkingEnemyFSM
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -713,20 +711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205ee72c9d4fc2e42b513e7d660918a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9099073110859590362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421513971492581902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de9c22bba68216b4d9427e70f3d18d99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ActiveGoal: {fileID: 0}
-  deactivate: 0
 --- !u!143 &2814571522901813976
 CharacterController:
   m_ObjectHideFlags: 0
@@ -737,7 +721,7 @@ CharacterController:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -765,6 +749,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee99d9ec48744a4d99cc79dce34cf04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deahtHealth: 1300
+  enemy: {fileID: 1421513971492581902}
   timeToGetUp: 5
   resetBonesTime: 1
   standUpStateName: Stand Up
@@ -772,24 +758,6 @@ MonoBehaviour:
   faceDownStateName: Standing Up
   faceDownClipName: Standing Up
   GOAP: 0
---- !u!114 &1621143472611239323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1421513971492581902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62ebd1e8fe459f147b73c12c46eb7d8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalcolor: {fileID: 4943959688790590284}
-  normalcolor2: {fileID: 6416822205048946955}
-  bColor: {fileID: 5513977129146592129}
-  bColor2: {fileID: 6008114417963511050}
-  angrycolor: {fileID: 9055535603960024429}
-  angrycolor2: {fileID: 3246445990100885878}
 --- !u!114 &3556707548999022129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,6 +778,8 @@ MonoBehaviour:
   agentStatehit: 3
   isCrawling: 0
   run: 0
+  target: {fileID: 4841743169882539351, guid: 7585016485698a6458b3f50bf1f855c8, type: 3}
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
 --- !u!1 &1550861975660843090
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,7 +857,6 @@ GameObject:
   - component: {fileID: 5673069240764614898}
   - component: {fileID: 4627731032562366857}
   - component: {fileID: 8007141223895887437}
-  - component: {fileID: 8396010227692114937}
   m_Layer: 6
   m_Name: mixamorig:RightForeArm
   m_TagString: Untagged
@@ -1025,27 +994,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
-  head: 0
-  arm: 1
---- !u!114 &8396010227692114937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625421344459198729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disposableJoint: {fileID: 2275509066500069203, guid: a562922fa6ee19346bf77a70c60f6594,
-    type: 3}
-  detached: 0
-  parent: {fileID: 0}
-  child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 0
   arm: 1
 --- !u!1 &1761143443090062681
@@ -1389,7 +1338,6 @@ GameObject:
   - component: {fileID: 4186033925369867004}
   - component: {fileID: 3241181047311462798}
   - component: {fileID: 8436643687251484335}
-  - component: {fileID: 57570581877931957}
   m_Layer: 6
   m_Name: mixamorig:LeftForeArm
   m_TagString: Untagged
@@ -1527,27 +1475,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
-  head: 0
-  arm: 1
---- !u!114 &57570581877931957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2310610679753650967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disposableJoint: {fileID: 6619211742596590260, guid: 831e0a9b8820ff344a6f311d0ed4a06a,
-    type: 3}
-  detached: 0
-  parent: {fileID: 0}
-  child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 0
   arm: 1
 --- !u!1 &2481252180890078457
@@ -1796,7 +1724,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 1
+  leg: 1
   head: 0
   arm: 0
 --- !u!1 &2803211832875693745
@@ -2417,7 +2345,6 @@ GameObject:
   - component: {fileID: 1242929311498189507}
   - component: {fileID: 6468442310270906841}
   - component: {fileID: 7399922447003673461}
-  - component: {fileID: 3323246971023254688}
   m_Layer: 6
   m_Name: mixamorig:LeftArm
   m_TagString: Untagged
@@ -2554,27 +2481,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
-  head: 0
-  arm: 1
---- !u!114 &3323246971023254688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4723249400067048404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c1e08a447fdb346aadd96111a30bf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disposableJoint: {fileID: 7453051202378882999, guid: dc074011195fa5d4f81854716f797f5f,
-    type: 3}
-  detached: 0
-  parent: {fileID: 0}
-  child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 0
   arm: 1
 --- !u!1 &4723790276481346414
@@ -2939,7 +2846,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 1
+  leg: 1
   head: 0
   arm: 0
 --- !u!1 &5421198375338006473
@@ -3568,7 +3475,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 1
+  leg: 1
   head: 0
   arm: 0
 --- !u!1 &6416822205048946955
@@ -4070,7 +3977,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 1
   arm: 0
 --- !u!114 &6829371064667252750
@@ -4089,7 +3996,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 1
   arm: 0
 --- !u!1 &7856079579627366766
@@ -4406,7 +4313,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 0
   arm: 1
 --- !u!114 &882387290314753710
@@ -4426,7 +4333,7 @@ MonoBehaviour:
   detached: 0
   parent: {fileID: 0}
   child: {fileID: 0}
-  legg: 0
+  leg: 0
   head: 0
   arm: 1
 --- !u!1 &8526876235774202877
