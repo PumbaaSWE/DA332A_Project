@@ -32,14 +32,15 @@ public class ElevatorDoors : MonoBehaviour
         doorPercent = 0;
         SetDoorPositions(doorPercent);
         status = DoorStatus.Closed;
+        
     }
 
     public void ComputeDoorPos()
     {
-        leftClosePos = leftDoor.position;
-        rightClosePos = rightDoor.position;
-        leftOpenPos = leftClosePos - transform.right;
-        rightOpenPos = rightClosePos + transform.right;
+        leftClosePos = leftDoor.localPosition;
+        rightClosePos = rightDoor.localPosition;
+        leftOpenPos = leftClosePos - Vector3.right;
+        rightOpenPos = rightClosePos + Vector3.right;
     }
 
     // Update is called once per frame
@@ -79,6 +80,7 @@ public class ElevatorDoors : MonoBehaviour
     public void CloseDoors()
     {
         status = DoorStatus.Closing;
+       // ComputeDoorPos();
     }
 
     [MakeButton]
@@ -90,6 +92,7 @@ public class ElevatorDoors : MonoBehaviour
             return;
         }
         status = DoorStatus.Opening;
+        //ComputeDoorPos();
     }
 
     private void HandleOpening(float dt)
@@ -134,7 +137,7 @@ public class ElevatorDoors : MonoBehaviour
 
     private void SetDoorPositions(float t)
     {
-        leftDoor.position = Vector3.Lerp(leftClosePos, leftOpenPos, t);
-        rightDoor.position = Vector3.Lerp(rightClosePos, rightOpenPos, t);
+        leftDoor.localPosition = Vector3.Lerp(leftClosePos, leftOpenPos, t);
+        rightDoor.localPosition = Vector3.Lerp(rightClosePos, rightOpenPos, t);
     }
 }
