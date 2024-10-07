@@ -15,7 +15,7 @@ public class FSMClimber : MonoBehaviour
     public Transform targetPosition;  
     public float flySpeed = 5f;      
     public float rotationSpeed = 2f;  
-    private bool hasReachedDestination = false;
+    //private bool hasReachedDestination = false;
     EnemyDeath enemyDeath;
     RagdollController ragController;
 
@@ -39,7 +39,7 @@ public class FSMClimber : MonoBehaviour
     public bool isUpp;
     //[SerializeField] float uprightThreshold = 0.9f;
     //[SerializeField] float rayDistance = 3.0f;
-    private float rotationThreshold = 1f;
+    //private float rotationThreshold = 1f;
     Vector3 soundLocation;
     public Vector3 LookDirection;
     public Transform LookPoint;
@@ -60,7 +60,7 @@ public class FSMClimber : MonoBehaviour
     public Transform newTarget;
     private Vector3 lastPosition;
     private float idleTime = 0f;
-    private float idleThreshold = 0.8f;
+    //private float idleThreshold = 0.8f;
     [SerializeField] Transform target;
     public PlayerDataSO player;
     public float attackRange = 2.0f;
@@ -429,7 +429,7 @@ public class FSMClimber : MonoBehaviour
         {
             animator.SetBool("Jump", false);
             ragController.EnableRagdoll();
-            hasReachedDestination = true;
+            //hasReachedDestination = true;
             ragController.DisableRagdoll();
             agentState = AgentState.Wander;
         }
