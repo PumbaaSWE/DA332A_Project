@@ -14,11 +14,13 @@ public class FSMClimber : MonoBehaviour
     //public GameObject testObejct;
     public Transform targetPosition;  
     public float flySpeed = 5f;      
-    public float rotationSpeed = 2f;  
+    public float rotationSpeed = 2f;
+    public float jumpRange = 15f;
     //private bool hasReachedDestination = false;
     EnemyDeath enemyDeath;
     RagdollController ragController;
-
+  
+    float attckTimer;
 
     AwarenessSystem awarenessSystem;
     [SerializeField] float detectedAwarness = 1.2f;
@@ -101,7 +103,7 @@ public class FSMClimber : MonoBehaviour
         player.NotifyOnPlayerChanged(OnPlayer);
         linkedAI = GetComponent<EnemyAI>();
     }
-    public  void Update()
+    public void Update()
     {
         Found();
         CheckIfAIsAboveAndFar();
@@ -293,7 +295,9 @@ public class FSMClimber : MonoBehaviour
     private IEnumerator IdleTimer(float time)
     {
         yield return new WaitForSeconds(time);
-        agentState = AgentState.Wander;
+        //agentState = AgentState.Wander;
+        //agentState = AgentState.Patrol;
+        agentState = AgentState.Jump;
 
     }
     private void WanderBehavior()
@@ -372,7 +376,7 @@ public class FSMClimber : MonoBehaviour
                 {
                     
                     animator.Play("Base Layer.Running Crawl");
-                    animator.SetBool("Jump", false);
+                    //animator.SetBool("Jump", false);
                     MoveTo(currentTarget.transform.position, false);
                 }
              
@@ -400,7 +404,7 @@ public class FSMClimber : MonoBehaviour
 
         //if(currentTarget != null)
         {
-            if (distance <= 10f && heightDifference > 0)
+            if (distance <= jumpRange /*&& heightDifference > 0*/)
             {
                 return true;
             }
@@ -413,12 +417,14 @@ public class FSMClimber : MonoBehaviour
     {
         MoveTo(player.PlayerTransform.position, false);
         animator.SetBool("Jump", true);
+
+        //ragController.EnableRagdoll();
         //animator.Play("Base Layer.Jump", 0, 1f);
         //animator.speed = -1;
 
         Vector3 adjustedTargetPosition = new Vector3(
        player.PlayerTransform.position.x,               
-       player.PlayerTransform.position.y -1,          
+       player.PlayerTransform.position.y ,          
        player.PlayerTransform.position.z              
    );
 
@@ -429,12 +435,12 @@ public class FSMClimber : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, player.PlayerTransform.position) < 0.3f)
+        if (Vector3.Distance(transform.position, player.PlayerTransform.position) < 1.3f)
         {
             animator.SetBool("Jump", false);
-            ragController.EnableRagdoll();
+            //ragController.EnableRagdoll();
             //hasReachedDestination = true;
-            ragController.DisableRagdoll();
+           // ragController.DisableRagdoll();
             agentState = AgentState.Wander;
         }
     }
@@ -455,9 +461,13 @@ public class FSMClimber : MonoBehaviour
             {
                 if (candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
                 {
-                    //CancelCurrentCommand();
-                    currentTarget = candidate.detectable;
-                    agentState = AgentState.Chasing;
+                    if(agentState != AgentState.Jump)
+                    {
+                        //CancelCurrentCommand();
+                        currentTarget = candidate.detectable;
+                        agentState = AgentState.Chasing;
+                    }
+                  
 
                 }
             }
@@ -476,17 +486,17 @@ public class FSMClimber : MonoBehaviour
         if (currentTarget.transform.position.InRangeOf(transform.position, attackRange))
         {
             Attack();
-            //Vector3 dir = currentTarget.transform.position - transform.position;
-            
-            //if (currentTarget.transform.position.InRangeOf(transform.position, minAttackRange))
-            //{
-               
-
-            //}
+            Vector3 dir = currentTarget.transform.position - transform.position;
+            transform.forward = Vector3.MoveTowards(transform.forward, dir, 400 * Time.deltaTime).WithY();
+            if (currentTarget.transform.position.InRangeOf(transform.position, minAttackRange))
+            {
+                //we are too close = pushback self!
+                transform.position -= transform.forward * Time.deltaTime;
+            }
         }
         else
         {
-            animator.SetBool("Biting", false);
+            //animator.SetBool("Biting", false);
 
             agentState = AgentState.Chasing;
         }
@@ -495,9 +505,29 @@ public class FSMClimber : MonoBehaviour
 
     public void Attack()
     {
+        DoDmg(1);
+        //isAttacking = true;
         animator.SetBool("Biting", true);
+        //StartCoroutine(AttackCooldown(.5f));
     }
+   
+    void DoDmg(float attackTime)
+    {
+        Vector3 targetDelta = target.position - transform.position;
+        attckTimer -= Time.deltaTime;
+        if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+        {
 
+            //Debug.Log("Attack!!");
+            if (target.TryGetComponent(out IDamageble damageble))
+            {
+                damageble.TakeDamage(transform.position, targetDelta, 20);
+                attckTimer = attackTime;
+                //Debug.Log("Do damage!!");
+            }
+        }
+
+    }
 
     public virtual void MoveTo(Vector3 destination, bool avoidPlayer)
     {

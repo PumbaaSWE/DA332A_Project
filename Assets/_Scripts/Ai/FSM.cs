@@ -75,13 +75,16 @@ public class FSM : MonoBehaviour
 
     void Update()
     {
-        
-        if (!agent.pathPending && !agent.isOnOffMeshLink && destinationSet && (agent.remainingDistance <= agent.stoppingDistance))
+        if (agent.isOnNavMesh)
         {
-            destinationSet = false;
-            reachedDestination = true;
-            agentState = AgentState.Idle;
+            if (!agent.pathPending && !agent.isOnOffMeshLink && destinationSet && (agent.remainingDistance <= agent.stoppingDistance))
+            {
+                destinationSet = false;
+                reachedDestination = true;
+                agentState = AgentState.Idle;
+            }
         }
+       
         //SynchronizeAnimatorAndAgent();
 
         Found();
@@ -205,6 +208,7 @@ public class FSM : MonoBehaviour
         else if (!active)
         {
             //characterController.height = 0.05f;
+            agentState = AgentState.Idle;
             isCrawling = true;
             animator.SetBool("crawl", true);
             animator.Play("Base Layer.Crawl");

@@ -134,11 +134,11 @@
 //                break;
 //        }
 //    }
-//    public bool IsLeggDetached()
+//    public bool IsLegDetached()
 //    {
 //        foreach (var detachable in detached)
 //        {
-//            if ( detachable.legg && detachable.detached)
+//            if ( detachable.leg && detachable.detached)
 //            {
 //                return true;  
 //            }
@@ -285,7 +285,7 @@
 //    private void RagdollBehaviour()
 //    {
 //        getUpTimer -= Time.deltaTime;
-//        if (getUpTimer < 3 && IsLeggDetached())
+//        if (getUpTimer < 3 && IsLegDetached())
 //        {///////////////////////////////////////
 //            characterAgent.isCrawling = true;
 //            DisableRagdoll();

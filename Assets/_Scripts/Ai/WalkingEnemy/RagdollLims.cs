@@ -139,11 +139,11 @@ public class RagdollLims : MonoBehaviour, IDamageble
                 break;
         }
     }
-    public bool IsLeggDetached()
+    public bool IsLegDetached()
     {
         foreach (var detachable in detached)
         {
-            if (detachable.legg && detachable.detached)
+            if (detachable.leg && detachable.detached)
             {
                 return true;
             }
@@ -233,7 +233,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
     {
       
         
-            health.Heal(health.MaxHealth);
+        health.Heal(health.MaxHealth);
         if (GOAP)
         {
             characterAgent.SetAgentActive(true);
@@ -245,9 +245,6 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
             fSM.SetAgentActive(true);
         }
-
-
-
 
         for (int i = 0; i < rbs.Length; i++)
         {
@@ -267,7 +264,6 @@ public class RagdollLims : MonoBehaviour, IDamageble
         }
         else
         {
-           
             fSM.SetAgentActive(false);
         }
 
@@ -307,7 +303,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
     private void RagdollBehaviour()
     {
         getUpTimer -= Time.deltaTime;
-        if (getUpTimer < 3 && IsLeggDetached())
+        if (getUpTimer < 3 /*&& IsLegDetached()*/)
         {///////////////////////////////////////
           
             DisableRagdoll();
@@ -322,8 +318,6 @@ public class RagdollLims : MonoBehaviour, IDamageble
                 fSM.isCrawling = true;
                 fSM.SetAgentActive(true);
             }
-          
-
         }
 
 
@@ -360,7 +354,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
         }
         if(health.Value <= 0)
         {
-            TriggerRagdoll(direction, point);
+          
             if (GOAP)
             {
                 characterAgent.isCrawling = false;
@@ -369,9 +363,10 @@ public class RagdollLims : MonoBehaviour, IDamageble
             }
             else
             {
-                fSM.isCrawling = false;
+                //fSM.isCrawling = false;
                 fSM.SetAgentActive(false);
             }
+            TriggerRagdoll(direction, point);
         }
        
     }
@@ -388,22 +383,24 @@ public class RagdollLims : MonoBehaviour, IDamageble
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
 
-     
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
         rb.AddForceAtPosition(force, point, ForceMode.Impulse);
 
         if (rb.TryGetComponent(out Detachable detachable))
         {
-            detachable.Detatch();
+           detachable.Detatch();
             detached.Add(detachable);
         }
-        if(IsLeggDetached())
+
+        if(IsLegDetached())
         {
             EnableRagdoll();
             state = RagdollState.Ragdoll;
-           
+            fSM.SetAgentActive(false);
+            fSM.isCrawling = true;
         }
+
         getUpTimer = timeToGetUp;
     }
 

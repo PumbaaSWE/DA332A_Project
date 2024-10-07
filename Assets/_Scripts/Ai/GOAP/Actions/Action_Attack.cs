@@ -85,7 +85,7 @@ public class Action_Attack : Action_Base
         {
 
             climberAgent.AttackBehaviour(attackGoal.AttackTarget, minAttackRange);
-            //DoDmg(1.35f);
+            DoDmg(1.35f);
             //StartCoroutine(AttackCooldown(.5f));
         }
        
@@ -101,7 +101,7 @@ public class Action_Attack : Action_Base
             //Debug.Log("Attack!!");
             if (target.TryGetComponent(out IDamageble damageble))
             {
-                damageble.TakeDamage(transform.position, targetDelta, 15);
+                damageble.TakeDamage(transform.position, targetDelta, 20);
                 attckTimer = attackTime;
                 //Debug.Log("Do damage!!");
             }
