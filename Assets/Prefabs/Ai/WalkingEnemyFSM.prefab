@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 307226710682814904}
   - component: {fileID: 1621143472611239323}
   - component: {fileID: 3556707548999022129}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: WalkingEnemyFSM
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -737,7 +737,7 @@ CharacterController:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -765,6 +765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee99d9ec48744a4d99cc79dce34cf04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deahtHealth: 600
+  enemy: {fileID: 1421513971492581902}
   timeToGetUp: 5
   resetBonesTime: 1
   standUpStateName: Stand Up
@@ -810,6 +812,8 @@ MonoBehaviour:
   agentStatehit: 3
   isCrawling: 0
   run: 0
+  target: {fileID: 4841743169882539351, guid: 7585016485698a6458b3f50bf1f855c8, type: 3}
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
 --- !u!1 &1550861975660843090
 GameObject:
   m_ObjectHideFlags: 0
