@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using static UnityEditor.FilePathAttribute;
+using static UnityEngine.GraphicsBuffer;
 public enum EOffmeshLinkStatus
 {
     NotStarted,
@@ -34,7 +35,7 @@ public class FSM : MonoBehaviour
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
 
-    public enum AgentState { Idle, Wander ,Chasing, Attacking, Knockback, Investegate }
+    public enum AgentState { Idle, Wander ,Chasing, Attacking, Knockback, Investegate , Sleep}
     public AgentState agentState = AgentState.Idle;
     public enum AgentHit { Crawl, Blind, Armless, Normal }
     public AgentHit agentStatehit = AgentHit.Normal;
@@ -46,6 +47,8 @@ public class FSM : MonoBehaviour
     Vector3 soundLocation;
     CharacterController characterController;
     public bool run;
+    [SerializeField] Transform target;
+    public PlayerDataSO player;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -103,6 +106,9 @@ public class FSM : MonoBehaviour
         {
             case AgentState.Idle:
                 IdleBehaviour();
+                break;
+            case AgentState.Sleep:
+              
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -478,6 +484,11 @@ public class FSM : MonoBehaviour
     private IEnumerator AttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
+        Vector3 targetDelta = target.position - transform.position;
+        if (target.TryGetComponent(out IDamageble damageble))
+        {
+            damageble.TakeDamage(transform.position, targetDelta, 15);
+        }
         animator.SetInteger("Attack", 0);
     }
     private IEnumerator AnimationCooldown(int idx, float t)

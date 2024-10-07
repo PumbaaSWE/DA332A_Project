@@ -13,6 +13,8 @@ using UnityEngine;
  */
 public class RagdollLims : MonoBehaviour, IDamageble
 {
+    public float deahtHealth = 600;
+    public GameObject enemy;
 
     private class BoneTransform
     {
@@ -114,6 +116,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
     void Update()
     {
         VisonUpdate();
+        Death();
 
         switch (state)
         {
@@ -348,16 +351,39 @@ public class RagdollLims : MonoBehaviour, IDamageble
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     { 
         health.Damage( damage);
-        if(GOAP)
+        deahtHealth -= damage;
+        if (GOAP)
         {
             goal_Stalk_W.prio -= 30;
+           
 
         }
         if(health.Value <= 0)
         {
             TriggerRagdoll(direction, point);
+            if (GOAP)
+            {
+                characterAgent.isCrawling = false;
+                planner.deactivate = false;
+                characterAgent.SetAgentActive(false);
+            }
+            else
+            {
+                fSM.isCrawling = false;
+                fSM.SetAgentActive(false);
+            }
         }
        
+    }
+
+    public void Death()
+    {
+        if (deahtHealth <= 0)
+        {
+            TriggerRagdoll(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
+            Destroy(enemy, 1.5f);
+            
+        }
     }
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
