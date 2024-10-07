@@ -41,7 +41,11 @@ public class WeaponHandler : MonoBehaviour
     public int TakeAmmo(Cartridgetype type, int ammoToTake)
     {
         if (AmmoPool.ContainsKey(type))
-            return Mathf.Clamp(Mathf.Max(AmmoPool[type] -= ammoToTake, 0), 0, ammoToTake);
+        {
+            int ammoToGive = Mathf.Clamp(AmmoPool[type], 0, ammoToTake);
+            AmmoPool[type] -= ammoToTake;
+            return ammoToGive;
+        }
 
         else
             return 0;
@@ -68,15 +72,21 @@ public class WeaponHandler : MonoBehaviour
     /// <returns>Remaining ammo in magazine of current gun</returns>
     public int GetMagazineCount()
     {
+        if (EquippedGun == null)
+            return 0;
+        
         return EquippedGun.LoadedAmmo;
     }
 
     /// <returns>Reserve ammo for current gun</returns>
     public int GetAmmoCount()
     {
+        if (EquippedGun == null)
+            return 0;
+
         if (!AmmoPool.ContainsKey(EquippedGun.AmmoType))
             return 0;
-        
+
         return AmmoPool[EquippedGun.AmmoType];
     }
 
@@ -90,8 +100,11 @@ public class WeaponHandler : MonoBehaviour
     {
         if (gun < Guns.Count && Guns[gun] != EquippedGun && Guns[gun] != null)
         {
-            EquippedGun.Unequip(() => Guns[gun].Equip());
-            EquippedGun = Guns[gun];
+            EquippedGun.Unequip(() =>
+            {
+                Guns[gun].Equip();
+                EquippedGun = Guns[gun];
+            });
         }
     }
 
@@ -115,7 +128,10 @@ public class WeaponHandler : MonoBehaviour
         else
         {
             GameObject gun = Instantiate(newGun, FirearmRoot);
-            EquippedGun.gameObject.SetActive(false);
+
+            if (EquippedGun != null)
+                EquippedGun.gameObject.SetActive(false);
+
             EquippedGun = gun.GetComponent<Firearm>();
             Guns.Add(EquippedGun);
         }
@@ -155,6 +171,12 @@ public class WeaponHandler : MonoBehaviour
             return false;
 
         return EquippedGun.Firing;
+    }
+
+    void DropGun()
+    {
+        Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+        Destroy(EquippedGun.gameObject);
     }
 }
 

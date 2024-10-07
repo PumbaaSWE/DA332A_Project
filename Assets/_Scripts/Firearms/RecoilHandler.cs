@@ -60,7 +60,10 @@ public class RecoilHandler : MonoBehaviour
         RecoilImpulse += impulse;
 
         if (reset)
+        {
             CurrentImpulseTime = 0;
+            StopAllCoroutines();
+        }
     }
 
     public void AddImpluse(float x, float y, bool reset = true)
@@ -76,14 +79,15 @@ public class RecoilHandler : MonoBehaviour
         float impulseDuration = WHandler.EquippedGun.ImpulseDuration;
         Vector2 previousImpulse = Vector2.zero;
 
-        while (currentImpulseTime < impulseDuration)
+        while (currentImpulseTime < impulseDuration /*&& !WHandler.IsFiring()*/)
         {
             // Lerp how much to rotate the player from impulse
-            Vector2 impulse = new(Mathf.Lerp(0, RecoilImpulse.x, currentImpulseTime / impulseDuration), Mathf.Lerp(0, RecoilImpulse.y, currentImpulseTime / impulseDuration));
+            Vector2 impulse = new(Mathf.Lerp(0, RecoilImpulse.x + previousImpulse.x, currentImpulseTime / impulseDuration), Mathf.Lerp(0, RecoilImpulse.y + previousImpulse.y, currentImpulseTime / impulseDuration));
 
             // Roate player by the given 
             Player.Rotate(-(impulse.x - previousImpulse.x), -(impulse.y - previousImpulse.y));
 
+            RecoilImpulse -= (impulse - previousImpulse);
             previousImpulse = impulse;
 
             currentImpulseTime += Time.deltaTime;
@@ -91,7 +95,9 @@ public class RecoilHandler : MonoBehaviour
             yield return null;
         }
 
-        RecoilImpulse = Vector2.zero;
+        //if (!WHandler.IsFiring())
+            RecoilImpulse = Vector2.zero;
+
         ImpulseActive = false;
         //Debug.Log("Impulse done");
     }
@@ -99,7 +105,7 @@ public class RecoilHandler : MonoBehaviour
     public void StartImpulse()
     {
         //Debug.Log("Starting impulse");
-        StopAllCoroutines();
+        //StopAllCoroutines();
         StartCoroutine(Impulse());
     }
 }
