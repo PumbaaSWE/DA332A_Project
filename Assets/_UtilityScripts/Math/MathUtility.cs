@@ -65,4 +65,19 @@ public static class MathUtility
         // Handle cases where the point projects onto ab
         return Vector3.Dot(ap, ap) - e * e / f;
     }
+
+    public static bool InsideBox(Vector3 point, Vector3 center, Vector3 extents, Quaternion rotation)
+    {
+        
+        Vector3 delta = Quaternion.Inverse(rotation) * (center - point);
+
+        float x = Vector3.Dot(delta, Vector3.right);
+        if (Mathf.Abs(x) > extents.x) return false;
+        float y = Vector3.Dot(delta, Vector3.up);
+        if (Mathf.Abs(y) > extents.y) return false;
+        float z = Vector3.Dot(delta, Vector3.forward);
+        if (Mathf.Abs(z) > extents.z) return false;
+
+        return true;
+    }
 }

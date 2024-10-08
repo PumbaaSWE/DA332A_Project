@@ -12,7 +12,7 @@ public class Detachable : MonoBehaviour
     float time;
     Rigidbody rbAnchor;
     float[] limits = new float[4];
-    public bool legg;
+    public bool leg;
     public bool head;
     public bool arm;
     private void Awake()

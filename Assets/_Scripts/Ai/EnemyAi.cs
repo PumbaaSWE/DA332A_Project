@@ -41,6 +41,8 @@ public class EnemyAI : MonoBehaviour
 
     AwarenessSystem Awareness;
 
+    Vector3 soundLocation;
+
     void Awake()
     {
         CosVisionConeAngle = Mathf.Cos(VisionConeAngle * Mathf.Deg2Rad);
@@ -60,7 +62,8 @@ public class EnemyAI : MonoBehaviour
     {
         Awareness.ReportCanHear(source, location, category, intensity);
         //Debug.Log("can hear");
-
+        soundLocation = location;
+        soundLocation = Vector3.zero;
     }
 
     public void ReportInProximity(DetectableTarget target)
@@ -68,7 +71,11 @@ public class EnemyAI : MonoBehaviour
         Awareness.ReportInProximity(target);
         //Debug.Log("can sense");
     }
-
+    public Vector3 GetSoundLocation()
+    {
+        return soundLocation;
+       
+    }
     public void OnSuspicious()
     {
         //Debug.Log("I hear you");

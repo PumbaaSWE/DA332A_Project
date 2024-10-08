@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4059286404517577220}
   - component: {fileID: 565971590310239188}
+  - component: {fileID: 5274382917948302102}
   m_Layer: 0
   m_Name: PlayerSpawner
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,12 +45,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c92d7b4462a6464aae59966668f098c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PrefabToSpawn: {fileID: 0}
-  spawnOnStart: 1
-  spawnDelay: 0
+  prefabToSpawn: {fileID: 8031869545899754398, guid: 7585016485698a6458b3f50bf1f855c8,
+    type: 3}
+  spawnOnStart: 0
+  spawnDelay: 0.1
   blockedBehaviour: 0
   ignoreLayer:
     serializedVersion: 2
     m_Bits: 0
   blockedVolume: {x: 1, y: 2, z: 1}
   showBlockBounds: 1
+--- !u!114 &5274382917948302102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565994360377877554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734fef573fb7fc6498f9e14b3f0073bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}

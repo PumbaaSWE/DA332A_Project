@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class FirearmPickUp : MonoBehaviour, IInteractable
 {
-    public string Tooltip { get; }
+    public string Tooltip { get; private set; }
     public string InteractedTooltip { get; }
-    public bool CanInteract { get; }
-    public bool ShowInteractMessage { get; }
-    public int InteractedDisplayPriority { get; }
-    public float InteractedTipDisplayTime { get; }
+    public bool CanInteract { get; private set; }
+    public bool ShowInteractMessage { get; private set; }
+    public int InteractedDisplayPriority { get; private set; }
+    public float InteractedTipDisplayTime { get; private set; }
 
     [SerializeField] GameObject GunPrefab;
+    public string Name;
 
     public void Interact(Transform interactor)
     {
@@ -21,6 +22,6 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
 
     public void SpeculateInteract(Transform interactor)
     {
-
+        Tooltip = "Pickup " + Name;
     }
 }

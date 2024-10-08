@@ -45,7 +45,8 @@ public class CharacterAgent : CharacterBase
     [SerializeField] Transform target;
     public PlayerDataSO player;
     CharacterController characterController;
-    
+
+    public bool run;
     public Vector3 debug;
     public enum NavMeshArea
     {
@@ -202,7 +203,7 @@ public class CharacterAgent : CharacterBase
         }
         else if(!active) 
         {
-            characterController.height = 0.5f;
+            characterController.height = 0.2f;
             isCrawling = true;
             animator.SetBool("crawl", true);
             animator.Play("Base Layer.Crawl");
@@ -268,10 +269,20 @@ public class CharacterAgent : CharacterBase
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
 
+        if (run)
+        {
+            animator.SetBool("move", shouldMove);
+            animator.SetBool("crawl", false);
+            animator.SetFloat("vely", agent.velocity.magnitude);
 
-        animator.SetBool("move", shouldMove);
-        animator.SetBool("crawl", false);
-        animator.SetFloat("vely", agent.velocity.magnitude);
+        }
+        else
+        {
+            animator.SetBool("jog", shouldMove);
+            animator.SetBool("crawl", false);
+            animator.SetFloat("vely", agent.velocity.magnitude);
+        }
+     
 
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
     }
@@ -505,9 +516,6 @@ public class CharacterAgent : CharacterBase
     {
         yield return new WaitForSeconds(t);
         animator.SetBool("CrawlAttack", true);
-
-     
-     
     }
     private IEnumerator AttackCooldown(float t)
     {

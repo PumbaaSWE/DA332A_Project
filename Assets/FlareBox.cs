@@ -13,7 +13,7 @@ public class FlareBox : MonoBehaviour
     {
         if (obj.TryGetComponent(out FlareThrower flareThrower)) {
             flareThrower.numFlares += 5;
-            flareThrower.numFlares = Mathf.Max(flareThrower.numFlares, flareThrower.maxNumFlares);
+            flareThrower.numFlares = Mathf.Min(flareThrower.numFlares, flareThrower.maxNumFlares);
             Destroy(gameObject);
         }
     }
