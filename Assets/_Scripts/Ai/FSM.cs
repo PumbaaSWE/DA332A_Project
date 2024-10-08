@@ -37,6 +37,8 @@ public class FSM : MonoBehaviour
 
     public enum AgentState { Idle, Wander ,Chasing, Attacking, Knockback, Investegate , Sleep}
     public AgentState agentState = AgentState.Idle;
+    private AgentState previousState = AgentState.Idle;
+    private Vector3 previousTargetPosition;
     public enum AgentHit { Crawl, Blind, Armless, Normal }
     public AgentHit agentStatehit = AgentHit.Normal;
     int knockbackHash = Animator.StringToHash("Knockback");
@@ -86,7 +88,14 @@ public class FSM : MonoBehaviour
                 agentState = AgentState.Idle;
             }
         }
-       
+
+
+        if (previousState != agentState)
+        {
+            destinationSet = false;
+            reachedDestination = true;
+            previousState = agentState;
+        }
         //SynchronizeAnimatorAndAgent();
 
         Found();
@@ -102,7 +111,7 @@ public class FSM : MonoBehaviour
         else {
             agentStatehit = AgentHit.Normal;
         }
-
+      
     }
    
        
@@ -121,6 +130,8 @@ public class FSM : MonoBehaviour
     }
     void UpdateState()
     {
+       
+
         switch (agentState)
         {
             case AgentState.Idle:
@@ -265,7 +276,11 @@ public class FSM : MonoBehaviour
     }
     private void InvestegateBehavior()
     {
-        MoveTo(soundLocation);
+         if(atDestination)
+        {
+            MoveTo(soundLocation);
+
+        }
        
     }
     public Vector3 PickLocationInRange(float range)
@@ -324,9 +339,21 @@ public class FSM : MonoBehaviour
         {
             if (agent.isOnNavMesh)
             {
-                if (!agent.pathEndPosition.InRangeOf(currentTarget.transform.position, minAttackRange))
+                //if (!agent.pathEndPosition.InRangeOf(currentTarget.transform.position, minAttackRange))
+                //{
+                //    agent.SetDestination(currentTarget.transform.position);
+                //}
+                if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
                 {
-                    agent.SetDestination(currentTarget.transform.position);
+                    
+                    if (currentTarget.transform.position != previousTargetPosition)
+                    {
+                       
+                        previousTargetPosition = currentTarget.transform.position;
+
+                       
+                        MoveTo(currentTarget.transform.position);
+                    }
                 }
                 if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
                 {
@@ -375,17 +402,83 @@ public class FSM : MonoBehaviour
 
         animator.SetFloat("vely", agent.velocity.magnitude);
     }
+    //private void SynchronizeAnimatorAndAgent()
+    //{
+    //    if (!agent.isOnNavMesh)
+    //    {
+    //        //Debug.LogWarning("agent is not on NavMesh");
+    //        return;
+    //    }
+
+    //    Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
+    //    worldDeltaPosition.y = 0;
+    //    // Map 'worldDeltaPosition' to local space
+    //    float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+    //    float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+    //    Vector2 deltaPosition = new Vector2(dx, dy);
+
+    //    // Low-pass filter the deltaMove
+    //    float smooth = Mathf.Min(1, Time.deltaTime / 0.1f);
+    //    smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
+
+
+    //    velocity = smoothDeltaPosition / Time.deltaTime;
+
+    //    float t = Mathf.Max(dy / 3, 1);
+    //    float speed = t;
+    //    if (agent.remainingDistance <= agent.stoppingDistance)
+    //    {
+    //        velocity = Vector2.Lerp(Vector2.zero, velocity, agent.remainingDistance - agent.stoppingDistance);
+
+    //        speed = (agent.remainingDistance - agent.stoppingDistance) / agent.stoppingDistance;
+
+    //    }
+
+    //    bool shouldMove = velocity.sqrMagnitude > 0.25f && agent.remainingDistance > agent.stoppingDistance;
+    //    animator.SetBool("crawl", false);
+    //    if (run)
+    //    {
+    //        animator.SetBool("move", shouldMove);
+    //    }
+    //    else
+    //    {
+    //        animator.SetBool("jog", shouldMove);
+    //    }
+
+
+
+    //    //this does nothing FIX!!!!
+    //    //Vector3 d = agent.steeringTarget - transform.position;
+    //    //float ddx = Vector3.Dot(transform.right, d);
+    //    //animator.SetFloat("velx", ddx); 
+    //    animator.SetFloat("vely", speed);
+
+
+
+
+    //    lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
+
+    //    //float deltaMagnitude = worldDeltaPosition.magnitude;
+    //    //if (deltaMagnitude > agent.radius / 2)
+    //    //{
+    //    //    transform.position = Vector3.Lerp(animator.rootPosition, agent.nextPosition, smooth);
+    //    //}
+    //}
+
     private void SynchronizeAnimatorAndAgent()
     {
         if (!agent.isOnNavMesh)
         {
-            //Debug.LogWarning("agent is not on NavMesh");
+
             return;
         }
 
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
         worldDeltaPosition.y = 0;
-        // Map 'worldDeltaPosition' to local space
+
+        float manualRemainingDistance = Vector3.Distance(agent.transform.position, agent.destination);
+
+
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
         float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
         Vector2 deltaPosition = new Vector2(dx, dy);
@@ -394,69 +487,30 @@ public class FSM : MonoBehaviour
         float smooth = Mathf.Min(1, Time.deltaTime / 0.1f);
         smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
 
-
         velocity = smoothDeltaPosition / Time.deltaTime;
 
-        float t = Mathf.Max(dy / 3, 1);
-        float speed = t;
-        if (agent.remainingDistance <= agent.stoppingDistance)
-        {
-            velocity = Vector2.Lerp(Vector2.zero, velocity, agent.remainingDistance - agent.stoppingDistance);
 
-            speed = (agent.remainingDistance - agent.stoppingDistance) / agent.stoppingDistance;
+        bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-        }
 
-        bool shouldMove = velocity.sqrMagnitude > 0.25f && agent.remainingDistance > agent.stoppingDistance;
-        animator.SetBool("crawl", false);
         if (run)
         {
             animator.SetBool("move", shouldMove);
+            animator.SetBool("crawl", false);
+            animator.SetFloat("vely", agent.velocity.magnitude);
+
         }
         else
         {
             animator.SetBool("jog", shouldMove);
+            animator.SetBool("crawl", false);
+            animator.SetFloat("vely", agent.velocity.magnitude);
         }
 
 
-
-        //this does nothing FIX!!!!
-        //Vector3 d = agent.steeringTarget - transform.position;
-        //float ddx = Vector3.Dot(transform.right, d);
-        //animator.SetFloat("velx", ddx); 
-        animator.SetFloat("vely", speed);
-
-
-
-
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
-
-        //float deltaMagnitude = worldDeltaPosition.magnitude;
-        //if (deltaMagnitude > agent.radius / 2)
-        //{
-        //    transform.position = Vector3.Lerp(animator.rootPosition, agent.nextPosition, smooth);
-        //}
     }
 
-    //public void Knockback(Vector3 from, Vector3 direction)
-    //{
-    //    //RagdollLims pedestrian = GetComponent<RagdollLims>();
-    //    //pedestrian.TriggerRagdoll(direction * 10, transform.position);
-
-    //    if (knockback) return;
-    //    if (Vector3.Dot(transform.forward, direction) < 0)
-    //    {
-    //        animator.SetInteger(knockbackHash, 2);
-    //    }
-    //    else
-    //    {
-    //        animator.SetInteger(knockbackHash, 3);
-    //    }
-    //    knockback = true;
-    //    animator.SetTrigger(knockbackTriggerHash);
-    //    StartCoroutine(AnimationCooldown(knockbackHash, .9f));
-    //}
-   
     private void AttackBehaviour()
     {
         if (!currentTarget.transform)
