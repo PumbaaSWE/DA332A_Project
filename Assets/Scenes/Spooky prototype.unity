@@ -8679,6 +8679,7 @@ MonoBehaviour:
   hudScene:
     sceneAsset: {fileID: 102900000, guid: b535b7cf24d084a41a605a7e174f13ab, type: 3}
     sceneName: HUD
+  loadOnStart: 1
 --- !u!114 &680556615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57163,7 +57164,7 @@ PrefabInstance:
     - target: {fileID: 1421513971492581902, guid: 8428b29afeee22141aee664b6371f544,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1427689500891164159, guid: 8428b29afeee22141aee664b6371f544,
         type: 3}
@@ -64789,7 +64790,7 @@ GameObject:
   - component: {fileID: 1966639161}
   - component: {fileID: 1966639160}
   - component: {fileID: 1966639159}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66740,6 +66741,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NonphysPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4444955828010549091, guid: b0bd9777210714f4c8d6816607e8dfed,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4659726548413313279, guid: b0bd9777210714f4c8d6816607e8dfed,
         type: 3}

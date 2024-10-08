@@ -9,6 +9,8 @@ public class PlayerDataSO : ScriptableObject
 
     private Transform playerTransform;
 
+    public bool Loading;
+
     public float PlayerHealth => health ? health.Value : 0;
     public Health health;
     public Health Health => health;
@@ -39,5 +41,15 @@ public class PlayerDataSO : ScriptableObject
     public void UnsubscribeOnPlayerChanged(Action<Transform> action)
     {
         OnPlayerChanged -= action;
+    }
+
+    private void OnEnable()
+    {
+        SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
+    }
+
+    private void Instance_OnLoadingComplete()
+    {
+        Loading = false;
     }
 }
