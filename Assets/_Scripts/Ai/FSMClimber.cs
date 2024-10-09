@@ -47,7 +47,7 @@ public class FSMClimber : MonoBehaviour
     public Transform LookPoint;
     Vector3 avoidThis;
     bool avoidPlayer;
-
+    public bool canJump;
     public bool IsMoving => controller.wallClimber.Speed > float.Epsilon;
     public bool atDestination => ReachedDestination;
     EnemyAI linkedAI;
@@ -120,11 +120,14 @@ public class FSMClimber : MonoBehaviour
 
             //Debug.Log("Destination reached.");
         }
-
-        if (CheckIfAIsAboveAndFar() && IsPlayerLookingAtAI(10))
+        if(canJump)
         {
-            agentState = AgentState.Jump;
+            if (CheckIfAIsAboveAndFar() /*&& IsPlayerLookingAtAI(10)*/)
+            {
+                agentState = AgentState.Jump;
+            }
         }
+       
 
         //if (!navAgent.pathPending && !navAgent.isOnOffMeshLink && DestinationSet && (navAgent.remainingDistance <= navAgent.stoppingDistance))
         //{
@@ -270,8 +273,7 @@ public class FSMClimber : MonoBehaviour
             case AgentState.Patrol:
               UpdateStatePatrolling();
                 break;
-            case AgentState.Investegate:
-               
+            case AgentState.Investegate:               
                 InvestegateBehavior();
                 break;
             case AgentState.Chasing:
@@ -281,7 +283,11 @@ public class FSMClimber : MonoBehaviour
                 AttackBehaviour();
                 break;
             case AgentState.Jump:
-                JumpBehavior();
+                if (IsPlayerLookingAtAI(20))
+                {
+                    JumpBehavior();
+                }
+               
                 break;
 
         }
@@ -521,7 +527,7 @@ public class FSMClimber : MonoBehaviour
             //Debug.Log("Attack!!");
             if (target.TryGetComponent(out IDamageble damageble))
             {
-                damageble.TakeDamage(transform.position, targetDelta, 20);
+                damageble.TakeDamage(transform.position, targetDelta, 0.1f);
                 attckTimer = attackTime;
                 //Debug.Log("Do damage!!");
             }
