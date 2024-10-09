@@ -186,7 +186,7 @@ public class ClimbController : MonoBehaviour
             SetUp(hit.normal);
             velocity = transform.forward * fwdVel + transform.right * rghVel;
 
-            return snap;
+            return snap + CollideAndRotate(velocity * leftOver.magnitude, pos + snap, depth + 1, dt);
         }
 
         // don't have to do anything fancy because we didn't hit anything
