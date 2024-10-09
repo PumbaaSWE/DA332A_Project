@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 using static UnityEditor.FilePathAttribute;
 
 
@@ -57,7 +58,7 @@ public class FSMClimber : MonoBehaviour
     [SerializeField] float NearestPointSearchRange = 3f;
     private NavMeshPath navMeshPath;
     private float pathDistance;
-
+    Eye eye;
     public WallClimber wallClimber;
     public NavMeshAgent navAgent;
     public Transform newTarget;
@@ -87,6 +88,7 @@ public class FSMClimber : MonoBehaviour
     }
     private void Awake()
     {
+        eye = GetComponent<Eye>();
         enemyDeath = GetComponent<EnemyDeath>();
         awarenessSystem = GetComponent<AwarenessSystem>();
         controller = GetComponent<MoveTowardsController>();
@@ -273,24 +275,31 @@ public class FSMClimber : MonoBehaviour
         switch (agentState)
         {
             case AgentState.Idle:
+                eye.NormalEye();
                 IdleBehaviour();
                 break;
             case AgentState.Wander:
+                eye.NormalEye();
                 WanderBehavior();
                 break;
             case AgentState.Patrol:
-              UpdateStatePatrolling();
+                eye.NormalEye();
+                UpdateStatePatrolling();
                 break;
-            case AgentState.Investegate:               
+            case AgentState.Investegate:
+                eye.AngryEye();
                 InvestegateBehavior();
                 break;
             case AgentState.Chasing:
+                eye.AngryEye();
                 ChaseBehaviour();
                 break;
             case AgentState.Attacking:
+                eye.AngryEye();
                 AttackBehaviour();
                 break;
             case AgentState.Jump:
+                eye.AngryEye();
                 if (IsPlayerLookingAtAI(20))
                 {
                     JumpBehavior();

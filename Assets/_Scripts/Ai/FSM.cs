@@ -52,10 +52,12 @@ public class FSM : MonoBehaviour
     [SerializeField] Transform target;
     public PlayerDataSO player;
     float attckTimer;
+    Eye eye;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-     
+
+        eye = GetComponent<Eye>();
         sensors = GetComponent<AwarenessSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -257,8 +259,9 @@ public class FSM : MonoBehaviour
 
     private void IdleBehaviour()
     {
-            idleTime = Random.Range(10f, 25f); 
-            StartCoroutine(IdleTimer(idleTime));       
+        eye.NormalEye();
+        idleTime = Random.Range(10f, 25f); 
+        StartCoroutine(IdleTimer(idleTime));       
     }
     private IEnumerator IdleTimer(float time)
     {
@@ -268,15 +271,17 @@ public class FSM : MonoBehaviour
     }
     private void WanderBehavior()
     {
-       if(atDestination)
-       {
+        eye.NormalEye();
+        if (atDestination)
+        {
             Vector3 location = PickLocationInRange(searchRange);
             MoveTo(location);
-       }
+        }
     }
     private void InvestegateBehavior()
     {
-         if(atDestination)
+        eye.AngryEye();
+        if (atDestination)
         {
             MoveTo(soundLocation);
 
@@ -335,6 +340,7 @@ public class FSM : MonoBehaviour
 
     private void ChaseBehaviour()
     {
+        eye.AngryEye();
         if (currentTarget.transform)
         {
             if (agent.isOnNavMesh)
@@ -513,6 +519,7 @@ public class FSM : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        eye.AngryEye();
         if (!currentTarget.transform)
         {
             //swap state?

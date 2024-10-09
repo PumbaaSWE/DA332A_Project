@@ -4061,6 +4061,7 @@ GameObject:
   - component: {fileID: 2273933587081627730}
   - component: {fileID: 3593595481000703838}
   - component: {fileID: 3823192141623475220}
+  - component: {fileID: 7636178294199988386}
   m_Layer: 2
   m_Name: Climber
   m_TagString: Enemy
@@ -4310,6 +4311,7 @@ MonoBehaviour:
   targetPosition: {fileID: 0}
   flySpeed: 10
   rotationSpeed: 3
+  jumpRange: 15
   detectedAwarness: 1.2
   searchRange: 10
   isCrawling: 0
@@ -4320,6 +4322,7 @@ MonoBehaviour:
   isUpp: 0
   LookDirection: {x: 0, y: 0, z: 0}
   LookPoint: {fileID: 0}
+  canJump: 0
   NearestPointSearchRange: 4
   wallClimber: {fileID: 0}
   navAgent: {fileID: 0}
@@ -4336,6 +4339,22 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &7636178294199988386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8081121769411126302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c51a9c333f438ed48b162d337baa28b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalcolor: {fileID: 2271914818849404917}
+  normalcolor2: {fileID: 4733253576952197903}
+  bColor: {fileID: 3576214477442004197}
+  bColor2: {fileID: 1861281377202877805}
 --- !u!1 &8235392263412789562
 GameObject:
   m_ObjectHideFlags: 0

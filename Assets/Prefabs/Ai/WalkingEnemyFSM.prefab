@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 2814571522901813976}
   - component: {fileID: 307226710682814904}
   - component: {fileID: 3556707548999022129}
+  - component: {fileID: 6934903581781359754}
   m_Layer: 2
   m_Name: WalkingEnemyFSM
   m_TagString: Enemy
@@ -780,6 +781,22 @@ MonoBehaviour:
   run: 0
   target: {fileID: 4841743169882539351, guid: 7585016485698a6458b3f50bf1f855c8, type: 3}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+--- !u!114 &6934903581781359754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421513971492581902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c51a9c333f438ed48b162d337baa28b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalcolor: {fileID: 4943959688790590284}
+  normalcolor2: {fileID: 6416822205048946955}
+  bColor: {fileID: 3246445990100885878}
+  bColor2: {fileID: 9055535603960024429}
 --- !u!1 &1550861975660843090
 GameObject:
   m_ObjectHideFlags: 0
