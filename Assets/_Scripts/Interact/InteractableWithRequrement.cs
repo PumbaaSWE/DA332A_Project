@@ -11,14 +11,15 @@ public class InteractableWithRequrement : MonoBehaviour, IInteractable
     public UnityEvent onFailEvent;
     [SerializeField] InteractRequrement[] requrements;
 
+    private bool showInteractMessage;
     private string tooltip;
     public string Tooltip => tooltip;
 
-    public string InteractedTooltip => tooltip;
+    public string InteractedTooltip => onPassTooltip;
 
     public bool CanInteract => true;
 
-    public bool ShowInteractMessage => true;
+    public bool ShowInteractMessage => showInteractMessage;
 
     public int InteractedDisplayPriority => 1;
 
@@ -28,12 +29,14 @@ public class InteractableWithRequrement : MonoBehaviour, IInteractable
     {
         if (CheckRequirements(interactor))
         {
-            tooltip = onPassTooltip;
+            //interactedTooltip = onPassTooltip;
+            showInteractMessage = true;
             OnPassEvent?.Invoke(interactor);
             onPassEvent?.Invoke();
         }
         else
         {
+            showInteractMessage = false;
             OnFailEvent?.Invoke(interactor);
             onFailEvent?.Invoke();
         }
@@ -61,6 +64,7 @@ public class InteractableWithRequrement : MonoBehaviour, IInteractable
             if (!requrements[i].Check(interactor))
             {
                 tooltip = requrements[i].OnFailTooltip;
+                
                 passed = false;
                 return passed;
             }

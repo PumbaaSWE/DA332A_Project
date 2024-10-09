@@ -53,11 +53,11 @@ public class Interactor : MonoBehaviour
 
                 if (action.triggered)
                 {
+                    item.Interact(transform);
                     if (item.ShowInteractMessage)
                     {
                         OnInteractedPriority?.Invoke(item.InteractedTooltip, item.InteractedTipDisplayTime, item.InteractedDisplayPriority);
                     }
-                    item.Interact(transform);
                 }
             }
         }
