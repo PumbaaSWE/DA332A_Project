@@ -66,6 +66,10 @@ public class NonphysController : MovementController
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
 
+    public float Radius => radius;
+    public float Height => height;
+    public float CamOffset => camOffset;
+
     // inputs
     Vector2 look;
     Vector2 move;
@@ -85,6 +89,11 @@ public class NonphysController : MovementController
     void Start()
     {
         cc = GetComponent<CapsuleCollider>();
+
+        cc.center = Vector3.up * Height / 2f;
+        cc.height = Height;
+        cc.radius = Radius;
+        head.localPosition = Vector3.up * (Height - CamOffset);
     }
 
 
@@ -225,6 +234,7 @@ public class NonphysController : MovementController
             }
         }
         head.position = transform.position + Vector3.up * (cc.height - camOffset);
+
         isCrouched = cc.height != height;
     }
 
@@ -331,7 +341,7 @@ public class NonphysController : MovementController
         DrawCapsule(point1, point2, cc.radius);
 
         // Look direction
-        Gizmos.DrawRay(head.position, head.forward);
+        Gizmos.DrawRay(head.position, Camera.main.transform.forward);
 
         // IsGrounded
         Gizmos.color = grounded ? Color.green : Color.red;
@@ -369,11 +379,23 @@ public class NonphysController : MovementController
         if (head != null)
         {
             xRot = Mathf.Clamp(xRot - x, minLookUpAngle, maxLookUpAngle);
-            head.localRotation = Quaternion.Euler(xRot, 0f, 0f);
+            Camera.main.transform.localRotation = Quaternion.Euler(xRot, 0, 0);
         }
     }
 
-    Vector2 Rotation()
+    public void SetRotation(float x, float y)
+    {
+        xRot = Mathf.Clamp(x, minLookUpAngle, maxLookUpAngle);
+        transform.rotation = Quaternion.Euler(0, y, 0);
+        Rotate();
+    }
+
+    public void SetVelocity(Vector3 newVel)
+    {
+        velocity = newVel;
+    }
+
+    public Vector2 Rotation()
     {
         return new Vector2(-xRot, transform.rotation.eulerAngles.y);
     }
@@ -383,17 +405,21 @@ public class NonphysController : MovementController
     {
         move = c.ReadValue<Vector2>();
 
-        if (move.sqrMagnitude > 1)
-            move.Normalize();
     }
 
     public void Look(CallbackContext c)
     {
+        if (!enabled)
+            return;
+
         look += c.ReadValue<Vector2>();
     }
 
     public void Crouch(CallbackContext c)
     {
+        if (!enabled)
+            return;
+
         if (c.started)
             crouch = true;
 
@@ -405,6 +431,9 @@ public class NonphysController : MovementController
 
     public void Jump(CallbackContext c)
     {
+        if (!enabled)
+            return;
+
         if (!c.started) return;
 
         if (!grounded) return;
@@ -419,6 +448,9 @@ public class NonphysController : MovementController
 
     public void Sprint(CallbackContext c)
     {
+        if (!enabled)
+            return;
+
         if (c.started)
             sprint = true;
 
