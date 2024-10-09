@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -100,6 +99,9 @@ public class ClimbController : MonoBehaviour
         return grounded;
     }
 
+    float rTime;
+    Vector3 startHeadUp;
+
     void Look()
     {
         Vector2 preRot = Rotation();
@@ -108,8 +110,16 @@ public class ClimbController : MonoBehaviour
         LookDelta = Rotation() - preRot;
         look = Vector2.zero;
 
-        head.MatchUp(Vector3.Lerp(head.transform.up, transform.up, rotationSpeed * Time.deltaTime));
+        // Snap head rotation if transition should be finished
+        if (rTime > rotationSpeed)
+        {
+            head.MatchUp(transform.up);
+            return;
+        }
 
+        // Slerp head rotation when climbing onto new wall
+        rTime += Time.deltaTime;
+        head.MatchUp(Vector3.Slerp(startHeadUp, transform.up, rTime / rotationSpeed));
         head.localRotation = Quaternion.Euler(head.localRotation.eulerAngles.WithY());
     }
 
@@ -185,9 +195,15 @@ public class ClimbController : MonoBehaviour
 
     void SetUp(Vector3 direction)
     {
+        if (transform.up == direction)
+            return;
+
         Vector3 headUp = head.transform.up;
         transform.MatchUp(direction);
         head.MatchUp(headUp);
+
+        rTime = 0;
+        startHeadUp = head.up;
     }
 
     void Rotate(float x = 0f, float y = 0f)

@@ -10,9 +10,11 @@ public class SwitchController : MonoBehaviour
     public bool transitioning;
     public Transform head;
 
-    ClimbController climb;
-    NonphysController nonphys;
-    CapsuleCollider cc;
+    ClimbController ClimbController;
+    NonphysController NonphysController;
+    CapsuleCollider CapsuleCollider;
+    WeaponHandler WeaponHandler;
+    Firearm _equippedGun;
 
     Vector3 startPos;
     Vector3 endPos;
@@ -35,13 +37,19 @@ public class SwitchController : MonoBehaviour
         startPos = transform.position;
         if (wantClimb)
         {
-            nonphys.enabled = false;
-            endPos = transform.position.WithY(transform.position.y + climb.Radius);
+            NonphysController.enabled = false;
+            endPos = transform.position.WithY(transform.position.y + ClimbController.Radius);
+
+            // disable weapon
+            _equippedGun = WeaponHandler.EquippedGun;
+            _equippedGun.gameObject.SetActive(false);
+            WeaponHandler.EquippedGun = null;
+            WeaponHandler.enabled = false;
         }
         else
         {
-            climb.enabled = false;
-            endPos = transform.position.WithY(transform.position.y - climb.Radius);
+            ClimbController.enabled = false;
+            endPos = transform.position.WithY(transform.position.y - ClimbController.Radius);
         }
 
 
@@ -49,9 +57,10 @@ public class SwitchController : MonoBehaviour
 
     void Start()
     {
-        climb = GetComponent<ClimbController>();
-        nonphys = GetComponent<NonphysController>();
-        cc = GetComponent<CapsuleCollider>();
+        ClimbController = GetComponent<ClimbController>();
+        NonphysController = GetComponent<NonphysController>();
+        CapsuleCollider = GetComponent<CapsuleCollider>();
+        WeaponHandler = GetComponent<WeaponHandler>();
     }
 
     void Update()
@@ -71,10 +80,10 @@ public class SwitchController : MonoBehaviour
         if (wantClimb)
             t = (speed - time) / speed;
 
-        cc.center = Vector3.Lerp(Vector3.zero, Vector3.up * nonphys.Height / 2f, t);
-        cc.height = Mathf.Lerp(climb.Radius, nonphys.Height, t);
-        cc.radius = Mathf.Lerp(climb.Radius, nonphys.Radius, t);
-        head.localPosition = Vector3.Lerp(Vector3.up * climb.CamOffset, Vector3.up * (nonphys.Height - nonphys.CamOffset), t);
+        CapsuleCollider.center = Vector3.Lerp(Vector3.zero, Vector3.up * NonphysController.Height / 2f, t);
+        CapsuleCollider.height = Mathf.Lerp(ClimbController.Radius, NonphysController.Height, t);
+        CapsuleCollider.radius = Mathf.Lerp(ClimbController.Radius, NonphysController.Radius, t);
+        head.localPosition = Vector3.Lerp(Vector3.up * ClimbController.CamOffset, Vector3.up * (NonphysController.Height - NonphysController.CamOffset), t);
 
         if (!wantClimb)
             transform.MatchUp(Vector3.Slerp(transform.up, Vector3.up, t));
@@ -85,17 +94,22 @@ public class SwitchController : MonoBehaviour
 
             if (wantClimb)
             {
-                climb.enabled = true;
-                Vector2 rot = nonphys.Rotation();
-                climb.SetRotation(-rot.x, rot.y);
-                climb.SetVelocity(Vector3.zero);
+                ClimbController.enabled = true;
+                Vector2 rot = NonphysController.Rotation();
+                ClimbController.SetRotation(-rot.x, rot.y);
+                ClimbController.SetVelocity(Vector3.zero);
             }
             else
             {
-                nonphys.enabled = true;
-                Vector2 rot = climb.Rotation();
-                nonphys.SetRotation(-rot.x, rot.y);
-                nonphys.SetVelocity(Vector3.zero);
+                NonphysController.enabled = true;
+                Vector2 rot = ClimbController.Rotation();
+                NonphysController.SetRotation(-rot.x, rot.y);
+                NonphysController.SetVelocity(Vector3.zero);
+
+                // enable weapon
+                WeaponHandler.EquippedGun = _equippedGun;
+                _equippedGun.gameObject.SetActive(true);
+                WeaponHandler.enabled = true;
             }
         }
     }
