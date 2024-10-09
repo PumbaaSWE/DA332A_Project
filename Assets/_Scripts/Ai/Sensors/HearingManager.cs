@@ -13,6 +13,10 @@ public class HearingManager : MonoBehaviour
         EWorldSound
             
     }
+    //void Start()
+    //{
+    //    DontDestroyOnLoad(this.gameObject);
+    //}
     public static HearingManager Instance { get; private set; }
 
     public List<HearingSensor> AllSensors { get; private set; } = new List<HearingSensor>();
