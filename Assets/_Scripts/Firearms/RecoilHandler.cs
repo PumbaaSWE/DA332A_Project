@@ -22,9 +22,6 @@ public class RecoilHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (WHandler == null)
-            return;
-
         if (WHandler.IsFiring())
         {
             float x = Mathf.Min(Player.LookDelta.x, 0);
