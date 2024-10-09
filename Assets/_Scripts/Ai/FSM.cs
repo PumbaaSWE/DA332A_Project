@@ -577,7 +577,7 @@ public class FSM : MonoBehaviour
             //Debug.Log("Attack!!");
             if (target.TryGetComponent(out IDamageble damageble))
             {
-                damageble.TakeDamage(transform.position, targetDelta, 10);
+                damageble.TakeDamage(transform.position, targetDelta, 5);
                 attckTimer = attackTime;
                 //Debug.Log("Do damage!!");
             }
