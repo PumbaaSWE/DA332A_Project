@@ -35,6 +35,7 @@ public class FSMClimber : MonoBehaviour
     public AgentHit agenthitState = AgentHit.Normal;
     public enum AgentState { Idle, Wander, Patrol, Chasing, Attacking, Knockback, Investegate , Jump}
     public AgentState agentState = AgentState.Idle;
+    private AgentState previousState = AgentState.Idle;
     MoveTowardsController controller;
     bool DestinationSet = false;
     bool ReachedDestination = true;
@@ -107,6 +108,13 @@ public class FSMClimber : MonoBehaviour
     {
         Found();
         CheckIfAIsAboveAndFar();
+        if (previousState != agentState)
+        {
+            DestinationSet = false;
+            ReachedDestination = true;
+            previousState = agentState;
+        }
+
         //HeardSomthing();
         //if(hasReachedDestination)
         //{
