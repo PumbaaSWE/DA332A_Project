@@ -8,7 +8,7 @@ public class PlayerSpawner : MonoBehaviour
     public Spawner Spawner => spawner;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         spawner = GetComponent<Spawner>();
         OnLoadingComplete();

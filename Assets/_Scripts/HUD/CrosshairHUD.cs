@@ -45,6 +45,7 @@ public class CrosshairHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (weaponHandler)
         {
             CalculateDegrees();        

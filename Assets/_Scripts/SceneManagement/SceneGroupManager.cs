@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -154,17 +152,22 @@ public class SceneGroupManager : MonoBehaviour
         }
 
         while (!operationsGroup.IsDone)
-        {
-            
-            //progress?.Report(operationsGroup.Progress);
+        {   
+            if(operationsGroup.Progress >= .9f && loadingSceneUp)
+            {
+                operationsGroup.operations.ForEach(op => op.allowSceneActivation = true);
+                ActiveAudioListener.enabled = false;
+            }
+
             yield return null;
         }
 
         if (loadingSceneUp)
         {
             //Debug.Log("*********LoadScenesCouroutine Unload loading Scene***********");
-            operationsGroup.operations.ForEach(op => op.allowSceneActivation = true);
-            ActiveAudioListener.enabled = false;
+           
+            
+            //Debug.Log("Loading - Disabeling audio");
         }
 
         //Debug.Log("*********LoadScenesCouroutine Set Active***********");
@@ -186,11 +189,10 @@ public class SceneGroupManager : MonoBehaviour
             yield return new WaitUntil(() => ao.isDone);
         }
 
-
         Spawner.blockedBecauseLoading = false;
+        loading = false;
         OnSceneGroupLoaded.Invoke();
         //Debug.Log("**********LoadScenesCouroutine ENDS***********");
-        loading = false;
     }
 
     private void LoadingScene_completed(AsyncOperation obj)

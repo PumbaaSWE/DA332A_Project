@@ -7,10 +7,15 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
     [SerializeField] private SceneGroup[] sceneGroups;
     [SerializeField] private SceneGroupManager sceneGroupManager;
     [SerializeField] private PlayerDataSO playerData;
+    [SerializeField] private Player playerPrefab;
+    [SerializeField] private Player player;
 
     public event Action OnLoadingComplete;
 
     int lastLoaded;
+    bool groupReloaded;
+
+    public int LastLoaded => lastLoaded;
 
 
     protected override void Awake()
@@ -39,20 +44,47 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
 
     private void LoadedCallback()
     {
-        
+
+        player = FindAnyObjectByType<Player>();
+
+        if (!player)
+        {
+            Debug.Log("No player founmd");
+            PlayerSpawn spawn = FindAnyObjectByType<PlayerSpawn>();
+            if (spawn)
+            {
+                player = Instantiate(playerPrefab, spawn.Position, spawn.Rotation);
+            }
+            else
+            {
+                player = Instantiate(playerPrefab, spawn.Position, spawn.Rotation);
+            }
+        }
+        player.EnableAudio();
+
+
+
+
+        EventBus<LoadedEvent>.Raise(new LoadedEvent
+        {
+            reloadedSceneGroup = groupReloaded,
+            sceneGroupIndex = lastLoaded
+        });
+        groupReloaded = false;
         OnLoadingComplete?.Invoke();
     }
-    [MakeButton(false)]
+    //[MakeButton(false)]
     public void ReloadGroup(int index)
     {
         LoadGroup(index, true);
+        groupReloaded = true;
     }
-    [MakeButton(false)]
+    //[MakeButton(false)]
     public void ReloadLast()
     {
         ReloadGroup(lastLoaded);
     }
-    [MakeButton(false)]
+    //[MakeButton(false)]
     public void LoadGroup(int index)
     {
         LoadGroup(index, false);
@@ -78,4 +110,11 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
         return true;
     }
 
+}
+
+
+public struct LoadedEvent : IEvent
+{
+    public bool reloadedSceneGroup;
+    public int sceneGroupIndex;
 }

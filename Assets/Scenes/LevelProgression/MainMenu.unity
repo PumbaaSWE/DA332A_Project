@@ -123,6 +123,66 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &426166964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 426166966}
+  - component: {fileID: 426166965}
+  - component: {fileID: 426166967}
+  m_Layer: 0
+  m_Name: SaveLoadManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &426166965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426166964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c94484eefb1e94d87cf7a013453cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoUnparentOnAwake: 1
+  playerPrefab: {fileID: 1781910667755730167, guid: 3212e855c70a5c14b9726d4854c970a7,
+    type: 3}
+--- !u!4 &426166966
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426166964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &426166967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426166964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1800c0349efde4d4fa2d4ee15e87b941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &461539143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1125,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d929252b7e1016d489f8029f90004fda, type: 2}
   sceneGroupManager: {fileID: 1437363810}
   playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  playerPrefab: {fileID: 1781910667755730167, guid: 3212e855c70a5c14b9726d4854c970a7,
+    type: 3}
+  player: {fileID: 0}
 --- !u!114 &1437363810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,3 +1554,4 @@ SceneRoots:
   - {fileID: 2124966632}
   - {fileID: 461539146}
   - {fileID: 1437363811}
+  - {fileID: 426166966}

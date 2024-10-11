@@ -1,22 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WallClimber : MonoBehaviour
 {
-
-    public float acceleration = 50;
-    public float friction = 5;
-    public float rotationSpeed = 90;
-
-    public float arcAngle = 180;
-    public int arcResolution = 4;
-    public LayerMask groundLayer = ~0;
-
-    public float stickyDistance = 0.2f;
-    private float fallVelocity = 0;
-   // private bool grounded;
+    [SerializeField] private float maxSpeed = 4;
+    [SerializeField] private float acceleration = 50;
+    [SerializeField] private float friction = 5;
+    [SerializeField] private float rotationSpeed = 90;
+    [SerializeField] private float arcAngle = 180;
+    [SerializeField] private int arcResolution = 4;
+    [SerializeField] private LayerMask groundLayer = ~0;
+    [SerializeField] private float radius = 0.2f;
+    [SerializeField] private Transform pivot;
+    [SerializeField] private float pivotSpeed = 180;
+    private Quaternion pivotParentLast;
+    // private bool grounded;
 
     private float rotationDelta;
     private Vector2 moveCommand;
@@ -25,10 +22,10 @@ public class WallClimber : MonoBehaviour
     private Vector2 velocity;
 
     public Vector2 Velocity { get => velocity; }
-    public Vector3 Velocity3 { get => new Vector3(velocity.x, 0, velocity.y); }
+    public Vector3 Velocity3 { get => new(velocity.x, 0, velocity.y); }
     public float Speed { get => speed; }
 
-    public Controller controller;
+    [SerializeField] private Controller controller;
     public bool debugDraw;
 
 
@@ -36,7 +33,13 @@ public class WallClimber : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // grounded = true;
+        // grounded = true;
+        if (!controller)
+        {
+            controller = GetComponent<Controller>();
+        }
+
+        pivotParentLast = transform.localRotation;
     }
 
     void Update()
@@ -48,11 +51,13 @@ public class WallClimber : MonoBehaviour
         float dt = Time.deltaTime;
         ApplyVelocity(dt);
         Rotate(dt);
+        HandlePivot(dt);
     }
 
     private void Rotate(float dt)
     {
-        if(rotationDelta != 0)
+        rotationDelta = float.IsNaN(rotationDelta) ? 0 : rotationDelta;
+        if (rotationDelta != 0)
         {
             transform.Rotate(0, rotationSpeed * dt * rotationDelta, 0);
             rotationDelta = 0;
@@ -61,38 +66,59 @@ public class WallClimber : MonoBehaviour
 
     private void ApplyVelocity(float dt)
     {
-        
-
         if (velocity == Vector2.zero)
             return;
 
         float arcRadius = speed * dt;
         Vector3 worldVelocity = transform.TransformVector(Velocity3);
 
+        Vector3 pos = transform.position;
+        Debug.DrawLine(pos + transform.up * radius, pos + transform.up * radius + worldVelocity.normalized * (radius + arcRadius), Color.green);
+        //this checks wall infront
+        //if (Physics.Raycast(pos + transform.up * radius, worldVelocity, out RaycastHit hit, radius + arcRadius, groundLayer, QueryTriggerInteraction.Ignore))
+        //{
+        //    Debug.DrawLine(pos + transform.up * radius, hit.point, Color.red);
+        //    transform.MatchUp(hit.normal);
+        //    pivot.localRotation = Quaternion.identity;
+        //    pivotParentLast = transform.localRotation;
+        //    transform.position = hit.point;
+        //}
+        ////walk around convex edges
+        //else
         if (ExtraPhysics.ArcCast(transform.position, Quaternion.LookRotation(worldVelocity, transform.up), arcAngle, arcRadius, arcResolution, groundLayer, out RaycastHit hit))
         {
-            Vector3 pos = transform.position;
             transform.position = hit.point;
             transform.MatchUp(hit.normal);
-            fallVelocity = 0;
-          //  grounded = true;
-        }
-        else
-        {
-            //grounded = false;
-            if (Physics.Raycast(transform.position + 0.5f * stickyDistance * transform.up, -transform.up, out RaycastHit ghit, stickyDistance, groundLayer, QueryTriggerInteraction.Ignore))
-            {
-                //this is because we can get stuck in the air if something happen 
-                //transform.position = ghit.point;
-                //transform.MatchUp(ghit.normal);
-            }
-            else
-            {
-            //    grounded = false;
-            }
+            //velocity = Vector3.zero;
+            return;
         }
 
+        EmergencyTeleportToGround();
+
     }
+
+    private void EmergencyTeleportToGround()
+    {
+        Vector3 pos = transform.position;
+        if (Physics.Raycast(pos, -transform.up, out RaycastHit hit, 10, groundLayer, QueryTriggerInteraction.Ignore))
+        {
+            transform.position = hit.point;
+            transform.MatchUp(hit.normal);
+        }
+        else if (Physics.Raycast(pos + Vector3.up, Vector3.down, out hit, 10, groundLayer, QueryTriggerInteraction.Ignore))
+        {
+            transform.position = hit.point;
+            transform.MatchUp(hit.normal);
+        }
+    }
+
+    private void HandlePivot(float dt)
+    {
+        pivot.localRotation = Quaternion.Inverse(transform.localRotation) * pivotParentLast * pivot.localRotation;
+        pivotParentLast = transform.localRotation;
+        pivot.localRotation = Quaternion.RotateTowards(pivot.localRotation, Quaternion.identity, pivotSpeed * dt);
+    }
+
 
     void FixedUpdate()
     {
@@ -100,44 +126,11 @@ public class WallClimber : MonoBehaviour
 
         ApplyFriction(dt);
         ApplyAcceleration(dt);
-        //if (grounded)
-        //{
-        //    ApplyFriction(dt);
-        //    ApplyAcceleration(dt);
 
-        //}
-        //else
-        //{
-        //    ApplyFalling(dt);
-        //}
         speed = velocity.magnitude;
-        //UpdateVeclocity();
     }
 
-    private void ApplyFalling(float dt)
-    {
-        //do faling logic
-        fallVelocity += 9.82f * dt; //do in fixed update :grimacing:
 
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, fallVelocity*dt+stickyDistance, groundLayer, QueryTriggerInteraction.Ignore))
-        {
-            transform.position = hit.point;
-            transform.MatchUp(hit.normal);
-           // grounded = true;
-            //Debug.Log("we landed");
-        }
-        else
-        {
-            //rotate upwards?
-            //Vector3 fwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-            //Quaternion desired = Quaternion.LookRotation(fwd, Vector3.up);
-
-            //transform.rotation *= Quaternion.RotateTowards(transform.rotation, desired, 90 * dt);
-
-            transform.position += dt * fallVelocity * Vector3.down;
-        }
-
-    }
 
     private void ApplyFriction(float dt)
     {
@@ -149,8 +142,9 @@ public class WallClimber : MonoBehaviour
         if (moveCommand != Vector2.zero)
         {
             velocity += acceleration * dt * moveCommand;
+            if (velocity.sqrMagnitude > maxSpeed * maxSpeed) velocity = velocity.normalized * maxSpeed;
             moveCommand = Vector2.zero;
-        }     
+        }
     }
 
     private void OnDrawGizmos()
@@ -163,5 +157,10 @@ public class WallClimber : MonoBehaviour
         //Gizmos.DrawRay(transform.position, transform.forward);
         GizmosExtra.DrawArrow(transform);
 
+
+        Gizmos.DrawLine(transform.position, transform.position + transform.up * radius);
+        Gizmos.DrawWireSphere(transform.position + transform.up * radius, .1f);
+
     }
 }
+

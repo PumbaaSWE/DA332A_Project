@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectableTarget : MonoBehaviour
@@ -13,11 +11,10 @@ public class DetectableTarget : MonoBehaviour
 
 
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        if (DetectableTargetManager.Instance != null)
-        {
-            DetectableTargetManager.Instance.Deregister(this);
-        }
+        
+        DetectableTargetManager.Instance.Deregister(this);
+        
     }
 }

@@ -13,7 +13,7 @@ public class ElevatorWarp : MonoBehaviour
 
     private void Start()
     {
-        transform.SetPositionAndRotation(start, startRot);
+        //transform.SetPositionAndRotation(start, startRot);
     }
 
     

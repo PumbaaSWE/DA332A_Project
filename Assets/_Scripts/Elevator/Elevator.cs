@@ -23,14 +23,40 @@ public class Elevator : MonoBehaviour
 
     public List<GameObject> gameObjectsToMove = new();
 
-    void Start()
+    EventBinding<LoadedEvent> eventBinding;
+
+    void Awake()
     {
         doors = GetComponent<ElevatorDoors>();
         doors.OnDoorsClosed += Doors_OnDoorsClosed;
         effect = GetComponent<ElevatorLightEffect>();
+        eventBinding = new EventBinding<LoadedEvent>(LoadedEventCallback);
+        EventBus<LoadedEvent>.Register(eventBinding);
     }
 
-    
+
+    private void OnDestroy()
+    {
+        EventBus<LoadedEvent>.Deregister(eventBinding);
+    }
+
+    private void LoadedEventCallback(LoadedEvent loadedEvent)
+    {     
+        if (TryGetComponent(out ElevatorWarp warp))
+        {
+            if (loadedEvent.sceneGroupIndex == nextSceneGroup)
+            {
+                warp.GotoEndPos();
+                insideButton.SetActive(false); // replace with in active button?
+
+            }
+            else
+            {
+                warp.GotoStartPos();
+            }
+        }
+    }
+
 
     public bool CheckPlayerInside()
     {
@@ -110,7 +136,7 @@ public class Elevator : MonoBehaviour
         SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
         SceneGroupLoader.Instance.LoadGroup(nextSceneGroup);
         time = Time.time;
-        insideButton.SetActive(false); // replave with in active button?
+        insideButton.SetActive(false); // replace with in active button?
         StartCoroutine(WaitUntilLoadCompletes());
         if(TryGetComponent(out ElevatorWarp warp))
         {
@@ -123,6 +149,7 @@ public class Elevator : MonoBehaviour
         yield return new WaitUntil(()=>!loading && Time.time - time > 6);
         doors.Locked = false;
         doors.OpenDoors();
+        SaveGameManager.SaveData();
     }
 
     private void OnDisable()
