@@ -12,8 +12,10 @@ public class StartPlay : MonoBehaviour
     private void Start()
     {
         contunueLevel = progress.Level;
-        continueButton.SetActive(contunueLevel > 0);
-        
+        //continueButton.SetActive(contunueLevel > 0);
+
+        continueButton.SetActive(SaveGameManager.HasSaveFile());
+
     }
 
     public void StartNewGame()
@@ -24,10 +26,9 @@ public class StartPlay : MonoBehaviour
 
     public void ContinueGame()
     {
-        contunueLevel = progress.Level;
-        continueButton.SetActive(contunueLevel > 0);
-        if (contunueLevel > 0)
-            SceneGroupLoader.Instance.LoadGroup(contunueLevel);
+        //contunueLevel = progress.Level;
+        //continueButton.SetActive(contunueLevel > 0);
+        SaveGameManager.LoadData();
     }
 
     private void OnApplicationQuit()

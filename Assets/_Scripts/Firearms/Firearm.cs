@@ -393,7 +393,7 @@ public class Firearm : MonoBehaviour
     {
         WHandler = wHandler;
         RHandler = rHandler;
-        CameraView = Camera.main.transform;
+        CameraView = wHandler.GetComponentInChildren<Camera>().transform;
         Player = player;
     }
 

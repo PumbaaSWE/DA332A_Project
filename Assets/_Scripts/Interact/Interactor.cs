@@ -26,7 +26,7 @@ public class Interactor : MonoBehaviour
     void Start()
     {
         Debug.Assert(lookDir, "Interactor - lookDir not assigned!");
-        lookDir = Camera.main.transform;
+        if(!lookDir) lookDir = Camera.main.transform;
 
         action = playerInput.actions.FindAction("Interact");
         //playerInput.actions.

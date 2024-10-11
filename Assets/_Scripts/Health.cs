@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -51,5 +52,22 @@ public class Health : MonoBehaviour
             health = maxHealth;
         }
         OnHealthChanged?.Invoke(this, amount);
+    }
+
+    public void SetHealth(float health)
+    {
+        this.health = health;
+    }
+
+    [ContextMenu("Add Hitboxes")]
+    public void AddHitboxes()
+    {
+        var colliders = GetComponentsInChildren<Collider>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            //if (colliders[0].isTrigger) continue;
+            Hitbox h = colliders[i].GetOrAddComponent<Hitbox>();
+            h.Health = this;
+        }
     }
 }

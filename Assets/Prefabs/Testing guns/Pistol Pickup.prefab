@@ -117,7 +117,6 @@ GameObject:
   - component: {fileID: 6469346921826590841}
   - component: {fileID: 4173698698121124598}
   - component: {fileID: 3009378364332193412}
-  - component: {fileID: 8570153701683506147}
   m_Layer: 2
   m_Name: Slide
   m_TagString: Untagged
@@ -211,58 +210,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8570153701683506147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2315087830519873550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 50
-  RPM: 600
-  MaxRange: 100
-  ProjectilesPerShot: 1
-  Firing: 0
-  VerticalRecoil: 1.3
-  MinHorizontalRecoil: -0.5
-  MaxHorizontalRecoil: 0.5
-  RecoilDuration: 0.1
-  ImpulseDuration: 0
-  LoadedAmmo: 0
-  MagazineSize: 30
-  ReserveAmmo: 300
-  MaxReserveAmmo: 300
-  RoundInTheChamber: 1
-  AutoReload: 0
-  ProportionalAmmoConsumption: 0
-  UseLocalAmmoPool: 0
-  HipFireSpread: 0
-  MinHipFireSpread: 2
-  MaxHipFireSpread: 6
-  HipFireGain: 0.5
-  HipFireDecay: 2
-  AdsSpread: 1
-  AdsTime: 0.5
-  AdsZoom: 1.5
-  UseAdsSpread: 0
-  Ads: 0
-  CanAds: 1
-  ShootableLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  Decal: {fileID: 2313464559674179374, guid: df09586d17bb7454ca19d4a4227d8bf0, type: 3}
-  Player: {fileID: 0}
-  CurrentMode: 2
-  AvailableModes: 0200000000000000
-  AmmoType: 0
-  WHandler: {fileID: 0}
-  RHandler: {fileID: 0}
-  DropPrefab: {fileID: 0}
 --- !u!1 &2415136906976503962
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +222,6 @@ GameObject:
   - component: {fileID: 5606562097966510686}
   - component: {fileID: 528530798733847708}
   - component: {fileID: 3927452645800967507}
-  - component: {fileID: 6621028701758300138}
   m_Layer: 2
   m_Name: Barrel
   m_TagString: Untagged
@@ -369,58 +315,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6621028701758300138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2415136906976503962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 50
-  RPM: 600
-  MaxRange: 100
-  ProjectilesPerShot: 1
-  Firing: 0
-  VerticalRecoil: 1.3
-  MinHorizontalRecoil: -0.5
-  MaxHorizontalRecoil: 0.5
-  RecoilDuration: 0.1
-  ImpulseDuration: 0
-  LoadedAmmo: 0
-  MagazineSize: 30
-  ReserveAmmo: 300
-  MaxReserveAmmo: 300
-  RoundInTheChamber: 1
-  AutoReload: 0
-  ProportionalAmmoConsumption: 0
-  UseLocalAmmoPool: 0
-  HipFireSpread: 0
-  MinHipFireSpread: 2
-  MaxHipFireSpread: 6
-  HipFireGain: 0.5
-  HipFireDecay: 2
-  AdsSpread: 1
-  AdsTime: 0.5
-  AdsZoom: 1.5
-  UseAdsSpread: 0
-  Ads: 0
-  CanAds: 1
-  ShootableLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  Decal: {fileID: 2313464559674179374, guid: df09586d17bb7454ca19d4a4227d8bf0, type: 3}
-  Player: {fileID: 0}
-  CurrentMode: 2
-  AvailableModes: 0200000000000000
-  AmmoType: 0
-  WHandler: {fileID: 0}
-  RHandler: {fileID: 0}
-  DropPrefab: {fileID: 0}
 --- !u!1 &2930298761621223113
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +429,6 @@ GameObject:
   - component: {fileID: 8176362285027826905}
   - component: {fileID: 5756082452116528620}
   - component: {fileID: 8338892892455199389}
-  - component: {fileID: 4666405411965923254}
   m_Layer: 2
   m_Name: Lower Frame
   m_TagString: Untagged
@@ -629,58 +522,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4666405411965923254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8327560601788442859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021ba5e9ed58c104abf5cdc8fbb9b1dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 50
-  RPM: 600
-  MaxRange: 100
-  ProjectilesPerShot: 1
-  Firing: 0
-  VerticalRecoil: 1.3
-  MinHorizontalRecoil: -0.5
-  MaxHorizontalRecoil: 0.5
-  RecoilDuration: 0.1
-  ImpulseDuration: 0
-  LoadedAmmo: 0
-  MagazineSize: 30
-  ReserveAmmo: 300
-  MaxReserveAmmo: 300
-  RoundInTheChamber: 1
-  AutoReload: 0
-  ProportionalAmmoConsumption: 0
-  UseLocalAmmoPool: 0
-  HipFireSpread: 0
-  MinHipFireSpread: 2
-  MaxHipFireSpread: 6
-  HipFireGain: 0.5
-  HipFireDecay: 2
-  AdsSpread: 1
-  AdsTime: 0.5
-  AdsZoom: 1.5
-  UseAdsSpread: 0
-  Ads: 0
-  CanAds: 1
-  ShootableLayers:
-    serializedVersion: 2
-    m_Bits: 1
-  Decal: {fileID: 2313464559674179374, guid: df09586d17bb7454ca19d4a4227d8bf0, type: 3}
-  Player: {fileID: 0}
-  CurrentMode: 2
-  AvailableModes: 0200000000000000
-  AmmoType: 0
-  WHandler: {fileID: 0}
-  RHandler: {fileID: 0}
-  DropPrefab: {fileID: 0}
 --- !u!1 &8870175848543341476
 GameObject:
   m_ObjectHideFlags: 0
