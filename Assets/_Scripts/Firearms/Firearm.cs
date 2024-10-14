@@ -67,7 +67,7 @@ public class Firearm : MonoBehaviour
     Action SwitchAction;
     Transform CameraView;
     public GameObject DropPrefab;
-
+    public int Id;
 
     // Start is called before the first frame update
     void Start()
