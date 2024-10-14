@@ -9,8 +9,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class WeaponHandler : MonoBehaviour
 {
-    public Dictionary<Cartridgetype, int> AmmoPool = new();
-    //public List<CartridgePool> AmmoPool;
+    //public Dictionary<Cartridgetype, int> AmmoPool = new();
+    public AmmoPool AmmunitionPool;
     public List<Firearm> Guns;
     public Firearm EquippedGun;
     public bool DebugTest;
@@ -20,9 +20,11 @@ public class WeaponHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (DebugTest)
-            foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
-                AmmoPool.Add(type, 1000);
+        //if (DebugTest)
+        //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
+        //        AmmunitionPool.Add(type, 1000);
+
+        AmmunitionPool = GetComponent<AmmoPool>();
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
@@ -40,10 +42,10 @@ public class WeaponHandler : MonoBehaviour
 
     public int TakeAmmo(Cartridgetype type, int ammoToTake)
     {
-        if (AmmoPool.ContainsKey(type))
+        if (AmmunitionPool.ContainsKey(type))
         {
-            int ammoToGive = Mathf.Clamp(AmmoPool[type], 0, ammoToTake);
-            AmmoPool[type] -= ammoToTake;
+            int ammoToGive = Mathf.Clamp(AmmunitionPool[type], 0, ammoToTake);
+            AmmunitionPool[type] -= ammoToTake;
             return ammoToGive;
         }
 
@@ -53,20 +55,20 @@ public class WeaponHandler : MonoBehaviour
 
     public void AddAmmo(Cartridgetype type, int ammoToAdd)
     {
-        if (!AmmoPool.ContainsKey(type))
-            AmmoPool.Add(type, ammoToAdd);
+        //if (!AmmunitionPool.ContainsKey(type))
+        //    AmmunitionPool.Add(type, ammoToAdd);
 
-        else
-            AmmoPool[type] += ammoToAdd;
+        //else
+        AmmunitionPool[type] = Mathf.Min(AmmunitionPool[type] + ammoToAdd, AmmunitionPool[type, true]);
     }
 
     /// <returns>True if any ammo of type left, false if not</returns>
     public bool AmmoLeft(Cartridgetype type)
     {
-        if (!AmmoPool.ContainsKey(type))
+        if (!AmmunitionPool.ContainsKey(type))
             return false;
 
-        return AmmoPool[type] > 0;
+        return AmmunitionPool[type] > 0;
     }
 
     /// <returns>Remaining ammo in magazine of current gun</returns>
@@ -74,7 +76,7 @@ public class WeaponHandler : MonoBehaviour
     {
         if (EquippedGun == null)
             return 0;
-        
+
         return EquippedGun.LoadedAmmo;
     }
 
@@ -84,15 +86,15 @@ public class WeaponHandler : MonoBehaviour
         if (EquippedGun == null)
             return 0;
 
-        if (!AmmoPool.ContainsKey(EquippedGun.AmmoType))
+        if (!AmmunitionPool.ContainsKey(EquippedGun.AmmoType))
             return 0;
 
-        return AmmoPool[EquippedGun.AmmoType];
+        return AmmunitionPool[EquippedGun.AmmoType];
     }
 
     public void CycleWeapons(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
     }
 
@@ -185,17 +187,4 @@ public enum Cartridgetype
     Rifle,
     Pistol,
     ShotgunShell
-}
-
-[Serializable]
-public class CartridgePool
-{
-    Cartridgetype AmmoType { get; set; }
-    public int CurrentAmmo { get; set; }
-    public int MaxAmmo { get; set; }
-}
-
-public class AmmunitionPool
-{
-
 }
