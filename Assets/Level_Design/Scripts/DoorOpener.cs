@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorOpener : Objective
+public class DoorOpener : MonoBehaviour
 {
     [SerializeField] Animator anim;
 
@@ -13,17 +13,15 @@ public class DoorOpener : Objective
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && CheckRequiredItems(other.GetComponent<HiddenInventory>().ReturnItemsAsArray()))
+        if (other.CompareTag("Player"))
         {
             anim.SetTrigger("Exit");
         }
     }
 
-    public void OpenDoor(Transform interactor)
+    public void OpenDoor()
     {
-        if (CheckRequiredItems(interactor.GetComponent<HiddenInventory>().ReturnItemsAsArray()))
-        {
-            anim.SetTrigger("Open");
-        }
+
+        anim.SetTrigger("Open");
     }
 }
