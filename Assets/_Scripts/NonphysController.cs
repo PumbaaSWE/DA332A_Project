@@ -61,13 +61,14 @@ public class NonphysController : MovementController
     [SerializeField] float distDiff = 0.03f;
 
     [Header("Stamina")]
-    [SerializeField] float maxStamina = 5f;
+    [SerializeField] float maxStamina = 8f;
     [Tooltip("Amount per second")]
-    [SerializeField] float sprintCost = 4f;
+    [SerializeField] float sprintCost = 5f;
     [Tooltip("Consumes stamina instantly")]
     [SerializeField] float jumpCost = 2f;
     [Tooltip("Amount per second")]
     [SerializeField] float rechargeRate = 1f;
+    [SerializeField] float rechargeCooldown = 1f;
 
     [Header("Debugging")]
     [SerializeField] bool drawGizmos;
@@ -79,6 +80,8 @@ public class NonphysController : MovementController
     public float Radius => radius;
     public float Height => height;
     public float CamOffset => camOffset;
+    public float MaxStamina => maxStamina;
+    public float Stamina => stamina;
 
     // inputs
     Vector2 look;
@@ -91,10 +94,12 @@ public class NonphysController : MovementController
     CapsuleCollider cc;
 
     // misc member variables
-    float xRot;
     bool isCrouched;
-    Vector3 groundNormal;
     bool wasGrounded;
+    float xRot;
+    float prevStamina;
+    float rechargeTimer;
+    Vector3 groundNormal;
 
     void Start()
     {
@@ -150,8 +155,20 @@ public class NonphysController : MovementController
     void Move(float dt)
     {
         // recharge stamina
-        stamina += dt * rechargeRate;
-        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        if (stamina < prevStamina)
+        {
+            rechargeTimer = 0;
+        }
+        else if (rechargeTimer < rechargeCooldown)
+        {
+            rechargeTimer += dt;
+        }
+        else
+        {
+            stamina += dt * rechargeRate;
+            stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        }
+        prevStamina = stamina;
 
         // What is our current max speed?
         float maxSpeed = maxWalkSpeed;
