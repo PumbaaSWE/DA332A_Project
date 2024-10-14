@@ -20,51 +20,61 @@ public class NonphysController : MovementController
     [SerializeField] float fovLerpTime;
 
     [Header("Looking")]
-    [SerializeField] float minLookUpAngle;
-    [SerializeField] float maxLookUpAngle;
-    [SerializeField] float mouseSensitivity;
-    [SerializeField] float camOffset;
+    [SerializeField] float minLookUpAngle = -90;
+    [SerializeField] float maxLookUpAngle = 90f;
+    [SerializeField] float mouseSensitivity = 0.05f;
+    [SerializeField] float camOffset = 0.35f;
 
     [Header("Movement")]
-    [SerializeField] float acceleration;
-    [SerializeField] float maxWalkSpeed;
-    [SerializeField] float maxSprintSpeed;
+    [SerializeField] float acceleration = 25f;
+    [SerializeField] float maxWalkSpeed = 3f;
+    [SerializeField] float maxSprintSpeed = 6f;
     [Tooltip("Only applies to horizontal movement")]
-    [SerializeField] float drag;
-    [SerializeField] float jumpVel;
-    [SerializeField] float gravity;
-    [SerializeField] float slopeAngle;
+    [SerializeField] float drag = 7.5f;
+    [SerializeField] float jumpVel = 4f;
+    [SerializeField] float gravity = 9.81f;
+    [SerializeField] float slopeAngle = 35f;
 
     [Header("Crouch")]
     [Tooltip("Time it takes to fully crouch / uncrouch")]
-    [SerializeField] float crouchSpeed;
+    [SerializeField] float crouchSpeed = 5f;
     [Tooltip("The players max speed when crouching")]
-    [SerializeField] float maxCrouchSpeed;
+    [SerializeField] float maxCrouchSpeed = 1.5f;
     [Tooltip("Has to be at least twice as big as collider radius")]
-    [SerializeField] float crouchHeight;
+    [SerializeField] float crouchHeight = 1f;
 
     [Header("Collision")]
-    [SerializeField] float radius;
+    [SerializeField] float radius = 0.3f;
     [Tooltip("Has to be at least twice as big as radius")]
-    [SerializeField] float height;
+    [SerializeField] float height = 1.85f;
     [Tooltip("Which layers will the player collide with?")]
     [SerializeField] LayerMask collideWith;
     [Tooltip("To prevent float point errors, keep a low value (< 0.1) or it will behave weirdly")]
-    [SerializeField] float skinWidth;
+    [SerializeField] float skinWidth = 0.015f;
     [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
-    [SerializeField] int maxBounces;
-    [SerializeField] float pushForce;
+    [SerializeField] int maxBounces = 3;
+    [SerializeField] float pushForce = 0f;
     [SerializeField] PhysicsMode physicsMode;
 
     [Header("IsGrounded")]
-    [SerializeField] float radiusDiff;
-    [SerializeField] float distDiff;
+    [SerializeField] float radiusDiff = -0.01f;
+    [SerializeField] float distDiff = 0.03f;
+
+    [Header("Stamina")]
+    [SerializeField] float maxStamina = 5f;
+    [Tooltip("Amount per second")]
+    [SerializeField] float sprintCost = 4f;
+    [Tooltip("Consumes stamina instantly")]
+    [SerializeField] float jumpCost = 2f;
+    [Tooltip("Amount per second")]
+    [SerializeField] float rechargeRate = 1f;
 
     [Header("Debugging")]
     [SerializeField] bool drawGizmos;
     [SerializeField] bool grounded;
     [SerializeField] Vector3 velocity;
     [SerializeField] float speed;
+    [SerializeField] float stamina;
 
     public float Radius => radius;
     public float Height => height;
@@ -94,6 +104,8 @@ public class NonphysController : MovementController
         cc.height = Height;
         cc.radius = Radius;
         head.localPosition = Vector3.up * (Height - CamOffset);
+
+        stamina = maxStamina;
     }
 
 
@@ -138,6 +150,8 @@ public class NonphysController : MovementController
     void Move(float dt)
     {
         // recharge stamina
+        stamina += dt * rechargeRate;
+        stamina = Mathf.Clamp(stamina, 0, maxStamina);
 
         // What is our current max speed?
         float maxSpeed = maxWalkSpeed;
@@ -150,9 +164,12 @@ public class NonphysController : MovementController
         }
         else if (sprint)
         {
-            if (forwardSpeed > 0)
+            float staminaToRemove = sprintCost * dt;
+            if (forwardSpeed > 0 && stamina >= staminaToRemove)
             {
                 // deplete stamina
+                stamina -= staminaToRemove;
+
                 maxSpeed = maxSprintSpeed;
             }
         }
@@ -440,7 +457,10 @@ public class NonphysController : MovementController
 
         if (isCrouched) return;
 
+        if (stamina < jumpCost) return;
+
         // deplete stamina
+        stamina -= jumpCost;
 
         velocity = velocity.WithY(jumpVel);
         jump = true;
