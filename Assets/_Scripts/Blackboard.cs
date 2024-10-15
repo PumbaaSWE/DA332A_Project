@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 public class Blackboard : PersistentSingleton<Blackboard>
 {
@@ -12,6 +12,22 @@ public class Blackboard : PersistentSingleton<Blackboard>
         base.Awake();
 
         dictionary = new Dictionary<string, object>();
+    }
+
+    public void Clear()
+    {
+        dictionary.Clear();
+    }
+
+    public BlackboardData[] Data()
+    {
+        BlackboardData[] data = new BlackboardData[dictionary.Count];
+        string[] keys = dictionary.Keys.ToArray();
+
+        for (int i = 0; i < dictionary.Count; i++)
+            data[i] = new BlackboardData { key = keys[i], value = dictionary[keys[i]] };
+
+        return data;
     }
 
     public void Set(string input, object obj)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
+using UnityEngine.SearchService;
 
 [Serializable]
 public class GameData
@@ -6,7 +8,16 @@ public class GameData
     public string name;
     public int id;
     public PlayerData playerData;
+    public BlackboardData[] blackboardData;
 }
+
+[Serializable]
+public struct BlackboardData
+{
+    public string key;
+    public object value;
+}
+
 [Serializable]
 public class PlayerData
 {

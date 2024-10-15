@@ -45,6 +45,10 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
             p.GetComponent<Health>().SetHealth(playerData.health);
             FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
             flareThrower.numFlares = playerData.numFlares;
+
+            Blackboard.Instance.Clear();
+            foreach (var data in gameData.blackboardData)
+                Blackboard.Instance.Set(data.key, data.value);
         }
     }
 
@@ -73,6 +77,7 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         gameData.id = SceneGroupLoader.Instance.LastLoaded;
         //WeaponHandler wh = playerDataSO.PlayerTransform.GetComponent<WeaponHandler>();
         //playerData.numShutgunShells = wh.GetAmmoCountFor(Cartridgetype.ShotgunShell);
+        gameData.blackboardData = Blackboard.Instance.Data();
         dataService.Save("GameData", gameData);
     }
 
