@@ -3,6 +3,7 @@ using UnityEngine;
 public class SaveGameManager : PersistentSingleton<SaveGameManager>
 {
     public Player playerPrefab;
+    public Firearm[] firearmPrefabs;
     EventBinding<LoadedEvent> eventBinding;
     IDataService dataService;
     GameData gameData;
@@ -45,6 +46,28 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
             p.GetComponent<Health>().SetHealth(playerData.health);
             FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
             flareThrower.numFlares = playerData.numFlares;
+
+            WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
+
+            // Set ammo
+            weaponHandler.AmmunitionPool[Cartridgetype.Rifle] = playerData.numRifleRounds;
+            weaponHandler.AmmunitionPool[Cartridgetype.Pistol] = playerData.numPistolRounds;
+            weaponHandler.AmmunitionPool[Cartridgetype.ShotgunShell] = playerData.numShotgunShells;
+
+            // Clear weapons
+            while (weaponHandler.Guns.Count > 0)
+            {
+                Destroy(weaponHandler.Guns[0].gameObject);
+                weaponHandler.Guns.RemoveAt(0);
+            }
+
+            // Set weapons
+            if (playerData.weaponData == null) return;
+
+            foreach (var wData in playerData.weaponData)
+                foreach(var fPrefab in firearmPrefabs)
+                    if (wData.id == fPrefab.Id)
+                        weaponHandler.PickupGun(fPrefab.gameObject);
         }
     }
 
@@ -71,6 +94,21 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
         playerData.numFlares = flareThrower.numFlares;
         gameData.id = SceneGroupLoader.Instance.LastLoaded;
+
+        WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
+
+        // Get ammo
+        playerData.numRifleRounds = weaponHandler.AmmunitionPool[Cartridgetype.Rifle];
+        playerData.numPistolRounds = weaponHandler.AmmunitionPool[Cartridgetype.Pistol];
+        playerData.numShotgunShells = weaponHandler.AmmunitionPool[Cartridgetype.ShotgunShell];
+
+        // Get weapons
+        Firearm[] weaps = weaponHandler.Guns.ToArray();
+        WeaponData[] weaponData = new WeaponData[weaps.Length];
+        for (int i = 0; i < weaps.Length; i++)
+            weaponData[i] = new WeaponData() { id = weaps[i].Id, ammo = weaps[i].LoadedAmmo };
+        playerData.weaponData = weaponData;
+
         //WeaponHandler wh = playerDataSO.PlayerTransform.GetComponent<WeaponHandler>();
         //playerData.numShutgunShells = wh.GetAmmoCountFor(Cartridgetype.ShotgunShell);
         dataService.Save("GameData", gameData);
