@@ -6,6 +6,7 @@ public class LightController : MonoBehaviour
 {
     [SerializeField] Light[] lights;
     [SerializeField] Color ambientColor;
+    [SerializeField] Color lightColor;
 
 
     public void Start()
@@ -18,6 +19,7 @@ public class LightController : MonoBehaviour
         for (int i = 0; i < lights.Length; i++)
         {
             lights[i].enabled = true;
+            lights[i].color = lightColor;
         }
         RenderSettings.ambientLight = ambientColor;
     }
