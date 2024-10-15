@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AmmoPool : MonoBehaviour
 {
-    public List<CartridgePool> Pools;
+    public List<CartridgePool> Pools = new();
 
     public int this[Cartridgetype type, bool maxAmmo = false]
     {
@@ -29,7 +29,20 @@ public class AmmoPool : MonoBehaviour
 
     public bool ContainsKey(Cartridgetype type)
     {
+        if (Pools == null)
+            return false;
+
         return Pools.Any(p => p.AmmoType == type);
+    }
+
+    public void Add(Cartridgetype type, int start, int max)
+    {
+        Pools.Add(new()
+        {
+            AmmoType = type,
+            CurrentAmmo = start,
+            MaxAmmo = max
+        });
     }
 }
 

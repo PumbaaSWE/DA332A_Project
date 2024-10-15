@@ -24,7 +24,15 @@ public class WeaponHandler : MonoBehaviour
         //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
         //        AmmunitionPool.Add(type, 1000);
 
-        AmmunitionPool = GetComponent<AmmoPool>();
+        // Create Ammo pool Component if it doesn't already exist
+        if (!TryGetComponent<AmmoPool>(out AmmunitionPool))
+        {
+            gameObject.AddComponent<AmmoPool>();
+            AmmunitionPool = GetComponent<AmmoPool>();
+            AmmunitionPool.Add(Cartridgetype.Pistol, 0, 300);
+            AmmunitionPool.Add(Cartridgetype.ShotgunShell, 0, 120);
+            AmmunitionPool.Add(Cartridgetype.Rifle, 0, 400);
+        }
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
@@ -45,7 +53,7 @@ public class WeaponHandler : MonoBehaviour
         if (AmmunitionPool.ContainsKey(type))
         {
             int ammoToGive = Mathf.Clamp(AmmunitionPool[type], 0, ammoToTake);
-            AmmunitionPool[type] -= ammoToTake;
+            AmmunitionPool[type] -= ammoToGive;
             return ammoToGive;
         }
 
