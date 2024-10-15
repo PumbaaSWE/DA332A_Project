@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static HearingManager;
@@ -37,6 +38,7 @@ public class Firearm : MonoBehaviour
     /// </summary>
     [SerializeField] bool ProportionalAmmoConsumption = false;
     [SerializeField] bool UseLocalAmmoPool = false;
+    bool IsReloading;
 
     [Header("Hipfire & ADS")]
     public float HipFireSpread;
@@ -68,6 +70,7 @@ public class Firearm : MonoBehaviour
     Transform CameraView;
     public GameObject DropPrefab;
     public int Id;
+    Animation CurrentAnimation;
 
     // Start is called before the first frame update
     void Start()
@@ -117,6 +120,7 @@ public class Firearm : MonoBehaviour
             {
                 Firing = true;
                 CanAds = true;
+                IsReloading = false;
                 StartCoroutine(Shoot());
             }
         }
@@ -189,7 +193,7 @@ public class Firearm : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(CameraView.position, shotDirection, out hit, MaxRange, ShootableLayers))
             {
-                Debug.DrawLine(CameraView.position, hit.point, Color.red, 10f);
+                //Debug.DrawLine(CameraView.position, hit.point, Color.red, 10f);
 
                 if (hit.collider.TryGetComponent(out IDamageble target))
                     target.TakeDamage(hit.point, shotDirection, Damage);
@@ -206,8 +210,8 @@ public class Firearm : MonoBehaviour
                 Destroy(go, 1.0f);
             }
 
-            else
-                Debug.DrawRay(CameraView.position, shotDirection, Color.red, 10f);
+            //else
+            //    Debug.DrawRay(CameraView.position, shotDirection, Color.red, 10f);
         }
 
         if (ProportionalAmmoConsumption)
@@ -266,8 +270,6 @@ public class Firearm : MonoBehaviour
 
     public void Reload()
     {
-        CanAds = true;
-
         if (UseLocalAmmoPool)
         {
             //if (ReserveAmmo == 0 || Firing)
@@ -293,22 +295,27 @@ public class Firearm : MonoBehaviour
             LoadedAmmo -= returnedAmmo;
             LoadedAmmo += WHandler.TakeAmmo(AmmoType, MagazineSize);
         }
+
+        CanAds = true;
+        IsReloading = false;
     }
 
     public void Reload(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType))
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType) && !IsReloading)
         {
             if (LoadedAmmo == 0)
             {
                 PerformAnimation(Animation.ReloadingEmpty);
                 CanAds = false;
+                IsReloading = true;
             }
 
             else if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
+                IsReloading = true;
             }
         }
     }
@@ -334,7 +341,10 @@ public class Firearm : MonoBehaviour
         }
 
         if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
+        {
             Animator.SetTrigger("Reload Finished");
+            IsReloading = false;
+        }
     }
 
     public void ToggleFireMode(CallbackContext context)
@@ -350,7 +360,8 @@ public class Firearm : MonoBehaviour
         //Debug.Log("Pulling out");
         // Play animation of pulling up gun
         gameObject.SetActive(true);
-        PerformAnimation(Animation.PullingOut);
+        //PerformAnimation(Animation.PullingOut);
+        IsReloading = false;
     }
 
     public void Unequip(Action equip)
@@ -360,6 +371,7 @@ public class Firearm : MonoBehaviour
         PerformAnimation(Animation.Holstering);
         SwitchAction = equip;
         CanFire = true;
+        IsReloading = false;
     }
 
     void Switch()
