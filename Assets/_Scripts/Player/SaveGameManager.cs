@@ -46,7 +46,7 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
             PlayerData playerData = gameData.playerData;
             p.GetComponent<Health>().SetHealth(playerData.health);
             FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
-            flareThrower.numFlares = playerData.numFlares;
+            flareThrower.NumFlares = playerData.numFlares;
 
             WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
 
@@ -101,7 +101,7 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         Player p = FindAnyObjectByType<Player>();
         playerData.health = p.GetComponent<Health>().Value;
         FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
-        playerData.numFlares = flareThrower.numFlares;
+        playerData.numFlares = flareThrower.NumFlares;
         gameData.id = SceneGroupLoader.Instance.LastLoaded;
 
         WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();

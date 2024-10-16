@@ -260,6 +260,7 @@ MonoBehaviour:
   grounded: 0
   velocity: {x: 0, y: 0, z: 0}
   speed: 0
+  stamina: 0
 --- !u!114 &7917173091721853720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,6 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93308bce5f0368f4e8558f51152cbc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AmmunitionPool: {fileID: 0}
   Guns: []
   EquippedGun: {fileID: 0}
   DebugTest: 1
@@ -641,7 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c79c1a28b7bd1447b9ce20d6835fa75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookDir: {fileID: 6535383243885454567}
+  lookDir: {fileID: 4190714404330901810}
   flarePrefab: {fileID: 2245847593458295276, guid: d4ad680e23353754e96b77f382b9295d,
     type: 3}
   collideDist: 1.2

@@ -1,24 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class FlareThrower : MonoBehaviour
 {
-    public Transform lookDir;
-    public GameObject flarePrefab;
-    public float collideDist = 1.5f;
-    public float throwForce = 15;
-    public float torqueForce = 1;
+    [SerializeField] private Transform lookDir;
+    [SerializeField] private GameObject flarePrefab;
+    [SerializeField] private float collideDist = 1.5f;
+    [SerializeField] private float throwForce = 15;
+    [SerializeField] private float torqueForce = 1;
 
-    public int numFlares;
-    public int maxNumFlares = 5;
-    bool hasThrownFlare;
+    [SerializeField] private int numFlares;
+    [SerializeField] private int maxNumFlares = 5;
 
-    [SerializeField] PlayerInput playerInput;
-    InputAction action;
-    string key = "<nope>";
+    public int NumFlares { get { return numFlares; } set { numFlares = Mathf.Clamp(value, 0, maxNumFlares); } }
+    public int MaxNumFlares { get { return maxNumFlares; } set { maxNumFlares = Mathf.Min(value, 0); } }
+
+
+    private bool hasThrownFlare;
+
+    [SerializeField] private PlayerInput playerInput;
+    private InputAction action;
+    private string key = "<nope>";
 
     // Start is called before the first frame update
     void Start()
