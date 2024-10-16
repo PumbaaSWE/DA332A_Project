@@ -72,9 +72,9 @@ public class Firearm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
+        //LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
         HipFireSpread = MinHipFireSpread;
-        OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
+        OriginalFov = GetComponentInParent<Camera>().fieldOfView;
         Animator = GetComponent<Animator>();
     }
 

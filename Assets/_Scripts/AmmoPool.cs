@@ -1,12 +1,48 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class AmmoPool : MonoBehaviour
 {
-    public List<CartridgePool> Pools;
+    public List<CartridgePool> Pools = new();
+
+
+    private void Awake()
+    {
+        Pools = new()
+        {
+            new CartridgePool()
+            {
+                AmmoType = Cartridgetype.Rifle,
+                CurrentAmmo = 0,
+                MaxAmmo = 120
+            },
+            new CartridgePool()
+            {
+                AmmoType = Cartridgetype.ShotgunShell,
+                CurrentAmmo = 0,
+                MaxAmmo = 60
+            },
+            new CartridgePool()
+            {
+                AmmoType = Cartridgetype.Pistol,
+                CurrentAmmo = 0,
+                MaxAmmo = 90
+            },
+        };
+
+    }
+
+    public void Add(Cartridgetype type, int start, int max)
+    {
+        Pools.Add(new()
+        {
+            AmmoType = type,
+            CurrentAmmo = start,
+            MaxAmmo = max
+        });
+    }
 
     public int this[Cartridgetype type, bool maxAmmo = false]
     {

@@ -24,7 +24,7 @@ public class WeaponHandler : MonoBehaviour
         //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
         //        AmmunitionPool.Add(type, 1000);
 
-        AmmunitionPool = GetComponent<AmmoPool>();
+        AmmunitionPool = gameObject.GetOrAdd<AmmoPool>();
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());

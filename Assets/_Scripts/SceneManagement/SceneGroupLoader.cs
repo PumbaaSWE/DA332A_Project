@@ -57,7 +57,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
             }
             else
             {
-                player = Instantiate(playerPrefab, spawn.Position, spawn.Rotation);
+                player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
             }
         }
         player.EnableAudio();

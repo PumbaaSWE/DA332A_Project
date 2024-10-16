@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveGameManager : PersistentSingleton<SaveGameManager>
@@ -49,10 +50,12 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
 
             WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
 
+            AmmoPool ap = p.GetOrAddComponent<AmmoPool>();
+
             // Set ammo
-            weaponHandler.AmmunitionPool[Cartridgetype.Rifle] = playerData.numRifleRounds;
-            weaponHandler.AmmunitionPool[Cartridgetype.Pistol] = playerData.numPistolRounds;
-            weaponHandler.AmmunitionPool[Cartridgetype.ShotgunShell] = playerData.numShotgunShells;
+            ap[Cartridgetype.Rifle] = playerData.numRifleRounds;
+            ap[Cartridgetype.Pistol] = playerData.numPistolRounds;
+            ap[Cartridgetype.ShotgunShell] = playerData.numShotgunShells;
 
             // Clear weapons
             while (weaponHandler.Guns.Count > 0)
@@ -67,7 +70,13 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
             foreach (var wData in playerData.weaponData)
                 foreach(var fPrefab in firearmPrefabs)
                     if (wData.id == fPrefab.Id)
+                    {
                         weaponHandler.PickupGun(fPrefab.gameObject);
+                        weaponHandler.Guns[^1].LoadedAmmo = wData.ammo;
+
+                        if (wData.id == playerData.equippedWeapon)
+                            weaponHandler.SwitchGun(weaponHandler.Guns.Count - 1);
+                    }
         }
     }
 
@@ -108,6 +117,7 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         for (int i = 0; i < weaps.Length; i++)
             weaponData[i] = new WeaponData() { id = weaps[i].Id, ammo = weaps[i].LoadedAmmo };
         playerData.weaponData = weaponData;
+        playerData.equippedWeapon = weaponHandler.EquippedGun.Id;
 
         //WeaponHandler wh = playerDataSO.PlayerTransform.GetComponent<WeaponHandler>();
         //playerData.numShutgunShells = wh.GetAmmoCountFor(Cartridgetype.ShotgunShell);
