@@ -1,6 +1,4 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.InputSystem.Controls.AxisControl;
 
 public class LightArrayHandler : MonoBehaviour
 {

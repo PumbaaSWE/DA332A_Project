@@ -1,17 +1,17 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StartPlay : MonoBehaviour
 {
     [SerializeField] private int firstLevel = 1;
-    [SerializeField] private int contunueLevel = -1;
+    //[SerializeField] private int contunueLevel = -1;
     [SerializeField] GameObject continueButton;
-    [SerializeField] SaveLevelProgress progress;
+    //[SerializeField] SaveLevelProgress progress;
 
 
     private void Start()
     {
-        contunueLevel = progress.Level;
+        //contunueLevel = progress.Level;
         //continueButton.SetActive(contunueLevel > 0);
 
         continueButton.SetActive(SaveGameManager.HasSaveFile());
@@ -20,8 +20,9 @@ public class StartPlay : MonoBehaviour
 
     public void StartNewGame()
     {
-        progress.Level = firstLevel;
+        //progress.Level = firstLevel;
         SceneGroupLoader.Instance.LoadGroup(firstLevel);
+        //SceneManager.LoadScene(4);
     }
 
     public void ContinueGame()
@@ -33,6 +34,6 @@ public class StartPlay : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        progress.Save();
+        //progress.Save();
     }
 }

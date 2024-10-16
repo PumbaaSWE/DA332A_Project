@@ -14,7 +14,7 @@ using System.Collections.Generic;
 public class LightFlickerEffect : MonoBehaviour
 {
     [Tooltip("External light to flicker; you can leave this null if you attach script to a light")]
-    public new Light light;
+    public Light _light;
     [Tooltip("Minimum random light intensity")]
     public float minIntensity = 0f;
     [Tooltip("Maximum random light intensity")]
@@ -44,15 +44,15 @@ public class LightFlickerEffect : MonoBehaviour
     {
         smoothQueue = new Queue<float>(smoothing);
         // External or internal light?
-        if (light == null)
+        if (_light == null)
         {
-            light = GetComponent<Light>();
+            _light = GetComponent<Light>();
         }
     }
 
     void Update()
     {
-        if (light == null)
+        if (_light == null)
             return;
 
         // pop off an item if too big
@@ -67,7 +67,7 @@ public class LightFlickerEffect : MonoBehaviour
         lastSum += newVal;
 
         // Calculate new smoothed average
-        light.intensity = lastSum / (float)smoothQueue.Count;
+        _light.intensity = lastSum / (float)smoothQueue.Count;
     }
 
 }

@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
@@ -32,3 +34,4 @@ public static class UnityEventExtra
 
     }
 }
+#endif
