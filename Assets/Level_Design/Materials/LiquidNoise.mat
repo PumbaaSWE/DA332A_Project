@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blood
-  m_Shader: {fileID: -6465566751694194690, guid: 4ae6945acf35aaa41b2c67e0bcf91963,
+  m_Name: LiquidNoise
+  m_Shader: {fileID: -6465566751694194690, guid: e89e0d1934f699649973594643db3feb,
     type: 3}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 2100000, guid: 8c587952f104c834a89fb5bd59916e43, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -23,34 +23,17 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _Mask:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _QueueControl: 1
-    - _QueueOffset: 0
-    - _speed: 0.1
+    - _Fulness: 0.51
+    - _VoronoiScale: 2.18
+    - _Voronoi_power: 0.51
     m_Colors:
-    - _BaseColor: {r: 0.17689824, g: 0.4811321, b: 0.038581353, a: 0}
-    - _EmissionColor: {r: 0.12762307, g: 0.26415092, b: 0.041117836, a: 0}
-    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Base_Color: {r: 0.025631895, g: 0.047169805, b: 0.020247417, a: 1}
+    - _Voronoi_Color: {r: 0.12477364, g: 0.5754717, b: 0, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &2523830510593191315
+--- !u!114 &3597512722749904359
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
