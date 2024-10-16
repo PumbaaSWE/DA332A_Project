@@ -23,11 +23,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
         base.Awake();
         if(sceneGroupManager)
             sceneGroupManager = GetComponent<SceneGroupManager>();
-        if(sceneGroups == null || sceneGroups.Length <= 0)
-        {
-            return;
-        }
-        Debug.Assert(sceneGroups != null && sceneGroups.Length > 0, "SceneGroupLoader - Missing sceneGroups");
+        Debug.Assert(sceneGroups != null && sceneGroups.Length > 0, gameObject.name + " - SceneGroupLoader - Missing sceneGroups");
 
         //sceneGroupManager.OnSceneLoading += (s) => Debug.Log("Loading: " + s);
         //sceneGroupManager.OnSceneUnloading += (s) => Debug.Log("Unloading: " + s);
@@ -96,7 +92,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
         {
             return;
         }
-        playerData.Loading = true;
+       // playerData.Loading = true;
         lastLoaded = index;
         sceneGroupManager.LoadScenes(sceneGroups[index], reloadDuplicates);
     }

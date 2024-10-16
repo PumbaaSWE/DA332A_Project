@@ -9,7 +9,7 @@ public class PlayerDataSO : ScriptableObject
 
     private Transform playerTransform;
 
-    public bool Loading;
+  //  public bool Loading;
 
     public float PlayerHealth => health ? health.Value : 0;
     public Health health;
@@ -45,11 +45,11 @@ public class PlayerDataSO : ScriptableObject
 
     private void OnEnable()
     {
-        SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
+        //SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
     }
 
     private void Instance_OnLoadingComplete()
     {
-        Loading = false;
+       // Loading = false;
     }
 }

@@ -50,10 +50,10 @@ public struct GuidReference
         hasCache = false;
         OnGuidAdded = delegate (GameObject go) { };
         OnGuidRemoved = delegate () { };
-
+#if UNITY_EDITOR
         cachedName = string.Empty;
         cachedScene = null;
-
+#endif
         //structs are stupid?
         addDelegate = null;
         removeDelegate = null;

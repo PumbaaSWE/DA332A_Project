@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayAnimation : MonoBehaviour
 {
     [SerializeField] Animator anim;
     [SerializeField] string trigger;
-    [SerializeField] bool playOnce = true;
+    //[SerializeField] bool playOnce = true;
     
     public void Play()
     {

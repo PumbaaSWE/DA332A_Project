@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using static HearingManager;
 using static UnityEngine.InputSystem.InputAction;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Random = UnityEngine.Random;
 
 public class Firearm : MonoBehaviour
@@ -30,7 +27,7 @@ public class Firearm : MonoBehaviour
     public int ReserveAmmo, MaxReserveAmmo;
     int CurrentBurst;
     [SerializeField] bool RoundInTheChamber = true;
-    [SerializeField] bool AutoReload = false;
+   // [SerializeField] bool AutoReload = false;
     /// <summary>
     /// True: Ammo consumption per shot depends on how many projectiles are shot
     /// False: 1 Shot is allways consumed per shot, no matter how many projectiles
