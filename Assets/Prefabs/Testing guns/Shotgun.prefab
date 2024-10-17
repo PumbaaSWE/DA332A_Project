@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 878885241909552391}
   - component: {fileID: 8183809511057377187}
   - component: {fileID: 2292107325256650644}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,6 @@ MonoBehaviour:
   ReserveAmmo: 300
   MaxReserveAmmo: 300
   RoundInTheChamber: 1
-  AutoReload: 0
   ProportionalAmmoConsumption: 0
   UseLocalAmmoPool: 0
   HipFireSpread: 0
@@ -111,6 +110,7 @@ MonoBehaviour:
   RHandler: {fileID: 0}
   DropPrefab: {fileID: 1945973861662567169, guid: b230103d925e10d4ba9dff77a4749acd,
     type: 3}
+  Id: 2
 --- !u!95 &2292107325256650644
 Animator:
   serializedVersion: 5
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 1943182048784520545}
   - component: {fileID: 7691220516827165847}
   - component: {fileID: 5508511114414371294}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Shotgun shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 2860196138328245254}
   - component: {fileID: 6614506645100788686}
   - component: {fileID: 974425063320772652}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Reciever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,6 @@ MonoBehaviour:
   ReserveAmmo: 300
   MaxReserveAmmo: 300
   RoundInTheChamber: 1
-  AutoReload: 0
   ProportionalAmmoConsumption: 0
   UseLocalAmmoPool: 0
   HipFireSpread: 0
@@ -395,6 +394,7 @@ MonoBehaviour:
   WHandler: {fileID: 0}
   RHandler: {fileID: 0}
   DropPrefab: {fileID: 0}
+  Id: 0
 --- !u!1 &6369331925523904372
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 97151890140591081}
   - component: {fileID: 5701295229436454636}
   - component: {fileID: 2745001302244168245}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Pump Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

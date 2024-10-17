@@ -41,7 +41,7 @@ public class FlaresHUD : MonoBehaviour
     {
         if (flareThrower)
         {
-            amount.text = flareThrower.numFlares.ToString() + " / " + flareThrower.maxNumFlares.ToString();
+            amount.text = flareThrower.NumFlares.ToString() + " / " + flareThrower.MaxNumFlares.ToString();
         }
     }
 }

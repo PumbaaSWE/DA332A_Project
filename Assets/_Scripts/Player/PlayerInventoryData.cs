@@ -14,7 +14,7 @@ public class PlayerInventoryData : ScriptableObject
     public void BuildInventory(Transform player)
     {
         player.GetComponent<Health>().SetHealth(health);
-        player.GetComponent<FlareThrower>().numFlares = flaresCount;
+        player.GetComponent<FlareThrower>().NumFlares = flaresCount;
     }
 
     public string Save()
