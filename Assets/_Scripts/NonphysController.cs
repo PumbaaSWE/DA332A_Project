@@ -133,7 +133,7 @@ public class NonphysController : MovementController
         look *= mouseSensitivity;
         Rotate(look.y, look.x);
         LookDelta = Rotation() - preRot;
-        look = Vector2.zero;
+        LookDelta = new Vector3(Mathf.DeltaAngle(0, LookDelta.x), Mathf.DeltaAngle(0, LookDelta.y));
 
         Move(Time.deltaTime);
         Crouch(crouch, Time.deltaTime);
