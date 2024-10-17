@@ -71,6 +71,7 @@ public class Firearm : MonoBehaviour
     public GameObject DropPrefab;
     public int Id;
     Animation CurrentAnimation;
+    PlayerCamera Camera;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +80,7 @@ public class Firearm : MonoBehaviour
         HipFireSpread = MinHipFireSpread;
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
         Animator = GetComponent<Animator>();
+        Camera = GetComponentInParent<PlayerCamera>();
     }
 
     // Update is called once per frame
@@ -103,7 +105,8 @@ public class Firearm : MonoBehaviour
 
         if (AdsProcentage > 0)
         {
-            Camera.main.fieldOfView = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
+            //Camera.main.fieldOfView = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
+            Camera.SetZoom(Mathf.Lerp(1f, AdsZoom, AdsProcentage));
 
             //if (UseAdsSpread)
             //    HipFireSpread = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);

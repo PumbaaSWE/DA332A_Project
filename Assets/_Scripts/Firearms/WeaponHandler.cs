@@ -17,14 +17,8 @@ public class WeaponHandler : MonoBehaviour
     public Transform FirearmRoot;
     [SerializeField] int MaxGuns;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //if (DebugTest)
-        //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
-        //        AmmunitionPool.Add(type, 1000);
-
-        // Create Ammo pool Component if it doesn't already exist
         if (!TryGetComponent<AmmoPool>(out AmmunitionPool))
         {
             gameObject.AddComponent<AmmoPool>();
@@ -33,6 +27,16 @@ public class WeaponHandler : MonoBehaviour
             AmmunitionPool.Add(Cartridgetype.ShotgunShell, 0, 120);
             AmmunitionPool.Add(Cartridgetype.Rifle, 0, 400);
         }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //if (DebugTest)
+        //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
+        //        AmmunitionPool.Add(type, 1000);
+
+        // Create Ammo pool Component if it doesn't already exist
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
