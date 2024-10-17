@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Cheats : MonoBehaviour
 {
-    [SerializeField] float noclipSpeed;
+    [SerializeField] float noclipSpeed = 10;
     [SerializeField] Vector3 marker;
 
     Health h;
