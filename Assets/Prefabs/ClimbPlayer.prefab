@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 8114485479685823139}
   - component: {fileID: 262098576200730755}
   - component: {fileID: 7710091920939830975}
+  - component: {fileID: -2530877571503949333}
   m_Layer: 2
   m_Name: ClimbPlayer
   m_TagString: Player
@@ -957,6 +958,20 @@ MonoBehaviour:
   fpsCam: {fileID: 4458088029890194605}
   defaultFov: 74
   defaultFpsFov: 74
+--- !u!114 &-2530877571503949333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926258509007519574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f328291af971b4d828b62d79b79bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noclipSpeed: 10
+  marker: {x: 0, y: 0, z: 0}
 --- !u!1 &9166448585097768069
 GameObject:
   m_ObjectHideFlags: 0
