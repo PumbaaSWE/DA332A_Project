@@ -71,8 +71,8 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
                 foreach(var fPrefab in firearmPrefabs)
                     if (wData.id == fPrefab.Id)
                     {
-                        weaponHandler.PickupGun(fPrefab.gameObject);
-                        weaponHandler.Guns[^1].LoadedAmmo = wData.ammo;
+                        weaponHandler.PickupGun(fPrefab.gameObject, wData.ammo);
+                        //weaponHandler.Guns[^1].LoadedAmmo = wData.ammo;
 
                         if (wData.id == playerData.equippedWeapon)
                             weaponHandler.SwitchGun(weaponHandler.Guns.Count - 1);
