@@ -208,9 +208,17 @@ public class Firearm : MonoBehaviour
                         target.TakeDamage(hit.point, shotDirection, Damage);
                 }
 
+                EventBus<BulletHitEvent>.Raise(new BulletHitEvent()
+                {
+                    hit = hit,
+                    cartridgeType = AmmoType
+                    //reserved
+                    //reserved
+                });
+
                 //Debug.Log($"Hit object {hit.collider.gameObject.name} at {hit.point}");
-                GameObject go = Instantiate(Decal, hit.point, new Quaternion());
-                Destroy(go, 1.0f);
+                //GameObject go = Instantiate(Decal, hit.point, new Quaternion());
+                //Destroy(go, 1.0f);
             }
 
             //else
