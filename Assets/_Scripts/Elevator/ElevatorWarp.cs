@@ -60,11 +60,13 @@ public class ElevatorWarp : MonoBehaviour
     public void GotoStartPos()
     {
         transform.SetPositionAndRotation(start, startRot);
+        Blackboard.Instance.Set("endElevator", transform.position);
     }
     [MakeButton]
     public void GotoEndPos()
     {
         transform.SetPositionAndRotation(end, endRot);
+        Blackboard.Instance.Set("startElevator", transform.position);
     }
 
 }

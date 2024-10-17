@@ -82,6 +82,7 @@ public class NonphysController : MovementController
     public float CamOffset => camOffset;
     public float MaxStamina => maxStamina;
     public float Stamina => stamina;
+    public float MouseSensitivity => mouseSensitivity;
 
     // inputs
     Vector2 look;
@@ -375,7 +376,7 @@ public class NonphysController : MovementController
         DrawCapsule(point1, point2, cc.radius);
 
         // Look direction
-        Gizmos.DrawRay(head.position, Camera.main.transform.forward);
+        //Gizmos.DrawRay(head.position, Camera.main.transform.forward);
 
         // IsGrounded
         Gizmos.color = grounded ? Color.green : Color.red;
