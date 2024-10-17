@@ -23,6 +23,8 @@ public class PlayerCamera : MonoBehaviour
     
 
     private float targetFov = 74;
+    private float fovAngle = 74;
+    private float fpsFovAngle = 74;
     private float targetSpeed = 1;
     private float targetFpsFov = 74;
     private float targetFpsSpeed = 1;
@@ -33,6 +35,11 @@ public class PlayerCamera : MonoBehaviour
         Debug.Assert(mainCam, "PlayerCamera - Assign mainCam in Inspector!");
         Debug.Assert(fpsCam, "PlayerCamera - Assign fpsCam in Inspector!");
         LockMouse();
+
+
+        fovAngle = Mathf.Tan(defaultFov * 0.5f * Mathf.Deg2Rad);
+        fpsFovAngle = Mathf.Tan(defaultFpsFov * 0.5f * Mathf.Deg2Rad);
+
         SetMainFov(defaultFov);
         SetFpsFov(defaultFpsFov);
     }
@@ -68,17 +75,20 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetMainZoom(float zoomLevel)
     {
-        mainCam.fieldOfView = Mathf.Clamp(zoomLevel * defaultFov, 30, 180);
+        float fov = Mathf.Atan(fovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        mainCam.fieldOfView = Mathf.Clamp(fov, 30, 180);
     }
 
     public void LerpMainZoom(float zoomLevel, float time)
     {
-        LerpMainFov(zoomLevel * defaultFov, time);
+        float fov = Mathf.Atan(fovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        LerpMainFov(fov, time);
     }
 
     public void MoveMainZoom(float zoomLevel, float speed)
     {
-        MoveMainFov(zoomLevel * defaultFov, speed);
+        float fov = Mathf.Atan(fovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        MoveMainFov(fov, speed);
     }
 
     public void LerpFpsFov(float targetFov, float time)
@@ -95,17 +105,20 @@ public class PlayerCamera : MonoBehaviour
     }
     public void MoveFpsZoom(float zoomLevel, float speed)
     {
-        MoveFpsFov(zoomLevel * defaultFpsFov, speed);
+        float fov = Mathf.Atan(fpsFovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        MoveFpsFov(fov, speed);
     }
 
     public void LerpFpsZoom(float zoomLevel, float time)
     {
-        LerpFpsFov(zoomLevel * defaultFpsFov, time);
+        float fov = Mathf.Atan(fpsFovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        LerpFpsFov(fov, time);
     }
 
     public void SetFpsZoom(float zoomLevel)
     {
-        fpsCam.fieldOfView = Mathf.Clamp(zoomLevel * defaultFpsFov, 30, 180);
+        float fov = Mathf.Atan(fpsFovAngle / zoomLevel) * 2 * Mathf.Rad2Deg;
+        fpsCam.fieldOfView = Mathf.Clamp(fov, 30, 180);
     }
 
     public void SetZoom(float zoomLevel)
