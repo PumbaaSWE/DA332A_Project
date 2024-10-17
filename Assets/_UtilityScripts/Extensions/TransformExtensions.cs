@@ -53,10 +53,25 @@ public static class TransformExtensions
 
     public static Transform AddChild(this Transform transform, string name)
     {
-        GameObject rightGrip = new GameObject(name);
-        rightGrip.transform.parent = transform;
-        rightGrip.transform.Reset();
-        return rightGrip.transform;
+        GameObject gameObj = new GameObject(name);
+        gameObj.transform.parent = transform;
+        gameObj.transform.Reset();
+        return gameObj.transform;
+    }
+
+    private static Transform FindChildRecursively(this Transform parent, string name)
+    {
+        Transform target = parent.Find(name);
+        if (target != null) return target;
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            target = child.FindChildRecursively(name);
+            if (target != null) return target;
+        }
+
+        return null;
     }
 
 }

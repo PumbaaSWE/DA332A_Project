@@ -77,17 +77,11 @@ public class TwoBoneIK : MonoBehaviour
         root = mid.parent;
         if (target == null)
         {
-            GameObject t = new GameObject(gameObject.name + "_target");
-            t.transform.parent = transform;
-            t.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            target = t.transform;
+            target = transform.AddChild(gameObject.name + "_target");
         }
         if (pole == null)
         {
-            GameObject t = new GameObject(gameObject.name + "_pole");
-            t.transform.parent = transform;
-            t.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            pole = t.transform;
+            pole = transform.AddChild(gameObject.name + "_pole");
         }
     }
 }
