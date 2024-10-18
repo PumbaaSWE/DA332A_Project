@@ -5821,6 +5821,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 796597509691961936, guid: 3212e855c70a5c14b9726d4854c970a7,
+        type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 796597509691961936, guid: 3212e855c70a5c14b9726d4854c970a7,
+        type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 208973125}
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5886,6 +5896,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3212e855c70a5c14b9726d4854c970a7, type: 3}
+--- !u!20 &208973125 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4458088029890194605, guid: 3212e855c70a5c14b9726d4854c970a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 208973124}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &210799731
 GameObject:
   m_ObjectHideFlags: 0

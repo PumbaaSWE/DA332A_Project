@@ -17,6 +17,18 @@ public class WeaponHandler : MonoBehaviour
     public Transform FirearmRoot;
     [SerializeField] int MaxGuns;
 
+    private void Awake()
+    {
+        if (!TryGetComponent<AmmoPool>(out AmmunitionPool))
+        {
+            gameObject.AddComponent<AmmoPool>();
+            AmmunitionPool = GetComponent<AmmoPool>();
+            AmmunitionPool.Add(Cartridgetype.Pistol, 0, 300);
+            AmmunitionPool.Add(Cartridgetype.ShotgunShell, 0, 120);
+            AmmunitionPool.Add(Cartridgetype.Rifle, 0, 400);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +36,7 @@ public class WeaponHandler : MonoBehaviour
         //    foreach (Cartridgetype type in Enum.GetValues(typeof(Cartridgetype)))
         //        AmmunitionPool.Add(type, 1000);
 
-        AmmunitionPool = gameObject.GetOrAdd<AmmoPool>();
+        // Create Ammo pool Component if it doesn't already exist
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
@@ -45,7 +57,7 @@ public class WeaponHandler : MonoBehaviour
         if (AmmunitionPool.ContainsKey(type))
         {
             int ammoToGive = Mathf.Clamp(AmmunitionPool[type], 0, ammoToTake);
-            AmmunitionPool[type] -= ammoToTake;
+            AmmunitionPool[type] -= ammoToGive;
             return ammoToGive;
         }
 
@@ -110,23 +122,31 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
-    public bool PickupGun(GameObject newGun)
+    public bool PickupGun(GameObject newGun, int loadedAmmo)
     {
-        if (Guns.Any(gun => newGun.name == gun.name))
-            return false;
+        //if (Guns.Any(gun => newGun.name == gun.name))
+        //    return false;
 
-        if (Guns.Count == MaxGuns)
+        // If player has the same gun, grab the guns ammo
+        if (Guns.Any(gun => newGun.name == gun.name))
+        {
+            AmmunitionPool[newGun.GetComponent<Firearm>().AmmoType] += loadedAmmo;
+            return true;
+        }
+
+        // Replace currently held gun
+        else if (Guns.Count == MaxGuns)
         {
             int index = Guns.IndexOf(EquippedGun);
 
-            Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
-            Destroy(EquippedGun.gameObject);
+            DropGun();
 
             GameObject gun = Instantiate(newGun, FirearmRoot);
             Guns[index] = gun.GetComponent<Firearm>();
             EquippedGun = Guns[index];
         }
 
+        // 
         else
         {
             GameObject gun = Instantiate(newGun, FirearmRoot);
@@ -140,6 +160,7 @@ public class WeaponHandler : MonoBehaviour
 
         EquippedGun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
         EquippedGun.Equip();
+        EquippedGun.LoadedAmmo = Mathf.Clamp(loadedAmmo, 0, EquippedGun.MagazineSize + Convert.ToInt32(EquippedGun.RoundInTheChamber));
         return true;
     }
 
@@ -177,7 +198,8 @@ public class WeaponHandler : MonoBehaviour
 
     void DropGun()
     {
-        Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+        GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+        droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
         Destroy(EquippedGun.gameObject);
     }
 }
