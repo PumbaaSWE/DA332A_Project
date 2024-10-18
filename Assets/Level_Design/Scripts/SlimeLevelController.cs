@@ -29,5 +29,6 @@ public class SlimeLevelController : MonoBehaviour
         
         fulness += splane.slimeCounter;
         material.SetFloat("_Fulness", fulness);
+        splane.slimeCounter = 0f;
     }
 }
