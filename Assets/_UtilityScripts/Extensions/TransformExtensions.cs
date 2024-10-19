@@ -59,14 +59,14 @@ public static class TransformExtensions
         return gameObj.transform;
     }
 
-    private static Transform FindChildRecursively(this Transform parent, string name)
+    public static Transform FindChildRecursively(this Transform transform, string name)
     {
-        Transform target = parent.Find(name);
+        Transform target = transform.Find(name);
         if (target != null) return target;
 
-        for (int i = 0; i < parent.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Transform child = parent.GetChild(i);
+            Transform child = transform.GetChild(i);
             target = child.FindChildRecursively(name);
             if (target != null) return target;
         }

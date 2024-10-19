@@ -65,7 +65,7 @@ public class TwoBoneIK : MonoBehaviour
         }
     }
 
-    void Update()
+    void LateUpdate()
     {
         Solve();
     }
