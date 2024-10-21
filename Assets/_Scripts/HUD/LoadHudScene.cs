@@ -35,7 +35,7 @@ public class LoadHudScene : MonoBehaviour
             Scene scene = EditorSceneManager.GetSceneByName(hud);
             if (!scene.IsValid())
             {
-                EditorSceneManager.OpenScene("Assets/Scenes/HUD.unity", OpenSceneMode.Additive);
+                EditorSceneManager.OpenScene("Assets/Scenes/HUD/HUD.unity", OpenSceneMode.Additive);
             }
 #endif  
         }

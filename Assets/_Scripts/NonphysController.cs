@@ -114,7 +114,7 @@ public class NonphysController : MovementController
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
