@@ -24,7 +24,6 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
         if(sceneGroupManager)
             sceneGroupManager = GetComponent<SceneGroupManager>();
         Debug.Assert(sceneGroups != null && sceneGroups.Length > 0, gameObject.name + " - SceneGroupLoader - Missing sceneGroups");
-
         //sceneGroupManager.OnSceneLoading += (s) => Debug.Log("Loading: " + s);
         //sceneGroupManager.OnSceneUnloading += (s) => Debug.Log("Unloading: " + s);
         //sceneGroupManager.OnSceneLoaded += (s) => Debug.Log("Compleded load of: " + s);
