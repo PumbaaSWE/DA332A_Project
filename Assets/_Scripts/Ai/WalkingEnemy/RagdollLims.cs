@@ -55,21 +55,21 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
     [SerializeField] bool GOAP;
 
-    private CharacterAgent characterAgent;
-    private GOAPPlanner planner;
-    EnemyAI enemyAi;
+    //private CharacterAgent characterAgent;
+    //private GOAPPlanner planner;
+    //EnemyAI enemyAi;
 
-    AwarenessSystem senssors;
-    Goal_Stalk_W goal_Stalk_W;
+    //AwarenessSystem senssors;
+    //Goal_Stalk_W goal_Stalk_W;
     Health health;
     FSM fSM;
     void Awake()
     {   
         fSM = GetComponent<FSM>();
-        goal_Stalk_W = GetComponent<Goal_Stalk_W>();
+        //goal_Stalk_W = GetComponent<Goal_Stalk_W>();
         health = GetComponent<Health>();
-        senssors = GetComponent<AwarenessSystem>();
-        enemyAi = GetComponent<EnemyAI>();
+        //senssors = GetComponent<AwarenessSystem>();
+        //enemyAi = GetComponent<EnemyAI>();
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         hip = animator.GetBoneTransform(HumanBodyBones.Hips);
@@ -103,11 +103,11 @@ public class RagdollLims : MonoBehaviour, IDamageble
     private void Start()
     {
         // do a generic. This is temporary
-        if (GOAP)
-        {
-            characterAgent = GetComponent<CharacterAgent>();
-            planner = GetComponent<GOAPPlanner>();
-        }
+        //if (GOAP)
+        //{
+        //    characterAgent = GetComponent<CharacterAgent>();
+        //    planner = GetComponent<GOAPPlanner>();
+        //}
       
 
         DisableRagdoll();
@@ -115,7 +115,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
     // Update is called once per frame
     void Update()
     {
-        VisonUpdate();
+        //VisonUpdate();
         Death();
 
         switch (state)
@@ -214,12 +214,12 @@ public class RagdollLims : MonoBehaviour, IDamageble
             // give back controll to Ai
 
 
-             if(GOAP)
-             {
-                planner.deactivate = false;
-                characterAgent.isCrawling = false;
-             }
-            else
+            // if(GOAP)
+            // {
+            //    planner.deactivate = false;
+            //    characterAgent.isCrawling = false;
+            // }
+            //else
             {
 
                 fSM.isCrawling = false;
@@ -234,13 +234,13 @@ public class RagdollLims : MonoBehaviour, IDamageble
       
         
         health.Heal(health.MaxHealth);
-        if (GOAP)
-        {
-            characterAgent.SetAgentActive(true);
-            planner.deactivate = false;
+        //if (GOAP)
+        //{
+        //    characterAgent.SetAgentActive(true);
+        //    planner.deactivate = false;
 
-        }
-        else
+        //}
+        //else
         {
 
             fSM.SetAgentActive(true);
@@ -254,15 +254,15 @@ public class RagdollLims : MonoBehaviour, IDamageble
         controller.enabled = true;
     }
 
-    private void EnableRagdoll()
+    public void EnableRagdoll()
     {
        
-        if(GOAP)
-        {
-            characterAgent.SetAgentActive(false);
-            planner.deactivate = true;
-        }
-        else
+        //if(GOAP)
+        //{
+        //    characterAgent.SetAgentActive(false);
+        //    planner.deactivate = true;
+        //}
+        //else
         {
             fSM.SetAgentActive(false);
         }
@@ -282,23 +282,23 @@ public class RagdollLims : MonoBehaviour, IDamageble
     {
 
     }
-    private void VisonUpdate()
-    {
-        if (GOAP)
-        {
-            if (IsHeadDetached())
-            {
-                characterAgent.isBlind = true;
+    //private void VisonUpdate()
+    //{
+    //    if (GOAP)
+    //    {
+    //        if (IsHeadDetached())
+    //        {
+    //            characterAgent.isBlind = true;
 
-            }
-            else
-            {
-                characterAgent.isBlind = false;
-            }
+    //        }
+    //        else
+    //        {
+    //            characterAgent.isBlind = false;
+    //        }
 
-        }
+    //    }
        
-    }
+    //}
 
     private void RagdollBehaviour()
     {
@@ -307,13 +307,13 @@ public class RagdollLims : MonoBehaviour, IDamageble
         {///////////////////////////////////////
           
             DisableRagdoll();
-            if (GOAP)
-            {
-                characterAgent.isCrawling = true;
-                planner.deactivate = false;
-                characterAgent.SetAgentActive(true);
-            }
-            else
+            //if (GOAP)
+            //{
+            //    characterAgent.isCrawling = true;
+            //    planner.deactivate = false;
+            //    characterAgent.SetAgentActive(true);
+            //}
+            //else
             {
                 fSM.isCrawling = true;
                 fSM.SetAgentActive(true);
@@ -346,22 +346,22 @@ public class RagdollLims : MonoBehaviour, IDamageble
     { 
         health.Damage( damage);
         deahtHealth -= damage;
-        if (GOAP)
-        {
-            goal_Stalk_W.prio -= 30;
+        //if (GOAP)
+        //{
+        //    goal_Stalk_W.prio -= 30;
            
 
-        }
+        //}
         if(health.Value <= 0)
         {
           
-            if (GOAP)
-            {
-                characterAgent.isCrawling = false;
-                planner.deactivate = false;
-                characterAgent.SetAgentActive(false);
-            }
-            else
+            //if (GOAP)
+            //{
+            //    characterAgent.isCrawling = false;
+            //    planner.deactivate = false;
+            //    characterAgent.SetAgentActive(false);
+            //}
+            //else
             {
                 //fSM.isCrawling = false;
                 //fSM.SetAgentActive(false);
@@ -376,8 +376,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
         if (deahtHealth <= 0)
         {
             TriggerRagdoll(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
-            Destroy(enemy, 1.5f);
-            
+            Destroy(enemy, 1.5f);           
         }
     }
     public void TriggerRagdoll(Vector3 force, Vector3 point)
@@ -389,7 +388,7 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
         if (rb.TryGetComponent(out Detachable detachable))
         {
-           detachable.Detatch();
+            detachable.Detatch();
             detached.Add(detachable);
         }
 
@@ -447,8 +446,6 @@ public class RagdollLims : MonoBehaviour, IDamageble
 
     private void PopulateAnimationBoneTransforms(string clipName, BoneTransform[] boneTransforms)
     {
-
-
         foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
         {
             if (clip.name == clipName)

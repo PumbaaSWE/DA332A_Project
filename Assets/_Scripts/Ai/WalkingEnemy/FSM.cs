@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using static UnityEditor.FilePathAttribute;
-using static UnityEngine.GraphicsBuffer;
+
 public enum EOffmeshLinkStatus
 {
     NotStarted,
@@ -13,11 +10,14 @@ public enum EOffmeshLinkStatus
 
 public class FSM : MonoBehaviour
 {
-    //EOffmeshLinkStatus OffMeshLinkStatus = EOffmeshLinkStatus.NotStarted;
+    [Header("Sensors")]
     protected AwarenessSystem sensors;
     DetectableTarget currentTarget;
     [SerializeField] float detectedAwarness = 1.2f;
     private float nearestPointSearchRange = 7f;
+
+
+    [Header("Nav")]
     [SerializeField] float searchRange = 5f;
     private float idleTime;
     bool destinationSet = true;
@@ -25,25 +25,33 @@ public class FSM : MonoBehaviour
     public bool atDestination => reachedDestination;
     //private NavMeshTriangulation triangulation;
     private NavMeshAgent agent;
-    private Animator animator;
+   
 
     //public Transform target;
+
+    // Attack
     public float attackRange = 2.5f;
     public float minAttackRange = 1.0f;
 
     private Vector2 velocity;
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
-
+   
+    // States
     public enum AgentState { Idle, Wander ,Chasing, Attacking, Knockback, Investegate , Sleep}
     public AgentState agentState = AgentState.Idle;
     private AgentState previousState = AgentState.Idle;
     private Vector3 previousTargetPosition;
     public enum AgentHit { Crawl, Blind, Armless, Normal }
     public AgentHit agentStatehit = AgentHit.Normal;
+
+
+    // Animation
+    private Animator animator;
     int knockbackHash = Animator.StringToHash("Knockback");
     int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
     //bool knockback;
+
     bool wasGrounded;
     public bool isCrawling;
     Vector3 soundLocation;
@@ -98,14 +106,10 @@ public class FSM : MonoBehaviour
             reachedDestination = true;
             previousState = agentState;
         }
-        //SynchronizeAnimatorAndAgent();
+       
 
         Found();
         UpdateState();
-
-        //hearingSensor.OnHeardSound()
-
-        //HeardSomthing(Sensors.soundLocation)
         if (isCrawling)
         {
             agentStatehit = AgentHit.Crawl;
@@ -131,8 +135,7 @@ public class FSM : MonoBehaviour
         }
     }
     void UpdateState()
-    {
-       
+    {       
 
         switch (agentState)
         {
