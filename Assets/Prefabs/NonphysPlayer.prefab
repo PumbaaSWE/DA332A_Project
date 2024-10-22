@@ -511,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93308bce5f0368f4e8558f51152cbc04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AmmunitionPool: {fileID: 0}
   Guns:
   - {fileID: 4637345030133722959}
   - {fileID: 1481362896068903835}
@@ -535,7 +536,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 5
-  range: 2
+  range: 3
   playerInput: {fileID: 4797629196548446842}
 --- !u!114 &310502213116164814
 MonoBehaviour:
@@ -980,6 +981,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Flashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870695102284082498, guid: 9ce448767cc52d3419058650c03d05f3,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9062834818161697359, guid: 9ce448767cc52d3419058650c03d05f3,
         type: 3}

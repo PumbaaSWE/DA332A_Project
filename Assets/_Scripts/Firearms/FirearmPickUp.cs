@@ -13,10 +13,11 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
 
     [SerializeField] GameObject GunPrefab;
     public string Name;
+    public int LoadedAmmo;
 
     public void Interact(Transform interactor)
     {
-        if (interactor.GetComponent<WeaponHandler>().PickupGun(GunPrefab))
+        if (interactor.GetComponent<WeaponHandler>().PickupGun(GunPrefab, LoadedAmmo))
             Destroy(gameObject);
     }
 

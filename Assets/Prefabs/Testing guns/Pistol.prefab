@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8871032464807945313}
   - component: {fileID: 1870300271913977117}
   - component: {fileID: 4058086591878342086}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Lower Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 771595430025577391}
   - component: {fileID: 4927027278125201958}
   - component: {fileID: 6293129407871807140}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Grip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 3649027446125012611}
   - component: {fileID: 5557496771369493775}
   - component: {fileID: 5497805422764907859}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 3909177726173615711}
   - component: {fileID: 6430039308684980340}
   - component: {fileID: 4792935996036696965}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 3124750862548406147}
   - component: {fileID: 6608712818617768449}
   - component: {fileID: 690815299245368700}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 5833006945017723231}
   - component: {fileID: 394046224573424916}
   - component: {fileID: 5797499054576447996}
-  m_Layer: 2
+  m_Layer: 14
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +612,6 @@ MonoBehaviour:
   ReserveAmmo: 20
   MaxReserveAmmo: 20
   RoundInTheChamber: 1
-  AutoReload: 0
   ProportionalAmmoConsumption: 0
   UseLocalAmmoPool: 0
   HipFireSpread: 0
@@ -638,6 +637,7 @@ MonoBehaviour:
   RHandler: {fileID: 0}
   DropPrefab: {fileID: 2930298761621223113, guid: 00244d4aefaec5246bc1906e9a9280e9,
     type: 3}
+  Id: 0
 --- !u!95 &5797499054576447996
 Animator:
   serializedVersion: 5

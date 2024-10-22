@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class RecoilHandler : MonoBehaviour
@@ -9,8 +7,8 @@ public class RecoilHandler : MonoBehaviour
     [SerializeField] WeaponHandler WHandler;
     public Vector2 RecoilImpulse;
     //public float ImpulseDuration = 0.5f;
-    float CurrentImpulseTime;
-    bool ImpulseActive = false;
+    //float CurrentImpulseTime;
+    //bool ImpulseActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +59,7 @@ public class RecoilHandler : MonoBehaviour
 
         if (reset)
         {
-            CurrentImpulseTime = 0;
+           // CurrentImpulseTime = 0;
             StopAllCoroutines();
         }
     }
@@ -74,7 +72,7 @@ public class RecoilHandler : MonoBehaviour
     IEnumerator Impulse()
     {
         //Debug.Log("Applying impulse");
-        ImpulseActive = true;
+       // ImpulseActive = true;
         float currentImpulseTime = 0;
         float impulseDuration = WHandler.EquippedGun.ImpulseDuration;
         Vector2 previousImpulse = Vector2.zero;
@@ -98,7 +96,7 @@ public class RecoilHandler : MonoBehaviour
         //if (!WHandler.IsFiring())
             RecoilImpulse = Vector2.zero;
 
-        ImpulseActive = false;
+        //ImpulseActive = false;
         //Debug.Log("Impulse done");
     }
 
