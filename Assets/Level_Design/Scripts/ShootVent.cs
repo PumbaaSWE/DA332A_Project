@@ -21,7 +21,7 @@ public class ShootVent : MonoBehaviour, IDamageble
 
     public virtual void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        if (jointNr > joints.Length) { return; }
+        if (jointNr >= joints.Length) { return; }
         if (joints[jointNr])
         {
 
