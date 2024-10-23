@@ -12,7 +12,12 @@ public class EquipmentList : MonoBehaviour
 
     private void Start()
     {
-        CollectEquipment();
+
+        if(equipmentList == null)
+        {
+            equipmentList = new List<Equipment>();
+            CollectEquipment();
+        }
 
         for (int i = 0; i < equipmentList.Count; i++)
         {

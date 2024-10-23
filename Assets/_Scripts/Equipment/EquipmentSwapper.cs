@@ -17,6 +17,8 @@ public class EquipmentSwapper : MonoBehaviour
     public event Action<Equipment> OnLowerCompleted;
     public event Action<Equipment> OnRaiseCompleted;
 
+    public Equipment Current => current;
+
     void Awake()
     {
         Debug.Assert(animator, "EquipmentSwapper - animator is null, please assign it in inspector");

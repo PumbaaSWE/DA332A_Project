@@ -11,6 +11,7 @@ public class FlareThrower : MonoBehaviour
     [SerializeField] private Flare flarePrefab;
     [SerializeField] private Equipment flareEqipment;
     [SerializeField] private Animator animator;
+    [SerializeField] private float throwAngle = 15;
     [SerializeField] private float collideDist = 1.5f;
     [SerializeField] private float throwForce = 15;
     [SerializeField] private float torqueForce = 1;
@@ -28,23 +29,23 @@ public class FlareThrower : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     private InputAction action;
     private string key = "<nope>";
-
-    int throwHash = Animator.StringToHash("FireBool");
+    readonly int throwHash = Animator.StringToHash("FireBool");
     bool throwing = false;
+    Equipment prev;
     // Start is called before the first frame update
     void Start()
     {
         action = playerInput.actions.FindAction("F");
         key = "[" + action.bindings.First().ToDisplayString() + "]";
+        action.performed += Action_performed;
 
 
-        animationEvents = GetComponentInChildren<AnimationEvents>();
         equipmentSwapper = GetComponentInChildren<EquipmentSwapper>();
+        animationEvents = GetComponentInChildren<AnimationEvents>();
         if (animationEvents)
         {
             animationEvents.throwEvent.AddListener(ThrowFlare);
         }
-        action.performed += Action_performed;
 
     }
 
@@ -52,6 +53,8 @@ public class FlareThrower : MonoBehaviour
     {
         if (numFlares > 0 && !throwing)
         {
+
+            prev = equipmentSwapper.Current;
             equipmentSwapper.Raise(flareEqipment);
             animator.SetBool(throwHash, true);
             throwing = true;
@@ -63,6 +66,7 @@ public class FlareThrower : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         throwing = false;
+        //animator.SetBool(throwHash, false);
     }
 
     // Update is called once per frame
@@ -82,7 +86,7 @@ public class FlareThrower : MonoBehaviour
         throwing = false;
         hasThrownFlare = true;
         animator.SetBool(throwHash, false);
-        Quaternion q = Quaternion.Euler(15f, 0f, 0f);
+        Quaternion q = Quaternion.Euler(-throwAngle, 0f, 0f);
         Vector3 dir = q * lookDir.forward;
         Vector3 pos = lookDir.position;
         if (Physics.Raycast(pos, dir, out RaycastHit hit, collideDist))
@@ -100,6 +104,8 @@ public class FlareThrower : MonoBehaviour
         //rb.velocity = dir * throwForce;
         rb.AddForce(dir * throwForce, ForceMode.Impulse);
         rb.AddTorque(new Vector3(torqueForce, 0, torqueForce), ForceMode.Impulse);
+
+        equipmentSwapper.Raise(prev);
     }
 
     public void SetFlares(int value)
@@ -110,5 +116,14 @@ public class FlareThrower : MonoBehaviour
             TooltipUtil.Display("Press " + key + " to trow flare!", 5);
             hasThrownFlare = true;
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Quaternion q = Quaternion.Euler(-throwAngle, 0f, 0f);
+        Vector3 dir = q * lookDir.forward;
+        Vector3 pos = lookDir.position;
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(pos, dir);
     }
 }
