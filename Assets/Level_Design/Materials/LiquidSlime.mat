@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LiquidNoise
-  m_Shader: {fileID: -6465566751694194690, guid: e89e0d1934f699649973594643db3feb,
+  m_Name: LiquidSlime
+  m_Shader: {fileID: -6465566751694194690, guid: 9e38ee22f545c1d49a98e9502b6ba139,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -96,7 +96,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Fulness: 0.51
+    - _Fulness: -0.4
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -112,21 +112,14 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _VoronoiAgitation: 1.72
-    - _VoronoiScale: 2.18
-    - _Voronoi_power: 0.51
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Base_Color: {r: 0.025631895, g: 0.047169805, b: 0.020247417, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainColor: {r: 0.48726794, g: 1.0180621, b: 0.41893703, a: 0}
+    - _MainColor: {r: 0.45591322, g: 1.1091013, b: 0.40647694, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _VoronoiSpeed: {r: 0, g: 0.5, b: 0, a: 0}
-    - _VoronoiTiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Voronoi_Color: {r: 0.12477364, g: 0.5754717, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3597512722749904359
 MonoBehaviour:

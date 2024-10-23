@@ -114,11 +114,13 @@ public class NonphysController : MovementController
         stamina = maxStamina;
     }
 
-
     void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (Time.deltaTime == 0)
+        {
+            look = Vector2.zero;
+            return;
+        }
 
         cc.radius = radius;
 
@@ -137,6 +139,12 @@ public class NonphysController : MovementController
 
         Move(Time.deltaTime);
         Crouch(crouch, Time.deltaTime);
+    }
+
+    void FixedUpdate()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     bool IsGrounded()
