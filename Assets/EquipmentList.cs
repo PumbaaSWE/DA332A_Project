@@ -7,8 +7,8 @@ public class EquipmentList : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Transform equpmentRoot;
     [SerializeField] private EquipmentSwapper swapper;
+    [SerializeField] private int current = 0;
     public List<Equipment> equipmentList = new List<Equipment>(); //should be readonly but unity visibility
-
 
     private void Start()
     {
@@ -19,8 +19,23 @@ public class EquipmentList : MonoBehaviour
             equipmentList[i].Init(animator);
             equipmentList[i].gameObject.SetActive(false);
         }
+        swapper.Raise(equipmentList[current]);
+    }
 
-        swapper.Raise(equipmentList[0]);
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            NextEquipment();
+        }
+    }
+
+    [MakeButton(true)]
+    public void NextEquipment()
+    {
+        current++;
+        current %= equipmentList.Count;
+        swapper.Raise(equipmentList[current]);
     }
 
     [MakeButton]

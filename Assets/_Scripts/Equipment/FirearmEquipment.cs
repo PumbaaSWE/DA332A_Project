@@ -4,9 +4,6 @@ using UnityEngine.InputSystem;
 public class FirearmEquipment : Equipment
 {
 
-
-    //List<Throwable> throwables;
-
     void Awake()
     {
         input ??= new PlayerControls();
