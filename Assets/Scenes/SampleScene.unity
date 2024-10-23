@@ -463,6 +463,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3608330464772972189, guid: 8df0f1bae7195994ba3f34f350efc097,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 6599986951691063430}
+    - target: {fileID: 3608330464772972189, guid: 8df0f1bae7195994ba3f34f350efc097,
+        type: 3}
+      propertyPath: flarePrefab
+      value: 
+      objectReference: {fileID: 6230345785733076096, guid: d4ad680e23353754e96b77f382b9295d,
+        type: 3}
+    - target: {fileID: 3608330464772972189, guid: 8df0f1bae7195994ba3f34f350efc097,
+        type: 3}
+      propertyPath: flareEqipment
+      value: 
+      objectReference: {fileID: 1565238388}
     - target: {fileID: 5859507764126998225, guid: 8df0f1bae7195994ba3f34f350efc097,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1393,6 +1409,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6599986951691063431}
+    - targetCorrespondingSourceObject: {fileID: 2415476521982984755, guid: 0cc63ba9e9b97394abb40262c49353b2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6599986951691063433}
   m_SourcePrefab: {fileID: 100100000, guid: 0cc63ba9e9b97394abb40262c49353b2, type: 3}
 --- !u!1 &6599986951691063421 stripped
 GameObject:
@@ -1451,6 +1471,21 @@ MonoBehaviour:
   - {fileID: 919132148695120473}
   - {fileID: 1565238388}
   - {fileID: 870703932}
+--- !u!114 &6599986951691063433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599986951691063421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b878642784462834992f28943076e1b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
