@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Firearm : MonoBehaviour
 {
+    public string Name = "Gun Display Name";
     [Header("Shooting")]
     [SerializeField] float Damage;
     public int RPM;

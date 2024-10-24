@@ -11,18 +11,49 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
     public int InteractedDisplayPriority { get; private set; }
     public float InteractedTipDisplayTime { get; private set; }
 
-    [SerializeField] GameObject GunPrefab;
+    [SerializeField] Firearm GunPrefab;
     public string Name;
     public int LoadedAmmo;
 
     public void Interact(Transform interactor)
     {
         if (interactor.GetComponent<WeaponHandler>().PickupGun(GunPrefab, LoadedAmmo))
+        {
             Destroy(gameObject);
+        }
+        else if(LoadedAmmo > 0)
+        {
+            LoadedAmmo = 0;
+        }
+        //lol cache it
+        GetComponent<Rigidbody>().AddForce(Vector3.up, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddTorque(transform.right*.5f, ForceMode.Impulse);
     }
 
     public void SpeculateInteract(Transform interactor)
     {
-        Tooltip = "Pickup " + Name;
+        if (interactor.TryGetComponent(out WeaponHandler weaponHandler))
+        {
+            
+            if (weaponHandler.HasGun(GunPrefab.Id))
+            {
+                if (LoadedAmmo == 0)
+                {
+                    Tooltip = "You have this already (this is empty)";
+                }
+                else
+                {
+                    Tooltip = "{0} to pickup " + GunPrefab.AmmoType + " ammo";
+                }
+            }
+            else if(weaponHandler.Guns.Count == weaponHandler.MaxGuns)
+            {
+                Tooltip = "{0} to replace " + weaponHandler.EquippedGun.Name + " with " + GunPrefab.Name;
+            }
+            else
+            {
+                Tooltip = "{0} to pickup " + GunPrefab.Name;
+            }
+        }
     }
 }
