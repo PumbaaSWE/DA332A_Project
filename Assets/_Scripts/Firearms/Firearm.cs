@@ -382,6 +382,7 @@ public class Firearm : MonoBehaviour
         gameObject.SetActive(true);
         //PerformAnimation(Animation.PullingOut);
         IsReloading = false;
+        CanFire = true;
     }
 
     public void Unequip(Action equip)
