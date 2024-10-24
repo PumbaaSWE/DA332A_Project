@@ -156,7 +156,7 @@ public class WeaponHandler : MonoBehaviour
         // If player has the same gun, grab the guns ammo
         if (HasGun(newGun.Id))
         {
-            AmmunitionPool[newGun.AmmoType] += loadedAmmo;
+            //AmmunitionPool[newGun.AmmoType] += loadedAmmo;
             return false;
         }
 

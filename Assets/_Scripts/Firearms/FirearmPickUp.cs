@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FirearmPickUp : MonoBehaviour, IInteractable
@@ -12,22 +10,45 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
     public float InteractedTipDisplayTime { get; private set; }
 
     [SerializeField] Firearm GunPrefab;
-    public string Name;
+   // public string Name;
     public int LoadedAmmo;
+
+    Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (rb)
+        {
+            rb.AddForce(Vector3.up, ForceMode.Impulse);
+            rb.AddTorque(Vector3.right * .125f, ForceMode.Impulse);
+        }
+    }
 
     public void Interact(Transform interactor)
     {
-        if (interactor.GetComponent<WeaponHandler>().PickupGun(GunPrefab, LoadedAmmo))
+
+
+        if (interactor.TryGetComponent(out WeaponHandler weaponHandler))
         {
-            Destroy(gameObject);
+            if (weaponHandler.HasGun(GunPrefab.Id))
+            {
+                int left = weaponHandler.AmmunitionPool.AddAmmo(GunPrefab.AmmoType, LoadedAmmo);
+                LoadedAmmo = left;
+            }
+            else
+            {
+                weaponHandler.PickupGun(GunPrefab, LoadedAmmo);
+                Destroy(gameObject);
+            }
         }
-        else if(LoadedAmmo > 0)
+        //lol
+        if (rb)
         {
-            LoadedAmmo = 0;
+            rb.AddForce(Vector3.up, ForceMode.Impulse);
+            rb.AddTorque(interactor.right * .125f, ForceMode.Impulse);
         }
-        //lol cache it
-        GetComponent<Rigidbody>().AddForce(Vector3.up, ForceMode.Impulse);
-        GetComponent<Rigidbody>().AddTorque(transform.right*.5f, ForceMode.Impulse);
+        
     }
 
     public void SpeculateInteract(Transform interactor)
@@ -39,7 +60,7 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
             {
                 if (LoadedAmmo == 0)
                 {
-                    Tooltip = "You have this already (this is empty)";
+                    Tooltip = $"You have {GunPrefab.Name} already (this is empty)";
                 }
                 else
                 {

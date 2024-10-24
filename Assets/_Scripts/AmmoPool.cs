@@ -40,6 +40,23 @@ public class AmmoPool : MonoBehaviour
         return amount;
     }
 
+    public int AddAmmo(Cartridgetype type, int amount)
+    {
+        CartridgePool cp = Pools.Find(p => p.AmmoType == type);
+
+        int newAmount = cp.CurrentAmmo + amount;
+        int leftOver = 0;
+        if(newAmount > cp.MaxAmmo)
+        {
+            leftOver = newAmount - cp.MaxAmmo;
+            newAmount = cp.MaxAmmo;
+        }
+
+        cp.CurrentAmmo = newAmount;
+        return leftOver;
+    }
+
+
     public void AddAmmo(AmmoType type, int amount)
     {
         if (pool.TryGetValue(type, out AmmoStash stash))
