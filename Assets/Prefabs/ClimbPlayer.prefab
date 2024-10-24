@@ -707,7 +707,19 @@ MonoBehaviour:
     m_ActionId: 0fac0eb1-3ff0-4123-8090-24973ae59635
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3418730953301285767}
+        m_TargetAssemblyTypeName: WeaponHandler, Assembly-CSharp
+        m_MethodName: CycleWeapons
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c3f2c323-e111-42dc-81c9-2aed71ea6c0b
     m_ActionName: Player/Item2[/Keyboard/2]
   - m_PersistentCalls:
