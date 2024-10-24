@@ -1,12 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static HearingManager;
 using static UnityEngine.InputSystem.InputAction;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 using Random = UnityEngine.Random;
 
 public class Firearm : MonoBehaviour
@@ -125,6 +120,12 @@ public class Firearm : MonoBehaviour
                 CanAds = true;
                 IsReloading = false;
                 StartCoroutine(Shoot());
+            }else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
+            {
+                PerformAnimation(Animation.ReloadingEmpty);
+                CanAds = false;
+                IsReloading = true;
+                Firing = false;
             }
         }
 
@@ -144,13 +145,13 @@ public class Firearm : MonoBehaviour
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
-            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, EHeardSoundCategory.EGunshot, 50.0f);
+            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
 
             CanFire = false;
             //Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
             StopCoroutine(Recoil());
             StartCoroutine(Recoil());
-            yield return new WaitForSeconds(60f / (float)(RPM));
+            yield return new WaitForSeconds(60f / RPM);
             CanFire = true;
 
             if (Firing)
@@ -166,6 +167,14 @@ public class Firearm : MonoBehaviour
                         Firing = LoadedAmmo > 0;
                         break;
                 }
+
+            if (LoadedAmmo == 0 && AutoReload)
+            {
+                PerformAnimation(Animation.ReloadingEmpty);
+                CanAds = false;
+                IsReloading = true;
+                Firing = false;
+            }
 
             StartCoroutine(Shoot());
         }
