@@ -717,6 +717,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 8dde515c-3c89-4728-925a-a5c4c70e2707
     m_ActionName: Player/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c9b0c77-8394-4f60-9ab3-6628b7a1f4a6
+    m_ActionName: UI/Pause[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -784,8 +788,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookDir: {fileID: 4190714404330901810}
-  flarePrefab: {fileID: 2245847593458295276, guid: d4ad680e23353754e96b77f382b9295d,
+  flarePrefab: {fileID: 6230345785733076096, guid: d4ad680e23353754e96b77f382b9295d,
     type: 3}
+  flareEqipment: {fileID: 0}
+  animator: {fileID: 0}
+  throwAngle: 15
   collideDist: 1.2
   throwForce: 9
   torqueForce: 0.01

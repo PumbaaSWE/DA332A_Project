@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
@@ -11,10 +8,49 @@ public class Equipment : MonoBehaviour
     protected Animator animator;
     protected PlayerControls input;
 
+    #region Overrides
+    public override bool Equals(object other)
+    {
+        if (other is Equipment otherEquip)
+        {
+            return _equipmentData == otherEquip._equipmentData;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return _equipmentData.GetHashCode();
+    }
+
+    public static bool operator ==(Equipment lhs, Equipment rhs)
+    {
+        if (lhs is null)
+        {
+            if (rhs is null)
+            {
+                return true;
+            }
+            return false;
+        }
+        return lhs.Equals(rhs);
+    }
+    public static bool operator !=(Equipment lhs, Equipment rhs)
+    {
+        return !(lhs == rhs);
+    }
+    #endregion
+
     public void Init(Animator animator)
     {
         this.animator = animator;
         input ??= new PlayerControls();
+        OnInit();
+    }
+
+    public virtual void OnInit()
+    {
+
     }
 
     public void EnableInput()

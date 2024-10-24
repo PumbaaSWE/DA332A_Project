@@ -7,6 +7,7 @@ public class EquipmentData : ScriptableObject
     [SerializeField]private Equipment onPickUpPrefab;
     [SerializeField]private Equipment onDropPrefab;
     [SerializeField]private int equipmentId = 0;
+    [SerializeField]private int slot = 0;
     [SerializeField]private string raiseState = "";
     [SerializeField]private float lowerTime = .5f;
     [SerializeField]private float raiseTime = .5f;
@@ -16,6 +17,7 @@ public class EquipmentData : ScriptableObject
     public Equipment OnPickUpPrefab => onPickUpPrefab;
     public Equipment OnDropPrefab => onDropPrefab;
     public int EquipmentId => equipmentId;
+    public int Slot => slot;
     public float LowerTime => lowerTime;
     public float RaiseTime => raiseTime;
     public bool AnimationEventLower => animationEventLower;

@@ -79,7 +79,7 @@ public class Firearm : MonoBehaviour
         //LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
         HipFireSpread = MinHipFireSpread;
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
-        Animator = GetComponent<Animator>();
+        Animator = GetComponentInParent<Animator>();
         Camera = GetComponentInParent<PlayerCamera>();
     }
 
@@ -385,7 +385,7 @@ public class Firearm : MonoBehaviour
         IsReloading = false;
     }
 
-    void Switch()
+    public void Switch()
     {
         //Debug.Log("Switching weapons");
         CanFire = false;
@@ -404,7 +404,7 @@ public class Firearm : MonoBehaviour
                 Animator.SetTrigger("Reload");
                 break;
             case Animation.ReloadingEmpty:
-                Animator.SetTrigger("Reload Empty");
+                Animator.SetTrigger("ReloadEmpty");
                 break;
             case Animation.Holstering:
                 Animator.SetTrigger("Holster");

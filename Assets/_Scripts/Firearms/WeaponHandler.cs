@@ -19,7 +19,7 @@ public class WeaponHandler : MonoBehaviour
 
     private void Awake()
     {
-        if (!TryGetComponent<AmmoPool>(out AmmunitionPool))
+        if (!TryGetComponent(out AmmunitionPool))
         {
             gameObject.AddComponent<AmmoPool>();
             AmmunitionPool = GetComponent<AmmoPool>();
@@ -40,10 +40,18 @@ public class WeaponHandler : MonoBehaviour
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
+
+        if(EquippedGun) EquippedGun.Equip();
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    public void EqiupGun()
     {
         if (EquippedGun == null && Guns.Count > 0)
         {
@@ -108,6 +116,18 @@ public class WeaponHandler : MonoBehaviour
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
+    }
+
+    public void HideWeapons(Action onHide)
+    {
+        if (EquippedGun)
+            EquippedGun.Unequip(onHide);
+    }
+
+    public void UnideWeapons()
+    {
+        if(EquippedGun)
+            EquippedGun.Equip();
     }
 
     public void SwitchGun(int gun)
