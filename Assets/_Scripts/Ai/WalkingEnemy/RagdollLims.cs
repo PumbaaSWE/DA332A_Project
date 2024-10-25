@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -42,6 +43,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     [SerializeField] private string standUpClipName = "Stand Up";
     [SerializeField] private string faceDownStateName = "Standing Up";
     [SerializeField] private string faceDownClipName = "Standing Up";
+    [SerializeField] private float startRegrow;
     private float getUpTimer;
     private float resetTimer;
     private bool isFacingUp;
@@ -371,8 +373,19 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             resetTimer = 0;
         }
     }
+   
+
+    // Coroutine som väntar 2 sekunder innan den fortsätter
+   
     public void Regrow()
     {
+        StartCoroutine(StartRegrow());
+    }
+
+    IEnumerator StartRegrow()
+    {
+        yield return new WaitForSeconds(2);
+
         isFacingUp = hip.forward.y > 0;
 
         foreach (var detachable in detached)
@@ -393,12 +406,12 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     //    //if (GOAP)
     //    //{
     //    //    goal_Stalk_W.prio -= 30;
-           
+
 
     //    //}
     //    if(health.Value <= 0)
     //    {
-          
+
     //        //if (GOAP)
     //        //{
     //        //    characterAgent.isCrawling = false;
@@ -412,7 +425,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     //        }
     //        //TriggerRagdoll(direction, point);
     //    }
-       
+
     //}
 
     public void Death()
