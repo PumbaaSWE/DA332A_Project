@@ -150,7 +150,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+       
         return false;
     }
     public bool IsHeadDetached()
@@ -162,7 +162,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+       
         return false;
     }
     public bool IsArmDetached()
@@ -174,7 +174,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+        
         return false;
     }
     //public bool IsAllArmsDetached()
@@ -260,6 +260,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             {
                 state = RagdollState.Default;
                 fSM.isCrawling = false;
+                fSM.agentStatehit = FSM.AgentHit.Normal;
             }
 
         }
@@ -363,7 +364,10 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
 
             foreach (var detachable in detached)
             {
-                detachable.Regrow(2);
+                if(detachable.growing == false)
+                {
+                    detachable.Regrow(2);
+                }
             }
             //AlignRotationToHip();
             //AlignPositionToHip();
@@ -386,7 +390,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     {
         yield return new WaitForSeconds(2);
 
-        isFacingUp = hip.forward.y > 0;
+        //isFacingUp = hip.forward.y > 0;
 
         foreach (var detachable in detached)
         {

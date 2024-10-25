@@ -6,6 +6,7 @@ public class Detachable : MonoBehaviour
 {
     public GameObject disposableJoint;
     public bool detached;
+    public bool growing;
     public Detachable parent;
     public Detachable child;
     float timer;
@@ -101,7 +102,7 @@ public class Detachable : MonoBehaviour
 
     private void RegrowSelf(float t)
     {
-
+        growing = true;
         enabled = true;
         time = t;
         timer = 0;
@@ -122,6 +123,7 @@ public class Detachable : MonoBehaviour
             t = 1;
             enabled = false;
             detached = false;
+            growing = false;
             if (child != null)
             {
                 child.Regrow(time);

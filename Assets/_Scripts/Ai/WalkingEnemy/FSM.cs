@@ -117,7 +117,7 @@ public class FSM : MonoBehaviour
             agentStatehit = AgentHit.Crawl;
         }
         else {
-            agentStatehit = AgentHit.Normal;
+            //agentStatehit = AgentHit.Normal;
         }
       
     }
@@ -169,19 +169,23 @@ public class FSM : MonoBehaviour
             case AgentHit.Normal:
 
                 //characterController.height = 1.76f;
-                nrAttack = 1;
-                moveBool = "move";
-                SynchronizeAnimatorAndAgent();
-
+                //nrAttack = 1;
+                //moveBool = "move";
+                //Debug.Log("normal");
+                //SynchronizeAnimatorAndAgent();
+                Normal();
                 break;
             case AgentHit.Armless:
                 // HandleArmless();
                 // should be more carfull 
+                SynchronizeAnimatorAndAgent();
                 nrAttack = 3;
                 break;
             case AgentHit.Blind:
-                moveBool = "noHead";
-                SynchronizeAnimatorAndAgent();
+                
+                //moveBool = "noHead";
+                Blind();
+                //SynchronizeAnimatorAndAgent();
                 //if (isBlind)
                 //{
                 //    linkedAI._VisionConeRange = 5f;
@@ -200,7 +204,21 @@ public class FSM : MonoBehaviour
                 break;
         }
     }
-
+    void Blind()
+    {
+        moveBool = "noHead";
+        animator.SetBool("move", false);
+        Debug.Log("nohead");
+        SynchronizeAnimatorAndAgent();
+    }
+    void Normal()
+    {
+        nrAttack = 1;
+        moveBool = "move";
+        Debug.Log("normal");
+        animator.SetBool("noHead", false);
+        SynchronizeAnimatorAndAgent();
+    }
     void Found()
     {
         if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0 )
@@ -554,13 +572,27 @@ public class FSM : MonoBehaviour
 
     public void Attack()
     {
+       
+        if(agentStatehit == AgentHit.Armless)
+        {
+            animator.SetInteger("Attack", 3);
+            //StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+        }
+        else
+        {
+            animator.SetInteger("Attack", Random.Range(nrAttack, 4));          
+        }
         if (agentStatehit == AgentHit.Crawl)
         {
             animator.Play("Base Layer.Crawl");
             StartCoroutine(CrawlAttackCooldown(.5f)); //wait for animation to end instead?
         }
-        animator.SetInteger("Attack", Random.Range(nrAttack, 4));
-        StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+        else
+        {
+            StartCoroutine(AttackCooldown(.5f)); //wait for animation to end instead?
+        }
+
+
     }
     private IEnumerator CrawlAttackCooldown(float t)
     {
