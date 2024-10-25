@@ -32,6 +32,9 @@ public class Cheats : MonoBehaviour
 
     void Update()
     {
+        if (Time.deltaTime == 0)
+            return;
+
         if (Input.GetKeyDown(KeyCode.BackQuote))
             ClearConsole();
 

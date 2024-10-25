@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Flare : MonoBehaviour
 {
 
     Light m_light;
+    [SerializeField] Rigidbody _rigidbody;
 
     public float timeToLive;
     public float fadeTime = 2;
@@ -20,9 +19,15 @@ public class Flare : MonoBehaviour
     public Color lightColor2 = Color.yellow;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_light = GetComponentInChildren<Light>();
+    }
+
+    public void Throw(Vector3 force, Vector3 torque)
+    {
+        _rigidbody.AddForce(force, ForceMode.Impulse);
+        _rigidbody.AddTorque(torque, ForceMode.Impulse);
     }
 
     // Update is called once per frame

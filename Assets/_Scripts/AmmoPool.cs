@@ -8,6 +8,8 @@ public class AmmoPool : MonoBehaviour
 {
     public List<CartridgePool> Pools = new();
 
+    Dictionary<AmmoType, AmmoStash> pool = new();
+
     public int this[Cartridgetype type, bool maxAmmo = false]
     {
         get
@@ -25,6 +27,64 @@ public class AmmoPool : MonoBehaviour
             else
                 Pools.Find(p => p.AmmoType == type).CurrentAmmo = value;
         }
+    }
+
+    public int TakeAmmo(AmmoType type, int amount)
+    {
+        if(pool.TryGetValue(type, out AmmoStash stash))
+        {
+            int canTake = Mathf.Min(stash.currentAmount, amount);
+            stash.currentAmount -= canTake;
+            return canTake;
+        }
+        return amount;
+    }
+
+    public int AddAmmo(Cartridgetype type, int amount)
+    {
+        CartridgePool cp = Pools.Find(p => p.AmmoType == type);
+
+        int newAmount = cp.CurrentAmmo + amount;
+        int leftOver = 0;
+        if(newAmount > cp.MaxAmmo)
+        {
+            leftOver = newAmount - cp.MaxAmmo;
+            newAmount = cp.MaxAmmo;
+        }
+
+        cp.CurrentAmmo = newAmount;
+        return leftOver;
+    }
+
+
+    public void AddAmmo(AmmoType type, int amount)
+    {
+        if (pool.TryGetValue(type, out AmmoStash stash))
+        {
+            stash.currentAmount += amount;
+            stash.currentAmount = Mathf.Min(stash.maxAount, stash.currentAmount);
+        }
+        else
+        {
+            pool.Add(type, new AmmoStash());
+        }
+    }
+
+    public bool HasAmmo(AmmoType type)
+    {
+        if (pool.TryGetValue(type, out AmmoStash stash))
+        {
+            return stash.currentAmount > 0;
+        }
+        return true;
+    }
+    public int CurrentAmmo(AmmoType type)
+    {
+        if (pool.TryGetValue(type, out AmmoStash stash))
+        {
+            return stash.currentAmount;
+        }
+        return -1;
     }
 
     public bool ContainsKey(Cartridgetype type)
@@ -52,4 +112,11 @@ public class CartridgePool
     public Cartridgetype AmmoType;
     public int CurrentAmmo;
     public int MaxAmmo;
+}
+
+[Serializable]
+public class AmmoStash
+{
+    public int currentAmount = 100;
+    public int maxAount = 100;
 }
