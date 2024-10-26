@@ -42,7 +42,6 @@ public class Detachable : MonoBehaviour
         {
             RegrowSelf(t);
         }
-
     }
 
     public void Detatch()
@@ -113,21 +112,17 @@ public class Detachable : MonoBehaviour
         timer += Time.deltaTime;
         float t = timer / time;
 
-
-
-
-
-
         if (t > 1)
         {
             t = 1;
             enabled = false;
             detached = false;
-            growing = false;
             if (child != null)
             {
+        
                 child.Regrow(time);
             }
+            growing = false;
 
             //CharacterJoint joint = GetComponent<CharacterJoint>();
             //if (joint != null)

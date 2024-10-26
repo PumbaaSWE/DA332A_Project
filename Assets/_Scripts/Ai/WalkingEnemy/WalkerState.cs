@@ -39,7 +39,8 @@ public class WalkerState : MonoBehaviour, IDamageble
 
         if (health.Value <= 0)
         {
-            ragdoll.TriggerRagdoll(direction, point);
+            // ragdoll.TriggerRagdoll(direction, point);
+            ragdoll.TakeDMG(direction, point);
             CheckLimbs();
         }
 
@@ -50,29 +51,29 @@ public class WalkerState : MonoBehaviour, IDamageble
         if (ragdoll.IsHeadDetached())
         {
             fSM.agentStatehit = FSM.AgentHit.Blind;
-            ragdoll.Regrow();
+            ragdoll.Regrow(false);
         }
         else if (ragdoll.IsArmDetached())
         {
             fSM.agentStatehit = FSM.AgentHit.Armless;
-            ragdoll.Regrow();
+            ragdoll.Regrow(true);
         }
-        else if (ragdoll.IsLegDetached())
+        else if (ragdoll.IsLegDetached() && !fSM.isCrawling)
         {
-
+            //ragdoll.TriggerRagdoll();
         }
-        else
-        {
-            fSM.agentStatehit = FSM.AgentHit.Normal;
-        }
+        //else
+        //{
+        //    fSM.agentStatehit = FSM.AgentHit.Normal;
+        //    Debug.Log("normaldr");
+        //}
     }
 
     public void NormalState()
     {
-        if (!ragdoll.IsHeadDetached() && !ragdoll.IsArmDetached() && !ragdoll.IsLegDetached())
+        if (!ragdoll.IsHeadDetached() && !ragdoll.IsArmDetached() && !ragdoll.IsLegDetached() && ragdoll.state == RagdollLims.RagdollState.Default )
         {
             fSM.agentStatehit = FSM.AgentHit.Normal;
-            Debug.Log("normalstate");
         }      
     }
 }
