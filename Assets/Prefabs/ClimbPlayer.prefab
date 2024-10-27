@@ -381,8 +381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 8377562125295770310}
   FOV: 60
-  sprintFOV: 80
-  fovLerpTime: 5
+  sprintFOV: 84
+  fovLerpTime: 0.2
   minLookUpAngle: -90
   maxLookUpAngle: 90
   mouseSensitivity: 0.05
@@ -978,6 +978,8 @@ MonoBehaviour:
   fpsCam: {fileID: 4458088029890194605}
   defaultFov: 74
   defaultFpsFov: 74
+  bobAmp: 0.008
+  bobFreq: 15
 --- !u!114 &-2530877571503949333
 MonoBehaviour:
   m_ObjectHideFlags: 0
