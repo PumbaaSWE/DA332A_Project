@@ -15,6 +15,10 @@ public class PlayerDataSO : ScriptableObject
     public Health health;
     public Health Health => health;
 
+    public float PlayerStamina => stamina ? stamina.Value : 0;
+    public Stamina stamina;
+    public Stamina Stamina => stamina;
+
     public Transform PlayerTransform
     {
         get { return playerTransform; }
@@ -25,6 +29,7 @@ public class PlayerDataSO : ScriptableObject
                 playerTransform = value;
                 OnPlayerChanged?.Invoke(playerTransform);
                 health = playerTransform.GetComponent<Health>();
+                stamina = playerTransform.GetComponent<Stamina>();
             }
         }
     }
