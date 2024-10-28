@@ -8,6 +8,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float defaultFov = 74;
     [SerializeField] private float defaultFpsFov = 74;
 
+    [SerializeField] private float bobAmp = 0.01f;
+    [SerializeField] private float bobFreq = 15f;
 
     public Camera MainCam => mainCam;
     public Camera FpsCam => fpsCam;
@@ -29,6 +31,10 @@ public class PlayerCamera : MonoBehaviour
     private float targetFpsFov = 74;
     private float targetFpsSpeed = 1;
 
+    // bob vars
+    private float tv;
+    private float th;
+    private NonphysController nc;
 
     void Awake()
     {
@@ -156,5 +162,36 @@ public class PlayerCamera : MonoBehaviour
         {
             fpsCam.fieldOfView = Mathf.MoveTowards(fpsCam.fieldOfView, targetFpsFov, targetFpsSpeed * Time.deltaTime);
         }
+
+        Bob(Time.deltaTime);
+    }
+
+    void Bob(float dt)
+    {
+        if (nc == null)
+        {
+            nc = GetComponent<NonphysController>();
+
+            if (nc == null)
+                return;
+        }
+
+        if (!nc.Grounded)
+            return;
+
+        float speed = Mathf.InverseLerp(0, nc.MaxSpeed, nc.Speed);
+
+        if (speed > 0.01)
+        {
+            th += dt * speed;
+            float bobh = Mathf.Cos(th * bobFreq / 2);
+            fpsCam.transform.localPosition = fpsCam.transform.localPosition.WithX(bobh * bobAmp * 2 * speed);
+        }
+
+
+        tv += dt * speed;
+        float bobv = Mathf.Sin(tv * bobFreq);
+
+        fpsCam.transform.localPosition = fpsCam.transform.localPosition.WithY(bobv * bobAmp * speed);
     }
 }

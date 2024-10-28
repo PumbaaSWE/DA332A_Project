@@ -15,7 +15,6 @@ public class NonphysController : MovementController
 
     [SerializeField] Transform head;
 
-    [SerializeField] float FOV;
     [SerializeField] float sprintFOV;
     [SerializeField] float fovLerpTime;
 
@@ -83,6 +82,9 @@ public class NonphysController : MovementController
     public float MaxStamina => maxStamina;
     public float Stamina => stamina;
     public float MouseSensitivity => mouseSensitivity;
+    public bool Grounded => grounded;
+    public float Speed => speed;
+    public float MaxSpeed => maxSprintSpeed;
 
     // inputs
     Vector2 look;
@@ -93,6 +95,7 @@ public class NonphysController : MovementController
 
     // components
     CapsuleCollider cc;
+    PlayerCamera pc;
 
     // misc member variables
     bool isCrouched;
@@ -105,6 +108,7 @@ public class NonphysController : MovementController
     void Start()
     {
         cc = GetComponent<CapsuleCollider>();
+        pc = GetComponent<PlayerCamera>();
 
         cc.center = Vector3.up * Height / 2f;
         cc.height = Height;
@@ -236,13 +240,17 @@ public class NonphysController : MovementController
             velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
-        //float fov = FOV;
-        //if (forwardSpeed > maxWalkSpeed)
-        //{
-        //    float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, forwardSpeed);
-        //    fov = Mathf.Lerp(FOV, sprintFOV, t);
-        //}
-        //Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, fov, fovLerpTime * Time.deltaTime);
+        float mainFOV = pc.DefaultFov;
+        float fpsFOV = pc.DefaultFpsFov;
+        if (forwardSpeed > maxWalkSpeed)
+        {
+            float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, speed);
+            mainFOV = Mathf.Lerp(mainFOV, sprintFOV, t);
+            fpsFOV = Mathf.Lerp(fpsFOV, sprintFOV, t);
+        }
+
+        pc.LerpMainFov(mainFOV, fovLerpTime);
+        pc.LerpFpsFov(fpsFOV, fovLerpTime);
 
         // Collide and slide algorithm
         float velY = velocity.y;
