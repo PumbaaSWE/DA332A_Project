@@ -134,6 +134,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     private void Start()
     {
         DisableRagdoll();
+       
     }
     // Update is called once per frame
     void Update()
@@ -294,31 +295,22 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
            
             if(fSM.isCrawling)
             {
+            
+                fSM.SetAgentActive(false);
                 state = RagdollState.StandingUp;
                 DisableRagdoll();
-
+               
                 animator.Play(StateName(), 0, 0);
                 fSM.isCrawling = false;
                 //fSM.agentStatehit = FSM.AgentHit.Normal;
-                fSM.SetAgentActive(true);
+               
 
                 //StartCoroutine(PlayAndWaitForAnimation());
 
             }
         }
     }
-    private IEnumerator PlayAndWaitForAnimation()
-    {
-        animator.Play(StateName(), 0, 0);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            yield return null;
-        }
-        //animator.Play("Base Layer.Idle");
-        fSM.isCrawling = false;
-        //fSM.agentStatehit = FSM.AgentHit.Normal;
-        //fSM.SetAgentActive(true);
-    }
+  
     private void CrawlingUpBehaviour()
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateName()))
@@ -338,7 +330,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateName()))
             {
                 state = RagdollState.Default;
-               
+                fSM.SetAgentActive(true);
                 //fSM.isCrawling = false;
                 //fSM.agentStatehit = FSM.AgentHit.Normal;
             }
@@ -363,7 +355,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
 
           
         }
-        fSM.SetAgentActive(true);
+       
        
 
         for (int i = 0; i < rbs.Length; i++)
@@ -373,24 +365,14 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
 
         animator.enabled = true;
         controller.enabled = true;
+        
 
-       
     }
 
     public void EnableRagdoll()
     {
-       
-        //if(GOAP)
-        //{
-        //    characterAgent.SetAgentActive(false);
-        //    planner.deactivate = true;
-        //}
-        //else
-        {
+
             fSM.SetAgentActive(false);
-        }
-
-
 
 
         for (int i = 0; i < rbs.Length; i++)
@@ -424,9 +406,11 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     //}
     void GetUpCrawl()
     {
+        detached.RemoveAll(x => !x.DetatchedLimb() && !x.growing);
+
+        PopulateBoneTransforms(ragdollBones);
         AlignRotationToHip();
         AlignPositionToHip(false);
-        PopulateBoneTransforms(ragdollBones);
 
         elapsedResetBonesTime += Time.deltaTime;
         float elapsedPercentage =   timeResetBonesTime/ elapsedResetBonesTime;
@@ -434,9 +418,14 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         int length = bones.Length;
         for (int i = 0; i < length; i++)
         {
+            //bones[i].localPosition = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
+            //bones[i].localRotation = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+
             Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
 
-            Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+           // Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+            Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+
             bones[i].SetLocalPositionAndRotation(pos, rot);
 
 
@@ -445,8 +434,9 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         if (elapsedPercentage >= 1)
         {
             DisableRagdoll();
-            //isFacingUp = hip.forward.y > 0;
+            isFacingUp = hip.forward.y > 0;
             animator.Play(StateNameTwo(), 0, 0);
+            
         }
 
 
@@ -456,26 +446,22 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     {
         getUpTimer -= Time.deltaTime;
         
-        if (getUpTimer < 3.5f && getUpTimer >= 3.0f)
+        if (getUpTimer < 5.5f && getUpTimer >= 5.0f)
         {
 
-            //DisableRagdoll();
-            // StartCoroutine(BlendToCrawlAnimation());
+
             GetUpCrawl();
-            //animator.CrossFade("crawl", .2f);
+
 
         }
-        //if (getUpTimer < 3 /*&& IsLegDetached()*/)
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateNameTwo()) && getUpTimer < 3)
-        {///////////////////////////////////////
-          
-           
-            
-                fSM.isCrawling = true;
-                //////////
-                //fSM.SetAgentActive(true);
-                /////////
-            
+        {
+
+
+            fSM.isCrawling = true;
+            fSM.SetAgentActive(true);
+
+
         }
 
         if (getUpTimer < 0)
@@ -552,34 +538,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         fSM.isArmles = false;
 
     }
-    //public void TakeDamage(Vector3 point, Vector3 direction, float damage)
-    //{ 
-    //    health.Damage( damage);
-    //    deahtHealth -= damage;
-    //    //if (GOAP)
-    //    //{
-    //    //    goal_Stalk_W.prio -= 30;
-
-
-    //    //}
-    //    if(health.Value <= 0)
-    //    {
-
-    //        //if (GOAP)
-    //        //{
-    //        //    characterAgent.isCrawling = false;
-    //        //    planner.deactivate = false;
-    //        //    characterAgent.SetAgentActive(false);
-    //        //}
-    //        //else
-    //        {
-    //            //fSM.isCrawling = false;
-    //            //fSM.SetAgentActive(false);
-    //        }
-    //        //TriggerRagdoll(direction, point);
-    //    }
-
-    //}
+   
 
     public void Death()
     {
@@ -625,7 +584,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         {
             EnableRagdoll();
             state = RagdollState.Ragdoll;
-            fSM.SetAgentActive(false);
+            
             //fSM.isCrawling = true;
         }
 
@@ -639,6 +598,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         Quaternion originalRot = hip.rotation;
         Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
         desiredDir.y = 0;
+        desiredDir.Normalize();
 
         Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
         transform.rotation *= rot;
