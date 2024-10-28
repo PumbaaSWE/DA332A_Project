@@ -304,7 +304,6 @@ public class FSM : MonoBehaviour
         }
         else
         {
-
             agentState = AgentState.Idle;
         }
     }
@@ -336,7 +335,6 @@ public class FSM : MonoBehaviour
         if (atDestination)
         {
             MoveTo(soundLocation);
-
         }
        
     }
@@ -457,8 +455,7 @@ public class FSM : MonoBehaviour
             animator.SetBool("crawl", false);
         }
         else
-        {
-            
+        {            
             animator.SetBool("crawl", shouldMove);
             animator.SetBool("crawlNoArm", false);
         }
@@ -658,13 +655,10 @@ public class FSM : MonoBehaviour
         attckTimer -= Time.deltaTime;
         if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
         {
-
-            //Debug.Log("Attack!!");
             if (target.TryGetComponent(out IDamageble damageble))
             {
                 damageble.TakeDamage(transform.position, targetDelta, 5);
                 attckTimer = attackTime;
-                //Debug.Log("Do damage!!");
             }
         }
 
@@ -684,8 +678,7 @@ public class FSM : MonoBehaviour
             {
                 if (!wasGrounded)
                 {
-                    //agent.nextPosition = transform.position;
-                    //Debug.Log("Warping!!!!!!!!!!!");
+
                     agent.Warp(transform.position);
                 }
                 else
@@ -698,8 +691,6 @@ public class FSM : MonoBehaviour
             else
             {
                 wasGrounded = false;
-                //agent.Warp(transform.position);
-                //Debug.Log("NOT GROUNDED");
                 agent.nextPosition = transform.position;
             }
         }
