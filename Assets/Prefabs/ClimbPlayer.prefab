@@ -311,7 +311,6 @@ GameObject:
   - component: {fileID: 8193721170716452780}
   - component: {fileID: 4098254105255887134}
   - component: {fileID: 8211327675218918678}
-  - component: {fileID: 1781910667755730167}
   - component: {fileID: 7444812139051102595}
   - component: {fileID: 8875638149624668865}
   - component: {fileID: 6502465325931389742}
@@ -322,6 +321,7 @@ GameObject:
   - component: {fileID: -2530877571503949333}
   - component: {fileID: 4226767867783217970}
   - component: {fileID: 1964976663453118253}
+  - component: {fileID: 7814214186349021388}
   m_Layer: 2
   m_Name: ClimbPlayer
   m_TagString: Player
@@ -381,7 +381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 8377562125295770310}
-  FOV: 60
   sprintFOV: 84
   fovLerpTime: 0.2
   minLookUpAngle: -90
@@ -852,20 +851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bosted: 0
---- !u!114 &1781910667755730167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926258509007519574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6adb96bd532dfd4db877df1d2ae0d40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
-  playerHead: {fileID: 8804383274151757081}
 --- !u!114 &7444812139051102595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,6 +1017,20 @@ MonoBehaviour:
   stamina: 0
   maxStamina: 0
   controller: {fileID: 0}
+--- !u!114 &7814214186349021388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926258509007519574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6adb96bd532dfd4db877df1d2ae0d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  playerHead: {fileID: 8377562125295770310}
 --- !u!1 &9166448585097768069
 GameObject:
   m_ObjectHideFlags: 0
