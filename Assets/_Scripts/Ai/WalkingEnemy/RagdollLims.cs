@@ -71,6 +71,7 @@ public class RagdollLims : MonoBehaviour
 
     private List<Detachable> detached = new List<Detachable>();
 
+    bool ragToCrawl;
 
 
    
@@ -241,6 +242,7 @@ public class RagdollLims : MonoBehaviour
     //}
     private void RegrowLimbsBehaviour()
     {
+        ragToCrawl = true;
         AlignRotationToHip(); 
         AlignPositionToHip(true); 
 
@@ -387,9 +389,8 @@ public class RagdollLims : MonoBehaviour
         //detached.RemoveAll(x => !x.DetatchedLimb() && !x.growing);
         //if (isFacingUp)
         {
-            PopulateBoneTransforms(ragdollBones);
-            AlignRotationToHip();
-            AlignPositionToHip(false);
+            //PopulateBoneTransforms(ragdollBones);
+           
         }
         
 
@@ -404,30 +405,37 @@ public class RagdollLims : MonoBehaviour
 
             Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
 
-            Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
-            // Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+           // Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+             Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
 
             bones[i].SetLocalPositionAndRotation(pos, rot);
 
 
         }
 
-        if (elapsedPercentage >= 1)
+
+        if (elapsedPercentage >= 1 && !ragToCrawl)
         {
-            DisableRagdoll();
-            
+            DisableRagdoll();           
             animator.Play(StateNameTwo(), 0, 0);
             fSM.SetAgentActive(true);
+            ragToCrawl = true;
 
         }
-
-
-       
+      
     }
     private void RagdollBehaviour()
     {
         getUpTimer -= Time.deltaTime;
-        
+
+        if (ragToCrawl)
+        {
+            AlignRotationToHip();
+            AlignPositionToHip(false);
+            ragToCrawl = false;
+        }
+       
+
         if (getUpTimer < 7.5f && getUpTimer >= 7.0f)
         {
             isFacingUp = hip.forward.y > 0;
@@ -438,7 +446,6 @@ public class RagdollLims : MonoBehaviour
         {
             fSM.isCrawling = true;
             fSM.SetAgentActive(true);
-
 
         }
 
@@ -568,37 +575,37 @@ public class RagdollLims : MonoBehaviour
         elapsedResetBonesTime = 0;
     }
 
-    //private void AlignRotationToHip()
-    //{
-    //    Vector3 originalPos = hip.position;
-    //    Quaternion originalRot = hip.rotation;
-    //    Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
-    //    desiredDir.y = 0;
-    //    //desiredDir.z *= -1;
-    //    //desiredDir.Normalize();
-
-    //    Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
-    //    transform.rotation *= rot;
-
-    //    hip.SetPositionAndRotation(originalPos, originalRot);
-
-    //}
-
     private void AlignRotationToHip()
     {
         Vector3 originalPos = hip.position;
         Quaternion originalRot = hip.rotation;
-
         Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
         desiredDir.y = 0;
         //desiredDir.z *= -1;
-        desiredDir.Normalize();
+        //desiredDir.Normalize();
 
-        Quaternion targetRotation = Quaternion.LookRotation(desiredDir, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
+        Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
+        transform.rotation *= rot;
 
         hip.SetPositionAndRotation(originalPos, originalRot);
+
     }
+
+    //private void AlignRotationToHip()
+    //{
+    //    Vector3 originalPos = hip.position;
+    //    Quaternion originalRot = hip.rotation;
+
+    //    Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
+    //    desiredDir.y = 0;
+    //    //desiredDir.z *= -1;
+    //    desiredDir.Normalize();
+
+    //    Quaternion targetRotation = Quaternion.LookRotation(desiredDir, Vector3.up);
+    //    transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
+
+    //    hip.SetPositionAndRotation(originalPos, originalRot);
+    //}
 
     private void AlignPositionToHip(bool stand)
     {
