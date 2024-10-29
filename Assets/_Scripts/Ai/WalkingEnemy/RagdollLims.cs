@@ -392,7 +392,8 @@ public class RagdollLims : MonoBehaviour
             //PopulateBoneTransforms(ragdollBones);
            
         }
-        
+        AlignRotationToHip();
+        AlignPositionToHip(false);
 
         elapsedResetBonesTime += Time.deltaTime;
         float elapsedPercentage =   timeResetBonesTime/ elapsedResetBonesTime;
@@ -405,8 +406,8 @@ public class RagdollLims : MonoBehaviour
 
             Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
 
-           // Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
-             Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+           Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+             //Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
 
             bones[i].SetLocalPositionAndRotation(pos, rot);
 
@@ -414,7 +415,7 @@ public class RagdollLims : MonoBehaviour
         }
 
 
-        if (elapsedPercentage >= 1 && !ragToCrawl)
+        if (elapsedPercentage >= 1 /*&& !ragToCrawl*/)
         {
             DisableRagdoll();           
             animator.Play(StateNameTwo(), 0, 0);
@@ -428,25 +429,25 @@ public class RagdollLims : MonoBehaviour
     {
         getUpTimer -= Time.deltaTime;
 
-        if (ragToCrawl)
-        {
-            AlignRotationToHip();
-            AlignPositionToHip(false);
-            ragToCrawl = false;
-        }
-       
+
+        //if (ragToCrawl)
+        //{
+        //    AlignRotationToHip();
+        //    AlignPositionToHip(false);
+        //    ragToCrawl = false;
+        //}
 
         if (getUpTimer < 7.5f && getUpTimer >= 7.0f)
         {
+            
+
             isFacingUp = hip.forward.y > 0;
-            GetUpCrawl();
-         
+            GetUpCrawl();         
         }
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateNameTwo()) && getUpTimer < 7)
         {
             fSM.isCrawling = true;
             fSM.SetAgentActive(true);
-
         }
 
         if (getUpTimer < 0)

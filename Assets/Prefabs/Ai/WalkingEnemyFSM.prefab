@@ -211,6 +211,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 3717582869765975298, guid: bcd81675c8a8c2d42b9bf6b1bc705695,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 1
@@ -467,6 +468,7 @@ GameObject:
   - component: {fileID: 307226710682814904}
   - component: {fileID: 3556707548999022129}
   - component: {fileID: 6934903581781359754}
+  - component: {fileID: 5876690826856326660}
   m_Layer: 2
   m_Name: WalkingEnemyFSM
   m_TagString: Enemy
@@ -595,8 +597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd4f44d57b9484a805bac84293f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 300
-  maxHealth: 300
+  health: 350
+  maxHealth: 350
   dead: 0
 --- !u!114 &7135380529166497753
 MonoBehaviour:
@@ -750,15 +752,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee99d9ec48744a4d99cc79dce34cf04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deahtHealth: 1300
   enemy: {fileID: 1421513971492581902}
-  timeToGetUp: 5
+  state: 0
+  timeToGetUp: 10
   resetBonesTime: 1
   standUpStateName: Stand Up
   standUpClipName: Stand Up
   faceDownStateName: Standing Up
   faceDownClipName: Standing Up
-  GOAP: 0
+  getUpStateName: Getting Up
+  getUpClipName: Getting Up
+  rollStateName: Rolling
+  rollClipName: Rolling
+  startRegrow: 0
+  blendDuration: 1.5
 --- !u!114 &3556707548999022129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,10 +782,13 @@ MonoBehaviour:
   searchRange: 5
   attackRange: 2.5
   minAttackRange: 1
+  attackCrawlRange: 1
+  minAttackCrawlRange: 0.3
   agentState: 0
   agentStatehit: 3
   isCrawling: 0
-  run: 0
+  isArmles: 0
+  run: 1
   target: {fileID: 4841743169882539351, guid: 7585016485698a6458b3f50bf1f855c8, type: 3}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
 --- !u!114 &6934903581781359754
@@ -797,6 +807,19 @@ MonoBehaviour:
   normalcolor2: {fileID: 6416822205048946955}
   bColor: {fileID: 3246445990100885878}
   bColor2: {fileID: 9055535603960024429}
+--- !u!114 &5876690826856326660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421513971492581902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad357fa164ac7154db2221b240cdb465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deahtHealth: 1400
 --- !u!1 &1550861975660843090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,6 +1032,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 2275509066500069203, guid: a562922fa6ee19346bf77a70c60f6594,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -1490,6 +1514,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 6619211742596590260, guid: 831e0a9b8820ff344a6f311d0ed4a06a,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -1739,6 +1764,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 1512936642831834110, guid: 0edf8ee1824106b46adcb997852959d1,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 1
@@ -2496,6 +2522,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 7453051202378882999, guid: dc074011195fa5d4f81854716f797f5f,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -2861,6 +2888,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 3593966401622409731, guid: 22df3f0d507172e41a3f458817a863be,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 1
@@ -3490,6 +3518,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 6577266049904606980, guid: a4ad9765134fd214f8c0d18f78e891a9,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 1
@@ -3992,6 +4021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposableJoint: {fileID: 0}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -4011,6 +4041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposableJoint: {fileID: 0}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -4328,6 +4359,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 8751489553293721946, guid: 4b7aa3e7f924f3b44bd434a1b4900073,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
@@ -4348,6 +4380,7 @@ MonoBehaviour:
   disposableJoint: {fileID: 8751489553293721946, guid: 4b7aa3e7f924f3b44bd434a1b4900073,
     type: 3}
   detached: 0
+  growing: 0
   parent: {fileID: 0}
   child: {fileID: 0}
   leg: 0
