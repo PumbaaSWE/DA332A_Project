@@ -1,9 +1,9 @@
-using System;
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
+
 
 /*
  * From tutorials:
@@ -11,9 +11,9 @@ using UnityEngine;
  * https://www.youtube.com/watch?v=B_NnQQKiw6I
  * 
  */
-public class RagdollLims : MonoBehaviour/*, IDamageble*/
+public class RagdollLims : MonoBehaviour
 {
-    public float deahtHealth = 600;
+  
     public GameObject enemy;
 
     private class BoneTransform
@@ -27,46 +27,61 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     private CharacterController controller;
     private Transform hip;
 
-    private enum RagdollState
+  
+    public enum RagdollState
     {
         Default,
         Ragdoll,
+        StartCrawl,
         StandingUp,
         ResettingBones,
         RegrowLimbs
     };
-    private RagdollState state = RagdollState.Default;
+    public RagdollState state = RagdollState.Default;
     [SerializeField] private float timeToGetUp = 5;
     [SerializeField] private float resetBonesTime = 1;
+    private float timeResetBonesTime = .5f;
+
     [SerializeField] private string standUpStateName = "Stand Up";
     [SerializeField] private string standUpClipName = "Stand Up";
     [SerializeField] private string faceDownStateName = "Standing Up";
     [SerializeField] private string faceDownClipName = "Standing Up";
+
+    [SerializeField] private string getUpStateName = "Getting Up";
+    [SerializeField] private string getUpClipName = "Getting Up";
+    [SerializeField] private string rollStateName = "Rolling";
+    [SerializeField] private string rollClipName = "Rolling";
+
+    [SerializeField] private float startRegrow;
     private float getUpTimer;
     private float resetTimer;
     private bool isFacingUp;
+
+    //private float resetSingelTimer;
+    private float elapsedResetBonesTime;
+   
 
     private Transform[] bones;
     private BoneTransform[] ragdollBones;
     private BoneTransform[] standUpBones;
     private BoneTransform[] faceDownBones;
 
+    private BoneTransform[] gettingUpBones;
+    private BoneTransform[] rollBones;
+
     private List<Detachable> detached = new List<Detachable>();
 
-    [SerializeField] bool GOAP;
 
-    //private CharacterAgent characterAgent;
-    //private GOAPPlanner planner;
-    //EnemyAI enemyAi;
 
-    //AwarenessSystem senssors;
-    //Goal_Stalk_W goal_Stalk_W;
+   
     Health health;
     FSM fSM;
+    public float blendDuration = 1.5f;
+
     void Awake()
     {   
         fSM = GetComponent<FSM>();
-        //goal_Stalk_W = GetComponent<Goal_Stalk_W>();
+    
         health = GetComponent<Health>();
         //senssors = GetComponent<AwarenessSystem>();
         //enemyAi = GetComponent<EnemyAI>();
@@ -80,15 +95,24 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
         ragdollBones = new BoneTransform[bones.Length];
         standUpBones = new BoneTransform[bones.Length];
         faceDownBones = new BoneTransform[bones.Length];
+
+        gettingUpBones = new BoneTransform[bones.Length];
+        rollBones = new BoneTransform[bones.Length];
         for (int i = 0; i < bones.Length; i++)
         {
             ragdollBones[i] = new BoneTransform();
             standUpBones[i] = new BoneTransform();
             faceDownBones[i] = new BoneTransform();
+
+            gettingUpBones[i] = new BoneTransform();
+            rollBones[i] = new BoneTransform();
         }
 
         PopulateAnimationBoneTransforms(standUpClipName, standUpBones);
         PopulateAnimationBoneTransforms(faceDownClipName, faceDownBones);
+
+        PopulateAnimationBoneTransforms(getUpClipName, gettingUpBones);
+        PopulateAnimationBoneTransforms(rollClipName, rollBones);
 
 
 
@@ -102,21 +126,15 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
 
     private void Start()
     {
-        // do a generic. This is temporary
-        //if (GOAP)
-        //{
-        //    characterAgent = GetComponent<CharacterAgent>();
-        //    planner = GetComponent<GOAPPlanner>();
-        //}
-      
-
         DisableRagdoll();
+       
     }
     // Update is called once per frame
     void Update()
     {
         //VisonUpdate();
-        Death();
+       
+       
 
         switch (state)
         {
@@ -128,6 +146,9 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 break;
             case RagdollState.StandingUp:
                 StandingUpBehaviour();
+                break;
+            case RagdollState.StartCrawl:
+                CrawlingUpBehaviour();
                 break;
             case RagdollState.ResettingBones:
                 ResettingBonesBehaviour();
@@ -148,7 +169,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+       
         return false;
     }
     public bool IsHeadDetached()
@@ -160,7 +181,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+       
         return false;
     }
     public bool IsArmDetached()
@@ -172,7 +193,7 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
                 return true;
             }
         }
-
+        
         return false;
     }
     //public bool IsAllArmsDetached()
@@ -201,24 +222,68 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     //    return false;
     //}
 
+    //private void RegrowLimbsBehaviour()
+    //{
+    //    if (detached.Count <= 0)
+    //    {
+
+    //        AlignRotationToHip();
+    //        AlignPositionToHip(true);
+
+    //       PopulateBoneTransforms(ragdollBones);
+
+    //        state = RagdollState.ResettingBones;
+
+    //        resetTimer = 0;
+    //        return;
+    //    }
+    //    detached.RemoveAll(x => !x.DetatchedLimb() && !x.growing);
+    //}
     private void RegrowLimbsBehaviour()
+    {
+        AlignRotationToHip(); 
+        AlignPositionToHip(true); 
+
+       
+        detached.RemoveAll(detachable => !detachable.DetatchedLimb() && !detachable.growing);
+
+     
+        if (detached.Count <= 0)
+        {
+            PopulateBoneTransforms(ragdollBones);
+            state = RagdollState.ResettingBones;
+            resetTimer = 0;
+        }
+    }
+    private void ResetingSingelDetached()
     {
         if (detached.Count <= 0)
         {
+            PopulateBoneTransforms(ragdollBones);
+            //resetSingelTimer = 0;
 
-            AlignRotationToHip();
-            AlignPositionToHip();
-
-           PopulateBoneTransforms(ragdollBones);
-
-            state = RagdollState.ResettingBones;
-
-            resetTimer = 0;
-            return;
+            //ResetBone();
         }
-        detached.RemoveAll(x => !x.DetatchedLimb());
+        detached.RemoveAll(x => !x.DetatchedLimb() && !x.growing);
+
     }
 
+    //void ResetBone()
+    //{
+    //    resetSingelTimer += Time.deltaTime;
+    //    float t = resetSingelTimer / resetBonesTime;
+    //    int length = bones.Length;
+    //    BoneTransform[] standUpBones = GetStandUpBoneTransforms();
+    //    for (int i = 0; i < length; i++)
+    //    {
+    //        Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, t);
+    //        //bones[i].localPosition = pos;
+    //        Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, t);
+    //        bones[i].SetLocalPositionAndRotation(pos, rot);
+    //        //bones[i].localPosition = pos;
+    //    }
+
+    //}
     private void ResettingBonesBehaviour()
     {
         resetTimer += Time.deltaTime;
@@ -239,15 +304,28 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
            
             if(fSM.isCrawling)
             {
+            
+                fSM.SetAgentActive(false);
                 state = RagdollState.StandingUp;
                 DisableRagdoll();
+               
                 animator.Play(StateName(), 0, 0);
-                //animator.Play("Base Layer.Idle");
+                fSM.isCrawling = false;
 
             }
         }
     }
+  
+    private void CrawlingUpBehaviour()
+    {
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateName()))
+        {
 
+            fSM.isCrawling = true;
+            
+        }
+    }
+ 
     private void StandingUpBehaviour()
     {
         //if(fSM.isCrawling)
@@ -257,7 +335,9 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateName()))
             {
                 state = RagdollState.Default;
-                fSM.isCrawling = false;
+                fSM.SetAgentActive(true);
+                //fSM.isCrawling = false;
+                //fSM.agentStatehit = FSM.AgentHit.Normal;
             }
 
         }
@@ -269,40 +349,23 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
       
         
         health.Heal(health.MaxHealth);
-        //if (GOAP)
-        //{
-        //    characterAgent.SetAgentActive(true);
-        //    planner.deactivate = false;
-
-        //}
-        //else
-        {
-
-            fSM.SetAgentActive(true);
-        }
+      
 
         for (int i = 0; i < rbs.Length; i++)
         {
             rbs[i].isKinematic = true;
         }
+
         animator.enabled = true;
         controller.enabled = true;
+        
+
     }
 
     public void EnableRagdoll()
     {
-       
-        //if(GOAP)
-        //{
-        //    characterAgent.SetAgentActive(false);
-        //    planner.deactivate = true;
-        //}
-        //else
-        {
+
             fSM.SetAgentActive(false);
-        }
-
-
 
 
         for (int i = 0; i < rbs.Length; i++)
@@ -317,42 +380,66 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     {
        
     }
-    //private void VisonUpdate()
-    //{
-    //    if (GOAP)
-    //    {
-    //        if (IsHeadDetached())
-    //        {
-    //            characterAgent.isBlind = true;
+   
+    void GetUpCrawl()
+    {
+        //isFacingUp = hip.forward.y > 0;
+        //detached.RemoveAll(x => !x.DetatchedLimb() && !x.growing);
+        //if (isFacingUp)
+        {
+            PopulateBoneTransforms(ragdollBones);
+            AlignRotationToHip();
+            AlignPositionToHip(false);
+        }
+        
 
-    //        }
-    //        else
-    //        {
-    //            characterAgent.isBlind = false;
-    //        }
+        elapsedResetBonesTime += Time.deltaTime;
+        float elapsedPercentage =   timeResetBonesTime/ elapsedResetBonesTime;
+        BoneTransform[] standUpBones = GetStandUpBoneCrawlTransforms();
+        int length = bones.Length;
+        for (int i = 0; i < length; i++)
+        {
+            //bones[i].localPosition = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
+            //bones[i].localRotation = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
 
-    //    }
+            Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, elapsedPercentage);
+
+            Quaternion rot = Quaternion.Slerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+            // Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, elapsedPercentage);
+
+            bones[i].SetLocalPositionAndRotation(pos, rot);
+
+
+        }
+
+        if (elapsedPercentage >= 1)
+        {
+            DisableRagdoll();
+            
+            animator.Play(StateNameTwo(), 0, 0);
+            fSM.SetAgentActive(true);
+
+        }
+
+
        
-    //}
-
+    }
     private void RagdollBehaviour()
     {
         getUpTimer -= Time.deltaTime;
-        if (getUpTimer < 3 /*&& IsLegDetached()*/)
-        {///////////////////////////////////////
-          
-            DisableRagdoll();
-            //if (GOAP)
-            //{
-            //    characterAgent.isCrawling = true;
-            //    planner.deactivate = false;
-            //    characterAgent.SetAgentActive(true);
-            //}
-            //else
-            {
-                fSM.isCrawling = true;
-                fSM.SetAgentActive(true);
-            }
+        
+        if (getUpTimer < 7.5f && getUpTimer >= 7.0f)
+        {
+            isFacingUp = hip.forward.y > 0;
+            GetUpCrawl();
+         
+        }
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateNameTwo()) && getUpTimer < 7)
+        {
+            fSM.isCrawling = true;
+            fSM.SetAgentActive(true);
+
+
         }
 
         if (getUpTimer < 0)
@@ -361,7 +448,13 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
 
             foreach (var detachable in detached)
             {
-                detachable.Regrow(2);
+                //if(detachable.growing == false)
+                {
+                    if(detachable.leg)
+                    {
+                        detachable.Regrow(2);
+                    }
+                }
             }
             //AlignRotationToHip();
             //AlignPositionToHip();
@@ -371,61 +464,71 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             resetTimer = 0;
         }
     }
-    public void Regrow()
+
+   
+
+    public void Regrow(bool arm)
     {
-        isFacingUp = hip.forward.y > 0;
+        StartCoroutine(StartRegrow(arm));
+    }
+
+    IEnumerator StartRegrow(bool arm)
+    {
+        yield return new WaitForSeconds(2);
+
+        //isFacingUp = hip.forward.y > 0;
 
         foreach (var detachable in detached)
         {
-            detachable.Regrow(2);
+            if(arm)
+            {
+                if(detachable.arm)
+                {
+                    detachable.Regrow(2);
+                    StartCoroutine(ResetArms());
+
+                }
+            }
+            else if(!arm)
+            {
+                if (detachable.head)
+                {
+                    detachable.Regrow(2);
+                }
+            }
         }
+        ResetingSingelDetached();
+        //resetSingelTimer = 0;
+
+
+        //state = RagdollState.RegrowLimbs;
+
         //AlignRotationToHip();
         //AlignPositionToHip();
         //PopulateBoneTransforms(ragdollBones);
 
-        state = RagdollState.RegrowLimbs;
-        resetTimer = 0;
+        //state = RagdollState.RegrowLimbs;
+        //resetTimer = 0;
     }
-    //public void TakeDamage(Vector3 point, Vector3 direction, float damage)
-    //{ 
-    //    health.Damage( damage);
-    //    deahtHealth -= damage;
-    //    //if (GOAP)
-    //    //{
-    //    //    goal_Stalk_W.prio -= 30;
-           
+    IEnumerator ResetArms()
+    {
+      
+        yield return new WaitForSeconds(2f);
+        fSM.isArmles = false;
 
-    //    //}
-    //    if(health.Value <= 0)
-    //    {
-          
-    //        //if (GOAP)
-    //        //{
-    //        //    characterAgent.isCrawling = false;
-    //        //    planner.deactivate = false;
-    //        //    characterAgent.SetAgentActive(false);
-    //        //}
-    //        //else
-    //        {
-    //            //fSM.isCrawling = false;
-    //            //fSM.SetAgentActive(false);
-    //        }
-    //        //TriggerRagdoll(direction, point);
-    //    }
-       
-    //}
+    }
+   
 
     public void Death()
     {
-        if (deahtHealth <= 0)
-        {
-            TriggerRagdoll(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
+            EnableRagdoll();
+            state = RagdollState.Ragdoll;
+            TakeDMG(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
             Destroy(enemy, 1.5f);           
-        }
     }
-    public void TriggerRagdoll(Vector3 force, Vector3 point)
-    {
 
+    public void TakeDMG(Vector3 force, Vector3 point)
+    {
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
         rb.AddForceAtPosition(force, point, ForceMode.Impulse);
@@ -435,38 +538,80 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
             detachable.Detatch();
             detached.Add(detachable);
         }
+        if (IsLegDetached())
+        {
+            TriggerRagdoll();
+        }
+    }
+    public void TriggerRagdoll()
+    {
 
-        if(IsLegDetached())
+        //Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
+
+        //rb.AddForceAtPosition(force, point, ForceMode.Impulse);
+
+        //if (rb.TryGetComponent(out Detachable detachable))
+        //{
+        //    detachable.Detatch();
+        //    detached.Add(detachable);
+        //}
+
+        //if(IsLegDetached())
         {
             EnableRagdoll();
             state = RagdollState.Ragdoll;
-            fSM.SetAgentActive(false);
-            fSM.isCrawling = true;
+            
+            //fSM.isCrawling = true;
         }
 
         getUpTimer = timeToGetUp;
+        elapsedResetBonesTime = 0;
     }
+
+    //private void AlignRotationToHip()
+    //{
+    //    Vector3 originalPos = hip.position;
+    //    Quaternion originalRot = hip.rotation;
+    //    Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
+    //    desiredDir.y = 0;
+    //    //desiredDir.z *= -1;
+    //    //desiredDir.Normalize();
+
+    //    Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
+    //    transform.rotation *= rot;
+
+    //    hip.SetPositionAndRotation(originalPos, originalRot);
+
+    //}
 
     private void AlignRotationToHip()
     {
         Vector3 originalPos = hip.position;
         Quaternion originalRot = hip.rotation;
+
         Vector3 desiredDir = hip.up * (isFacingUp ? -1 : 1);
         desiredDir.y = 0;
+        //desiredDir.z *= -1;
+        desiredDir.Normalize();
 
-        Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
-        transform.rotation *= rot;
+        Quaternion targetRotation = Quaternion.LookRotation(desiredDir, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
 
         hip.SetPositionAndRotation(originalPos, originalRot);
-
     }
 
-    private void AlignPositionToHip()
+    private void AlignPositionToHip(bool stand)
     {
         Vector3 originalPos = hip.position;
         transform.position = hip.position;
 
         Vector3 offset = GetStandUpBoneTransforms()[0].Pos;
+
+        if(!stand)
+        {
+            offset = GetStandUpBoneCrawlTransforms()[0].Pos;
+        }
+
         offset.y = 0;
         offset = transform.rotation * offset;
         transform.position -= offset;
@@ -515,6 +660,19 @@ public class RagdollLims : MonoBehaviour/*, IDamageble*/
     private string StateName()
     {
         return isFacingUp ? standUpStateName : faceDownStateName;
+    }
+    private string StateNameTwo()
+    {
+        //isFacingUp = hip.forward.y > 0;
+
+        return isFacingUp ? getUpStateName : rollStateName;
+    }
+
+    private BoneTransform[] GetStandUpBoneCrawlTransforms()
+    {            
+        //isFacingUp = hip.forward.y > 0;
+
+        return isFacingUp ? gettingUpBones : rollBones;
     }
 
     private BoneTransform[] GetStandUpBoneTransforms()

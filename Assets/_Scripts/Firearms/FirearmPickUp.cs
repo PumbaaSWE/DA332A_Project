@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FirearmPickUp : MonoBehaviour, IInteractable
@@ -11,18 +9,72 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
     public int InteractedDisplayPriority { get; private set; }
     public float InteractedTipDisplayTime { get; private set; }
 
-    [SerializeField] GameObject GunPrefab;
-    public string Name;
+    [SerializeField] Firearm GunPrefab;
+   // public string Name;
     public int LoadedAmmo;
+
+    Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (rb)
+        {
+            rb.AddForce(Vector3.up, ForceMode.Impulse);
+            rb.AddTorque(Vector3.right * .125f, ForceMode.Impulse);
+        }
+    }
 
     public void Interact(Transform interactor)
     {
-        if (interactor.GetComponent<WeaponHandler>().PickupGun(GunPrefab, LoadedAmmo))
-            Destroy(gameObject);
+
+
+        if (interactor.TryGetComponent(out WeaponHandler weaponHandler))
+        {
+            if (weaponHandler.HasGun(GunPrefab.Id))
+            {
+                int left = weaponHandler.AmmunitionPool.AddAmmo(GunPrefab.AmmoType, LoadedAmmo);
+                LoadedAmmo = left;
+            }
+            else
+            {
+                weaponHandler.PickupGun(GunPrefab, LoadedAmmo);
+                Destroy(gameObject);
+            }
+        }
+        //lol
+        if (rb)
+        {
+            rb.AddForce(Vector3.up, ForceMode.Impulse);
+            rb.AddTorque(interactor.right * .125f, ForceMode.Impulse);
+        }
+        
     }
 
     public void SpeculateInteract(Transform interactor)
     {
-        Tooltip = "Pickup " + Name;
+        if (interactor.TryGetComponent(out WeaponHandler weaponHandler))
+        {
+            
+            if (weaponHandler.HasGun(GunPrefab.Id))
+            {
+                if (LoadedAmmo == 0)
+                {
+                    Tooltip = $"You have {GunPrefab.Name} already (this is empty)";
+                }
+                else
+                {
+                    Tooltip = "{0} to pickup " + GunPrefab.AmmoType + " ammo";
+                }
+            }
+            else if(weaponHandler.Guns.Count == weaponHandler.MaxGuns)
+            {
+                Tooltip = "{0} to replace " + weaponHandler.EquippedGun.Name + " with " + GunPrefab.Name;
+            }
+            else
+            {
+                Tooltip = "{0} to pickup " + GunPrefab.Name;
+            }
+        }
     }
 }

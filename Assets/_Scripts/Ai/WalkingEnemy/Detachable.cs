@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Detachable : MonoBehaviour
 {
     public GameObject disposableJoint;
     public bool detached;
+    public bool growing;
     public Detachable parent;
     public Detachable child;
     float timer;
@@ -41,7 +41,6 @@ public class Detachable : MonoBehaviour
         {
             RegrowSelf(t);
         }
-
     }
 
     public void Detatch()
@@ -101,7 +100,7 @@ public class Detachable : MonoBehaviour
 
     private void RegrowSelf(float t)
     {
-
+        growing = true;
         enabled = true;
         time = t;
         timer = 0;
@@ -112,11 +111,6 @@ public class Detachable : MonoBehaviour
         timer += Time.deltaTime;
         float t = timer / time;
 
-
-
-
-
-
         if (t > 1)
         {
             t = 1;
@@ -124,8 +118,10 @@ public class Detachable : MonoBehaviour
             detached = false;
             if (child != null)
             {
+        
                 child.Regrow(time);
             }
+            growing = false;
 
             //CharacterJoint joint = GetComponent<CharacterJoint>();
             //if (joint != null)

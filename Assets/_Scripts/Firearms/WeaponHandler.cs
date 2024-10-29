@@ -1,10 +1,7 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using static UnityEngine.InputSystem.InputAction;
 
 public class WeaponHandler : MonoBehaviour
@@ -15,11 +12,14 @@ public class WeaponHandler : MonoBehaviour
     public Firearm EquippedGun;
     public bool DebugTest;
     public Transform FirearmRoot;
-    [SerializeField] int MaxGuns;
+    [SerializeField] int maxGuns = 2;
+
+
+    public int MaxGuns => maxGuns;
 
     private void Awake()
     {
-        if (!TryGetComponent<AmmoPool>(out AmmunitionPool))
+        if (!TryGetComponent(out AmmunitionPool))
         {
             gameObject.AddComponent<AmmoPool>();
             AmmunitionPool = GetComponent<AmmoPool>();
@@ -40,10 +40,18 @@ public class WeaponHandler : MonoBehaviour
 
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
+
+        if(EquippedGun) EquippedGun.Equip();
+
     }
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    public void EqiupGun()
     {
         if (EquippedGun == null && Guns.Count > 0)
         {
@@ -110,6 +118,24 @@ public class WeaponHandler : MonoBehaviour
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
     }
 
+    public void HideWeapons(Action onHide)
+    {
+        if (EquippedGun)
+        {
+            EquippedGun.Unequip(onHide);
+        }
+        else
+        {
+            onHide?.Invoke();
+        }
+    }
+
+    public void UnideWeapons()
+    {
+        if(EquippedGun)
+            EquippedGun.Equip();
+    }
+
     public void SwitchGun(int gun)
     {
         if (gun < Guns.Count && Guns[gun] != EquippedGun && Guns[gun] != null)
@@ -122,26 +148,26 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
-    public bool PickupGun(GameObject newGun, int loadedAmmo)
+    public bool PickupGun(Firearm newGun, int loadedAmmo)
     {
         //if (Guns.Any(gun => newGun.name == gun.name))
         //    return false;
 
         // If player has the same gun, grab the guns ammo
-        if (Guns.Any(gun => newGun.name == gun.name))
+        if (HasGun(newGun.Id))
         {
-            AmmunitionPool[newGun.GetComponent<Firearm>().AmmoType] += loadedAmmo;
-            return true;
+            //AmmunitionPool[newGun.AmmoType] += loadedAmmo;
+            return false;
         }
 
         // Replace currently held gun
-        else if (Guns.Count == MaxGuns)
+        else if (Guns.Count == maxGuns)
         {
             int index = Guns.IndexOf(EquippedGun);
 
             DropGun();
 
-            GameObject gun = Instantiate(newGun, FirearmRoot);
+            GameObject gun = Instantiate(newGun.gameObject, FirearmRoot);
             Guns[index] = gun.GetComponent<Firearm>();
             EquippedGun = Guns[index];
         }
@@ -149,7 +175,7 @@ public class WeaponHandler : MonoBehaviour
         // 
         else
         {
-            GameObject gun = Instantiate(newGun, FirearmRoot);
+            GameObject gun = Instantiate(newGun.gameObject, FirearmRoot);
 
             if (EquippedGun != null)
                 EquippedGun.gameObject.SetActive(false);
@@ -201,6 +227,11 @@ public class WeaponHandler : MonoBehaviour
         GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
         droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
         Destroy(EquippedGun.gameObject);
+    }
+
+    public bool HasGun(int id)
+    {
+        return Guns.Any(x => x.Id == id);
     }
 }
 

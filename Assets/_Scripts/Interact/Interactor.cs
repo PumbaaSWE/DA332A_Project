@@ -32,6 +32,8 @@ public class Interactor : MonoBehaviour
         //playerInput.actions.
         //InputBinding binding 
         key = "[" + action.bindings.First().ToDisplayString() + "]";
+
+        
     }
 
     // Update is called once per frame

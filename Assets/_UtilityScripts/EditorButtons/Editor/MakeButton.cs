@@ -65,11 +65,12 @@ public class MakeButton
             DrawParams();
         }
 
-        if (!GUILayout.Button(displayName)) return;
-
-        foreach (object target in targets)
+        if (GUILayout.Button(displayName))
         {
-            method.Invoke(target, parameters);
+            foreach (object target in targets)
+            {
+                method.Invoke(target, parameters);
+            }
         }
 
         EditorGUI.EndDisabledGroup();
