@@ -339,7 +339,7 @@ public class RagdollLims : MonoBehaviour
                 state = RagdollState.Default;
                 fSM.SetAgentActive(true);
                 //fSM.isCrawling = false;
-                //fSM.agentStatehit = FSM.AgentHit.Normal;
+                //fSM.limbStatehit = FSM.AgentHit.Normal;
             }
 
         }

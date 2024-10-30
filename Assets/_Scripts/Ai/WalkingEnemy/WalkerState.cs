@@ -72,7 +72,7 @@ public class WalkerState : MonoBehaviour, IDamageble
         }
         //else
         //{
-        //    fSM.agentStatehit = FSM.AgentHit.Normal;
+        //    fSM.limbStatehit = FSM.AgentHit.Normal;
         //    Debug.Log("normaldr");
         //}
     }

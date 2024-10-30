@@ -1,14 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EOffmeshLinkStatus
-{
-    NotStarted,
-    InProgress
-}
-
-public class FSM : MonoBehaviour
+public class FSM_Walker : MonoBehaviour
 {
     [Header("Sensors")]
     protected AwarenessSystem sensors;
@@ -25,7 +20,7 @@ public class FSM : MonoBehaviour
     public bool atDestination => reachedDestination;
     //private NavMeshTriangulation triangulation;
     private NavMeshAgent agent;
-   
+
 
     //public Transform target;
 
@@ -40,23 +35,20 @@ public class FSM : MonoBehaviour
     private Vector2 velocity;
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
-   
+
     // States
-    public enum AgentState { Idle, Wander ,Chasing, Attacking, Knockback, Investegate, Sleep}
+    public enum AgentState { Idle, Wander, Chasing, Attacking, Investegate, Sleep }
     public AgentState agentState = AgentState.Idle;
     private AgentState previousState = AgentState.Idle;
     private Vector3 previousTargetPosition;
-    public enum AgentHit { Crawl, Blind, Armless, Normal }
-    public AgentHit agentStatehit = AgentHit.Normal;
+   
 
 
     // Animation
     string moveBool;
     string crawlBool;
     private Animator animator;
-    int knockbackHash = Animator.StringToHash("Knockback");
-    int knockbackTriggerHash = Animator.StringToHash("KnockbackTrigger");
-    //bool knockback;
+    
     int nrAttack;
 
     bool wasGrounded;
@@ -114,21 +106,15 @@ public class FSM : MonoBehaviour
             reachedDestination = true;
             previousState = agentState;
         }
-       
+
 
         Found();
         UpdateState();
-        if (isCrawling)
-        {
-            agentStatehit = AgentHit.Crawl;
-        }
-        else {
-            //limbStatehit = AgentHit.Normal;
-        }
-      
-    }
-   
        
+
+    }
+
+
     private void OnDestroy()
     {
         player.UnsubscribeOnPlayerChanged(OnPlayer);
@@ -143,7 +129,7 @@ public class FSM : MonoBehaviour
         }
     }
     void UpdateState()
-    {       
+    {
 
         switch (agentState)
         {
@@ -151,7 +137,6 @@ public class FSM : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-              
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -165,9 +150,7 @@ public class FSM : MonoBehaviour
             case AgentState.Attacking:
                 AttackBehaviour();
                 break;
-            case AgentState.Knockback:
-                KnockbackBehaviour();
-                break;
+       
         }
 
         if (isCrawling)
@@ -175,55 +158,12 @@ public class FSM : MonoBehaviour
             HandleCrawling();
         }
 
-        switch (agentStatehit)
-        {
-            case AgentHit.Normal:
-
-                //characterController.height = 1.76f;
-                //nrAttack = 1;
-                //moveBool = "move";
-                //Debug.Log("normal");
-                //SynchronizeAnimatorAndAgent();
-                Normal();
-                break;
-            case AgentHit.Armless:
-                // HandleArmless();
-                // should be more carfull 
-                if(!isCrawling)
-                {
-                    SynchronizeAnimatorAndAgent();
-                }
-            
-                
-                nrAttack = 3;
-                break;
-            case AgentHit.Blind:
-                
-                //moveBool = "noHead";
-                Blind();
-                //SynchronizeAnimatorAndAgent();
-                //if (isBlind)
-                //{
-                //    linkedAI._VisionConeRange = 5f;
-                //    linkedAI._VisionConeAngle = 20f;
-                //}
-                //else
-                //{
-                //    linkedAI._VisionConeRange = 60f;
-                //    linkedAI._VisionConeAngle = 30f;
-                //}
-                break;
-            //case AgentHit.Crawl:
-            //    //characterController.height = 0.05f;
-            //    HandleCrawling();
-
-            //    break;
-        }
+       
     }
     void Blind()
     {
-       
-        if(isCrawling)
+
+        if (isCrawling)
         {
             HandleCrawling();
         }
@@ -231,7 +171,7 @@ public class FSM : MonoBehaviour
         {
             moveBool = "noHead";
             animator.SetBool("move", false);
-     
+
             SynchronizeAnimatorAndAgent();
         }
     }
@@ -239,41 +179,41 @@ public class FSM : MonoBehaviour
     {
         nrAttack = 1;
         moveBool = "move";
-       
+
         animator.SetBool("noHead", false);
         SynchronizeAnimatorAndAgent();
     }
     void Found()
     {
-        if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0 )
+        if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0)
             return;
 
         foreach (var candidate in sensors.ActiveTargets.Values)
         {
             if (candidate.detectable != null)
             {
-                if(candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
+                if (candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
                 {
                     //CancelCurrentCommand();
-                    currentTarget = candidate.detectable;                   
+                    currentTarget = candidate.detectable;
                     agentState = AgentState.Chasing;
 
                 }
             }
         }
     }
-   
+
 
     public void HeardSomthing(Vector3 location)
     {
-        if(agentState != AgentState.Attacking || agentState != AgentState.Chasing)
+        if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
         {
             soundLocation = location;
             agentState = AgentState.Investegate;
             // 
-           //MoveTo(location);
+            //MoveTo(location);
         }
-        
+
     }
     public void SetAgentActive(bool active)
     {
@@ -281,12 +221,10 @@ public class FSM : MonoBehaviour
         agent.enabled = active;
         if (active)
         {
-            //characterController.height = 1.76f;
             agent.isStopped = false;
         }
         else if (!active)
         {
-            //characterController.height = 0.05f;
             agentState = AgentState.Idle;
             isCrawling = true;
             animator.SetBool("crawl", true);
@@ -295,28 +233,18 @@ public class FSM : MonoBehaviour
             animator.SetInteger("Attack", 0);
         }
     }
-  
-    private void KnockbackBehaviour()
-    {
-        if (currentTarget.transform)
-        {
-            agentState = AgentState.Attacking;
-        }
-        else
-        {
-            agentState = AgentState.Idle;
-        }
-    }
+
+   
 
     private void IdleBehaviour()
     {
         eye.NormalEye();
-        idleTime = Random.Range(10f, 25f); 
-        StartCoroutine(IdleTimer(idleTime));       
+        idleTime = Random.Range(10f, 25f);
+        StartCoroutine(IdleTimer(idleTime));
     }
     private IEnumerator IdleTimer(float time)
     {
-        yield return new WaitForSeconds(time); 
+        yield return new WaitForSeconds(time);
         agentState = AgentState.Wander;
 
     }
@@ -336,7 +264,7 @@ public class FSM : MonoBehaviour
         {
             MoveTo(soundLocation);
         }
-       
+
     }
     public Vector3 PickLocationInRange(float range)
     {
@@ -363,7 +291,7 @@ public class FSM : MonoBehaviour
 
     public virtual void MoveTo(Vector3 destination)
     {
-      
+
         if (agent.isOnNavMesh)
         {
             CancelCurrentCommand();
@@ -391,38 +319,22 @@ public class FSM : MonoBehaviour
         {
             if (agent.isOnNavMesh)
             {
-                //if (limbStatehit == AgentHit.Crawl)
-                //{
-                //    if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackCrawlRange)
-                //    {
-                //        MoveTo(currentTarget.transform.position);
-                //    }
-                //    if (transform.position.InRangeOf(currentTarget.transform.position, attackCrawlRange))
-                //    {
-                //        agentState = AgentState.Attacking;
-                //        agent.isStopped = true;
-                //    }
-                //}
-                //else
-                {
-                    if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
-                    {
-                        MoveTo(currentTarget.transform.position);
-                    }
-                    if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
-                    {
-                        agentState = AgentState.Attacking;
-                        agent.isStopped = true;
-                    }
-                }
 
-                
+                if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
+                {
+                    MoveTo(currentTarget.transform.position);
+                }
+                if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+                {
+                    agentState = AgentState.Attacking;
+                    agent.isStopped = true;
+                }
             }
-           
+
         }
     }
-   
-    private void HandleCrawling()
+
+    public void HandleCrawling()
     {
         if (!agent.isOnNavMesh)
         {
@@ -449,86 +361,23 @@ public class FSM : MonoBehaviour
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-        if(isArmles)
+        if (isArmles)
         {
             animator.SetBool("crawlNoArm", shouldMove);
             animator.SetBool("crawl", false);
         }
         else
-        {            
+        {
             animator.SetBool("crawl", shouldMove);
             animator.SetBool("crawlNoArm", false);
         }
-       
+
         animator.SetBool("move", false);
         animator.SetBool("noHead", false);
 
         animator.SetFloat("vely", agent.velocity.magnitude);
     }
-    //private void SynchronizeAnimatorAndAgent()
-    //{
-    //    if (!agent.isOnNavMesh)
-    //    {
-    //        //Debug.LogWarning("agent is not on NavMesh");
-    //        return;
-    //    }
-
-    //    Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
-    //    worldDeltaPosition.y = 0;
-    //    // Map 'worldDeltaPosition' to local space
-    //    float dx = Vector3.Dot(transform.right, worldDeltaPosition);
-    //    float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
-    //    Vector2 deltaPosition = new Vector2(dx, dy);
-
-    //    // Low-pass filter the deltaMove
-    //    float smooth = Mathf.Min(1, Time.deltaTime / 0.1f);
-    //    smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
-
-
-    //    velocity = smoothDeltaPosition / Time.deltaTime;
-
-    //    float t = Mathf.Max(dy / 3, 1);
-    //    float speed = t;
-    //    if (agent.remainingDistance <= agent.stoppingDistance)
-    //    {
-    //        velocity = Vector2.Lerp(Vector2.zero, velocity, agent.remainingDistance - agent.stoppingDistance);
-
-    //        speed = (agent.remainingDistance - agent.stoppingDistance) / agent.stoppingDistance;
-
-    //    }
-
-    //    bool shouldMove = velocity.sqrMagnitude > 0.25f && agent.remainingDistance > agent.stoppingDistance;
-    //    animator.SetBool("crawl", false);
-    //    if (run)
-    //    {
-    //        animator.SetBool("move", shouldMove);
-    //    }
-    //    else
-    //    {
-    //        animator.SetBool("jog", shouldMove);
-    //    }
-
-
-
-    //    //this does nothing FIX!!!!
-    //    //Vector3 d = agent.steeringTarget - transform.position;
-    //    //float ddx = Vector3.Dot(transform.right, d);
-    //    //animator.SetFloat("velx", ddx); 
-    //    animator.SetFloat("vely", speed);
-
-
-
-
-    //    lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
-
-    //    //float deltaMagnitude = worldDeltaPosition.magnitude;
-    //    //if (deltaMagnitude > agent.radius / 2)
-    //    //{
-    //    //    transform.position = Vector3.Lerp(animator.rootPosition, agent.nextPosition, smooth);
-    //    //}
-    //}
-
-    private void SynchronizeAnimatorAndAgent()
+    public void SynchronizeAnimatorAndAgent()
     {
         if (!agent.isOnNavMesh)
         {
@@ -555,21 +404,9 @@ public class FSM : MonoBehaviour
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-
-        //if (run)
-        {
             animator.SetBool(moveBool, shouldMove);
             animator.SetBool("crawl", false);
             animator.SetFloat("vely", agent.velocity.magnitude);
-
-        }
-        //else
-        //{
-        //    animator.SetBool("jog", shouldMove);
-        //    animator.SetBool("crawl", false);
-        //    animator.SetFloat("vely", agent.velocity.magnitude);
-        //}
-
 
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
     }
@@ -585,7 +422,7 @@ public class FSM : MonoBehaviour
             agentState = AgentState.Idle;
             return;
         }
-        if ( currentTarget.transform.position.InRangeOf(transform.position, attackRange))
+        if (currentTarget.transform.position.InRangeOf(transform.position, attackRange))
         {
             Attack();
             Vector3 dir = currentTarget.transform.position - transform.position;
@@ -599,7 +436,7 @@ public class FSM : MonoBehaviour
         else
         {
             animator.SetBool("CrawlAttack", false);
-    
+
             agent.SetDestination(currentTarget.transform.position);
             agent.isStopped = false;
             agentState = AgentState.Chasing;
@@ -609,7 +446,7 @@ public class FSM : MonoBehaviour
 
     public void Attack()
     {
-       
+
         if (agentStatehit == AgentHit.Armless)
         {
             animator.SetInteger("Attack", 3);
@@ -625,12 +462,8 @@ public class FSM : MonoBehaviour
         else
         {
             animator.SetInteger("Attack", Random.Range(nrAttack, 4));
-            StartCoroutine(AttackCooldown(.5f)); 
+            StartCoroutine(AttackCooldown(.5f));
         }
-       
-       
-
-
     }
     private IEnumerator CrawlAttackCooldown(float t)
     {
@@ -700,9 +533,6 @@ public class FSM : MonoBehaviour
             rb.MovePosition(rootPosition);
             agent.nextPosition = rootPosition;
         }
-
-        //agent.Warp(transform.position);
-        //agent.nextPosition = transform.position;
     }
 
     public void OnDrawGizmos()
