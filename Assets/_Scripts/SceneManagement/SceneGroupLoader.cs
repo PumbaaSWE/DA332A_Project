@@ -45,7 +45,7 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
 
         if (!player)
         {
-            Debug.Log("No player founmd");
+            Debug.Log("No player found");
             PlayerSpawn spawn = FindAnyObjectByType<PlayerSpawn>();
             if (spawn)
             {
