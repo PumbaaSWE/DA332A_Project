@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,7 @@ public class PlayerDeath : MonoBehaviour
 {
     [SerializeField] float time = 1;
     [SerializeField] PlayerInput input;
+    [SerializeField] AnimationCurve curve;
 
     void Start()
     {
@@ -13,6 +15,13 @@ public class PlayerDeath : MonoBehaviour
 
         GetComponent<Health>().OnDeath += PlayerDied;
 
+    }
+
+    [MakeButton(false)]
+    void Test()
+    {
+        Health h = GetComponent<Health>();
+        h.Damage(h.Value);
     }
 
     private void PlayerDied(Health health)
@@ -26,7 +35,7 @@ public class PlayerDeath : MonoBehaviour
     {
         float timer = time;
 
-
+        GetComponent<NonphysController>().enabled = false;
         Camera cam = GetComponentInChildren<Camera>();
         if (cam)
         {
@@ -36,7 +45,7 @@ public class PlayerDeath : MonoBehaviour
             Vector3 rot = cam.transform.rotation.eulerAngles.WithZ(65);
             while (timer >= 0)
             {
-                float t = timer / time;
+                float t = curve.Evaluate(timer / time);
                 timer -= Time.deltaTime;
 
                 Vector3 p = Vector3.Lerp(pos, camPos, t);
@@ -47,8 +56,6 @@ public class PlayerDeath : MonoBehaviour
             }
         }
 
-        
-
         yield return new WaitForSeconds(3);
 
         ShowMenu();
@@ -56,8 +63,13 @@ public class PlayerDeath : MonoBehaviour
 
     private void ShowMenu()
     {
+        LoadDeathScene lds = FindAnyObjectByType<LoadDeathScene>();
 
-        GameManager.GameOver();
+        if (lds)
+            lds.LoadScene();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
