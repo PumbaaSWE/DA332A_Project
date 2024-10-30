@@ -12,7 +12,7 @@ public class LoadMainMenu : MonoBehaviour
         if (scene == null)
             return;
 
-        SceneManager.LoadScene(scene.SceneName);
         FindObjectOfType<SceneGroupManager>().UnloadScenes();
+        SceneManager.LoadScene(scene.SceneName);
     }
 }
