@@ -3,6 +3,15 @@
 [Serializable]
 public class GameData
 {
+    public GameData()
+    {
+        playerData = new PlayerData();
+
+        // TODO: determine default data. What should player get at start of the first level?
+        // start weapon?
+        // most important, health? start with max i guess, but where do we get it from?
+    }
+
     public string name;
     public int id;
     public PlayerData playerData;

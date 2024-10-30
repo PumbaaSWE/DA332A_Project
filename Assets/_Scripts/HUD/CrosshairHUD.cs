@@ -51,14 +51,18 @@ public class CrosshairHUD : MonoBehaviour
             CalculateDegrees();        
         }
         degrees = Mathf.Clamp(degrees, minDegrees, maxDegrees);
+
         Camera cam = Camera.main;
-        float height = cam.pixelHeight;
-        float d = degrees / cam.fieldOfView;
-        float p = height * d + offset;
-        top.transform.localPosition = new Vector3(0, p, 0);
-        left.transform.localPosition = new Vector3(-p, 0, 0);
-        right.transform.localPosition = new Vector3(p, 0, 0);
-        bottom.transform.localPosition = new Vector3(0, -p, 0);
+        if (cam)
+        {
+            float height = cam.pixelHeight;
+            float d = degrees / cam.fieldOfView;
+            float p = height * d + offset;
+            top.transform.localPosition = new Vector3(0, p, 0);
+            left.transform.localPosition = new Vector3(-p, 0, 0);
+            right.transform.localPosition = new Vector3(p, 0, 0);
+            bottom.transform.localPosition = new Vector3(0, -p, 0);
+        }
     }
     void CalculateDegrees()
     {
