@@ -68,6 +68,7 @@ public class Firearm : MonoBehaviour
     public int Id;
     Animation CurrentAnimation;
     PlayerCamera Camera;
+    NonphysController nc;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +78,7 @@ public class Firearm : MonoBehaviour
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
         Animator = GetComponentInParent<Animator>();
         Camera = GetComponentInParent<PlayerCamera>();
+        nc = GetComponentInParent<NonphysController>();
     }
 
     // Update is called once per frame
@@ -86,6 +88,10 @@ public class Firearm : MonoBehaviour
         {
             HipFireSpread = Mathf.Clamp(HipFireSpread - HipFireDecay * Time.deltaTime, MinHipFireSpread, MaxHipFireSpread);
         }
+
+        bool CouldAds = CanAds;
+        if (nc.IsSprinting || nc.VerticalVelocity > 0)
+            CanAds = false;
 
         if (Ads && CanAds)
         {
@@ -109,13 +115,14 @@ public class Firearm : MonoBehaviour
         }
 
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
+        CanAds = CouldAds;
     }
 
     public void Shoot(CallbackContext context)
     {
         if (context.started)
         {
-            if (LoadedAmmo > 0 && CanFire)
+            if (LoadedAmmo > 0 && CanFire/* && !nc.IsSprinting*/)
             {
                 Firing = true;
                 CanAds = true;

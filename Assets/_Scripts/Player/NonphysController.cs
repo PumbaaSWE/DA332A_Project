@@ -85,6 +85,8 @@ public class NonphysController : MovementController
     public bool Grounded => grounded;
     public float Speed => speed;
     public float MaxSpeed => maxSprintSpeed;
+    public bool IsSprinting { get; private set; }
+    public float VerticalVelocity => velocity.y;
 
     // inputs
     Vector2 look;
@@ -96,6 +98,7 @@ public class NonphysController : MovementController
     // components
     CapsuleCollider cc;
     PlayerCamera pc;
+    WeaponHandler wh;
 
     // misc member variables
     bool isCrouched;
@@ -109,6 +112,7 @@ public class NonphysController : MovementController
     {
         cc = GetComponent<CapsuleCollider>();
         pc = GetComponent<PlayerCamera>();
+        wh = GetComponent<WeaponHandler>();
 
         cc.center = Vector3.up * Height / 2f;
         cc.height = Height;
@@ -187,6 +191,8 @@ public class NonphysController : MovementController
         float maxSpeed = maxWalkSpeed;
         float forwardSpeed = Vector3.Dot(velocity, transform.forward);
 
+        IsSprinting = false;
+
         if (isCrouched)
         {
             float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
@@ -195,12 +201,13 @@ public class NonphysController : MovementController
         else if (sprint)
         {
             float staminaToRemove = sprintCost * dt;
-            if (forwardSpeed > 0 && stamina >= staminaToRemove)
+            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.EquippedGun.Ads && !wh.EquippedGun.Firing)
             {
                 // deplete stamina
                 stamina -= staminaToRemove;
 
                 maxSpeed = maxSprintSpeed;
+                IsSprinting = true;
             }
         }
 
@@ -268,7 +275,7 @@ public class NonphysController : MovementController
     void Crouch(bool crouch, float dt)
     {
         // Crouch and uncrouch
-        if (crouch)
+        if (crouch && grounded)
         {
             cc.height = Mathf.Max(cc.height - crouchSpeed * dt, crouchHeight);
             cc.center = Vector3.up * cc.height / 2f;
@@ -489,7 +496,7 @@ public class NonphysController : MovementController
 
         if (!grounded) return;
 
-        if (isCrouched) return;
+        if (crouch) return;
 
         if (stamina < jumpCost) return;
 

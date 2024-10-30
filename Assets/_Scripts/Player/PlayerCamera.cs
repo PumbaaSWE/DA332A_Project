@@ -19,8 +19,8 @@ public class PlayerCamera : MonoBehaviour
     public Vector3 LookDir => mainCam.transform.forward;
     public Vector3 EyePos => mainCam.transform.position;
     public Quaternion LookRot => mainCam.transform.rotation;
-    public float MainCamZoomLevel { get => mainCam.fieldOfView / defaultFov; set => SetMainZoom(value); } 
-    public float FpsCamZoomLevel { get => fpsCam.fieldOfView / defaultFpsFov; set => SetFpsZoom(value); }
+    public float MainCamZoomLevel { get => defaultFov / mainCam.fieldOfView ; set => SetMainZoom(value); } 
+    public float FpsCamZoomLevel { get => defaultFpsFov / fpsCam.fieldOfView ; set => SetFpsZoom(value); }
 
     
 
