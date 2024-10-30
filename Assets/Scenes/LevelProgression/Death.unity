@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 1240099041}
   - component: {fileID: 1240099040}
   - component: {fileID: 1240099039}
+  - component: {fileID: 1240099042}
   m_Layer: 5
   m_Name: MenuButton
   m_TagString: Untagged
@@ -474,9 +475,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ExitGame, Assembly-CSharp
-        m_MethodName: Quit
+      - m_Target: {fileID: 1240099042}
+        m_TargetAssemblyTypeName: LoadMainMenu, Assembly-CSharp
+        m_MethodName: Load
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -524,6 +525,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240099036}
   m_CullTransparentMesh: 1
+--- !u!114 &1240099042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240099036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2e9633eaeca1a47a51e6f490c79ccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene:
+    sceneAsset: {fileID: 102900000, guid: 5d7d8ba9c2a45d146b2a17fe948e627d, type: 3}
+    sceneName: MainMenu
 --- !u!1 &1328595821
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +617,6 @@ GameObject:
   - component: {fileID: 2074073983}
   - component: {fileID: 2074073982}
   - component: {fileID: 2074073986}
-  - component: {fileID: 2074073985}
   m_Layer: 5
   m_Name: RetryButton
   m_TagString: Untagged
@@ -723,21 +738,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2074073980}
   m_CullTransparentMesh: 1
---- !u!114 &2074073985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2074073980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e6543dc2ec2cbb41879cadc813763ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scene:
-    sceneAsset: {fileID: 102900000, guid: 6df70fe1bb970a543998393d3f545bad, type: 3}
-    sceneName: Death
 --- !u!114 &2074073986
 MonoBehaviour:
   m_ObjectHideFlags: 0
