@@ -177,6 +177,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.5, y: 2.7, z: 3.5}
   m_Center: {x: 0, y: 1.4000001, z: 0}
+--- !u!1 &409822540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 409822541}
+  - component: {fileID: 409822542}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &409822541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409822540}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 573917730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &409822542
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409822540}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 8, y: 4, z: 15.19}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &533395020
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +368,38 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
+--- !u!1 &573917729
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 573917730}
+  m_Layer: 0
+  m_Name: NonOcclusionZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &573917730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573917729}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 409822541}
+  m_Father: {fileID: 1528545367}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &856433967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1403,7 @@ Transform:
   - {fileID: 1932695334}
   - {fileID: 1223751170}
   - {fileID: 1966811697}
+  - {fileID: 573917730}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1528545368
@@ -1370,10 +1456,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 0
-  MinDistance: 0
-  MaxDistance: 20
+  MinDistance: 2
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1458,9 +1544,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1021f5e90e09c93458abed29fc976217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occludedCutOffFreq: 1000
+  occludedCutOffFreq: 300
   defaultCutOffFreq: 22000
   lerpSpeed: 2
+  occludedVolumeScale: 0.5
+  nonOcclusionZone: {fileID: 573917730}
 --- !u!169 &1528545372
 AudioLowPassFilter:
   m_ObjectHideFlags: 0
@@ -1494,7 +1582,7 @@ AudioHighPassFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528545364}
   m_Enabled: 1
-  m_CutoffFrequency: 400
+  m_CutoffFrequency: 300
   m_HighpassResonanceQ: 1
 --- !u!1 &1790841535
 GameObject:
