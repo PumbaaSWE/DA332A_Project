@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -48,17 +49,25 @@ public class Regrow : MonoBehaviour
                 break;
         }
     }
-
-    public void TriggerRegrow(Vector3 point)
+    public Detachable Hit(Vector3 point)
     {
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
         if (rb.TryGetComponent(out Detachable detachable))
         {
-            detachable.Detatch();
-            detachable.Regrow(regrowTime);
-            detached.Add(detachable);
+            TriggerRegrow(detachable);
+
         }
+
+        return detachable;
+    }
+    public void TriggerRegrow(Detachable detachable)
+    {
+
+        detachable.Detatch();
+        detachable.Regrow(regrowTime);
+        detached.Add(detachable);
+
         state = RegrowState.RemoveLimbs;
     }
     //public void ReGrow()
@@ -69,6 +78,7 @@ public class Regrow : MonoBehaviour
     //    }A
     //    state = RegrowState.RemoveLimbs;
     //}
+
     private void RegrowLimbsBehaviour()
     {
         if (detached.Count <= 0)
@@ -81,6 +91,62 @@ public class Regrow : MonoBehaviour
     private void DefaultBehaviour()
     {
 
+    }
+
+
+    public bool IsLegDetached()
+    {
+        foreach (var detachable in detached)
+        {
+            if (detachable.leg && detachable.detached)
+            {
+                return true;
+            }
+            if(detachable.child != null)
+            {
+                if (detachable.child.leg && detachable.child.detached)
+                {
+                    return true;
+                }
+            }
+            
+        }
+
+        return false;
+    }
+    public bool IsHeadDetached()
+    {
+        foreach (var detachable in detached)
+        {
+            if (detachable.head && detachable.detached)
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+    public bool IsArmDetached()
+    {
+        foreach (var detachable in detached)
+        {
+            if (detachable.arm && detachable.detached)
+            {
+                return true;
+            }
+            if(detachable.child != null)
+            {
+                if (detachable.child.arm && detachable.child.detached)
+                {
+                    return true;
+                }
+
+            }
+          
+        }
+
+        return false;
     }
 
 }

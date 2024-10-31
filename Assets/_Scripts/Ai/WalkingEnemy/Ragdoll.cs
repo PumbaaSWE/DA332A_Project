@@ -47,9 +47,12 @@ public class Ragdoll : MonoBehaviour
     private float getUpTimer;
     private float resetTimer;
     Regrow regrow;
+    FSM_Walker fsm_Walker;
+    Limbstate limbstate;
     private void Awake()
     {
-
+        limbstate = GetComponent<Limbstate>();
+        fsm_Walker = GetComponent<FSM_Walker>();
         animator = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         hip = animator.GetBoneTransform(HumanBodyBones.Hips);
@@ -118,12 +121,11 @@ public class Ragdoll : MonoBehaviour
 
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
+        
         EnableRagdoll();
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
         rb.AddForceAtPosition(force, point, ForceMode.Impulse);
-
-
 
         state = RagdollState.Ragdoll;
         getUpTimer = timeToGetUp;
@@ -142,12 +144,9 @@ public class Ragdoll : MonoBehaviour
     }
     private void AlignHipBehaviour()
     {
-
-
-
+       
         AlignRotationToHip();
         AlignPositionToHip();
-        Debug.Log("align");
         PopulateBoneTransforms(ragdollBones);
         state = RagdollState.ResettingBones;
         resetTimer = 0;
@@ -164,11 +163,6 @@ public class Ragdoll : MonoBehaviour
 
         for (int i = 0; i < length; i++)
         {
-            Debug.Log($"Ben {i}: Pos={standUpBones[i].Pos}, Rot={standUpBones[i].Rotation}");
-        }
-
-        for (int i = 0; i < length; i++)
-        {
             Vector3 pos = Vector3.Lerp(ragdollBones[i].Pos, standUpBones[i].Pos, t);
 
             Quaternion rot = Quaternion.Lerp(ragdollBones[i].Rotation, standUpBones[i].Rotation, t);
@@ -179,15 +173,43 @@ public class Ragdoll : MonoBehaviour
         {
             state = RagdollState.StartCrawl;
             DisableRagdoll();
-            animator.Play(StateName(), 0, 0);
+            Transition();
+            //animator.Play(StateName(), 0, 0);
         }
+    }
+
+
+    void Transition()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (!stateInfo.IsName("Getting Up") && !stateInfo.IsName("Rolling"))
+        {
+            if (!isFacingUp)
+            {
+                animator.Play("Getting Up", 0, 0);
+            }
+            else
+            {
+                animator.Play("Rolling", 0, 0);
+            }
+        }
+       
     }
 
     private void CrawlUpBehaviour()
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(StateName()))
         {
-            state = RagdollState.Default;
+            //if(isFacingUp)
+            //{
+            //    animator.Play("Getting Up", 0, 0);
+              
+            //}
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
+            {
+               state = RagdollState.Default;
+            }
         }
     }
     private void DisableRagdoll()
@@ -198,10 +220,12 @@ public class Ragdoll : MonoBehaviour
         }
         animator.enabled = true;
         controller.enabled = true;
+        //fsm_Walker.agentState = FSM_Walker.AgentState.Wander;
     }
 
     public void EnableRagdoll()
     {
+        fsm_Walker.agentState = FSM_Walker.AgentState.Sleep;
         for (int i = 0; i < rbs.Length; i++)
         {
             rbs[i].isKinematic = false;
@@ -209,8 +233,6 @@ public class Ragdoll : MonoBehaviour
         animator.enabled = false;
         controller.enabled = false;
     }
-
-
 
     private void AlignRotationToHip()
     {
@@ -221,9 +243,7 @@ public class Ragdoll : MonoBehaviour
 
         Quaternion rot = Quaternion.FromToRotation(transform.forward, desiredDir);
         transform.rotation *= rot;
-
         hip.SetPositionAndRotation(originalPos, originalRot);
-
     }
 
     private void AlignPositionToHip()

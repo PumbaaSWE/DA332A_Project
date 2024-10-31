@@ -95,22 +95,28 @@ public class FSM_Walker : MonoBehaviour
             {
                 destinationSet = false;
                 reachedDestination = true;
-                agentState = AgentState.Idle;
+                //agentState = AgentState.Idle;
             }
         }
 
 
         if (previousState != agentState)
         {
+            OnStateEnter(agentState);
+            OnStateExit(previousState);
             destinationSet = false;
             reachedDestination = true;
             previousState = agentState;
         }
 
 
-        Found();
-        UpdateState();
-
+       
+        if(agentState != AgentState.Sleep)
+        {
+           
+            UpdateState();
+            Found();
+        }
 
     }
 
@@ -137,6 +143,7 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
+   
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -152,37 +159,28 @@ public class FSM_Walker : MonoBehaviour
                 break;
 
         }
-
-        if (isCrawling)
-        {
-            HandleCrawling();
-        }
-
-
     }
-    void Blind()
+    void OnStateEnter(AgentState newState)
     {
-
-        if (isCrawling)
+        if (newState == AgentState.Sleep)
         {
-            HandleCrawling();
-        }
-        else
-        {
-            moveBool = "noHead";
             animator.SetBool("move", false);
+            animator.SetBool("crawl", false);
+            agent.isStopped = true;
+            agent.enabled = false;
 
-            SynchronizeAnimatorAndAgent();
         }
     }
-    void Normal()
+    void OnStateExit(AgentState oldState)
     {
-        nrAttack = 1;
-        moveBool = "move";
-
-        animator.SetBool("noHead", false);
-        SynchronizeAnimatorAndAgent();
+        if (oldState == AgentState.Sleep)
+        {
+            agent.enabled = true;
+            agent.isStopped = false;
+        }
     }
+   
+   
     void Found()
     {
         if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0)
@@ -262,7 +260,7 @@ public class FSM_Walker : MonoBehaviour
         eye.AngryEye();
         if (atDestination)
         {
-            MoveTo(soundLocation);
+           MoveTo(soundLocation);
         }
 
     }
@@ -291,7 +289,6 @@ public class FSM_Walker : MonoBehaviour
 
     public virtual void MoveTo(Vector3 destination)
     {
-
         if (agent.isOnNavMesh)
         {
             CancelCurrentCommand();
@@ -404,7 +401,7 @@ public class FSM_Walker : MonoBehaviour
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
 
-        animator.SetBool(moveBool, shouldMove);
+        animator.SetBool("move", shouldMove);
         animator.SetBool("crawl", false);
         animator.SetFloat("vely", agent.velocity.magnitude);
 
@@ -460,10 +457,10 @@ public class FSM_Walker : MonoBehaviour
         //    StartCoroutine(AttackCooldown(.4f));
         //}
         //else
-        //{
-        //    animator.SetInteger("Attack", Random.Range(nrAttack, 4));
-        //    StartCoroutine(AttackCooldown(.5f));
-        //}
+        {
+            animator.SetInteger("Attack", Random.Range(1, 4));
+            StartCoroutine(AttackCooldown(.5f));
+        }
     }
     private IEnumerator CrawlAttackCooldown(float t)
     {
