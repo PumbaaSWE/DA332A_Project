@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.DebugUI;
 
 public class FlareThrower : MonoBehaviour
 {
@@ -29,13 +25,18 @@ public class FlareThrower : MonoBehaviour
     private InputAction action;
     private string key = "<nope>";
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         action = playerInput.actions.FindAction("F");
         key = "[" + action.bindings.First().ToDisplayString() + "]";
         action.performed += Action_performed;
 
 
+    }
+
+    private void OnDisable()
+    {
+        action.performed -= Action_performed;
     }
 
     private void Action_performed(InputAction.CallbackContext obj)
