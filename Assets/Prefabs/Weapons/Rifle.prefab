@@ -471,7 +471,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c50bcbb55993e1749bff9dc37f742fdf,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1437061984249088429, guid: c50bcbb55993e1749bff9dc37f742fdf,
         type: 3}
@@ -702,12 +702,12 @@ MonoBehaviour:
   MaxHorizontalRecoil: 0.5
   RecoilDuration: 0.1
   ImpulseDuration: 0.4
-  LoadedAmmo: 0
+  LoadedAmmo: 20
   MagazineSize: 20
   ReserveAmmo: 300
   MaxReserveAmmo: 300
   RoundInTheChamber: 1
-  AutoReload: 1
+  AutoReload: 0
   ProportionalAmmoConsumption: 0
   UseLocalAmmoPool: 0
   HipFireSpread: 0
@@ -815,6 +815,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.96252686
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.2685792
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.010083078
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.036135454
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -31.182
+      objectReference: {fileID: 0}
+    - target: {fileID: 933602464040121865, guid: 940a8c09be4c20945a1533a993f1d3d6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -4.3
       objectReference: {fileID: 0}
     - target: {fileID: 9079739829293391000, guid: 940a8c09be4c20945a1533a993f1d3d6,
         type: 3}

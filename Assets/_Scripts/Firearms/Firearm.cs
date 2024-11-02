@@ -109,6 +109,7 @@ public class Firearm : MonoBehaviour
         }
 
         Animator.SetInteger("RoundsLoaded", LoadedAmmo);
+        Animator.SetInteger("FireMode", (int)CurrentMode);
 
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
     }
@@ -175,7 +176,7 @@ public class Firearm : MonoBehaviour
 
             if (LoadedAmmo == 0 && AutoReload)
             {
-                PerformAnimation(Animation.ReloadingEmpty);
+                PerformAnimation(Animation.Reloading);
                 CanAds = false;
                 IsReloading = true;
                 Firing = false;
