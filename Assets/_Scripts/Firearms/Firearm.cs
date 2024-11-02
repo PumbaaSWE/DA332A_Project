@@ -108,6 +108,8 @@ public class Firearm : MonoBehaviour
             //    HipFireSpread = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
         }
 
+        Animator.SetInteger("RoundsLoaded", LoadedAmmo);
+
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
     }
 
@@ -121,7 +123,9 @@ public class Firearm : MonoBehaviour
                 CanAds = true;
                 IsReloading = false;
                 StartCoroutine(Shoot());
-            }else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
+            }
+            
+            else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
             {
                 PerformAnimation(Animation.ReloadingEmpty);
                 CanAds = false;
@@ -325,14 +329,14 @@ public class Firearm : MonoBehaviour
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType) && !IsReloading)
         {
-            if (LoadedAmmo == 0)
-            {
-                PerformAnimation(Animation.ReloadingEmpty);
-                CanAds = false;
-                IsReloading = true;
-            }
+            //if (LoadedAmmo == 0)
+            //{
+            //    PerformAnimation(Animation.ReloadingEmpty);
+            //    CanAds = false;
+            //    IsReloading = true;
+            //}
 
-            else if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
+            if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
@@ -363,7 +367,7 @@ public class Firearm : MonoBehaviour
 
         if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
         {
-            Animator.SetTrigger("Reload Finished");
+            Animator.SetTrigger("ReloadFinished");
             IsReloading = false;
         }
     }
