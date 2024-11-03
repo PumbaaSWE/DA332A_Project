@@ -49,7 +49,7 @@ public class Firearm : MonoBehaviour
     /// <summary>
     /// How far the gun is being aim down the sights. 0 = not ads | 1 = fully ads
     /// </summary>
-    float AdsProcentage = 0;
+    public float AdsProcentage = 0;
 
     [Header("Other")]
     [SerializeField] LayerMask ShootableLayers;
@@ -110,6 +110,7 @@ public class Firearm : MonoBehaviour
 
         Animator.SetInteger("RoundsLoaded", LoadedAmmo);
         Animator.SetInteger("FireMode", (int)CurrentMode);
+        Animator.SetFloat("ADS", AdsProcentage);
 
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
     }
