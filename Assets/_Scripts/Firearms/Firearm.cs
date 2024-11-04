@@ -129,7 +129,7 @@ public class Firearm : MonoBehaviour
             
             else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
             {
-                PerformAnimation(Animation.ReloadingEmpty);
+                PerformAnimation(Animation.Reloading);
                 CanAds = false;
                 IsReloading = true;
                 Firing = false;
