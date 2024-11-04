@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class Limbstate : MonoBehaviour
 {
-    public enum AgentHit { Crawl, LegAndArmLess, Armless, StandUp,Wait ,Normal }
+    public enum AgentHit { Crawl, LegAndArmLess, Armless, StandUp, Wait ,Normal }
     public AgentHit limbStatehit = AgentHit.Normal;
     private AgentHit previousState;
 
@@ -15,6 +15,8 @@ public class Limbstate : MonoBehaviour
 
     Animator animator;
     int layerIndex = 3;
+
+    public bool standing;
 
     private void Awake()
     {
@@ -102,23 +104,32 @@ public class Limbstate : MonoBehaviour
         if (newState == AgentHit.LegAndArmLess)
         {
             rag.TriggerRagdoll(Vector3.zero, Vector3.zero);
+        }
 
+        if (newState == AgentHit.Armless && !standing)
+        {
+            rag.TriggerRagdoll(Vector3.zero, Vector3.zero);
         }
     }
 
     void CrawlBehavior()
     {
+        standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
     }
 
     void ArmAndLegBehavior()
     {
-        
+        standing = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
     }
     void ArmBehavior()
     {
+        if (!standing)
+        {
+            limbStatehit = AgentHit.StandUp;
+        }
         fsm.SynchronizeAnimatorAndAgent();
     }
     void StandUp()
@@ -132,6 +143,7 @@ public class Limbstate : MonoBehaviour
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
         {
+            standing = true;
             SetLayerActive(false);
             limbStatehit = AgentHit.Normal;
             fsm.agentState = FSM_Walker.AgentState.Idle;
@@ -139,6 +151,10 @@ public class Limbstate : MonoBehaviour
     }
     void Normal()
     {
+        if(!standing)
+        {
+            limbStatehit = AgentHit.StandUp;
+        }
         SetLayerActive(false);
         fsm.SynchronizeAnimatorAndAgent();
     }

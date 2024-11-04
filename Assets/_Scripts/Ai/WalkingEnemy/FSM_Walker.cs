@@ -61,6 +61,7 @@ public class FSM_Walker : MonoBehaviour
     public PlayerDataSO player;
     float attckTimer;
     Eye eye;
+    bool ragdoll;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -99,6 +100,12 @@ public class FSM_Walker : MonoBehaviour
             }
         }
 
+        if (agentState != AgentState.Sleep)
+        {
+
+            UpdateState();
+            Found();
+        }
 
         if (previousState != agentState)
         {
@@ -111,12 +118,7 @@ public class FSM_Walker : MonoBehaviour
 
 
        
-        if(agentState != AgentState.Sleep)
-        {
-           
-            UpdateState();
-            Found();
-        }
+      
 
     }
 
@@ -168,7 +170,6 @@ public class FSM_Walker : MonoBehaviour
             animator.SetBool("crawl", false);
             agent.isStopped = true;
             agent.enabled = false;
-
         }
     }
     void OnStateExit(AgentState oldState)
@@ -195,7 +196,6 @@ public class FSM_Walker : MonoBehaviour
                     //CancelCurrentCommand();
                     currentTarget = candidate.detectable;
                     agentState = AgentState.Chasing;
-
                 }
             }
         }
@@ -211,7 +211,6 @@ public class FSM_Walker : MonoBehaviour
             // 
             //MoveTo(location);
         }
-
     }
     public void SetAgentActive(bool active)
     {

@@ -49,6 +49,7 @@ public class Ragdoll : MonoBehaviour
     Regrow regrow;
     FSM_Walker fsm_Walker;
     Limbstate limbstate;
+
     private void Awake()
     {
         limbstate = GetComponent<Limbstate>();
@@ -174,6 +175,7 @@ public class Ragdoll : MonoBehaviour
             state = RagdollState.StartCrawl;
             DisableRagdoll();
             Transition();
+            fsm_Walker.agentState = FSM_Walker.AgentState.Idle;
             //animator.Play(StateName(), 0, 0);
         }
     }
@@ -208,7 +210,13 @@ public class Ragdoll : MonoBehaviour
             //}
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
             {
+               
                state = RagdollState.Default;
+            }
+
+            if (limbstate.limbStatehit == Limbstate.AgentHit.Armless || limbstate.limbStatehit == Limbstate.AgentHit.LegAndArmLess)
+            {
+                TriggerRagdoll(Vector3.zero, Vector3.zero);
             }
         }
     }

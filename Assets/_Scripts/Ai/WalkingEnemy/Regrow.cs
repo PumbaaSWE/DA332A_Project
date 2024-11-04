@@ -21,6 +21,7 @@ public class Regrow : MonoBehaviour
     private Animator animator;
 
     [SerializeField] float regrowTime = 2;
+    [SerializeField] float legRegrowTime = 7;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -65,7 +66,15 @@ public class Regrow : MonoBehaviour
     {
 
         detachable.Detatch();
-        detachable.Regrow(regrowTime);
+        if(detachable.leg)
+        {
+            detachable.Regrow(legRegrowTime);
+        }
+        else
+        {
+            detachable.Regrow(regrowTime);
+
+        }
         detached.Add(detachable);
 
         state = RegrowState.RemoveLimbs;
