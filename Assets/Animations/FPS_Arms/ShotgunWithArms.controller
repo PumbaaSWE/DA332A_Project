@@ -435,7 +435,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 90, y: 410, z: 0}
   m_EntryPosition: {x: 90, y: -40, z: 0}
-  m_ExitPosition: {x: 330, y: -40, z: 0}
+  m_ExitPosition: {x: 340, y: -40, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 9149656683962429774}
 --- !u!1101 &-2353813534745378714
@@ -653,7 +653,31 @@ AnimatorController:
     m_Name: Bolt
     m_StateMachine: {fileID: -7599956079637122259}
     m_Mask: {fileID: 0}
-    m_Motions: []
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: -681095586037334801}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 9149656683962429774}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 5161050709591836190}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 9039203376032838174}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 109900795875767335}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 2930234165828501140}
+      m_Motion: {fileID: 7400000, guid: b26cb337f5bd0b84fbbc36a90966a6b1, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: -2225780130340283527}
+      m_Motion: {fileID: 7400000, guid: 138a881d0d1f3e141b1401927c7f3f01, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 1708046291281176450}
+      m_Motion: {fileID: 7400000, guid: 17f41dbebcabbe74096ddfec31c6ffdc, type: 2}
     m_Behaviours: []
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
