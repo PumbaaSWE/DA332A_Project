@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.14901961, g: 0.14509805, b: 0.14509805, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000006, guid: 3ffc85314b91e49468954be1da6ee2a2,
+  m_LightingDataAsset: {fileID: 112000004, guid: 3ffc85314b91e49468954be1da6ee2a2,
     type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 3
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
+  m_AdditionalLightsShadowResolutionTier: 0
   m_LightLayerMask: 1
   m_RenderingLayers: 1
   m_CustomShadowLayers: 0
@@ -389,8 +389,8 @@ Light:
   m_InnerSpotAngle: 153.7413
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
+    m_Type: 1
+    m_Resolution: 128
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -1283,7 +1283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   insideTrigger: {fileID: 90006094}
-  nextSceneGroup: 3
+  nextSceneGroup: 4
   insideButton: {fileID: 1261281157}
   progress: {fileID: 11400000, guid: 21c37a306aaa4ed48bdb36c4b923bc93, type: 2}
   gameObjectsToMove: []
@@ -1295,8 +1295,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528545364}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 0.12, z: 0.26}
+  m_LocalRotation: {x: -0, y: 0.70710737, z: -0, w: -0.7071063}
+  m_LocalPosition: {x: 52.8, y: 0.119999886, z: -4.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1315,7 +1315,7 @@ Transform:
   - {fileID: 1223751170}
   - {fileID: 1966811697}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -1530, z: 0}
 --- !u!114 &1528545368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1342,10 +1342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b80710f60d02954b84056673929c882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {x: -21.57, y: 0, z: 19.652}
-  end: {x: 0.05, y: 0.12, z: 0.26}
-  startRot: {x: 0, y: 0, z: 0, w: 1}
-  endRot: {x: 0, y: 0, z: 0, w: 1}
+  start: {x: 124.15, y: 0, z: -10.76}
+  end: {x: 52.8, y: 0.119999886, z: -4.7}
+  startRot: {x: -0, y: 0.70710707, z: -0, w: -0.7071066}
+  endRot: {x: -0, y: -0.70710635, z: -0, w: -0.7071072}
 --- !u!1 &1790841535
 GameObject:
   m_ObjectHideFlags: 0

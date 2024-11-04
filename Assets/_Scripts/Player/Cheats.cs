@@ -62,14 +62,17 @@ public class Cheats : MonoBehaviour
         Noclip(Time.deltaTime);
     }
 
+
     [MakeButton("Clear console", false)]
     void ClearConsole()
     {
+#if UNITY_EDITOR
         // There where some comments on unity formus about this potentially causing a memory leak :D but I will use it still
         var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
         var type = assembly.GetType("UnityEditor.LogEntries");
         var method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
+#endif
     }
 
     [MakeButton("Toggle night vision", false)]

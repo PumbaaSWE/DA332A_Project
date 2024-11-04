@@ -9,11 +9,17 @@ public class SubtitleHUD : MonoBehaviour
 
     //TODO: Add queing..??
 
-    void Start()
+    void OnEnable()
     {
         if(subtitleChannel)
             subtitleChannel.OnChannelEvent += SubtitleChannel_OnChannelEvent;
         if (!text) text = GetComponent<TMP_Text>();
+    }
+
+    void OnDisable()
+    {
+        if (subtitleChannel)
+            subtitleChannel.OnChannelEvent -= SubtitleChannel_OnChannelEvent;
     }
 
     private void SubtitleChannel_OnChannelEvent(SubtitleData ctx)
