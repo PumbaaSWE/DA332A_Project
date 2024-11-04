@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     {
         Damage(damage);
         deahtHealth -= damage;
-
+        Impact(direction, point);
         if (Value <= 0)
         {
             //regrow.TriggerRegrow(point);
@@ -104,6 +104,43 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public void SetHealth(float health)
     {
         this.health = health;
+    }
+
+
+    public void Impact(Vector3 from, Vector3 at)
+    {
+        Vector3 dir = transform.position - from;
+        float height = at.y - transform.position.y;
+
+        float fwd = -Vector3.Dot(dir, transform.forward);
+        float right = -Vector3.Dot(dir, transform.right);
+        float deg = 0.707f;
+        if (fwd > deg)
+        {
+
+            if (height > 1.5f)
+            {
+                animator.Play("Standing React Small From Headshot", 1);
+            }
+            else
+            {
+                animator.Play("Standing React Large Gut", 1);
+
+            }
+        }
+        if (fwd < -deg)
+        {
+            animator.Play("Standing React Small From Back", 1);
+        }
+        if (right > deg)
+        {
+            animator.Play("Standing React Large From Right", 1);
+        }
+        if (right < -deg)
+        {
+            animator.Play("Standing React Large From Left", 1);
+        }
+
     }
 }
 

@@ -16,7 +16,7 @@ public class Limbstate : MonoBehaviour
     Animator animator;
     int layerIndex = 3;
 
-    public bool standing;
+    public bool standing = true;
 
     private void Awake()
     {
@@ -92,7 +92,7 @@ public class Limbstate : MonoBehaviour
         }
         else
         {
-            if (limbStatehit != AgentHit.Normal)
+            if (limbStatehit != AgentHit.Normal && !standing)
             {                
                 limbStatehit = AgentHit.StandUp;
             }
