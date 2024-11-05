@@ -112,6 +112,22 @@ public class WeaponHandler : MonoBehaviour
         return AmmunitionPool[EquippedGun.AmmoType];
     }
 
+    public float GetHipfireAngle()
+    {
+        if (EquippedGun == null)
+            return 0;
+
+        return EquippedGun.HipFireSpread;
+    }
+
+    public float GetAdsProcentage()
+    {
+        if (EquippedGun == null)
+            return 0;
+
+        return EquippedGun.AdsProcentage;
+    }
+
     public void CycleWeapons(CallbackContext context)
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
