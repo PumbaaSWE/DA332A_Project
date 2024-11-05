@@ -441,6 +441,11 @@ public class Firearm : MonoBehaviour
     {
         CanFire = Convert.ToBoolean(canFire);
     }
+
+    public void SetCanAds(int canAds)
+    {
+        CanAds = Convert.ToBoolean(canAds);
+    }
 }
 
 public enum FireMode
