@@ -29066,12 +29066,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &1421513971117320522 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3775378605617083683, guid: b2e848433bcbcb14898f36e8508b2c92,
-    type: 3}
-  m_PrefabInstance: {fileID: 2697605776956990571}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1427689500183719425
 Animator:
   serializedVersion: 5
@@ -29688,31 +29682,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Walker
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
-        type: 3}
-      propertyPath: enemy
-      value: 
-      objectReference: {fileID: 1421513971117320522}
-    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
-        type: 3}
-      propertyPath: health
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
-        type: 3}
-      propertyPath: legHealth
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
-        type: 3}
-      propertyPath: maxHealth
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
-        type: 3}
-      propertyPath: deahtHealth
-      value: 2400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31077,6 +31046,74 @@ Transform:
   - {fileID: 6795933815911739911}
   m_Father: {fileID: 8256534456712664915}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5711802223029821749
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1053467952931534152, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_Name
+      value: SalamanderWaking
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.384
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 196.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7041016
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7100992
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -269.514
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934148724492860861, guid: 28c25c58536b45f4180b64babd3e29c0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c25c58536b45f4180b64babd3e29c0, type: 3}
 --- !u!1 &5775567098617590190
 GameObject:
   m_ObjectHideFlags: 0
@@ -33124,3 +33161,4 @@ SceneRoots:
   - {fileID: 865543847}
   - {fileID: 1591877551}
   - {fileID: 2697605776956990571}
+  - {fileID: 5711802223029821749}
