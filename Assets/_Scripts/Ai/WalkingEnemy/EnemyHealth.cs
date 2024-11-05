@@ -1,15 +1,18 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyHealth : MonoBehaviour, IDamageble
 {
+    public GameObject enemy;
+
     public float deahtHealth = 1400;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
     [SerializeField] private float health;
+    [SerializeField] private float legHealth;
     [SerializeField] private float maxHealth;
 
     public Action<EnemyHealth, float> OnHealthChanged;
@@ -30,21 +33,39 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     {
         if (deahtHealth <= 0)
         {
-            //ragdoll.Death();
+            Death();
         }
 
+    }
+    public void Death()
+    {
+        ragdoll.TriggerRagdoll(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
+        Destroy(enemy, 1.5f);
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        Damage(damage);
         deahtHealth -= damage;
         Impact(direction, point);
-        if (Value <= 0)
+        //Damage(damage);
+        Detachable d = regrow.GetDetachable(point);
+        if (d != null)
         {
+            if (d.leg)
+            {
+                legHealth -= damage;
+            }
+            else
+            {
+                health -= damage;
+            }
+        }
+       
+       
+        if (legHealth <= 0)
+        {
+            regrow.Hit(point);
             //regrow.TriggerRegrow(point);
-            Detachable d = regrow.Hit(point);
-
             if (d != null)
             {
                 if (d.leg)
@@ -52,8 +73,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            
-            
+            legHealth = maxHealth;
+        }
+        else if (health <= 0)
+        {
+            regrow.Hit(point);
+            health = maxHealth;
         }
         // PlayHitAnimation(direction);
         //Impact(direction, point);

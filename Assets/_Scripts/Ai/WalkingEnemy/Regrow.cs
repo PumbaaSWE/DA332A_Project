@@ -50,6 +50,18 @@ public class Regrow : MonoBehaviour
                 break;
         }
     }
+    public Detachable GetDetachable(Vector3 point)
+    {
+        Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
+
+        if (rb.TryGetComponent(out Detachable detachable))
+        {
+          
+
+        }
+
+        return detachable;
+    }
     public Detachable Hit(Vector3 point)
     {
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();

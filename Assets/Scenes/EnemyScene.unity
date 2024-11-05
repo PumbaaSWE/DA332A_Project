@@ -14458,25 +14458,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1169994597 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1421513971492581902, guid: 8428b29afeee22141aee664b6371f544,
-    type: 3}
-  m_PrefabInstance: {fileID: 6880407970601973448}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1169994614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1169994597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad357fa164ac7154db2221b240cdb465, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deahtHealth: 600
 --- !u!43 &1196840372
 Mesh:
   m_ObjectHideFlags: 0
@@ -29085,6 +29066,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &1421513971117320522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3775378605617083683, guid: b2e848433bcbcb14898f36e8508b2c92,
+    type: 3}
+  m_PrefabInstance: {fileID: 2697605776956990571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1427689500183719425
 Animator:
   serializedVersion: 5
@@ -29701,6 +29688,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Walker
+      objectReference: {fileID: 0}
+    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
+        type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1421513971117320522}
+    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
+        type: 3}
+      propertyPath: health
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
+        type: 3}
+      propertyPath: legHealth
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
+        type: 3}
+      propertyPath: maxHealth
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8542861941719302930, guid: b2e848433bcbcb14898f36e8508b2c92,
+        type: 3}
+      propertyPath: deahtHealth
+      value: 2400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31706,11 +31718,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1421513971492581902, guid: 8428b29afeee22141aee664b6371f544,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1169994614}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8428b29afeee22141aee664b6371f544, type: 3}
 --- !u!1 &6930550650640843018
 GameObject:
