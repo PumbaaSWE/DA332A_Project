@@ -49,7 +49,7 @@ public class Firearm : MonoBehaviour
     /// <summary>
     /// How far the gun is being aim down the sights. 0 = not ads | 1 = fully ads
     /// </summary>
-    float AdsProcentage = 0;
+    public float AdsProcentage = 0;
 
     [Header("Other")]
     [SerializeField] LayerMask ShootableLayers;
@@ -114,6 +114,10 @@ public class Firearm : MonoBehaviour
             //    HipFireSpread = Mathf.Lerp(OriginalFov, OriginalFov / AdsZoom, AdsProcentage);
         }
 
+        Animator.SetInteger("RoundsLoaded", LoadedAmmo);
+        Animator.SetInteger("FireMode", (int)CurrentMode);
+        Animator.SetFloat("ADS", AdsProcentage);
+
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
         CanAds = CouldAds;
     }
@@ -128,9 +132,11 @@ public class Firearm : MonoBehaviour
                 CanAds = true;
                 IsReloading = false;
                 StartCoroutine(Shoot());
-            }else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
+            }
+            
+            else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
             {
-                PerformAnimation(Animation.ReloadingEmpty);
+                PerformAnimation(Animation.Reloading);
                 CanAds = false;
                 IsReloading = true;
                 Firing = false;
@@ -178,7 +184,7 @@ public class Firearm : MonoBehaviour
 
             if (LoadedAmmo == 0 && AutoReload)
             {
-                PerformAnimation(Animation.ReloadingEmpty);
+                PerformAnimation(Animation.Reloading);
                 CanAds = false;
                 IsReloading = true;
                 Firing = false;
@@ -332,14 +338,14 @@ public class Firearm : MonoBehaviour
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType) && !IsReloading)
         {
-            if (LoadedAmmo == 0)
-            {
-                PerformAnimation(Animation.ReloadingEmpty);
-                CanAds = false;
-                IsReloading = true;
-            }
+            //if (LoadedAmmo == 0)
+            //{
+            //    PerformAnimation(Animation.ReloadingEmpty);
+            //    CanAds = false;
+            //    IsReloading = true;
+            //}
 
-            else if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
+            if (LoadedAmmo < MagazineSize + Convert.ToInt32(RoundInTheChamber))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
@@ -370,7 +376,7 @@ public class Firearm : MonoBehaviour
 
         if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
         {
-            Animator.SetTrigger("Reload Finished");
+            Animator.SetTrigger("ReloadFinished");
             IsReloading = false;
         }
     }
@@ -441,6 +447,11 @@ public class Firearm : MonoBehaviour
     public void SetCanFire(int canFire)
     {
         CanFire = Convert.ToBoolean(canFire);
+    }
+
+    public void SetCanAds(int canAds)
+    {
+        CanAds = Convert.ToBoolean(canAds);
     }
 }
 

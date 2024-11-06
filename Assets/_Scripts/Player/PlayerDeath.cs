@@ -1,18 +1,31 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerDeath : MonoBehaviour
 {
-    [SerializeField] float time = 1;
     [SerializeField] PlayerInput input;
+    [SerializeField] float fallDuration = 1;
+    [SerializeField] AnimationCurve fallCurve;
+    [Tooltip("Wait for x seconds after falling")]
+    [SerializeField] float waitDuration = 1;
 
-    void Start()
+    void OnEnable()
     {
-
-
         GetComponent<Health>().OnDeath += PlayerDied;
+    }
 
+    void OnDisable()
+    {
+        GetComponent<Health>().OnDeath -= PlayerDied;
+    }
+
+    [MakeButton(false)]
+    void Test()
+    {
+        Health h = GetComponent<Health>();
+        h.Damage(h.Value);
     }
 
     private void PlayerDied(Health health)
@@ -24,9 +37,9 @@ public class PlayerDeath : MonoBehaviour
 
     private IEnumerator DeathAnim()
     {
-        float timer = time;
+        float timer = fallDuration;
 
-
+        GetComponent<NonphysController>().enabled = false;
         Camera cam = GetComponentInChildren<Camera>();
         if (cam)
         {
@@ -36,7 +49,7 @@ public class PlayerDeath : MonoBehaviour
             Vector3 rot = cam.transform.rotation.eulerAngles.WithZ(65);
             while (timer >= 0)
             {
-                float t = timer / time;
+                float t = fallCurve.Evaluate(timer / fallDuration);
                 timer -= Time.deltaTime;
 
                 Vector3 p = Vector3.Lerp(pos, camPos, t);
@@ -47,24 +60,19 @@ public class PlayerDeath : MonoBehaviour
             }
         }
 
-        
-
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(waitDuration);
 
         ShowMenu();
     }
 
     private void ShowMenu()
     {
+        LoadDeathScene lds = FindAnyObjectByType<LoadDeathScene>();
 
-        GameManager.GameOver();
-    }
+        if (lds)
+            lds.LoadScene();
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

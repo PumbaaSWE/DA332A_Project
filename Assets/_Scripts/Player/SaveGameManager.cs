@@ -40,6 +40,7 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
             //}
             if(gameData == null)
             {
+                Debug.Log("gameData is null");
                 gameData = new GameData(); //default values...
             }
 
@@ -71,8 +72,9 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
                 foreach(var fPrefab in firearmPrefabs)
                     if (wData.id == fPrefab.Id)
                     {
+                        //Debug.Log("Loading " + fPrefab.name + " with ammo " + wData.ammo);
                         weaponHandler.PickupGun(fPrefab, wData.ammo);
-                        //weaponHandler.Guns[^1].LoadedAmmo = wData.ammo;
+                        weaponHandler.Guns[^1].LoadedAmmo = wData.ammo;
 
                         if (wData.id == playerData.equippedWeapon)
                             weaponHandler.SwitchGun(weaponHandler.Guns.Count - 1);
@@ -115,10 +117,13 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         Firearm[] weaps = weaponHandler.Guns.ToArray();
         WeaponData[] weaponData = new WeaponData[weaps.Length];
         for (int i = 0; i < weaps.Length; i++)
+        {
+            //Debug.Log("Saving " + weaps[i].name + " with ammo " + weaps[i].LoadedAmmo);
             weaponData[i] = new WeaponData() { id = weaps[i].Id, ammo = weaps[i].LoadedAmmo };
+        }
         playerData.weaponData = weaponData;
         playerData.equippedWeapon = weaponHandler.EquippedGun.Id;
-
+        this.gameData = gameData;
         //WeaponHandler wh = playerDataSO.PlayerTransform.GetComponent<WeaponHandler>();
         //playerData.numShutgunShells = wh.GetAmmoCountFor(Cartridgetype.ShotgunShell);
         dataService.Save("GameData", gameData);

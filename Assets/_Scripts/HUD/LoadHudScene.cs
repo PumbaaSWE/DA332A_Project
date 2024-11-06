@@ -5,7 +5,6 @@ using UnityEditor.SceneManagement;
 #endif
 public class LoadHudScene : MonoBehaviour
 {
-    string hud = "HUD";
     public SceneField hudScene;
     public bool loadOnStart = true;
 
@@ -23,16 +22,16 @@ public class LoadHudScene : MonoBehaviour
 
         if (Application.isPlaying)
         {
-            Scene scene = SceneManager.GetSceneByName(hud);
+            Scene scene = SceneManager.GetSceneByName(hudScene);
             if (!scene.IsValid())
             {
-                SceneManager.LoadSceneAsync(hudScene.SceneName, LoadSceneMode.Additive);
+                SceneManager.LoadSceneAsync(hudScene, LoadSceneMode.Additive);
             }
         }
         else
         {
 #if UNITY_EDITOR
-            Scene scene = EditorSceneManager.GetSceneByName(hud);
+            Scene scene = EditorSceneManager.GetSceneByName(hudScene);
             if (!scene.IsValid())
             {
                 EditorSceneManager.OpenScene("Assets/Scenes/HUD/HUD.unity", OpenSceneMode.Additive);
@@ -46,10 +45,10 @@ public class LoadHudScene : MonoBehaviour
     public void UnloadHud()
     {
         if (Application.isPlaying)
-            SceneManager.UnloadSceneAsync(hud);
+            SceneManager.UnloadSceneAsync(hudScene);
 #if UNITY_EDITOR
         else
-            EditorSceneManager.CloseScene(SceneManager.GetSceneByName(hudScene.SceneName), true);
+            EditorSceneManager.CloseScene(SceneManager.GetSceneByName(hudScene), true);
 #endif
     }
 

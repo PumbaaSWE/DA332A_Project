@@ -9,6 +9,7 @@ public class PauseModule : MonoBehaviour
     Transform pauseMenu;
     Transform settingsMenu;
     Transform controlsMenu;
+    [SerializeField] GameObject LoadMainMenuPrefab;
     [SerializeField] bool paused = false;
     public bool Paused { get { return paused; } }
     public UnityEvent Triggered;
@@ -37,12 +38,11 @@ public class PauseModule : MonoBehaviour
         button = pauseMenu.transform.Find("Buttons/QuitButton");
         unityEvent = button.GetComponent<Button>().onClick;
         unityEvent.AddListener(Quit);
+
+        button = pauseMenu.transform.Find("Buttons/MainMenuButton");
+        unityEvent = button.GetComponent<Button>().onClick;
+        unityEvent.AddListener(MainMenu);
     }
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
     public void OnClick()
     {
         switch (paused)
@@ -113,7 +113,15 @@ public class PauseModule : MonoBehaviour
     }
     void Quit()
     {
-        //Enviroment quit, or back to menu
+        //Enviroment quit
         //Resume TimeScale
+    }
+    void MainMenu()
+    {
+        LoadMainMenu script = FindObjectOfType<SceneGroupManager>().GetComponent<LoadMainMenu>();
+        if (!script) { return; }
+        Time.timeScale = 1;
+        DisableAll();
+        script.Load();
     }
 }

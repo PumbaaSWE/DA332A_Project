@@ -60,9 +60,6 @@ public class ClimbController : MonoBehaviour
 
     void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         cc.radius = radius;
         cc.height = radius * 2;
         cc.center = Vector3.zero;
@@ -77,6 +74,11 @@ public class ClimbController : MonoBehaviour
 
         Look();
         Move(Time.deltaTime);
+    }
+    void FixedUpdate()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     bool IsGrounded()

@@ -7,12 +7,14 @@ public class GeneratorCodeGenerator : MonoBehaviour
     public GameObject cieling;
     public NumPad numPad;
     public TMP_Text text;
+    public TMP_Text text2;
 
     void Start()
     {
         if(cieling)cieling.SetActive(true);
         numPad.Code = Generate();
-        text.text = numPad.Code;
+        text.text = numPad.Code.Substring(0, 2);
+        text2.text = numPad.Code.Substring(2, 2);
     }
 
     private string Generate()
