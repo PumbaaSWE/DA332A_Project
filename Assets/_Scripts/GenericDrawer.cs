@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GenericDrawer : MonoBehaviour
 {
@@ -9,6 +12,21 @@ public class GenericDrawer : MonoBehaviour
     [SerializeField] float duration;
     [SerializeField] AudioClips audioClips;
     [SerializeField] bool collideWithPlayer;
+
+#if UNITY_EDITOR
+    [MakeButton("Set Open Position")]
+    void SetOpen()
+    {
+        EditorUtility.SetDirty(this);
+        open = transform.localPosition;
+    }
+    [MakeButton("Set Closed Position")]
+    void SetClosed()
+    {
+        EditorUtility.SetDirty(this);
+        closed = transform.localPosition;
+    }
+#endif
 
     [Serializable]
     public struct AudioClips

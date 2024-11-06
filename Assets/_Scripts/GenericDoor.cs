@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GenericDoor : MonoBehaviour
 {
@@ -9,6 +12,22 @@ public class GenericDoor : MonoBehaviour
     [SerializeField] float duration;
     [SerializeField] AudioClips audioClips;
     [SerializeField] bool collideWithPlayer;
+
+#if UNITY_EDITOR
+    [MakeButton("Set Open Rotation")]
+    void SetOpen()
+    {
+        EditorUtility.SetDirty(this);
+        open = transform.localRotation.eulerAngles;
+    }
+
+    [MakeButton("Set Closed Rotation")]
+    void SetClosed()
+    {
+        EditorUtility.SetDirty(this);
+        closed = transform.localRotation.eulerAngles;
+    }
+#endif
 
     [Serializable]
     public struct AudioClips
