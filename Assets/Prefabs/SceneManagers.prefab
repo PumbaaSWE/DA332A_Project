@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6885495754894649300}
   - component: {fileID: 4634943155487719421}
   - component: {fileID: 2222044262135334770}
+  - component: {fileID: -8146476004726127047}
+  - component: {fileID: 1939628567836577852}
   m_Layer: 0
   m_Name: SceneManagers
   m_TagString: Untagged
@@ -70,3 +72,35 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d929252b7e1016d489f8029f90004fda, type: 2}
   sceneGroupManager: {fileID: 4634943155487719421}
   playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  playerPrefab: {fileID: 0}
+  player: {fileID: 0}
+--- !u!114 &-8146476004726127047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433309599447872533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2e9633eaeca1a47a51e6f490c79ccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene:
+    sceneAsset: {fileID: 102900000, guid: 5d7d8ba9c2a45d146b2a17fe948e627d, type: 3}
+    sceneName: MainMenu
+--- !u!114 &1939628567836577852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8433309599447872533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61daac731151084bafcc0f77717dacc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathScene:
+    sceneAsset: {fileID: 102900000, guid: 6df70fe1bb970a543998393d3f545bad, type: 3}
+    sceneName: Death

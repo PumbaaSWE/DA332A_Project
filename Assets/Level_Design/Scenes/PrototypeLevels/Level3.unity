@@ -8984,6 +8984,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1437100244}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &408845382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 408845384}
+  - component: {fileID: 408845383}
+  m_Layer: 0
+  m_Name: Blackboard (auto created)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &408845383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408845382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b97cd38694216834a9a0c729b64a6d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoUnparentOnAwake: 1
+--- !u!4 &408845384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408845382}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &414216511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9058,56 +9103,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1554572224}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &418053090
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 418053092}
-  - component: {fileID: 418053091}
-  m_Layer: 0
-  m_Name: SceneGroupLoader (auto created)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &418053091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 418053090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e27f63c20c411744e9bceeb6a122902d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoUnparentOnAwake: 1
-  sceneGroups: []
-  sceneGroupManager: {fileID: 0}
-  playerData: {fileID: 0}
-  playerPrefab: {fileID: 0}
-  player: {fileID: 0}
---- !u!4 &418053092
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 418053090}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &420144373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28059,7 +28054,7 @@ PrefabInstance:
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 34.639996
+      value: 49.37
       objectReference: {fileID: 0}
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -28069,7 +28064,7 @@ PrefabInstance:
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.400002
+      value: -4.35
       objectReference: {fileID: 0}
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -28114,7 +28109,7 @@ PrefabInstance:
     - target: {fileID: 5926258509007519574, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -43618,5 +43613,5 @@ SceneRoots:
   - {fileID: 1428413679}
   - {fileID: 2091859217}
   - {fileID: 365319021}
-  - {fileID: 418053092}
   - {fileID: 2130577488}
+  - {fileID: 408845384}

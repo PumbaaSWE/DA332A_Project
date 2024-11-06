@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1120,6 +1120,7 @@ GameObject:
   - component: {fileID: 1437363810}
   - component: {fileID: 1437363809}
   - component: {fileID: 1437363812}
+  - component: {fileID: 1437363813}
   m_Layer: 0
   m_Name: SceneManagers
   m_TagString: Untagged
@@ -1142,9 +1143,10 @@ MonoBehaviour:
   AutoUnparentOnAwake: 1
   sceneGroups:
   - {fileID: 11400000, guid: 7541f89af4c508a40a482a539e8dc741, type: 2}
-  - {fileID: 11400000, guid: 3d59e9da2ca67fb44a7277eb2c7683d0, type: 2}
+  - {fileID: 11400000, guid: c899108f145c2fc4a82a9be22a048141, type: 2}
+  - {fileID: 11400000, guid: 993667d70b816e14a86ec3347ca6a338, type: 2}
   - {fileID: 11400000, guid: 8aa6f120a3aec7341bd36ed667886674, type: 2}
-  - {fileID: 11400000, guid: fa2023606e2d71544ae23259a911e3ab, type: 2}
+  - {fileID: 11400000, guid: ff72c5edde4f41f45ad2482f169d23d4, type: 2}
   - {fileID: 11400000, guid: d929252b7e1016d489f8029f90004fda, type: 2}
   sceneGroupManager: {fileID: 1437363810}
   playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
@@ -1198,6 +1200,21 @@ MonoBehaviour:
   deathScene:
     sceneAsset: {fileID: 102900000, guid: 6df70fe1bb970a543998393d3f545bad, type: 3}
     sceneName: Death
+--- !u!114 &1437363813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1437363808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2e9633eaeca1a47a51e6f490c79ccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene:
+    sceneAsset: {fileID: 102900000, guid: 5d7d8ba9c2a45d146b2a17fe948e627d, type: 3}
+    sceneName: MainMenu
 --- !u!1 &1930068959
 GameObject:
   m_ObjectHideFlags: 0

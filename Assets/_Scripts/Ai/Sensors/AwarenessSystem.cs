@@ -102,11 +102,13 @@ public class AwarenessSystem : MonoBehaviour
     public Dictionary<GameObject, Trackedtarget> ActiveTargets => targets;
 
     FSM fsm;
+    FSM_Walker fsmWalker;
     FSMClimber fsmClimber;
     //CharacterAgent characterAgent;
     void Start()
     {
         //characterAgent = GetComponent<CharacterAgent>();
+        fsmWalker = GetComponent<FSM_Walker>();
         fsmClimber = GetComponent<FSMClimber>();
         fsm = GetComponent<FSM>();
         linkedAI = GetComponent<EnemyAI>();
@@ -203,10 +205,15 @@ public class AwarenessSystem : MonoBehaviour
             if(fsm)
             {
                 fsm.HeardSomthing(location);
+               
             }
             else if (fsmClimber)
             {
                 fsmClimber.HeardSomthing(location);
+            }
+            else if (fsmWalker)
+            {
+                fsmWalker.HeardSomthing(location);
             }
 
             UpdateAwarness(source, null, location, awareness, 1);
@@ -217,10 +224,15 @@ public class AwarenessSystem : MonoBehaviour
             if (fsm)
             {
                 fsm.HeardSomthing(location);
+               
             }
             else if(fsmClimber)
             {
                 fsmClimber.HeardSomthing(location);
+            }
+            else if (fsmWalker)
+            {
+                fsmWalker.HeardSomthing(location);
             }
         }
        
