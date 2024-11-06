@@ -96,7 +96,7 @@ public class FSM_Walker : MonoBehaviour
             {
                 destinationSet = false;
                 reachedDestination = true;
-                //agentState = AgentState.Idle;
+                agentState = AgentState.Idle;
             }
         }
 
@@ -145,7 +145,8 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-   
+
+               
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -325,8 +326,20 @@ public class FSM_Walker : MonoBehaviour
                     agentState = AgentState.Attacking;
                     agent.isStopped = true;
                 }
+                else
+                {
+                    Debug.Log("no range");
+                }
+            }
+            else
+            {
+                Debug.Log("no nav");
             }
 
+        }
+        else
+        {
+            Debug.Log("no target");
         }
     }
 
@@ -456,10 +469,10 @@ public class FSM_Walker : MonoBehaviour
         //    StartCoroutine(AttackCooldown(.4f));
         //}
         //else
-        {
+        //{
             animator.SetInteger("Attack", Random.Range(1, 4));
             StartCoroutine(AttackCooldown(.5f));
-        }
+        //}
     }
     private IEnumerator CrawlAttackCooldown(float t)
     {
