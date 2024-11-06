@@ -90,7 +90,7 @@ public class Firearm : MonoBehaviour
         }
 
         bool CouldAds = CanAds;
-        if (nc.IsSprinting || nc.VerticalVelocity > 0)
+        if (nc.IsSprinting || (!nc.Grounded && nc.VerticalVelocity > 0))
             CanAds = false;
 
         if (Ads && CanAds)

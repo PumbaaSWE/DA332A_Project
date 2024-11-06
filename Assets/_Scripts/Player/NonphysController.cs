@@ -196,12 +196,15 @@ public class NonphysController : MovementController
         if (isCrouched)
         {
             float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
-            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, t);
+        }
+        else if (wh.EquippedGun.Ads)
+        {
+            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, 1 - wh.EquippedGun.AdsProcentage);
         }
         else if (sprint)
         {
             float staminaToRemove = sprintCost * dt;
-            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.EquippedGun.Ads && !wh.EquippedGun.Firing)
+            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.EquippedGun.Firing)
             {
                 // deplete stamina
                 stamina -= staminaToRemove;
@@ -247,17 +250,20 @@ public class NonphysController : MovementController
             velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
-        float mainFOV = pc.DefaultFov;
-        float fpsFOV = pc.DefaultFpsFov;
-        if (forwardSpeed > maxWalkSpeed)
+        if (!wh.EquippedGun.Ads)
         {
-            float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, speed);
-            mainFOV = Mathf.Lerp(mainFOV, sprintFOV, t);
-            fpsFOV = Mathf.Lerp(fpsFOV, sprintFOV, t);
-        }
+            float mainFOV = pc.DefaultFov;
+            float fpsFOV = pc.DefaultFpsFov;
+            if (forwardSpeed > maxWalkSpeed)
+            {
+                float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, speed);
+                mainFOV = Mathf.Lerp(mainFOV, sprintFOV, t);
+                fpsFOV = Mathf.Lerp(fpsFOV, sprintFOV, t);
+            }
 
-        pc.LerpMainFov(mainFOV, fovLerpTime);
-        pc.LerpFpsFov(fpsFOV, fovLerpTime);
+            pc.LerpMainFov(mainFOV, fovLerpTime);
+            pc.LerpFpsFov(fpsFOV, fovLerpTime);
+        }
 
         // Collide and slide algorithm
         float velY = velocity.y;
