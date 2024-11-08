@@ -371,6 +371,8 @@ public class Firearm : MonoBehaviour
         {
             Animator.SetTrigger("ReloadFinished");
             IsReloading = false;
+            CanAds = true;
+            CanFire = true;
         }
     }
 
@@ -390,6 +392,7 @@ public class Firearm : MonoBehaviour
         //PerformAnimation(Animation.PullingOut);
         IsReloading = false;
         CanFire = true;
+        CanAds = true;
     }
 
     public void Unequip(Action equip)
@@ -398,14 +401,16 @@ public class Firearm : MonoBehaviour
         // Play animation of putting away gun
         PerformAnimation(Animation.Holstering);
         SwitchAction = equip;
-        CanFire = true;
+        CanFire = false;
         IsReloading = false;
+        CanAds = false;
     }
 
     public void Switch()
     {
         //Debug.Log("Switching weapons");
         CanFire = false;
+        CanAds = false;
         SwitchAction.Invoke();
         gameObject.SetActive(false);
     }
