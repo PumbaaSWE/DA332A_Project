@@ -17,10 +17,16 @@ public class MusicNode : MonoBehaviour
     public int[] MusicIds => playMusicIds;
 
     float t;
+    float transitionSpeed;
 
     private void OnEnable()
     {
         MusicManager.Instance.Register(this);
+
+        foreach (var collider in GetComponents<Collider>())
+            collider.isTrigger = true;
+
+        transitionSpeed = 1 / transitionTime;
     }
 
     private void OnDisable()
@@ -35,9 +41,28 @@ public class MusicNode : MonoBehaviour
             case Method.distance:
 
                 float dist = Vector3.Distance(transform.position, pos);
+
+                if (smoothing <= 0)
+                    return dist <= radius ? 1 : 0;
+
                 return Mathf.InverseLerp(radius + smoothing, radius, dist);
 
             case Method.trigger:
+                return t;
+
+            case Method.triggerAndContainsEnemies:
+
+                if (TriggerAndContainsEnemies())
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(Lerp(t, 1));
+                }
+                else
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(Lerp(t, 0));
+                }
+
                 return t;
         }
 
@@ -72,16 +97,49 @@ public class MusicNode : MonoBehaviour
     {
         while (t != to)
         {
-            t = Mathf.Clamp(t + Mathf.Sign(to - from) * transitionTime * Time.deltaTime, 0, 1);
+            t = Mathf.Clamp(t + Mathf.Sign(to - from) * transitionSpeed * Time.deltaTime, 0, 1);
 
             yield return new WaitForSecondsRealtime(Time.deltaTime);
         }
     }
 
+    bool TriggerAndContainsEnemies()
+    {
+        bool player = false;
+        foreach (var collider in GetComponents<Collider>())
+        {
+            if (collider.bounds.Contains(FindAnyObjectByType<Player>().HeadPos))
+            {
+                player = true;
+                break;
+            }
+        }
+
+        if (!player)
+            return false;
+
+        WallClimber[] enemies = FindObjectsOfType<WallClimber>();
+
+        foreach(var collider in GetComponents<Collider>())
+        {
+            foreach(var enemy in enemies)
+            {
+                if (enemy.GetComponent<Health>().dead)
+                    continue;
+
+                if (collider.bounds.Contains(enemy.transform.position))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
     public enum Method
     {
         distance,
-        trigger
+        trigger,
+        triggerAndContainsEnemies
     }
 
 #if UNITY_EDITOR
