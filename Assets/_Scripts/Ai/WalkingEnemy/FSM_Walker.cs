@@ -90,6 +90,15 @@ public class FSM_Walker : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0 && agent.isStopped == false)
+        {
+            PauseAgent();
+        }
+        else if (Time.timeScale != 0 && agent.isStopped == true)
+        {
+            ResumeAgent();
+        }
+
         if (agent.isOnNavMesh)
         {
             if (!agent.pathPending && !agent.isOnOffMeshLink && destinationSet && (agent.remainingDistance <= agent.stoppingDistance))
@@ -118,8 +127,6 @@ public class FSM_Walker : MonoBehaviour
 
 
        
-      
-
     }
 
 
@@ -505,43 +512,65 @@ public class FSM_Walker : MonoBehaviour
         }
 
     }
+    public void PauseAgent()
+    {
+        agent.isStopped = true;
+    }
+
+    public void ResumeAgent()
+    {
+        agent.isStopped = false;
+     
+    }
+
     private void OnAnimatorMove()
     {
+
         Vector3 rootPosition = animator.rootPosition;
 
         rootPosition.y = agent.nextPosition.y;
 
-        CharacterController cc = GetComponent<CharacterController>();
-        if (cc)
-        {
-            bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
+        transform.position = rootPosition;
+        agent.nextPosition = rootPosition;
 
-            if (grouned)
-            {
-                if (!wasGrounded)
-                {
 
-                    agent.Warp(transform.position);
-                }
-                else
-                {
-                    transform.position = transform.position.WithY(agent.nextPosition.y);
-                    agent.nextPosition = transform.position;
-                }
-                wasGrounded = true;
-            }
-            else
-            {
-                wasGrounded = false;
-                agent.nextPosition = transform.position;
-            }
-        }
-        else
-        {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.MovePosition(rootPosition);
-            agent.nextPosition = rootPosition;
-        }
+        //Vector3 rootPosition = animator.rootPosition;
+
+        //rootPosition.y = agent.nextPosition.y;
+
+        //CharacterController cc = GetComponent<CharacterController>();
+        //if (cc)
+        //{
+        //    //if (Time.timeScale == 0) return;
+
+        //    bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
+
+        //    if (grouned)
+        //    {
+        //        if (!wasGrounded)
+        //        {
+
+        //            agent.Warp(transform.position);
+        //        }
+        //        else
+        //        {
+        //            transform.position = transform.position.WithY(agent.nextPosition.y);
+        //            agent.nextPosition = transform.position;
+        //        }
+        //        wasGrounded = true;
+        //    }
+        //    else
+        //    {
+        //        wasGrounded = false;
+        //        agent.nextPosition = transform.position;
+        //    }
+        //}
+        //else
+        //{
+        //    Rigidbody rb = GetComponent<Rigidbody>();
+        //    rb.MovePosition(rootPosition);
+        //    agent.nextPosition = rootPosition;
+        //}
     }
 
     public void OnDrawGizmos()
