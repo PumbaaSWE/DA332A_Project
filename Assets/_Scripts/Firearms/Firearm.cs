@@ -68,6 +68,8 @@ public class Firearm : MonoBehaviour
     public int Id;
     Animation CurrentAnimation;
     PlayerCamera Camera;
+    [SerializeField] ParticleSystem CaseEjectorParticleSystem;
+    [SerializeField] CaseEjector CaseEjector;
 
     // Start is called before the first frame update
     void Start()
@@ -450,6 +452,12 @@ public class Firearm : MonoBehaviour
     public void SetCanAds(int canAds)
     {
         CanAds = Convert.ToBoolean(canAds);
+    }
+
+    public void EjectCasing()
+    {
+        //CaseEjectorParticleSystem.Emit(1);
+        CaseEjector.Eject();
     }
 }
 
