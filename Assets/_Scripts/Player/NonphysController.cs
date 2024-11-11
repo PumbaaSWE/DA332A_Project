@@ -78,6 +78,7 @@ public class NonphysController : MovementController
 
     public float Radius => radius;
     public float Height => height;
+    public float CurrentHeight => cc.height;
     public float CamOffset => camOffset;
     public float MaxStamina => maxStamina;
     public float Stamina => stamina;

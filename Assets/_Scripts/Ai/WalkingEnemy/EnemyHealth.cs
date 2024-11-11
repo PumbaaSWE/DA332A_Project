@@ -39,8 +39,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(10, 10, 10), new Vector3(0, 1, 0));
-        Destroy(enemy, 1.5f);
+        ragdoll.TriggerRagdoll(new Vector3(5, 5, 5), new Vector3(0, 1, 0));
+        Destroy(enemy, 0.5f);
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)

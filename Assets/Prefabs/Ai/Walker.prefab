@@ -1651,7 +1651,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3775378605617083683}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.89440453, z: -0, w: -0.44725898}
+  m_LocalRotation: {x: -0, y: -0.8944043, z: 0, w: -0.44725946}
   m_LocalPosition: {x: 14.11, y: 0.276, z: 201.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1963,8 +1963,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7890fb4b69f72e847b1b4c65a47199f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deahtHealth: 1400
-  health: 2
+  enemy: {fileID: 3775378605617083683}
+  deahtHealth: 3000
+  health: 350
+  legHealth: 350
   maxHealth: 350
   dead: 0
 --- !u!1 &3915077933295702228

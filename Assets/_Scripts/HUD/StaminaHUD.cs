@@ -43,7 +43,7 @@ public class StaminaHUD : MonoBehaviour
     {
         float percentage = currentValue / maximumValue;
         float alpha = 255.0f * percentage;
-        Color targetColor = new Color(1.0f, 1.0f, 1.0f, percentage);
+        Color targetColor = Color.white;
         if (idle)
         {
             fadeInTimer += Time.deltaTime * 3;
