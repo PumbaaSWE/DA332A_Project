@@ -251,20 +251,20 @@ public class NonphysController : MovementController
             velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
-        if (forwardSpeed >= maxWalkSpeed)
-        {
-            float mainFOV = pc.DefaultFov;
-            float fpsFOV = pc.DefaultFpsFov;
-            if (forwardSpeed > maxWalkSpeed)
-            {
-                float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, speed);
-                mainFOV = Mathf.Lerp(mainFOV, sprintFOV, t);
-                fpsFOV = Mathf.Lerp(fpsFOV, sprintFOV, t);
-            }
+        //if (forwardSpeed >= maxWalkSpeed)
+        //{
+        //    float mainFOV = pc.DefaultFov;
+        //    float fpsFOV = pc.DefaultFpsFov;
+        //    if (forwardSpeed > maxWalkSpeed)
+        //    {
+        //        float t = Mathf.InverseLerp(maxWalkSpeed, maxSprintSpeed, speed);
+        //        mainFOV = Mathf.Lerp(mainFOV, sprintFOV, t);
+        //        fpsFOV = Mathf.Lerp(fpsFOV, sprintFOV, t);
+        //    }
 
-            pc.LerpMainFov(mainFOV, fovLerpTime);
-            pc.LerpFpsFov(fpsFOV, fovLerpTime);
-        }
+        //    pc.LerpMainFov(mainFOV, fovLerpTime);
+        //    pc.LerpFpsFov(fpsFOV, fovLerpTime);
+        //}
 
         // Collide and slide algorithm
         float velY = velocity.y;
