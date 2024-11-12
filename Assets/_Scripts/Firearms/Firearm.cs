@@ -129,7 +129,7 @@ public class Firearm : MonoBehaviour
                 StartCoroutine(Shoot());
             }
             
-            else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
+            else if (!IsReloading && LoadedAmmo == 0 && AutoReload && WHandler.AmmoLeft(AmmoType))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
