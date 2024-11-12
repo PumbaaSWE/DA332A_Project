@@ -177,7 +177,7 @@ public class Firearm : MonoBehaviour
                         break;
                 }
 
-            if (LoadedAmmo == 0 && AutoReload)
+            if (LoadedAmmo == 0 && AutoReload && WHandler.AmmoLeft(AmmoType))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;

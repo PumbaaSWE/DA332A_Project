@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEditor;
+using Random = UnityEngine.Random;
 
 public class CaseEjector : MonoBehaviour
 {
     [SerializeField] GameObject Casing;
     [SerializeField] float EjectionForce = 1;
-    [SerializeField] float RotationalForce = 1;
+    [SerializeField] float MinHorizontalTorque = 1, MaxHorizontalTorque = 1, MinVerticalTorque = 0, MaxVerticalTorque = 0;
     [SerializeField] int CasingLayer = 16;
     [SerializeField] LayerMask InteractWith;
     [SerializeField] float LifeTime = 5;
@@ -16,11 +17,7 @@ public class CaseEjector : MonoBehaviour
     [SerializeField] float LinearDrag = 0.05f;
     [SerializeField] float AngularDrag = 0.05f;
     [SerializeField] PhysicMaterial PhysicMat;
-
-    void Awake()
-    {
-        
-    }
+    [SerializeField] bool Debug;
 
     // Update is called once per frame
     void Update()
@@ -33,6 +30,7 @@ public class CaseEjector : MonoBehaviour
         GameObject newCasing = Instantiate(Casing,transform.position,transform.rotation);
         newCasing.name = "Casing Particle";
         newCasing.layer = CasingLayer;
+        newCasing.transform.localScale = transform.lossyScale;
 
         // Creates and sets the values for the collider
         MeshCollider collider = newCasing.AddComponent<MeshCollider>();
@@ -47,21 +45,13 @@ public class CaseEjector : MonoBehaviour
         rb.angularDrag = AngularDrag;
         rb.includeLayers = InteractWith;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if (Debug)
+            rb.useGravity = false;
         
         rb.AddForce(transform.right * EjectionForce, ForceMode.Impulse);
-        rb.AddTorque(transform.up * RotationalForce, ForceMode.Impulse);
+        rb.AddTorque(transform.up * Random.Range(MinHorizontalTorque,MaxHorizontalTorque), ForceMode.Impulse);
+        rb.AddTorque(transform.forward * Random.Range(MinVerticalTorque, MaxVerticalTorque), ForceMode.Impulse);
 
         Destroy(newCasing, LifeTime);
     }
 }
-
-//[CustomEditor(typeof(CaseEjector))]
-//public class CaseEjectorInspectorUI : Editor
-//{
-//    public override void OnInspectorGUI()
-//    {
-//        base.OnInspectorGUI();
-//    }
-//}
-
-//public class LayerAttribute : PropertyAttribute { }

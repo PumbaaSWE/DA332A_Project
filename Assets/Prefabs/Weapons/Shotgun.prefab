@@ -561,8 +561,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Casing: {fileID: 919132149155446097, guid: 558296e9932bcda4fb2ce2c305eb1d9c, type: 3}
-  EjectionForce: 0.02
-  RotationalForce: 0.7
+  EjectionForce: 0.03
+  MinHorizontalTorque: 0.7
+  MaxHorizontalTorque: 1
+  MinVerticalTorque: 0
+  MaxVerticalTorque: 0
   CasingLayer: 16
   InteractWith:
     serializedVersion: 2
@@ -572,6 +575,7 @@ MonoBehaviour:
   LinearDrag: 0.1
   AngularDrag: 0.1
   PhysicMat: {fileID: 13400000, guid: df1a2ff67d8a83f4eaa28610f2f35592, type: 2}
+  Debug: 0
 --- !u!1 &2191677642303953252
 GameObject:
   m_ObjectHideFlags: 0
