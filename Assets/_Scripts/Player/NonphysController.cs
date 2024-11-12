@@ -251,7 +251,7 @@ public class NonphysController : MovementController
             velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
 
         // FOV (will probably change this later depending on which other system interact with FOV)
-        if (!wh.EquippedGun.Ads)
+        if (forwardSpeed >= maxWalkSpeed)
         {
             float mainFOV = pc.DefaultFov;
             float fpsFOV = pc.DefaultFpsFov;
