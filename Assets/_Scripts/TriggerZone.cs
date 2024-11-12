@@ -49,7 +49,9 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(triggerBehaviour != TriggerBehaviour.OnExit)
+        if (!other.transform.TryGetComponent(out Player _))
+            return;
+        if (triggerBehaviour != TriggerBehaviour.OnExit)
         {
             TriggerTheZone(other.transform);
         }
@@ -58,6 +60,8 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!other.transform.TryGetComponent(out Player _))
+            return;
         if (triggerBehaviour != TriggerBehaviour.OnEnter)
         {
             TriggerTheZone(other.transform);

@@ -4,9 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.Events;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 public class PauseManager : MonoBehaviour
 {
@@ -15,21 +12,9 @@ public class PauseManager : MonoBehaviour
     PauseModule pauseModule;
     public bool Paused { get { return pauseModule.Paused; } }
     public UnityEvent Triggered;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void InitPauseModule()
     {
         LoadPauseObject();
-        FindPauseModule();
         if(!pauseModule) { return; }
         AssignParent();
         pauseModule.Triggered.AddListener(ManualTrigger);
@@ -71,22 +56,23 @@ public class PauseManager : MonoBehaviour
         pauseObject.transform.parent = transform;
         pauseObject.transform.localPosition = new Vector3(0, 0, 0);
     }
-    [MakeButton]
+    //[MakeButton]
     public void LoadPauseObject()
     {
-        if (Application.isPlaying)
-        {
-            pauseObject = Instantiate(pauseObjectPrefab, Vector3.zero, Quaternion.identity);
-            FindPauseModule();
-        }
+        pauseObject = Instantiate(pauseObjectPrefab, Vector3.zero, Quaternion.identity);
+        FindPauseModule();
+        //if (Application.isPlaying)
+        //{
+
+        //}
     }
-    [MakeButton]
-    public void UnloadPauseScene()
-    {
-        if (Application.isPlaying)
-        {
-            Destroy(pauseObject);
-            pauseModule = null;
-        }
-    }
+    //[MakeButton]
+    //public void UnloadPauseScene()
+    //{
+    //    if (Application.isPlaying)
+    //    {
+    //        Destroy(pauseObject);
+    //        pauseModule = null;
+    //    }
+    //}
 }

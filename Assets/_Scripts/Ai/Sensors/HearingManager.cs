@@ -62,7 +62,7 @@ public class HearingManager : MonoBehaviour
     {
         foreach (var sensor in AllSensors)
         {
-            sensor.OnHeardSound(sourse, location, category, intensity);
+            sensor.OnHeardSound(sourse, location, category, intensity *2);
         }
     }
 }
