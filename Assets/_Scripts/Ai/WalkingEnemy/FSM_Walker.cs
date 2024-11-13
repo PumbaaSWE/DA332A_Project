@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -335,18 +335,18 @@ public class FSM_Walker : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("no range");
+                    //Debug.Log("no range");
                 }
             }
             else
             {
-                Debug.Log("no nav");
+                //Debug.Log("no nav");
             }
 
         }
         else
         {
-            Debug.Log("no target");
+            //Debug.Log("no target");
         }
     }
 

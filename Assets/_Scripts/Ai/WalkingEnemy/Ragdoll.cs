@@ -2,7 +2,6 @@
 using System.Linq;
 using UnityEngine;
 
-using static Regrow;
 
 public class Ragdoll : MonoBehaviour
 {
