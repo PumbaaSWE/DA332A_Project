@@ -10,7 +10,7 @@ public class WeaponHandler : MonoBehaviour
     public AmmoPool AmmunitionPool;
     public List<Firearm> Guns;
     public Firearm EquippedGun;
-    public bool DebugTest;
+    //public bool DebugTest;
     public Transform FirearmRoot;
     [SerializeField] int maxGuns = 2;
 

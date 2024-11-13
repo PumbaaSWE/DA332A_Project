@@ -68,6 +68,9 @@ public class Firearm : MonoBehaviour
     public int Id;
     Animation CurrentAnimation;
     PlayerCamera Camera;
+    NonphysController nc;
+    [SerializeField] ParticleSystem CaseEjectorParticleSystem;
+    [SerializeField] CaseEjector CaseEjector;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +80,7 @@ public class Firearm : MonoBehaviour
         OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
         Animator = GetComponentInParent<Animator>();
         Camera = GetComponentInParent<PlayerCamera>();
+        nc = GetComponentInParent<NonphysController>();
     }
 
     // Update is called once per frame
@@ -86,6 +90,10 @@ public class Firearm : MonoBehaviour
         {
             HipFireSpread = Mathf.Clamp(HipFireSpread - HipFireDecay * Time.deltaTime, MinHipFireSpread, MaxHipFireSpread);
         }
+
+        bool CouldAds = CanAds;
+        if (nc.IsSprinting || (!nc.Grounded && nc.VerticalVelocity > 0))
+            CanAds = false;
 
         if (Ads && CanAds)
         {
@@ -113,13 +121,14 @@ public class Firearm : MonoBehaviour
         Animator.SetFloat("ADS", AdsProcentage);
 
         //Debug.Log($"Hipfire Angle {HipFireAngle}");
+        CanAds = CouldAds;
     }
 
     public void Shoot(CallbackContext context)
     {
         if (context.started)
         {
-            if (LoadedAmmo > 0 && CanFire)
+            if (LoadedAmmo > 0 && CanFire/* && !nc.IsSprinting*/)
             {
                 Firing = true;
                 CanAds = true;
@@ -127,7 +136,7 @@ public class Firearm : MonoBehaviour
                 StartCoroutine(Shoot());
             }
             
-            else if (!IsReloading && LoadedAmmo == 0 && AutoReload)
+            else if (!IsReloading && LoadedAmmo == 0 && AutoReload && WHandler.AmmoLeft(AmmoType))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
@@ -175,7 +184,7 @@ public class Firearm : MonoBehaviour
                         break;
                 }
 
-            if (LoadedAmmo == 0 && AutoReload)
+            if (LoadedAmmo == 0 && AutoReload && WHandler.AmmoLeft(AmmoType))
             {
                 PerformAnimation(Animation.Reloading);
                 CanAds = false;
@@ -371,6 +380,8 @@ public class Firearm : MonoBehaviour
         {
             Animator.SetTrigger("ReloadFinished");
             IsReloading = false;
+            CanAds = true;
+            CanFire = true;
         }
     }
 
@@ -390,6 +401,7 @@ public class Firearm : MonoBehaviour
         //PerformAnimation(Animation.PullingOut);
         IsReloading = false;
         CanFire = true;
+        CanAds = true;
     }
 
     public void Unequip(Action equip)
@@ -398,14 +410,16 @@ public class Firearm : MonoBehaviour
         // Play animation of putting away gun
         PerformAnimation(Animation.Holstering);
         SwitchAction = equip;
-        CanFire = true;
+        CanFire = false;
         IsReloading = false;
+        CanAds = false;
     }
 
     public void Switch()
     {
         //Debug.Log("Switching weapons");
         CanFire = false;
+        CanAds = false;
         SwitchAction.Invoke();
         gameObject.SetActive(false);
     }
@@ -445,6 +459,12 @@ public class Firearm : MonoBehaviour
     public void SetCanAds(int canAds)
     {
         CanAds = Convert.ToBoolean(canAds);
+    }
+
+    public void EjectCasing()
+    {
+        //CaseEjectorParticleSystem.Emit(1);
+        CaseEjector.Eject();
     }
 }
 
