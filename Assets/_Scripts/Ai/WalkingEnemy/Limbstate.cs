@@ -16,7 +16,7 @@ public class Limbstate : MonoBehaviour
     Animator animator;
     int layerIndex = 3;
 
-    public bool standing = true;
+    public bool standing;
 
     private void Awake()
     {
@@ -126,25 +126,31 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
-        if (!standing)
-        {
-            limbStatehit = AgentHit.StandUp;
-        }
+        //if (!standing)
+        //{
+        //    limbStatehit = AgentHit.StandUp;
+        //}
         fsm.SynchronizeAnimatorAndAgent();
     }
     void StandUp()
     {
-        fsm.agentState = FSM_Walker.AgentState.Sleep;
-        animator.Play("Standing Up", 0, 0);
-        limbStatehit = AgentHit.Wait;
+      
+    
+        
+            fsm.agentState = FSM_Walker.AgentState.Sleep;
+            SetLayerActive(false);
+            animator.Play("Standing Up", 0, 0);
+            limbStatehit = AgentHit.Wait;
+        
+
     }
 
     void CheckStanding()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
         {
-            standing = true;
-            SetLayerActive(false);
+           standing = true;
+            
             limbStatehit = AgentHit.Normal;
             fsm.agentState = FSM_Walker.AgentState.Idle;
         }
