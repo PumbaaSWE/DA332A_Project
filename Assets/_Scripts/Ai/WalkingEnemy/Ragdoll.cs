@@ -121,7 +121,10 @@ public class Ragdoll : MonoBehaviour
 
     public void TriggerRagdoll(Vector3 force, Vector3 point)
     {
-        
+        //fsm_Walker.agentState = FSM_Walker.AgentState.Sleep;
+        //Debug.Log("trigger Sleep");
+        //fsm_Walker.sleep = true;
+
         EnableRagdoll();
         Rigidbody rb = rbs.OrderBy(rb => (rb.position - point).sqrMagnitude).First();
 
@@ -182,6 +185,7 @@ public class Ragdoll : MonoBehaviour
 
     void Transition()
     {
+       
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
         if (!stateInfo.IsName("Getting Up") && !stateInfo.IsName("Rolling"))
@@ -195,7 +199,7 @@ public class Ragdoll : MonoBehaviour
                 animator.Play("Rolling", 0, 0);
             }
         }
-       
+      
     }
 
     private void CrawlUpBehaviour()
@@ -209,9 +213,10 @@ public class Ragdoll : MonoBehaviour
             //}
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Getting Up"))
             {
-               
+              
                state = RagdollState.Default;
             }
+            fsm_Walker.sleep = false;
 
             if (limbstate.limbStatehit == Limbstate.AgentHit.Armless || limbstate.limbStatehit == Limbstate.AgentHit.LegAndArmLess)
             {
@@ -227,12 +232,14 @@ public class Ragdoll : MonoBehaviour
         }
         animator.enabled = true;
         controller.enabled = true;
+        fsm_Walker.sleep = false;
         //fsm_Walker.agentState = FSM_Walker.AgentState.Wander;
     }
 
     public void EnableRagdoll()
     {
-        fsm_Walker.agentState = FSM_Walker.AgentState.Sleep;
+        fsm_Walker.sleep = true;
+        //fsm_Walker.agentState = FSM_Walker.AgentState.Sleep;
         for (int i = 0; i < rbs.Length; i++)
         {
             rbs[i].isKinematic = false;

@@ -113,6 +113,7 @@ public class Limbstate : MonoBehaviour
 
     void CrawlBehavior()
     {
+      
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
@@ -121,7 +122,11 @@ public class Limbstate : MonoBehaviour
     void ArmAndLegBehavior()
     {
         standing = false;
-        fsm.agentState = FSM_Walker.AgentState.Sleep;
+        //fsm.agentState = FSM_Walker.AgentState.Sleep;
+
+
+        //////////////////////////
+        //fsm.sleep = true;
     }
     void ArmBehavior()
     {
@@ -133,23 +138,20 @@ public class Limbstate : MonoBehaviour
     }
     void StandUp()
     {
-      
-    
-        
-            fsm.agentState = FSM_Walker.AgentState.Sleep;
-            SetLayerActive(false);
-            animator.Play("Standing Up", 0, 0);
-            limbStatehit = AgentHit.Wait;
-        
 
+        fsm.sleep = true;
+        //fsm.agentState = FSM_Walker.AgentState.Sleep;
+        SetLayerActive(false);
+        animator.Play("Standing Up", 0, 0);
+        limbStatehit = AgentHit.Wait;
     }
 
     void CheckStanding()
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
         {
-           standing = true;
-            
+            standing = true;
+            fsm.sleep = false;
             limbStatehit = AgentHit.Normal;
             fsm.agentState = FSM_Walker.AgentState.Idle;
         }

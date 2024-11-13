@@ -62,6 +62,8 @@ public class FSM_Walker : MonoBehaviour
     float attckTimer;
     Eye eye;
     bool ragdoll;
+
+    public bool sleep;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -90,13 +92,18 @@ public class FSM_Walker : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale == 0 && agent.isStopped == false)
+        //if (Time.timeScale == 0 && agent.isStopped == false)
+        //{
+        //    PauseAgent();
+        //}
+        //else if (Time.timeScale != 0 && agent.isStopped == true)
+        //{
+        //    ResumeAgent();
+        //}
+
+        if(sleep)
         {
-            PauseAgent();
-        }
-        else if (Time.timeScale != 0 && agent.isStopped == true)
-        {
-            ResumeAgent();
+            agentState = AgentState.Sleep;
         }
 
         if (agent.isOnNavMesh)
@@ -125,8 +132,6 @@ public class FSM_Walker : MonoBehaviour
             previousState = agentState;
         }
 
-
-       
     }
 
 
@@ -152,7 +157,7 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-
+                Debug.Log("Sleep");
                
                 break;
             case AgentState.Wander:
@@ -172,6 +177,7 @@ public class FSM_Walker : MonoBehaviour
     }
     void OnStateEnter(AgentState newState)
     {
+        Debug.Log($"Entering state: {newState}");
         if (newState == AgentState.Sleep)
         {
             animator.SetBool("move", false);
