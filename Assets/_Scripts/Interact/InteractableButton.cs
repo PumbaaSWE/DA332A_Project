@@ -18,6 +18,7 @@ public class InteractableButton : MonoBehaviour, IInteractable
     public float InteractedTipDisplayTime => tipDisplayTime;
 
     public UnityEvent<Transform> OnPress;
+    public UnityEvent<Transform> OnSpeculate;
     public void Interact(Transform interactor)
     {
         OnPress?.Invoke(interactor);
@@ -25,6 +26,6 @@ public class InteractableButton : MonoBehaviour, IInteractable
 
     public void SpeculateInteract(Transform interactor)
     {
-        //noop
+        OnSpeculate?.Invoke(interactor);
     }
 }
