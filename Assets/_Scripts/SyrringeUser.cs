@@ -49,7 +49,10 @@ public class SyrringeUser : MonoBehaviour
 
     public void OnInteract()
     {
-        Action_performed(new InputAction.CallbackContext());
+        if (health.Value < health.MaxHealth)
+        {
+            weaponHandler.HideWeapons(() => StartThrow());
+        }
     }
 
     private void StartThrow()
