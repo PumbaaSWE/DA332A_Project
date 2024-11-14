@@ -54,6 +54,12 @@ public class GenericDrawer : MonoBehaviour
 
     public void Interact()
     {
+        if (open == closed)
+        {
+            Debug.LogWarning("GenericDrawer - Open and closed are the same value so the drawer won't move.");
+            return;
+        }
+
         isOpen = !isOpen;
 
         if (isOpen)
