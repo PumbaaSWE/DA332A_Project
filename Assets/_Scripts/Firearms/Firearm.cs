@@ -72,6 +72,8 @@ public class Firearm : MonoBehaviour
     [SerializeField] ParticleSystem CaseEjectorParticleSystem;
     [SerializeField] CaseEjector CaseEjector;
 
+    public event Action OnFire;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -202,7 +204,7 @@ public class Firearm : MonoBehaviour
 
         if (ProportionalAmmoConsumption && projectilesToFire < LoadedAmmo)
             projectilesToFire = LoadedAmmo;
-
+        OnFire?.Invoke();
         for (int x = 0; x < projectilesToFire; x++)
         {
             Vector3 shotDirection = CameraView.forward;

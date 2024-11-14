@@ -47,8 +47,8 @@ public class Elevator : MonoBehaviour
             if (loadedEvent.sceneGroupIndex == nextSceneGroup)
             {
                 warp.GotoEndPos();
-                insideButton.SetActive(false); // replace with in active button?
-
+                //insideButton.SetActive(false); // replace with in active button?
+                insideButton.GetComponent<Collider>().enabled = false;
             }
             else
             {
@@ -136,7 +136,8 @@ public class Elevator : MonoBehaviour
         SceneGroupLoader.Instance.OnLoadingComplete += Instance_OnLoadingComplete;
         SceneGroupLoader.Instance.LoadGroup(nextSceneGroup);
         time = Time.time;
-        insideButton.SetActive(false); // replace with in active button?
+        //insideButton.SetActive(false); // replace with in active button?
+        insideButton.GetComponent<Collider>().enabled = false;
         StartCoroutine(WaitUntilLoadCompletes());
         if(TryGetComponent(out ElevatorWarp warp))
         {
