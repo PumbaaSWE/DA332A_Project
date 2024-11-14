@@ -27,7 +27,7 @@ public class SubtitleHUD : MonoBehaviour
         text.color = ctx.color;
         text.text = ctx.text;
         timer = ctx.time;
-        gameObject.SetActive(true);
+        text.enabled = true;
     }
 
 
@@ -38,7 +38,7 @@ public class SubtitleHUD : MonoBehaviour
         if(timer < 0)
         {
             //text.text = "";
-            gameObject.SetActive(false);
+            text.enabled = false;
         }
     }
 }

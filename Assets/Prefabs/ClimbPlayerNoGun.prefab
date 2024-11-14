@@ -357,7 +357,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 6535383243885454567}
-  FOV: 60
   sprintFOV: 80
   fovLerpTime: 5
   minLookUpAngle: -90
@@ -907,8 +906,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05572ca766deeaa43b7186cf02f4deef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 2
   input: {fileID: 4953037288763317983}
+  fallDuration: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  waitDuration: 1
 --- !u!114 &8441461918083166506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,6 +959,8 @@ MonoBehaviour:
   fpsCam: {fileID: 8938630756811760099}
   defaultFov: 74
   defaultFpsFov: 74
+  bobAmp: 0.01
+  bobFreq: 15
 --- !u!114 &9102501774611305398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,13 +989,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Pools:
   - AmmoType: 0
-    CurrentAmmo: 120
+    CurrentAmmo: 0
     MaxAmmo: 120
   - AmmoType: 1
-    CurrentAmmo: 90
+    CurrentAmmo: 0
     MaxAmmo: 90
   - AmmoType: 2
-    CurrentAmmo: 40
+    CurrentAmmo: 0
     MaxAmmo: 40
 --- !u!1 &6875495369046727866
 GameObject:
