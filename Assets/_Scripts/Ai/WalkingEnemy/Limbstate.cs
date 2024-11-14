@@ -14,8 +14,13 @@ public class Limbstate : MonoBehaviour
 
     Animator animator;
     int layerIndex = 3;
+    int layerIndexNoArms = 4;
+    int layerIndexNoHead = 5;
 
     public bool standing;
+
+    public bool noHead;
+
 
     private void Awake()
     {
@@ -31,6 +36,7 @@ public class Limbstate : MonoBehaviour
         {            
             previousState = limbStatehit;
             OnStateEnter(limbStatehit);
+            OnStateExit(previousState);
         }
 
         CheckLimbs();    
@@ -61,16 +67,42 @@ public class Limbstate : MonoBehaviour
                 break;
         }
     }
+
+    // redo later
     void SetLayerActive(bool isActive)
     {
         float weight = isActive ? 1f : 0f;
         animator.SetLayerWeight(layerIndex, weight);
+    }
+    void SetNoArmsLayerActive(bool isActive)
+    {
+        float weight = isActive ? 1f : 0f;
+        animator.SetLayerWeight(layerIndexNoArms, weight);
+    }
+    void SetNoHeadLayerActive(bool isActive)
+    {
+        float weight = isActive ? 1f : 0f;
+        animator.SetLayerWeight(layerIndexNoHead, weight);
     }
     public void CheckLimbs()
     {
         if (limbStatehit == AgentHit.StandUp || limbStatehit == AgentHit.Wait)
         {
             return;
+        }
+
+        if (regrow.IsHeadDetached())
+        {
+            SetNoHeadLayerActive(true);
+            animator.speed = 0.5f;
+            //animator.SetFloat("LayerSpeed", 0.5f);
+            //animator.SetFloat("velx", 0.5f);
+        }
+        else
+        {
+            animator.speed = 1f;
+            SetNoHeadLayerActive(false);
+            //animator.SetFloat("LayerSpeed", 1f);
         }
 
         if (regrow.IsArmDetached())
@@ -95,6 +127,10 @@ public class Limbstate : MonoBehaviour
             {                
                 limbStatehit = AgentHit.StandUp;
             }
+            else if(standing)
+            {
+                limbStatehit = AgentHit.Normal;
+            }
         }
     }
 
@@ -108,6 +144,13 @@ public class Limbstate : MonoBehaviour
         if (newState == AgentHit.Armless && !standing)
         {
             rag.TriggerRagdoll(Vector3.zero, Vector3.zero);
+        }
+    }
+    void OnStateExit(AgentHit oldState)
+    {
+        if (oldState == AgentHit.Armless)
+        {
+            SetNoArmsLayerActive(false);
         }
     }
 
@@ -135,6 +178,16 @@ public class Limbstate : MonoBehaviour
         //    limbStatehit = AgentHit.StandUp;
         //}
         fsm.SynchronizeAnimatorAndAgent();
+
+        if(standing)
+        {
+            SetNoArmsLayerActive(true);
+        }
+        else
+        {
+            SetNoArmsLayerActive(false);
+        }
+       
     }
     void StandUp()
     {
@@ -162,6 +215,7 @@ public class Limbstate : MonoBehaviour
         {
             limbStatehit = AgentHit.StandUp;
         }
+        SetNoArmsLayerActive(false);
         SetLayerActive(false);
         fsm.SynchronizeAnimatorAndAgent();
     }
