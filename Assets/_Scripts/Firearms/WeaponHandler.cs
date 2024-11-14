@@ -128,6 +128,14 @@ public class WeaponHandler : MonoBehaviour
         return EquippedGun.AdsProcentage;
     }
 
+    public bool IsAds()
+    {
+        if (EquippedGun == null)
+            return false;
+
+        return EquippedGun.Ads;
+    }
+
     public void CycleWeapons(CallbackContext context)
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)

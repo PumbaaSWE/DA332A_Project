@@ -198,14 +198,14 @@ public class NonphysController : MovementController
         {
             float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
         }
-        else if (wh.EquippedGun.Ads)
+        else if (wh.IsAds())
         {
-            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, 1 - wh.EquippedGun.AdsProcentage);
+            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, 1 - wh.GetAdsProcentage());
         }
         else if (sprint)
         {
             float staminaToRemove = sprintCost * dt;
-            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.EquippedGun.Firing)
+            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.IsFiring())
             {
                 // deplete stamina
                 stamina -= staminaToRemove;
