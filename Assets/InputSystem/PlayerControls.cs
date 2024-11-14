@@ -163,6 +163,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""H"",
+                    ""type"": ""Button"",
+                    ""id"": ""86b9c9a6-3f93-4967-b581-bf0b76fa5564"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""G"",
                     ""type"": ""Button"",
                     ""id"": ""c009fb92-049c-4e56-a668-96adedf8373a"",
@@ -617,6 +626,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7628e173-8f34-4236-ba7a-a127367918d5"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""H"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1237,6 +1257,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Item5 = m_Player.FindAction("Item5", throwIfNotFound: true);
         m_Player_Item6 = m_Player.FindAction("Item6", throwIfNotFound: true);
         m_Player_F = m_Player.FindAction("F", throwIfNotFound: true);
+        m_Player_H = m_Player.FindAction("H", throwIfNotFound: true);
         m_Player_G = m_Player.FindAction("G", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
@@ -1330,6 +1351,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Item5;
     private readonly InputAction m_Player_Item6;
     private readonly InputAction m_Player_F;
+    private readonly InputAction m_Player_H;
     private readonly InputAction m_Player_G;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Escape;
@@ -1353,6 +1375,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Item5 => m_Wrapper.m_Player_Item5;
         public InputAction @Item6 => m_Wrapper.m_Player_Item6;
         public InputAction @F => m_Wrapper.m_Player_F;
+        public InputAction @H => m_Wrapper.m_Player_H;
         public InputAction @G => m_Wrapper.m_Player_G;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @Escape => m_Wrapper.m_Player_Escape;
@@ -1411,6 +1434,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @F.started += instance.OnF;
             @F.performed += instance.OnF;
             @F.canceled += instance.OnF;
+            @H.started += instance.OnH;
+            @H.performed += instance.OnH;
+            @H.canceled += instance.OnH;
             @G.started += instance.OnG;
             @G.performed += instance.OnG;
             @G.canceled += instance.OnG;
@@ -1472,6 +1498,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @F.started -= instance.OnF;
             @F.performed -= instance.OnF;
             @F.canceled -= instance.OnF;
+            @H.started -= instance.OnH;
+            @H.performed -= instance.OnH;
+            @H.canceled -= instance.OnH;
             @G.started -= instance.OnG;
             @G.performed -= instance.OnG;
             @G.canceled -= instance.OnG;
@@ -1689,6 +1718,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnItem5(InputAction.CallbackContext context);
         void OnItem6(InputAction.CallbackContext context);
         void OnF(InputAction.CallbackContext context);
+        void OnH(InputAction.CallbackContext context);
         void OnG(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnEscape(InputAction.CallbackContext context);
