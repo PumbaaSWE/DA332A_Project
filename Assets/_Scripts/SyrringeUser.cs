@@ -47,11 +47,19 @@ public class SyrringeUser : MonoBehaviour
         }
     }
 
+    public void OnInteract()
+    {
+        Action_performed(new InputAction.CallbackContext());
+    }
+
     private void StartThrow()
     {
         syrringeArms.SetActive(true);
     }
 
+    /// <summary>
+    /// ONLY CALL FROM SYRRINGEANIMATIONCALLBACK
+    /// </summary>
     public void UseSyrringe()
     {
         if (!TryGetComponent(out Health health))
@@ -72,6 +80,9 @@ public class SyrringeUser : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ONLY CALL FROM SYRRINGEANIMATIONCALLBACK
+    /// </summary>
     public void UseFinished()
     {
         syrringeArms.SetActive(false);
