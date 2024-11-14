@@ -1452,8 +1452,7 @@ MonoBehaviour:
   left: {fileID: 2052279727}
   top: {fileID: 2046966430}
   bottom: {fileID: 1466935645}
-  degreesIncrease: 1
-  degreesDecay: 7
+  degreesMultiplier: 7
 --- !u!1 &2046966429
 GameObject:
   m_ObjectHideFlags: 0
@@ -2050,6 +2049,7 @@ MonoBehaviour:
   text: {fileID: 3043973842468129661}
   progressBar: {fileID: 0}
   currentHealth: 0
+  offset: 0
   debug: 0
 --- !u!1 &2534823018055334393
 GameObject:
@@ -2579,12 +2579,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2531726791002629398, guid: 56d5db414740e494191f6c9fa1f580bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6225053109817369495, guid: 56d5db414740e494191f6c9fa1f580bb,
         type: 3}
       propertyPath: m_Name
       value: TakeDamageHUD
       objectReference: {fileID: 0}
     - target: {fileID: 6225053109817369495, guid: 56d5db414740e494191f6c9fa1f580bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7107704545948800084, guid: 56d5db414740e494191f6c9fa1f580bb,
         type: 3}
       propertyPath: m_IsActive
       value: 0
