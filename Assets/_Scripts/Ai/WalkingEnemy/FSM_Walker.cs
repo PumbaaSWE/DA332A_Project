@@ -177,7 +177,7 @@ public class FSM_Walker : MonoBehaviour
     }
     void OnStateEnter(AgentState newState)
     {
-        Debug.Log($"Entering state: {newState}");
+       
         if (newState == AgentState.Sleep)
         {
             animator.SetBool("move", false);
