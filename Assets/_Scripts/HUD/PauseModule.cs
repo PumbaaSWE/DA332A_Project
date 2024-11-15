@@ -9,7 +9,6 @@ public class PauseModule : MonoBehaviour
     Transform pauseMenu;
     Transform settingsMenu;
     Transform controlsMenu;
-    [SerializeField] GameObject LoadMainMenuPrefab;
     [SerializeField] bool paused = false;
     public bool Paused { get { return paused; } }
     public UnityEvent Triggered;
@@ -113,8 +112,8 @@ public class PauseModule : MonoBehaviour
     }
     void Quit()
     {
-        //Enviroment quit
-        //Resume TimeScale
+        Time.timeScale = 1;
+        gameObject.GetComponent<ExitGame>().Quit();
     }
     void MainMenu()
     {

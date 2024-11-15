@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7095531332926698299}
   - component: {fileID: 7053410696894920740}
+  - component: {fileID: 663745030769020626}
   m_Layer: 0
   m_Name: PauseObject
   m_TagString: Untagged
@@ -122,12 +123,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae568ba2f2f642b418d7ef4064217d6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadMainMenuPrefab: {fileID: 8535211536160929573, guid: cf76d14f9fdae514684469e4f3fbb3b1,
-    type: 3}
   paused: 0
   Triggered:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &663745030769020626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559896413558243191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008e850af003b684180d624f99d95942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &570067435156204974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1754,6 +1765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3833231045996397921}
+  - component: {fileID: 2929009713399393831}
   m_Layer: 0
   m_Name: ControlsMenu
   m_TagString: Untagged
@@ -1778,6 +1790,19 @@ Transform:
   - {fileID: 9194716868516074386}
   m_Father: {fileID: 7095531332926698299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2929009713399393831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243398164973500099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639a6c9da96daf14b9ec3a5a20137bdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
 --- !u!1 &5389119018322746300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2260,7 +2285,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 64.5}
-  m_SizeDelta: {x: 240, y: 50}
+  m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4420631100715563729
 CanvasRenderer:
