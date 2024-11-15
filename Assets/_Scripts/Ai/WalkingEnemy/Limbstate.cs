@@ -95,6 +95,7 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
+            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }

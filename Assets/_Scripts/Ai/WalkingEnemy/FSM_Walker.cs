@@ -157,7 +157,6 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-                Debug.Log("Sleep");
                
                 break;
             case AgentState.Wander:
@@ -321,40 +320,72 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
-
     private void ChaseBehaviour()
     {
         eye.AngryEye();
-        if (currentTarget.transform)
+
+        if (currentTarget?.transform == null)
         {
-            if (agent.isOnNavMesh)
+            agentState = AgentState.Idle;
+            return;
+        }
+
+        if (agent.isOnNavMesh)
+        {
+            float distanceToTarget = Vector3.Distance(agent.transform.position, currentTarget.transform.position);
+
+            if (distanceToTarget > minAttackRange)
+            {
+                MoveTo(currentTarget.transform.position);
+
+            }
+
+            if (distanceToTarget <= 6 /*&& distanceToTarget >= attackRange*/)
             {
 
-                if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
-                {
-                    MoveTo(currentTarget.transform.position);
-                }
-                if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
-                {
-                    agentState = AgentState.Attacking;
-                    agent.isStopped = true;
-                }
-                else
-                {
-                    //Debug.Log("no range");
-                }
+                animator.SetLayerWeight(6, 1);
+                animator.SetBool("Charge", true);
+                StartCoroutine(AttackCooldown(.4f));
+
             }
             else
             {
-                //Debug.Log("no nav");
+                animator.SetLayerWeight(6, 0);
+                animator.SetBool("Charge", false);
             }
 
-        }
-        else
-        {
-            //Debug.Log("no target");
+            if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+            {
+                agentState = AgentState.Attacking;
+                agent.isStopped = true;
+            }
         }
     }
+
+
+    //private void ChaseBehaviour()
+    //{
+    //    eye.AngryEye();
+    //    if (currentTarget.transform)
+    //    {
+    //        if (agent.isOnNavMesh)
+    //        {
+
+    //            if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
+    //            {
+    //                MoveTo(currentTarget.transform.position);
+    //            }
+    //            if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+    //            {
+    //                agentState = AgentState.Attacking;
+    //                agent.isStopped = true;
+    //            }
+    //        }
+
+
+    //    }
+
+    //}
 
     public void HandleCrawling()
     {
@@ -435,6 +466,8 @@ public class FSM_Walker : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        animator.SetLayerWeight(6, 0);
+        animator.SetBool("Charge", false);
 
         eye.AngryEye();
 
@@ -487,17 +520,21 @@ public class FSM_Walker : MonoBehaviour
             StartCoroutine(AttackCooldown(.5f));
         //}
     }
-    private IEnumerator CrawlAttackCooldown(float t)
-    {
-        yield return new WaitForSeconds(t);
-        animator.SetBool("CrawlAttack", true);
-    }
     private IEnumerator AttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
         DoDmg(1f);
         animator.SetInteger("Attack", 0);
     }
+
+
+    private IEnumerator CrawlAttackCooldown(float t)
+    {
+        yield return new WaitForSeconds(t);
+        animator.SetBool("CrawlAttack", true);
+    }
+   
+
     private IEnumerator AnimationCooldown(int idx, float t)
     {
         yield return new WaitForSeconds(t);
