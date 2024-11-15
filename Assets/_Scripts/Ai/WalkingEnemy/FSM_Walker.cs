@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -62,6 +62,8 @@ public class FSM_Walker : MonoBehaviour
     float attckTimer;
     Eye eye;
     bool ragdoll;
+
+    public bool sleep;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -90,13 +92,27 @@ public class FSM_Walker : MonoBehaviour
 
     void Update()
     {
+        //if (Time.timeScale == 0 && agent.isStopped == false)
+        //{
+        //    PauseAgent();
+        //}
+        //else if (Time.timeScale != 0 && agent.isStopped == true)
+        //{
+        //    ResumeAgent();
+        //}
+
+        if(sleep)
+        {
+            agentState = AgentState.Sleep;
+        }
+
         if (agent.isOnNavMesh)
         {
             if (!agent.pathPending && !agent.isOnOffMeshLink && destinationSet && (agent.remainingDistance <= agent.stoppingDistance))
             {
                 destinationSet = false;
                 reachedDestination = true;
-                //agentState = AgentState.Idle;
+                agentState = AgentState.Idle;
             }
         }
 
@@ -115,10 +131,6 @@ public class FSM_Walker : MonoBehaviour
             reachedDestination = true;
             previousState = agentState;
         }
-
-
-       
-      
 
     }
 
@@ -145,7 +157,8 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-   
+                Debug.Log("Sleep");
+               
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -164,6 +177,7 @@ public class FSM_Walker : MonoBehaviour
     }
     void OnStateEnter(AgentState newState)
     {
+       
         if (newState == AgentState.Sleep)
         {
             animator.SetBool("move", false);
@@ -325,8 +339,20 @@ public class FSM_Walker : MonoBehaviour
                     agentState = AgentState.Attacking;
                     agent.isStopped = true;
                 }
+                else
+                {
+                    //Debug.Log("no range");
+                }
+            }
+            else
+            {
+                //Debug.Log("no nav");
             }
 
+        }
+        else
+        {
+            //Debug.Log("no target");
         }
     }
 
@@ -456,10 +482,10 @@ public class FSM_Walker : MonoBehaviour
         //    StartCoroutine(AttackCooldown(.4f));
         //}
         //else
-        {
+        //{
             animator.SetInteger("Attack", Random.Range(1, 4));
             StartCoroutine(AttackCooldown(.5f));
-        }
+        //}
     }
     private IEnumerator CrawlAttackCooldown(float t)
     {
@@ -492,8 +518,24 @@ public class FSM_Walker : MonoBehaviour
         }
 
     }
+    public void PauseAgent()
+    {
+        agent.isStopped = true;
+    }
+
+    public void ResumeAgent()
+    {
+        agent.isStopped = false;
+     
+    }
+
+   
+
+
     private void OnAnimatorMove()
     {
+        //if (Time.timeScale == 0) return;
+
         Vector3 rootPosition = animator.rootPosition;
 
         rootPosition.y = agent.nextPosition.y;
@@ -501,13 +543,12 @@ public class FSM_Walker : MonoBehaviour
         CharacterController cc = GetComponent<CharacterController>();
         if (cc)
         {
-            bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
+            bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.unscaledDeltaTime);
 
             if (grouned)
             {
                 if (!wasGrounded)
                 {
-
                     agent.Warp(transform.position);
                 }
                 else
@@ -529,7 +570,10 @@ public class FSM_Walker : MonoBehaviour
             rb.MovePosition(rootPosition);
             agent.nextPosition = rootPosition;
         }
+
     }
+
+
 
     public void OnDrawGizmos()
     {

@@ -48,12 +48,12 @@ public class ElevatorWarp : MonoBehaviour
 
         for (int i = 0; i < objects.Count; i++)
         {
-            objects[i].transform.RotateAround(end, Vector3.up, angle);
+            objects[i].transform.RotateAround(end, Vector3.up, -angle);
 
         }
         transform.rotation = endRot;
 
-        GetComponent<ElevatorDoors>().ComputeDoorPos();
+        //GetComponent<ElevatorDoors>().ComputeDoorPos();
     }
 
     [MakeButton]

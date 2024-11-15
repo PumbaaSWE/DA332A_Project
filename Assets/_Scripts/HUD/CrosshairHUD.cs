@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,14 +8,13 @@ public class CrosshairHUD : MonoBehaviour
     [SerializeField] RectTransform left;
     [SerializeField] RectTransform top;
     [SerializeField] RectTransform bottom;
+    RectTransform[] transforms;
     PlayerDataSO playerData;
     WeaponHandler weaponHandler;
-    [SerializeField] private float degreesIncrease = 1.0f;
-    [SerializeField] private float degreesDecay = 7.0f;
+    [SerializeField] private float degreesMultiplier = 7.0f;
     private float degrees = 0;
     private float minDegrees = 0;
     private float maxDegrees = 10.0f;
-    private int oldMagazineCount = 0;
     private float offset = 20;
     private float maxOffset = 20;
     private float minOffset = 15;
@@ -31,6 +31,11 @@ public class CrosshairHUD : MonoBehaviour
         {
             FindEquippedFireArm();
         }
+        transforms = new RectTransform[4];
+        transforms[0] = right;
+        transforms[1] = left;
+        transforms[2] = top;
+        transforms[3] = bottom;
     }
     void FindEquippedFireArm()
     {
@@ -38,12 +43,9 @@ public class CrosshairHUD : MonoBehaviour
         if (playerParent != null)
         {
             weaponHandler = playerParent.GetComponent<WeaponHandler>();
-            //TooltipUtil.Display("Press left click to shoot", 10.0f);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         if (weaponHandler)
@@ -66,34 +68,21 @@ public class CrosshairHUD : MonoBehaviour
     }
     void CalculateDegrees()
     {
-        if (weaponHandler.EquippedGun)
+        degrees = weaponHandler.GetHipfireAngle();
+        ApplyAds();
+    }
+    void ApplyAds()
+    {
+        float percentage = weaponHandler.GetAdsProcentage();
+        offset = minOffset * percentage + (maxOffset * (1 - percentage));
+        offset = Mathf.Clamp(offset, minOffset, maxOffset);
+        percentage = 0 + (1 - 1 * percentage);
+        foreach(RectTransform transform in transforms)
         {
-            if (weaponHandler.EquippedGun.Firing && degrees <= (maxDegrees - (degreesIncrease/2)))
-            {
-                
-                int delta = oldMagazineCount - weaponHandler.GetMagazineCount();
-                delta = Mathf.Clamp(delta, 0, oldMagazineCount);
-                if (delta > 0)
-                {
-                    degrees = weaponHandler.EquippedGun.HipFireSpread;
-                }
-                //degrees += degreesIncrease * delta;
-            }
-            else
-            {
-                degrees -= degreesDecay * Time.deltaTime;
-            }
-            oldMagazineCount = weaponHandler.GetMagazineCount();
-            if (weaponHandler.EquippedGun.Ads)
-            {
-                offset -= degreesDecay * Time.deltaTime;
-                offset = Mathf.Clamp(offset, minOffset, maxOffset);
-            }
-            else
-            {
-                offset += degreesDecay * Time.deltaTime * 2;
-                offset = Mathf.Clamp(offset, minOffset, maxOffset);
-            }
+            Image image = transform.GetComponent<Image>();
+            Outline outline = transform.GetComponent<Outline>();
+            image.color = new Color(image.color.r, image.color.g, image.color.b, percentage);
+            outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, percentage);
         }
     }
 }

@@ -115,6 +115,6 @@ public class FlareThrower : MonoBehaviour
     public void ThrowFinished()
     {
         flareArms.SetActive(false);
-        weaponHandler.UnideWeapons();
+        weaponHandler.UnHideWeapons();
     }
 }

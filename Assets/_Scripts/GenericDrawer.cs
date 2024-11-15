@@ -54,6 +54,12 @@ public class GenericDrawer : MonoBehaviour
 
     public void Interact()
     {
+        if (open == closed)
+        {
+            Debug.LogWarning("GenericDrawer - Open and closed are the same value so the drawer won't move.");
+            return;
+        }
+
         isOpen = !isOpen;
 
         if (isOpen)
@@ -88,6 +94,8 @@ public class GenericDrawer : MonoBehaviour
 
         if (collideWithPlayer)
         {
+            UpdateColliders();
+
             foreach (var collider in colliders)
             {
                 Vector3 closestPoint = collider.ClosestPoint(player.transform.position + Vector3.up * player.CurrentHeight / 2f);
@@ -122,6 +130,19 @@ public class GenericDrawer : MonoBehaviour
         }
 
         transform.localPosition = Vector3.Lerp(startPos, endPos, timer / duration);
+    }
+
+    void UpdateColliders()
+    {
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i] == null || !colliders[i].transform.IsChildOf(transform))
+            {
+                //Debug.Log("GenericDrawer - Updating colliders");
+                colliders = GetComponentsInChildren<BoxCollider>();
+                break;
+            }
+        }
     }
 
     void PlayClip(AudioClip clip)

@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayVoiceline : MonoBehaviour
 {
@@ -9,9 +7,19 @@ public class PlayVoiceline : MonoBehaviour
     [SerializeField] private bool playOnStart = false;
     [SerializeField] private float delay = 1;
 
+    [SerializeField] private VoicelineData[] voicelines;
+
     public void Play()
     {
-        SimpleVoiceManager.Instance.QueueVoiceLine(voiceline);
+        if(voiceline)
+            SimpleVoiceManager.Instance.QueueVoiceLine(voiceline);
+        if(voicelines != null)
+        {
+            for (int i = 0; i < voicelines.Length; i++)
+            {
+                SimpleVoiceManager.Instance.QueueVoiceLine(voicelines[i]);
+            }
+        }
     }
 
     void Start()

@@ -20,7 +20,7 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
 
     public void QueueVoiceLine(VoicelineData voiceline)
     {
-        if (source.isPlaying)
+        if (source.isPlaying || queue.Count > 0)
         {
             queue.Enqueue(voiceline);
         }
@@ -61,7 +61,7 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
     {
         if (source.isPlaying) {
             float t = source.time / clipLength;
-
+            return;
         }
 
         if(queue.TryDequeue(out VoicelineData voiceline))

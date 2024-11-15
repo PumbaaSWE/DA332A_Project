@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
 
 public class WeaponHandler : MonoBehaviour
@@ -10,10 +11,14 @@ public class WeaponHandler : MonoBehaviour
     public AmmoPool AmmunitionPool;
     public List<Firearm> Guns;
     public Firearm EquippedGun;
-    public bool DebugTest;
+    //public bool DebugTest;
     public Transform FirearmRoot;
     [SerializeField] int maxGuns = 2;
-
+    public UnityEvent OnShoot;
+    public UnityEvent OnSwitchStart;
+    public UnityEvent OnSwitchEnd;
+    public UnityEvent OnReloadStart;
+    public UnityEvent OnReloadEnd;
 
     public int MaxGuns => maxGuns;
 
@@ -51,7 +56,7 @@ public class WeaponHandler : MonoBehaviour
         
     }
 
-    public void EqiupGun()
+    public void EquipGun()
     {
         if (EquippedGun == null && Guns.Count > 0)
         {
@@ -112,6 +117,7 @@ public class WeaponHandler : MonoBehaviour
         return AmmunitionPool[EquippedGun.AmmoType];
     }
 
+    /// <returns>Current Hipfire angle of the equipped gun</returns>
     public float GetHipfireAngle()
     {
         if (EquippedGun == null)
@@ -120,6 +126,7 @@ public class WeaponHandler : MonoBehaviour
         return EquippedGun.HipFireSpread;
     }
 
+    /// <returns>How much the equipped gun's sights are aimed down</returns>
     public float GetAdsProcentage()
     {
         if (EquippedGun == null)
@@ -128,12 +135,24 @@ public class WeaponHandler : MonoBehaviour
         return EquippedGun.AdsProcentage;
     }
 
+    /// <returns>Is the player aiming down sights</returns>
+    public bool IsAds()
+    {
+        if (EquippedGun == null)
+            return false;
+
+        return EquippedGun.Ads;
+    }
+
     public void CycleWeapons(CallbackContext context)
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
     }
 
+    /// <summary>
+    /// Hides the curren weapon. Used when switching guns
+    /// </summary>
     public void HideWeapons(Action onHide)
     {
         if (EquippedGun)
@@ -146,7 +165,10 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
-    public void UnideWeapons()
+    /// <summary>
+    /// Enables the currently equipped gun. Used when switching guns
+    /// </summary>
+    public void UnHideWeapons()
     {
         if(EquippedGun)
             EquippedGun.Equip();
@@ -160,7 +182,10 @@ public class WeaponHandler : MonoBehaviour
             {
                 Guns[gun].Equip();
                 EquippedGun = Guns[gun];
+                OnSwitchEnd.Invoke();
             });
+
+            OnSwitchStart.Invoke();
         }
     }
 
@@ -188,7 +213,7 @@ public class WeaponHandler : MonoBehaviour
             EquippedGun = Guns[index];
         }
 
-        // 
+        // Adds new gun
         else
         {
             GameObject gun = Instantiate(newGun.gameObject, FirearmRoot);
@@ -209,7 +234,11 @@ public class WeaponHandler : MonoBehaviour
     public void Shoot(CallbackContext context)
     {
         if (EquippedGun != null)
+        {
             EquippedGun.Shoot(context);
+            OnShoot.Invoke();
+            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
+        }
     }
 
     public void AimDownSights(CallbackContext context)
@@ -227,7 +256,10 @@ public class WeaponHandler : MonoBehaviour
     public void Reload(CallbackContext context)
     {
         if (EquippedGun != null)
+        {
             EquippedGun.Reload(context);
+            OnReloadStart.Invoke();
+        }
     }
 
     public bool IsFiring()

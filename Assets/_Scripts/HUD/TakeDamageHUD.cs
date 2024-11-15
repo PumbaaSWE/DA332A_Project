@@ -61,6 +61,11 @@ public class TakeDamageHUD : MonoBehaviour
         player.UnsubscribeOnPlayerChanged(SetPlayer);
     }
 
+    private void OnHealthChanged(float delta)
+    {
+
+    }
+
     private void TakeDamage(Vector3 point, Vector3 direction, float delta)
     {
         //image.material.color = UnityEngine.Color.red;
