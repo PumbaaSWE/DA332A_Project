@@ -27,8 +27,6 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
 
     public void Interact(Transform interactor)
     {
-
-
         if (interactor.TryGetComponent(out WeaponHandler weaponHandler))
         {
             if (weaponHandler.HasGun(GunPrefab.Id))
@@ -42,12 +40,13 @@ public class FirearmPickUp : MonoBehaviour, IInteractable
                 Destroy(gameObject);
             }
         }
+        // Who added this? Don't remember adding this - Alex
         //lol
-        if (rb)
-        {
-            rb.AddForce(Vector3.up, ForceMode.Impulse);
-            rb.AddTorque(interactor.right * .125f, ForceMode.Impulse);
-        }
+        //if (rb)
+        //{
+        //    rb.AddForce(Vector3.up, ForceMode.Impulse);
+        //    rb.AddTorque(interactor.right * .125f, ForceMode.Impulse);
+        //}
         
     }
 
