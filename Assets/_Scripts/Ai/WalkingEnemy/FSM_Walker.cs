@@ -529,55 +529,51 @@ public class FSM_Walker : MonoBehaviour
      
     }
 
+   
+
+
     private void OnAnimatorMove()
     {
+        //if (Time.timeScale == 0) return;
 
         Vector3 rootPosition = animator.rootPosition;
 
         rootPosition.y = agent.nextPosition.y;
 
-        transform.position = rootPosition;
-        agent.nextPosition = rootPosition;
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc)
+        {
+            bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.unscaledDeltaTime);
 
+            if (grouned)
+            {
+                if (!wasGrounded)
+                {
+                    agent.Warp(transform.position);
+                }
+                else
+                {
+                    transform.position = transform.position.WithY(agent.nextPosition.y);
+                    agent.nextPosition = transform.position;
+                }
+                wasGrounded = true;
+            }
+            else
+            {
+                wasGrounded = false;
+                agent.nextPosition = transform.position;
+            }
+        }
+        else
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.MovePosition(rootPosition);
+            agent.nextPosition = rootPosition;
+        }
 
-        //Vector3 rootPosition = animator.rootPosition;
-
-        //rootPosition.y = agent.nextPosition.y;
-
-        //CharacterController cc = GetComponent<CharacterController>();
-        //if (cc)
-        //{
-        //    //if (Time.timeScale == 0) return;
-
-        //    bool grouned = cc.SimpleMove((rootPosition - transform.position) / Time.deltaTime);
-
-        //    if (grouned)
-        //    {
-        //        if (!wasGrounded)
-        //        {
-
-        //            agent.Warp(transform.position);
-        //        }
-        //        else
-        //        {
-        //            transform.position = transform.position.WithY(agent.nextPosition.y);
-        //            agent.nextPosition = transform.position;
-        //        }
-        //        wasGrounded = true;
-        //    }
-        //    else
-        //    {
-        //        wasGrounded = false;
-        //        agent.nextPosition = transform.position;
-        //    }
-        //}
-        //else
-        //{
-        //    Rigidbody rb = GetComponent<Rigidbody>();
-        //    rb.MovePosition(rootPosition);
-        //    agent.nextPosition = rootPosition;
-        //}
     }
+
+
 
     public void OnDrawGizmos()
     {
