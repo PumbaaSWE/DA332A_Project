@@ -89,6 +89,6 @@ public class SyrringeUser : MonoBehaviour
     public void UseFinished()
     {
         syrringeArms.SetActive(false);
-        weaponHandler.UnideWeapons();
+        weaponHandler.UnHideWeapons();
     }
 }

@@ -163,8 +163,6 @@ public class Firearm : MonoBehaviour
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
-            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
-
             CanFire = false;
             //Player.Rotate(VerticalRecoil, Random.Range(MinHorizontalRecoil, MaxHorizontalRecoil));
             StopCoroutine(Recoil());
@@ -336,6 +334,7 @@ public class Firearm : MonoBehaviour
 
         CanAds = true;
         IsReloading = false;
+        WHandler.OnReloadEnd.Invoke();
     }
 
     public void Reload(CallbackContext context)
@@ -384,6 +383,7 @@ public class Firearm : MonoBehaviour
             IsReloading = false;
             CanAds = true;
             CanFire = true;
+            WHandler.OnReloadEnd.Invoke();
         }
     }
 
