@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 5715870774486027711}
   - component: {fileID: 9102501774611305398}
   - component: {fileID: -1855847554356268370}
+  - component: {fileID: 3808755127350680896}
   m_Layer: 2
   m_Name: ClimbPlayerNoGun
   m_TagString: Player
@@ -370,6 +371,7 @@ MonoBehaviour:
   maxSprintSpeed: 6
   drag: 7.5
   jumpVel: 4
+  jumpHeight: 0
   gravity: 9.81
   slopeAngle: 35
   crouchSpeed: 5
@@ -762,6 +764,21 @@ MonoBehaviour:
   EquippedGun: {fileID: 0}
   FirearmRoot: {fileID: 4190714404330901810}
   maxGuns: 2
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8933594849806044713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,6 +1037,21 @@ MonoBehaviour:
   - AmmoType: 2
     CurrentAmmo: 0
     MaxAmmo: 40
+--- !u!114 &3808755127350680896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149285530546776101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8274c2b5a1d5f7499246d2a38f2b033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stamina: 0
+  maxStamina: 0
+  controller: {fileID: 0}
 --- !u!1 &6875495369046727866
 GameObject:
   m_ObjectHideFlags: 0
