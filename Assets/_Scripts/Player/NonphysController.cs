@@ -31,6 +31,7 @@ public class NonphysController : MovementController
     [Tooltip("Only applies to horizontal movement")]
     [SerializeField] float drag = 7.5f;
     [SerializeField] float jumpVel = 4f;
+    [SerializeField] float jumpHeight = 0f;
     [SerializeField] float gravity = 9.81f;
     [SerializeField] float slopeAngle = 35f;
 
@@ -509,6 +510,9 @@ public class NonphysController : MovementController
 
         // deplete stamina
         stamina -= jumpCost;
+
+        if (jumpHeight != 0)
+            jumpVel = Mathf.Sqrt(2 * gravity * jumpHeight);
 
         velocity = velocity.WithY(jumpVel);
         jump = true;
