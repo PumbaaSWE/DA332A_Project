@@ -6,7 +6,7 @@ public class DetectableTarget : MonoBehaviour
     public bool bosted = false;
     void Start()
     {
-        DetectableTargetManager.Instance.Register(this);
+        DetectableTargetManager.Instance.OrNull()?.Register(this);
     }
 
 
@@ -14,7 +14,7 @@ public class DetectableTarget : MonoBehaviour
     private void OnDisable()
     {
         
-        DetectableTargetManager.Instance.Deregister(this);
+        DetectableTargetManager.Instance.OrNull()?.Deregister(this);
         
     }
 }

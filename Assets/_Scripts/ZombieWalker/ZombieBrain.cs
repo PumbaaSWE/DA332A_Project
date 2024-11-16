@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +10,10 @@ public class ZombieBrain : MonoBehaviour
     [SerializeField] Transform target;
 
     [SerializeField] float meleeRange = 2;
+    [SerializeField] float meleeDamage = 10;
+    [SerializeField] LayerMask meleeMask;
     [SerializeField] ZombieSensor sensor;
+    bool attacking;
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +71,8 @@ public class ZombieBrain : MonoBehaviour
         {
             animator.SetBool("AttackBool", true);
             agent.isStopped = true;
-
+          //  if(!attacking)StopCoroutine(DoDamageCoroutine());
+            attacking = true;
             float angleDelta = 360 * dt;
             float angle = Vector3.SignedAngle(transform.forward, sensor.TargetDir, Vector3.up);
             float r = Mathf.Clamp(angle, -angleDelta, angleDelta);
@@ -78,8 +83,33 @@ public class ZombieBrain : MonoBehaviour
         else
         {
             animator.SetBool("AttackBool", false);
+           // StopCoroutine(DoDamageCoroutine());
             agent.isStopped = false;
+            attacking = false;
             agent.SetDestination(sensor.TargetPos);
+        }
+    }
+
+    private IEnumerator DoDamageCoroutine()
+    {
+        while (attacking)
+        {
+            yield return new WaitForSeconds(.4f);
+            DoDamage();
+            yield return new WaitForSeconds(.4f);
+        }
+    }
+    private void DoDamage()
+    {
+        Debug.Log("DoDammage called?");
+        Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + sensor.TargetDir, Color.red, .5f);
+        if(Physics.Raycast(transform.position + Vector3.up, sensor.TargetDir, out RaycastHit hit, meleeRange, meleeMask, QueryTriggerInteraction.Ignore))
+        {
+            Debug.Log("hit" + hit.transform.gameObject.name);
+            if (hit.transform.TryGetComponent(out IDamageble damageble))
+            {
+                damageble.TakeDamage(hit.point, sensor.TargetDir, meleeDamage);
+            }
         }
     }
 

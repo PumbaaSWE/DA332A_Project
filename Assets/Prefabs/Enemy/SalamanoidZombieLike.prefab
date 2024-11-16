@@ -2043,8 +2043,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
   visionRange: 10
-  looseSightTime: 1
-  visionRangeFar: 20
   visionMask:
     serializedVersion: 2
     m_Bits: 16383
@@ -2086,6 +2084,10 @@ MonoBehaviour:
   agent: {fileID: 169827038758325854}
   target: {fileID: 0}
   meleeRange: 2
+  meleeDamage: 10
+  meleeMask:
+    serializedVersion: 2
+    m_Bits: 4
   sensor: {fileID: 6208023156711563672}
 --- !u!114 &7353401373295125943
 MonoBehaviour:

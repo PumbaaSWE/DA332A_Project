@@ -40,7 +40,10 @@ public class SimpleAgent : MonoBehaviour
         player.NotifyOnPlayerChanged(OnPlayer);
         health = GetComponent<Health>();
         ragdollController = GetComponent<RagdollController>();
-        health.OnDeath += (x) => { ragdollController.EnableRagdoll(); Destroy(gameObject, 10); };
+        if (ragdollController)
+        {
+            health.OnDeath += (x) => { ragdollController.EnableRagdoll(); Destroy(gameObject, 10); };
+        }
     }
 
 
@@ -82,7 +85,7 @@ public class SimpleAgent : MonoBehaviour
     }
 
 
-    static readonly Collider[] others = new Collider[20];
+    static readonly Collider[] others = new Collider[10];
     private void CheckAvoid()
     {
         avoid = Vector3.zero;
@@ -100,10 +103,10 @@ public class SimpleAgent : MonoBehaviour
         timer -= dt;
         if (timer < 0)
         {
-            timer = 10;
+            timer = forgetTime;
             Vector3 pos = transform.position + Random.onUnitSphere * 10;
             controller.SetTarget(pos);
-            lookAt.lookAtTargetPosition = pos;
+            if(lookAt)lookAt.lookAtTargetPosition = pos;
         }
     }
 
@@ -134,8 +137,8 @@ public class SimpleAgent : MonoBehaviour
 
     private void HandleLooking()
     {
-        Debug.Log("HandleLooking");
-        Debug.Log(Time.time - lastSeenTime + " " + Time.time + " " + lastSeenTime);
+        //Debug.Log("HandleLooking");
+        //Debug.Log(Time.time - lastSeenTime + " " + Time.time + " " + lastSeenTime);
         
         if (Time.time - lastSeenTime > forgetTime)
         {
@@ -158,7 +161,7 @@ public class SimpleAgent : MonoBehaviour
             {
                 lastSeenPos = target.position;
                 lastSeenTime = Time.time;
-                lookAt.lookAtTargetPosition = lastSeenPos;
+                if (lookAt) lookAt.lookAtTargetPosition = lastSeenPos;
                 if (mindlessState != AgentState.Avoiding) mindlessState = AgentState.Chasing;
                 //Debug.Log("See target");
             }
