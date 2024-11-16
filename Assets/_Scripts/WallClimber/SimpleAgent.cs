@@ -32,6 +32,7 @@ public class SimpleAgent : MonoBehaviour
 
     Health health;
     RagdollController ragdollController;
+    Vector3 spawnPos;
 
     void Start()
     {
@@ -44,6 +45,7 @@ public class SimpleAgent : MonoBehaviour
         {
             health.OnDeath += (x) => { ragdollController.EnableRagdoll(); Destroy(gameObject, 10); };
         }
+        spawnPos = transform.position;
     }
 
 
@@ -104,7 +106,7 @@ public class SimpleAgent : MonoBehaviour
         if (timer < 0)
         {
             timer = forgetTime;
-            Vector3 pos = transform.position + Random.onUnitSphere * 10;
+            Vector3 pos = spawnPos + Random.onUnitSphere * 10;
             controller.SetTarget(pos);
             if(lookAt)lookAt.lookAtTargetPosition = pos;
         }
