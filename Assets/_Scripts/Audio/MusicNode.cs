@@ -23,8 +23,11 @@ public class MusicNode : MonoBehaviour
     {
         MusicManager.Instance.Register(this);
 
-        foreach (var collider in GetComponents<Collider>())
-            collider.isTrigger = true;
+        if (method == Method.trigger || method == Method.triggerAndContainsEnemies)
+        {
+            foreach (var collider in GetComponents<Collider>())
+                collider.isTrigger = true;
+        }
 
         transitionSpeed = 1 / transitionTime;
     }
