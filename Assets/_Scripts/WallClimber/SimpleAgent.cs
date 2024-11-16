@@ -100,6 +100,19 @@ public class SimpleAgent : MonoBehaviour
         mindlessState = n > 0 ? AgentState.Avoiding : AgentState.Wander;
     }
 
+    /// <summary>
+    /// Will set stateto wander, will attack if sees player and will avoid flares
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="timeOut"></param>
+    public void WanderTo(Vector3 pos, float timeOut = 10)
+    {
+        controller.SetTarget(pos);
+        timer = timeOut;
+        spawnPos = pos;
+        mindlessState = AgentState.Wander;
+    }
+
     private void HandleWander(float dt)
     {
         timer -= dt;
