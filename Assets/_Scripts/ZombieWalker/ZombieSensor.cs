@@ -10,8 +10,8 @@ public class ZombieSensor : MonoBehaviour, IDamageble
 
     [SerializeField] PlayerDataSO playerData;
     [SerializeField] float visionRange = 10;
-    [SerializeField] float looseSightTime = 1;
-    [SerializeField] float visionRangeFar = 20;
+    //[SerializeField] float looseSightTime = 1;
+    //[SerializeField] float visionRangeFar = 20;
     [SerializeField] LayerMask visionMask;
     Transform player;
     float timer;

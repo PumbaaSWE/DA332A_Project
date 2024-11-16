@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,28 +21,28 @@ public class ZombieBrain : MonoBehaviour
     private void OnDeath(Health health)
     {
         GetComponent<RagdollController>().EnableRagdoll();
-        Invoke(nameof(Sink), 5);
+        //Invoke(nameof(Sink), 5);
     }
 
-    private void Sink()
-    {
-        GetComponent<RagdollController>().FreezeRagdoll();
-        StartCoroutine(SinkCoroutine());
-    }
+    //private void Sink()
+    //{
+    //    GetComponent<RagdollController>().FreezeRagdoll();
+    //    StartCoroutine(SinkCoroutine());
+    //}
 
-    private IEnumerator SinkCoroutine()
-    {
+    //private IEnumerator SinkCoroutine()
+    //{
 
-        float t = 2;
-        while (t > 0)
-        {
-            float dt = Time.deltaTime;
-            t -= dt;
-            transform.position += Vector3.down * 0.5f * dt;
-            yield return null;
-        }
-        Destroy(gameObject);
-    }
+    //    float t = 2;
+    //    while (t > 0)
+    //    {
+    //        float dt = Time.deltaTime;
+    //        t -= dt;
+    //        transform.position += Vector3.down * 0.5f * dt;
+    //        yield return null;
+    //    }
+    //    Destroy(gameObject);
+    //}
 
     private void Sensor_OnHit(Transform player, Vector3 point, Vector3 dir, float damage)
     {
@@ -56,10 +54,10 @@ public class ZombieBrain : MonoBehaviour
     {
         float dt = Time.deltaTime;
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
-        Update(dt);
+        UpdateBrain(dt);
     }
 
-    private void Update(float dt)
+    private void UpdateBrain(float dt)
     {
 
         agent.stoppingDistance = sensor.SeeTarget ? meleeRange : 0;
@@ -85,25 +83,25 @@ public class ZombieBrain : MonoBehaviour
         }
     }
 
-    private void OldUpdate(float dt)
-    {
-        if (target)
-        {
-            Vector3 targetPos = target.position.WithY();
-            Vector3 delta = targetPos - transform.position;
+    //private void OldUpdate(float dt)
+    //{
+    //    if (target)
+    //    {
+    //        Vector3 targetPos = target.position.WithY();
+    //        Vector3 delta = targetPos - transform.position;
 
-            if (delta.sqrMagnitude < meleeRange * meleeRange)
-            {
-                animator.SetBool("AttackBool", true);
-                agent.isStopped = true;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(delta, Vector3.up), 360 * dt);
-            }
-            else
-            {
-                animator.SetBool("AttackBool", false);
-                agent.isStopped = false;
-                agent.SetDestination(targetPos);
-            }
-        }
-    }
+    //        if (delta.sqrMagnitude < meleeRange * meleeRange)
+    //        {
+    //            animator.SetBool("AttackBool", true);
+    //            agent.isStopped = true;
+    //            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(delta, Vector3.up), 360 * dt);
+    //        }
+    //        else
+    //        {
+    //            animator.SetBool("AttackBool", false);
+    //            agent.isStopped = false;
+    //            agent.SetDestination(targetPos);
+    //        }
+    //    }
+    //}
 }
