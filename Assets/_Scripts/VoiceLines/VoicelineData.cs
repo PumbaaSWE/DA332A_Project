@@ -7,7 +7,8 @@ public class VoicelineData : ScriptableObject
 {
     public AudioClip audioClip;
     public string subtitle;
-    public float time = 5; //minimum display time
+    [Tooltip("Manual time set, default is same as aucioclip")]
+    public float time = 0; //set specified time voiceline will play, if time is 0, the time will be set to the audioclips duration instead
     public Color color = Color.white;
 
     public Precondition[] preconditions;
