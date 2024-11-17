@@ -22,6 +22,7 @@ public class NonphysController : MovementController
     [SerializeField] float minLookUpAngle = -90;
     [SerializeField] float maxLookUpAngle = 90f;
     [SerializeField] float mouseSensitivity = 0.05f;
+    [SerializeField] float AdsSensitivityModifier = 0.5f;
     [SerializeField] float camOffset = 0.35f;
 
     [Header("Movement")]
@@ -31,6 +32,7 @@ public class NonphysController : MovementController
     [Tooltip("Only applies to horizontal movement")]
     [SerializeField] float drag = 7.5f;
     [SerializeField] float jumpVel = 4f;
+    [SerializeField] float jumpHeight = 0f;
     [SerializeField] float gravity = 9.81f;
     [SerializeField] float slopeAngle = 35f;
 
@@ -142,6 +144,10 @@ public class NonphysController : MovementController
         // look
         Vector2 preRot = Rotation();
         look *= mouseSensitivity;
+
+        if (wh.IsAds())
+            look *= AdsSensitivityModifier;
+
         Rotate(look.y, look.x);
         LookDelta = Rotation() - preRot;
         LookDelta = new Vector3(Mathf.DeltaAngle(0, LookDelta.x), Mathf.DeltaAngle(0, LookDelta.y));
@@ -509,6 +515,9 @@ public class NonphysController : MovementController
 
         // deplete stamina
         stamina -= jumpCost;
+
+        if (jumpHeight != 0)
+            jumpVel = Mathf.Sqrt(2 * gravity * jumpHeight);
 
         velocity = velocity.WithY(jumpVel);
         jump = true;

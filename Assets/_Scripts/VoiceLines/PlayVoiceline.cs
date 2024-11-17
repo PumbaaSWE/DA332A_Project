@@ -5,12 +5,14 @@ public class PlayVoiceline : MonoBehaviour
 {
     [SerializeField] private VoicelineData voiceline;
     [SerializeField] private bool playOnStart = false;
+    [SerializeField] private bool disableOnPlay = false;
     [SerializeField] private float delay = 1;
 
     [SerializeField] private VoicelineData[] voicelines;
 
     public void Play()
     {
+        if (!this.enabled) {  return; }
         if(voiceline)
             SimpleVoiceManager.Instance.QueueVoiceLine(voiceline);
         if(voicelines != null)
@@ -19,6 +21,10 @@ public class PlayVoiceline : MonoBehaviour
             {
                 SimpleVoiceManager.Instance.QueueVoiceLine(voicelines[i]);
             }
+        }
+        if (disableOnPlay)
+        {
+            this.enabled = false;
         }
     }
 

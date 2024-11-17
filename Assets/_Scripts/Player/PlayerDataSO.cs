@@ -19,6 +19,10 @@ public class PlayerDataSO : ScriptableObject
     public Stamina stamina;
     public Stamina Stamina => stamina;
 
+    public int PlayerSyrringes => syrringeUser ? syrringeUser.NumSyrringes : 0;
+    private SyrringeUser syrringeUser;
+    public SyrringeUser SyrringeUser => syrringeUser;
+
     public Transform PlayerTransform
     {
         get { return playerTransform; }
@@ -30,6 +34,7 @@ public class PlayerDataSO : ScriptableObject
                 OnPlayerChanged?.Invoke(playerTransform);
                 health = playerTransform.GetComponent<Health>();
                 stamina = playerTransform.GetComponent<Stamina>();
+                syrringeUser = playerTransform.GetComponent<SyrringeUser>();
             }
         }
     }
