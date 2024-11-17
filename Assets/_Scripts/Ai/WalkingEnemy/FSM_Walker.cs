@@ -340,19 +340,19 @@ public class FSM_Walker : MonoBehaviour
 
             }
 
-            if (distanceToTarget <= 6 /*&& distanceToTarget >= attackRange*/)
-            {
+            //if (distanceToTarget <= 6 /*&& distanceToTarget >= attackRange*/)
+            //{
 
-                animator.SetLayerWeight(6, 1);
-                animator.SetBool("Charge", true);
-                StartCoroutine(AttackCooldown(.4f));
+            //    animator.SetLayerWeight(6, 1);
+            //    animator.SetBool("Charge", true);
+            //    StartCoroutine(AttackCooldown(.4f));
 
-            }
-            else
-            {
-                animator.SetLayerWeight(6, 0);
-                animator.SetBool("Charge", false);
-            }
+            //}
+            //else
+            //{
+            //    animator.SetLayerWeight(6, 0);
+            //    animator.SetBool("Charge", false);
+            //}
 
             if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
             {
@@ -360,6 +360,22 @@ public class FSM_Walker : MonoBehaviour
                 agent.isStopped = true;
             }
         }
+    }
+
+    private IEnumerator PlayChargeAnimationAndWait()
+    {
+        animator.SetBool("Charge", true);
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        while (stateInfo.IsName("Charge") && stateInfo.normalizedTime < 1.0f)
+        {
+            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return null;
+        }
+
+        animator.SetBool("Charge", false);
+        agentState = AgentState.Attacking;
+        agent.isStopped = true;
     }
 
 
@@ -466,8 +482,8 @@ public class FSM_Walker : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        animator.SetLayerWeight(6, 0);
-        animator.SetBool("Charge", false);
+        //animator.SetLayerWeight(6, 0);
+        //animator.SetBool("Charge", false);
 
         eye.AngryEye();
 
