@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// Place this component on the player to give yourself some magical abilites!
@@ -19,7 +16,9 @@ public class Cheats : MonoBehaviour
     bool noclip;
     bool godMode;
     float health;
-    Color lastAmbient;
+
+    Color ambientLight;
+    AmbientMode ambientMode;
 
     void Start()
     {
@@ -78,16 +77,23 @@ public class Cheats : MonoBehaviour
     [MakeButton("Toggle night vision", false)]
     void ToggleNightVision()
     {
-        if (RenderSettings.ambientLight == Color.white)
+        if (RenderSettings.ambientMode != AmbientMode.Flat || RenderSettings.ambientLight != Color.white)
         {
-            Debug.Log("Night vision disabled");
-            RenderSettings.ambientLight = lastAmbient;
+            Debug.Log("Night vision enabled");
+            // save ambient settings to reset to later
+            ambientMode = RenderSettings.ambientMode;
+            ambientLight = RenderSettings.ambientLight;
+
+            // set ambient to bright
+            RenderSettings.ambientMode = AmbientMode.Flat;
+            RenderSettings.ambientLight = Color.white;
             return;
         }
 
-        Debug.Log("Night vision enabled");
-        lastAmbient = RenderSettings.ambientLight;
-        RenderSettings.ambientLight = Color.white;
+        Debug.Log("Night vision disabled");
+        // reset to previous ambient settings
+        RenderSettings.ambientMode = ambientMode;
+        RenderSettings.ambientLight = ambientLight;
     }
 
     [MakeButton("Toggle Noclip", false)]
