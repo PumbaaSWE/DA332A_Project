@@ -63,6 +63,8 @@ public class FSM_Walker : MonoBehaviour
     Eye eye;
     bool ragdoll;
 
+    public int nrOfAttacks;
+
     public bool sleep;
     private void Awake()
     {
@@ -518,7 +520,10 @@ public class FSM_Walker : MonoBehaviour
         {
             return; 
         }
-        animator.SetInteger("Attack", Random.Range(1, 4));
+
+        
+
+        animator.SetInteger("Attack", Random.Range(nrOfAttacks, 4));
         StartCoroutine(AttackCooldown(.5f));
 
 

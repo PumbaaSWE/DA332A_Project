@@ -174,6 +174,7 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
+        fsm.nrOfAttacks = 3;
         //if (!standing)
         //{
         //    limbStatehit = AgentHit.StandUp;
@@ -212,7 +213,8 @@ public class Limbstate : MonoBehaviour
     }
     void Normal()
     {
-        if(!standing)
+        fsm.nrOfAttacks = 1;
+        if (!standing)
         {
             limbStatehit = AgentHit.StandUp;
         }
