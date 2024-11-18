@@ -335,19 +335,21 @@ public class FSM_Walker : MonoBehaviour
 
             }
 
-            if (distanceToTarget <= 3.5f && transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+           
+            if (distanceToTarget <= 3.5f )
             {
-
+                //StartCoroutine(PlayAnimation("Zombie Attack", 6));
                 animator.SetLayerWeight(6, 1);
                 animator.SetBool("Charge", true);
                 StartCoroutine(AttackCooldown(.4f));
 
             }
-            else
+            else if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
             {
                 animator.SetLayerWeight(6, 0);
                 animator.SetBool("Charge", false);
             }
+
 
             if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
             {
@@ -358,22 +360,17 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayChargeAnimationAndWait()
+    public IEnumerator PlayAnimation(string animationName, int layer = 0)
     {
-        animator.SetBool("Charge", true);
-
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        while (stateInfo.IsName("Charge") && stateInfo.normalizedTime < 1.0f)
+        animator.Play(animationName, layer);
+        Debug.Log("play");
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layer);
+        while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1f)
         {
-            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            yield return null;
+            stateInfo = animator.GetCurrentAnimatorStateInfo(layer);
+            yield return null; 
         }
-
-        animator.SetBool("Charge", false);
-        agentState = AgentState.Attacking;
-        agent.isStopped = true;
     }
-
 
     //private void ChaseBehaviour()
     //{
