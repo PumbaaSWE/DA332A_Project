@@ -35,16 +35,14 @@ public class SwitchController : MonoBehaviour
         transitioning = true;
 
         startPos = transform.position;
+
         if (wantClimb)
         {
             NonphysController.enabled = false;
             endPos = transform.position.WithY(transform.position.y + ClimbController.Radius);
 
             // disable weapon
-            _equippedGun = WeaponHandler.EquippedGun;
-            _equippedGun.gameObject.SetActive(false);
-            WeaponHandler.EquippedGun = null;
-            WeaponHandler.enabled = false;
+            WeaponHandler.HideWeapons(() => { });
         }
         else
         {
