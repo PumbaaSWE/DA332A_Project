@@ -39,7 +39,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(5, 5, 5), new Vector3(0, 1, 0));
+        ragdoll.TriggerRagdoll(new Vector3(1, 1, 1), new Vector3(0, 1, 0));
         Destroy(enemy, 1.5f);
     }
 
