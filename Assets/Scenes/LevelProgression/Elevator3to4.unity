@@ -1267,7 +1267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftDoor: {fileID: 1461737452}
   rightDoor: {fileID: 859901812}
-  openTime: 1
+  openTime: 9999999
   doorSpeed: 1
   Locked: 0
 --- !u!114 &1528545366
@@ -1295,8 +1295,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528545364}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 18.4, y: -5.83, z: 3.12}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 51.55, y: -0.01, z: -4.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b80710f60d02954b84056673929c882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {x: 51.55, y: 0.98, z: -4.83}
+  start: {x: 51.55, y: -0.01, z: -4.83}
   end: {x: 18.4, y: -5.83, z: 3.12}
   startRot: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   endRot: {x: -0, y: -1, z: -0, w: 0}
@@ -1844,7 +1844,8 @@ GameObject:
   - component: {fileID: 2042551343}
   - component: {fileID: 2042551342}
   - component: {fileID: 2042551341}
-  - component: {fileID: 2042551340}
+  - component: {fileID: 2042551345}
+  - component: {fileID: 2042551344}
   m_Layer: 0
   m_Name: OutsideButton
   m_TagString: Untagged
@@ -1867,37 +1868,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2094469023}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2042551340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042551338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7917d9bc677198c4280a71a0f6ce1610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltip: Press {0} to elevate!
-  interactedTooltip: 
-  displayPriority: 1
-  tipDisplayTime: 3
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1528545366}
-        m_TargetAssemblyTypeName: Elevator, Assembly-CSharp
-        m_MethodName: PressOutsideButton
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!65 &2042551341
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1969,6 +1939,60 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2042551338}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2042551344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042551338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb5a207ac4ab067458889550952f7871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPassTooltip: Open doors?
+  onPassTooltip: Doors opened
+  OnPassEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1528545366}
+        m_TargetAssemblyTypeName: Elevator, Assembly-CSharp
+        m_MethodName: PressOutsideButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPassEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  requrements:
+  - {fileID: 2042551345}
+--- !u!114 &2042551345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042551338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a350b56a482644b95ad791e565c6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipOnFail: Denied
+  keyCard: {fileID: 11400000, guid: f74198d6050aa49429ee76e29016fcdc, type: 2}
 --- !u!1 &2080611761
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,4 +38,17 @@ public class DoorOpener : MonoBehaviour
         source.Play();
         anim.SetTrigger("Open");
     }
+
+    public void OpenDoor(Transform transform)
+    {
+        Debug.Log(transform);
+        if (!transform.gameObject.GetComponent<WeaponHandler>().enabled) 
+        {
+            return;
+        }
+        source = gameObject.AddComponent<AudioSource>();
+        source.clip = openClip;
+        source.Play();
+        anim.SetTrigger("Open");
+    }
 }
