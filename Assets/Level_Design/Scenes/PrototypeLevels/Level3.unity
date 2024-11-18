@@ -13075,6 +13075,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   splane: {fileID: 2130577489}
+  OnDone:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1046383897}
+        m_TargetAssemblyTypeName: PlayVoiceline, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &602192477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3780762778824938919, guid: 1286d82c0d2b3844daafce605023d3ef,
@@ -13426,7 +13441,8 @@ MonoBehaviour:
   playOnStart: 0
   disableOnPlay: 0
   delay: 1
-  voicelines: []
+  voicelines:
+  - {fileID: 11400000, guid: ef197c671ca02de4ba1756d80503db7e, type: 2}
 --- !u!1001 &623335279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15330,8 +15346,8 @@ Transform:
   m_GameObject: {fileID: 764219312}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.71, y: 1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 34.92, y: 1.2, z: 0}
+  m_LocalScale: {x: 0.61993, y: 0.61993, z: 0.61993}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1974553730}
@@ -15378,6 +15394,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: -876546973899608171, guid: aefbad41d1654ef48a0473d3d73545ad, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15430,6 +15447,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SlimeLevelController, Assembly-CSharp
         m_MethodName: IncreaseSlime
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1105484965}
+        m_TargetAssemblyTypeName: KeyItem, Assembly-CSharp
+        m_MethodName: PickUpCard
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -21302,6 +21331,64 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6816178534d61854a82bed2585dd5a0e, type: 3}
+--- !u!1 &1046383894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046383895}
+  - component: {fileID: 1046383897}
+  m_Layer: 0
+  m_Name: Slime Done
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1046383895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046383894}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1664239782}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1046383897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046383894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e7c45ffef815954486482d68bed1a8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceline: {fileID: 11400000, guid: 627fe2201f487824caa264fd50d5ba43, type: 2}
+  playOnStart: 0
+  disableOnPlay: 0
+  delay: 1
+  voicelines:
+  - {fileID: 11400000, guid: 4c0bc2ce916646347b4c0eef1d14691d, type: 2}
+  - {fileID: 11400000, guid: d6d3c874d58e95f439f01c2b2cf707c5, type: 2}
+  - {fileID: 11400000, guid: 3af0d1fc8fb3cb546a8ac14fe46a029e, type: 2}
+  - {fileID: 11400000, guid: 30f277c0c3f728c4488cd59573ed9bf1, type: 2}
+  - {fileID: 11400000, guid: 9291b280bac76bc47a368abe711bdf36, type: 2}
+  - {fileID: 11400000, guid: 5da867e5544823a4fa6ce44434b95ba2, type: 2}
+  - {fileID: 11400000, guid: b645060f3c32b6f4fbdf3f9a5ba6db20, type: 2}
+  - {fileID: 11400000, guid: 613dccef8dcdbbc4f9c6f53e4f08b94a, type: 2}
+  - {fileID: 11400000, guid: 82be660dda7fe414a89e10135b27b8d0, type: 2}
 --- !u!1001 &1046661457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22559,6 +22646,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6413661b9570b45498970ec3498db144, type: 3}
+--- !u!1 &1105484963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1105484964}
+  - component: {fileID: 1105484965}
+  m_Layer: 0
+  m_Name: Elevator Access
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1105484964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105484963}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1664239782}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1105484965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105484963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc57e55478ce9c49bc3d080c70fb2db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SO: {fileID: 11400000, guid: f74198d6050aa49429ee76e29016fcdc, type: 2}
 --- !u!1001 &1106449424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29786,7 +29918,7 @@ PrefabInstance:
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.5
+      value: 39.95
       objectReference: {fileID: 0}
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -29796,7 +29928,7 @@ PrefabInstance:
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.52
+      value: 3.28
       objectReference: {fileID: 0}
     - target: {fileID: 1842176204619527857, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -34161,6 +34293,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 620039682}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05e175d0a0028574ba6554415fb3b41f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1046383895}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05e175d0a0028574ba6554415fb3b41f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1105484964}
     - targetCorrespondingSourceObject: {fileID: -5533199969055645470, guid: 05e175d0a0028574ba6554415fb3b41f,
         type: 3}
       insertIndex: -1
@@ -39890,7 +40030,7 @@ PrefabInstance:
     - target: {fileID: 42021249440735386, guid: 455aa1d072cef9d40812080ef2089a84,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9643085
+      value: -4.552
       objectReference: {fileID: 0}
     - target: {fileID: 42021249440735386, guid: 455aa1d072cef9d40812080ef2089a84,
         type: 3}

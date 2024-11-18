@@ -387,12 +387,14 @@ MonoBehaviour:
   minLookUpAngle: -90
   maxLookUpAngle: 90
   mouseSensitivity: 0.05
+  AdsSensitivityModifier: 0.5
   camOffset: 0.35
   acceleration: 25
   maxWalkSpeed: 3
   maxSprintSpeed: 6
   drag: 7.5
   jumpVel: 4
+  jumpHeight: 0
   gravity: 9.81
   slopeAngle: 35
   crouchSpeed: 5
@@ -787,6 +789,21 @@ MonoBehaviour:
   EquippedGun: {fileID: 9004906902321269815}
   FirearmRoot: {fileID: 8804383274151757081}
   maxGuns: 2
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7501088490361774610
 MonoBehaviour:
   m_ObjectHideFlags: 0
