@@ -51,11 +51,14 @@ public class Talker : MonoBehaviour
     }
     public void PlayVoiceLine(AudioClip clip, string subtitleText, float overrideTime, Color subtitleColor)
     {
+        //TODO check if player is to far from sourche and dont play or do subtitles -> disable and reset trigger? = play where it ended...
+
+
         //this.voiceline = voiceline;
         source.clip = clip;
         source.Play();
 
-
+        //if(source.maxDistance)
         if (subtitleChannel)
         {
             SubtitleData subtitle = new()
