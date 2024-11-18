@@ -61,6 +61,12 @@ public class ClimbController : MonoBehaviour
 
     void Update()
     {
+        if (Time.deltaTime == 0)
+        {
+            look = Vector2.zero;
+            return;
+        }
+
         cc.radius = radius;
         cc.height = radius * 2;
         cc.center = Vector3.zero;
