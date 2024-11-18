@@ -237,7 +237,7 @@ public class WeaponHandler : MonoBehaviour
         {
             EquippedGun.Shoot(context);
             OnShoot.Invoke();
-            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
+            HearingManager.Instance.OrNull()?.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
         }
     }
 
