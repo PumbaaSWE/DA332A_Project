@@ -26,6 +26,7 @@ public class SimpleAgent : MonoBehaviour
     [SerializeField] float attackRange = 1.4f;
     [SerializeField] float attackSpeed = 2;
     [SerializeField] float maxDetectionRange = 10;
+    [SerializeField] float maxWanderRange = 10;
     [SerializeField] float forgetTime = 10;
     [SerializeField] float avoidRadius = 5;
     [SerializeField] LayerMask avoidLayer = -1;
@@ -119,7 +120,7 @@ public class SimpleAgent : MonoBehaviour
         if (timer < 0)
         {
             timer = forgetTime;
-            Vector3 pos = spawnPos + Random.onUnitSphere * 10;
+            Vector3 pos = spawnPos + Random.onUnitSphere * maxWanderRange;
             controller.SetTarget(pos);
             if(lookAt)lookAt.lookAtTargetPosition = pos;
         }
