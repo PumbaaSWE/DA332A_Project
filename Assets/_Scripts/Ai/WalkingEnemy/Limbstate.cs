@@ -95,6 +95,7 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
+            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }
@@ -173,6 +174,7 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
+        fsm.nrOfAttacks = 3;
         //if (!standing)
         //{
         //    limbStatehit = AgentHit.StandUp;
@@ -211,7 +213,8 @@ public class Limbstate : MonoBehaviour
     }
     void Normal()
     {
-        if(!standing)
+        fsm.nrOfAttacks = 1;
+        if (!standing)
         {
             limbStatehit = AgentHit.StandUp;
         }

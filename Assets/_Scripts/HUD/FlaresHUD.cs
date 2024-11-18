@@ -1,19 +1,11 @@
 using TMPro;
 using UnityEngine;
 
-public class FlaresHUD : MonoBehaviour
+public class FlaresHUD : TemplateTextHUD
 {
-    PlayerDataSO playerData;
     [SerializeField] TMP_Text amount;
-    [SerializeField] TMP_Text maxAmount;
+    [SerializeField] TMP_Text label;
     FlareThrower flareThrower;
-
-
-
-    void Start()
-    {
-        
-    }
 
     private void OnEnable()
     {
@@ -36,12 +28,30 @@ public class FlaresHUD : MonoBehaviour
         gameObject.SetActive(flareThrower);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Initialize()
+    {
+        idleTimerMax = 3.0f;
+        defaultColor = Color.white;
+        if (targets != null) { return; }
+        targets = new TMP_Text[2];
+        targets[0] = amount;
+        targets[1] = label;
+    }
+
+    protected override void Handle()
     {
         if (flareThrower)
         {
             amount.text = flareThrower.NumFlares.ToString() + " / " + flareThrower.MaxNumFlares.ToString();
         }
+    }
+
+    protected override bool CheckIdle()
+    {
+        if (flareThrower)
+        {
+            return flareThrower.NumFlares <= 0;
+        }
+        return true;
     }
 }

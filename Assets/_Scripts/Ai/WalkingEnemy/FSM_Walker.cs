@@ -63,6 +63,8 @@ public class FSM_Walker : MonoBehaviour
     Eye eye;
     bool ragdoll;
 
+    public int nrOfAttacks;
+
     public bool sleep;
     private void Awake()
     {
@@ -92,14 +94,7 @@ public class FSM_Walker : MonoBehaviour
 
     void Update()
     {
-        //if (Time.timeScale == 0 && agent.isStopped == false)
-        //{
-        //    PauseAgent();
-        //}
-        //else if (Time.timeScale != 0 && agent.isStopped == true)
-        //{
-        //    ResumeAgent();
-        //}
+ 
 
         if(sleep)
         {
@@ -157,7 +152,6 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-                Debug.Log("Sleep");
                
                 break;
             case AgentState.Wander:
@@ -321,40 +315,89 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
-
     private void ChaseBehaviour()
     {
         eye.AngryEye();
-        if (currentTarget.transform)
+
+        if (currentTarget?.transform == null)
         {
-            if (agent.isOnNavMesh)
+            agentState = AgentState.Idle;
+            return;
+        }
+
+        if (agent.isOnNavMesh)
+        {
+            float distanceToTarget = Vector3.Distance(agent.transform.position, currentTarget.transform.position);
+
+            if (distanceToTarget > minAttackRange)
+            {
+                MoveTo(currentTarget.transform.position);
+
+            }
+
+            if (distanceToTarget <= 3.5f && transform.position.InRangeOf(currentTarget.transform.position, attackRange))
             {
 
-                if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
-                {
-                    MoveTo(currentTarget.transform.position);
-                }
-                if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
-                {
-                    agentState = AgentState.Attacking;
-                    agent.isStopped = true;
-                }
-                else
-                {
-                    //Debug.Log("no range");
-                }
+                animator.SetLayerWeight(6, 1);
+                animator.SetBool("Charge", true);
+                StartCoroutine(AttackCooldown(.4f));
+
             }
             else
             {
-                //Debug.Log("no nav");
+                animator.SetLayerWeight(6, 0);
+                animator.SetBool("Charge", false);
             }
 
-        }
-        else
-        {
-            //Debug.Log("no target");
+            if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+            {
+
+                agentState = AgentState.Attacking;
+                agent.isStopped = true;
+            }
         }
     }
+
+    private IEnumerator PlayChargeAnimationAndWait()
+    {
+        animator.SetBool("Charge", true);
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        while (stateInfo.IsName("Charge") && stateInfo.normalizedTime < 1.0f)
+        {
+            stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return null;
+        }
+
+        animator.SetBool("Charge", false);
+        agentState = AgentState.Attacking;
+        agent.isStopped = true;
+    }
+
+
+    //private void ChaseBehaviour()
+    //{
+    //    eye.AngryEye();
+    //    if (currentTarget.transform)
+    //    {
+    //        if (agent.isOnNavMesh)
+    //        {
+
+    //            if (Vector3.Distance(agent.transform.position, currentTarget.transform.position) > minAttackRange)
+    //            {
+    //                MoveTo(currentTarget.transform.position);
+    //            }
+    //            if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+    //            {
+    //                agentState = AgentState.Attacking;
+    //                agent.isStopped = true;
+    //            }
+    //        }
+
+
+    //    }
+
+    //}
 
     public void HandleCrawling()
     {
@@ -435,6 +478,8 @@ public class FSM_Walker : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        //animator.SetLayerWeight(6, 0);
+        //animator.SetBool("Charge", false);
 
         eye.AngryEye();
 
@@ -468,55 +513,56 @@ public class FSM_Walker : MonoBehaviour
 
     public void Attack()
     {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        //if (agentStatehit == AgentHit.Armless)
-        //{
-        //    animator.SetInteger("Attack", 3);
-        //    StartCoroutine(AttackCooldown(.5f));
-        //}
-        //else if (agentStatehit == AgentHit.Crawl)
-        //{
-        //    //animator.Play("Base Layer.Crawl");
-        //    animator.SetBool("CrawlAttack", true);
-        //    animator.SetInteger("Attack", 5);
-        //    StartCoroutine(AttackCooldown(.4f));
-        //}
-        //else
-        //{
-            animator.SetInteger("Attack", Random.Range(1, 4));
-            StartCoroutine(AttackCooldown(.5f));
-        //}
+       
+        if (stateInfo.IsName("Run") || stateInfo.IsName("Move"))
+        {
+            return; 
+        }
+
+        
+
+        animator.SetInteger("Attack", Random.Range(nrOfAttacks, 4));
+        StartCoroutine(AttackCooldown(.5f));
+
+
+
     }
+    private IEnumerator AttackCooldown(float t)
+    {
+        yield return new WaitForSeconds(t);
+        animator.SetInteger("Attack", 0);
+    }
+
+
     private IEnumerator CrawlAttackCooldown(float t)
     {
         yield return new WaitForSeconds(t);
         animator.SetBool("CrawlAttack", true);
     }
-    private IEnumerator AttackCooldown(float t)
-    {
-        yield return new WaitForSeconds(t);
-        DoDmg(1f);
-        animator.SetInteger("Attack", 0);
-    }
+   
+
     private IEnumerator AnimationCooldown(int idx, float t)
     {
         yield return new WaitForSeconds(t);
         animator.SetInteger(idx, 0);
-        //knockback = false;
     }
-    void DoDmg(float attackTime)
+
+    public void ApplyDamage()
     {
-        Vector3 targetDelta = target.position - transform.position;
-        attckTimer -= Time.deltaTime;
-        if (targetDelta.sqrMagnitude < 3 && attckTimer < 0)
+        if (currentTarget == null || currentTarget.transform == null)
+            return;
+
+        Vector3 targetDelta = currentTarget.transform.position - transform.position;
+
+        if (targetDelta.sqrMagnitude < attackRange * attackRange)
         {
-            if (target.TryGetComponent(out IDamageble damageble))
+            if (currentTarget.TryGetComponent(out IDamageble damageable))
             {
-                damageble.TakeDamage(transform.position, targetDelta, 5);
-                attckTimer = attackTime;
+                damageable.TakeDamage(transform.position, targetDelta, 5); 
             }
         }
-
     }
     public void PauseAgent()
     {
