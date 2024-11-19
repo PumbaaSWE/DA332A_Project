@@ -35,11 +35,11 @@ public class MuzzleFlash : MonoBehaviour
     {
         if (MuzzleFlashEffects.Count > 0)
         {
-            //if (DisableOverlap)
-            //    GunShot.Play();
+            if (DisableOverlap)
+                GunShot.Play();
 
-            //else
-            //    GunShot.PlayOneShot(GunShot.clip);
+            else
+                GunShot.PlayOneShot(GunShot.clip);
 
             MuzzleFlashEffects.ForEach(s => s.Play());
             //StopAllCoroutines();
