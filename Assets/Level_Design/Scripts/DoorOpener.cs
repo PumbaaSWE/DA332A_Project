@@ -10,6 +10,8 @@ public class DoorOpener : MonoBehaviour
 
     AudioSource source;
 
+
+    bool hasOpened = false;
     private void Start()
     {
 
@@ -23,11 +25,12 @@ public class DoorOpener : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && source != null)
+        if (other.CompareTag("Player") && source != null && hasOpened)
         {
             source.clip = closeClip;
             source.Play();
             anim.SetTrigger("Exit");
+            hasOpened = false;
         }
     }
 
@@ -37,6 +40,7 @@ public class DoorOpener : MonoBehaviour
         source.clip = openClip;
         source.Play();
         anim.SetTrigger("Open");
+        hasOpened = true;
     }
 
     public void OpenDoor(Transform transform)
@@ -50,5 +54,6 @@ public class DoorOpener : MonoBehaviour
         source.clip = openClip;
         source.Play();
         anim.SetTrigger("Open");
+        hasOpened = true;
     }
 }

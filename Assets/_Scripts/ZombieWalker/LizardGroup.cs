@@ -4,14 +4,21 @@ public class LizardGroup : MonoBehaviour
 {
     [SerializeField] SimpleAgent[] agents;
     [SerializeField] bool enableOnStart = false;
+    [SerializeField] bool getChildren = false;
    
     void Start()
     {
+        if (getChildren)
+        {
+            agents = GetComponentsInChildren<SimpleAgent>(true);
+        }
         if (enableOnStart) EnableGroup();
         else
         {
             DisableGroup();
         }
+
+
     }
     [MakeButton]
     public void EnableGroup()
