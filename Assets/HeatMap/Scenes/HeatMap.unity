@@ -20,12 +20,12 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.44455323, g: 0.462248, b: 0.509434, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -35,10 +35,10 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0.369
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.066524714, g: 0.083288506, b: 0.11325453, a: 0.369}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -209,13 +209,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196768951}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.23281066, y: -0, z: -0, w: 0.9725221}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 26.925, y: 0, z: 0}
 --- !u!114 &196768955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +304,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd5971b9c3b1e44fa3a96911dea442c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+  - playerPos: {x: -31.126, y: 1.500001, z: -2.342}
+    timeStamp: 2.585433
+  - playerPos: {x: -29.335533, y: 1.5000255, z: -2.202393}
+    timeStamp: 6.478163
+  - playerPos: {x: -26.352325, y: 1.5000125, z: -2.1385944}
+    timeStamp: 7.472807
+  - playerPos: {x: -23.897514, y: 1.50001, z: -1.956353}
+    timeStamp: 8.471993
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482095}
+    timeStamp: 9.472201
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 10.472301
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 11.474327
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 12.472787
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 13.471634
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 14.4718
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 15.472133
+  - playerPos: {x: -23.857452, y: 1.5000091, z: -1.9482082}
+    timeStamp: 16.472418
+  - playerPos: {x: -24.546993, y: 1.5000157, z: -0.930048}
+    timeStamp: 17.472237
+  - playerPos: {x: -24.739782, y: 1.5000144, z: -0.6545435}
+    timeStamp: 18.473093
+  filePath: 
+  prefab: {fileID: 4491400546874256678, guid: f4bcb965da544654caeff140db03a47c, type: 3}
 --- !u!1 &1546420039
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,13 @@ public class HeatMapEditor : Editor
             heatMap.CreateHeatMap();
         }
 
+      
+
+        if (GUILayout.Button("CreateObjects"))
+        {
+            heatMap.CreateObjects();
+        }
+
 
 
     }
