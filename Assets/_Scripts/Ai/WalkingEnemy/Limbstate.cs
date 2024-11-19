@@ -157,7 +157,8 @@ public class Limbstate : MonoBehaviour
 
     void CrawlBehavior()
     {
-      
+        fsm.canAttakRun = false;
+
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
@@ -165,6 +166,7 @@ public class Limbstate : MonoBehaviour
 
     void ArmAndLegBehavior()
     {
+        fsm.canAttakRun = false;
         standing = false;
         //fsm.agentState = FSM_Walker.AgentState.Sleep;
 
@@ -174,6 +176,7 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
+        fsm.canAttakRun = false;
         fsm.nrOfAttacks = 3;
         //if (!standing)
         //{
@@ -213,6 +216,7 @@ public class Limbstate : MonoBehaviour
     }
     void Normal()
     {
+        fsm.canAttakRun = true;
         fsm.nrOfAttacks = 1;
         if (!standing)
         {

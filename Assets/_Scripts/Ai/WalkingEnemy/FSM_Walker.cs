@@ -49,6 +49,7 @@ public class FSM_Walker : MonoBehaviour
     string crawlBool;
     private Animator animator;
 
+    public bool canAttakRun;
     int nrAttack;
 
     bool wasGrounded;
@@ -336,12 +337,13 @@ public class FSM_Walker : MonoBehaviour
             }
 
            
-            if (distanceToTarget <= 3.5f )
+            if (distanceToTarget <= 3f && canAttakRun )
             {
                 //StartCoroutine(PlayAnimation("Zombie Attack", 6));
                 animator.SetLayerWeight(6, 1);
                 animator.SetBool("Charge", true);
-                StartCoroutine(AttackCooldown(.4f));
+                Debug.Log("true");
+                //StartCoroutine(AttackCooldown(.4f));
 
             }
             else if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
