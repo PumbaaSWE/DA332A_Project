@@ -312,6 +312,7 @@ MonoBehaviour:
   attackRange: 2
   attackSpeed: 2
   maxDetectionRange: 10
+  maxWanderRange: 10
   forgetTime: 10
   avoidRadius: 5
   avoidLayer:
@@ -662,6 +663,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3221621867732198090}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88b66689e9ab24d4ca3b5ccaf6021f21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3518093573836682329}
   m_SourcePrefab: {fileID: 100100000, guid: 88b66689e9ab24d4ca3b5ccaf6021f21, type: 3}
 --- !u!4 &2447877215574475073 stripped
 Transform:
@@ -780,6 +785,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3518093573836682329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3076886495368748027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1872c669e04d07b478bee6b1f661c6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 86ff7f181e6c73e45bbc251618a6c91c, type: 2}
 --- !u!137 &9029381365601352272 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -2648982283484619526, guid: 88b66689e9ab24d4ca3b5ccaf6021f21,
