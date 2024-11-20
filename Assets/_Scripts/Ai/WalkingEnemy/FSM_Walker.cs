@@ -1,5 +1,6 @@
 using System.Collections;
-
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -67,8 +68,20 @@ public class FSM_Walker : MonoBehaviour
     public int nrOfAttacks;
 
     public bool sleep;
+
+
+    // sound
+    [SerializeField] private AudioSource footstepAudio;
+    [SerializeField] private AudioSource attackAudio;
+    [SerializeField] private List<AudioClip> footstepClips;
+    [SerializeField] private List<AudioClip> soundClips;
+    [SerializeField] private List<AudioClip> attackClips;
+    [SerializeField] private float soundRadius = 10f;
+
     private void Awake()
     {
+        footstepAudio = GetComponent<AudioSource>();
+        footstepAudio.volume = 1f;
         characterController = GetComponent<CharacterController>();
 
         eye = GetComponent<Eye>();
@@ -153,7 +166,7 @@ public class FSM_Walker : MonoBehaviour
                 IdleBehaviour();
                 break;
             case AgentState.Sleep:
-               
+                footstepAudio.Stop();
                 break;
             case AgentState.Wander:
                 WanderBehavior();
@@ -179,6 +192,15 @@ public class FSM_Walker : MonoBehaviour
             animator.SetBool("crawl", false);
             agent.isStopped = true;
             agent.enabled = false;
+        }
+        if (newState == AgentState.Chasing)
+        {
+            attackAudio.clip = soundClips[1];
+
+            if (!attackAudio.isPlaying)
+            {
+                attackAudio.Play();
+            }
         }
     }
     void OnStateExit(AgentState oldState)
@@ -256,9 +278,16 @@ public class FSM_Walker : MonoBehaviour
     }
     private void WanderBehavior()
     {
+       
+
         eye.NormalEye();
         if (atDestination)
         {
+            footstepAudio.clip = soundClips[0];
+            if (footstepAudio.isPlaying)
+            {
+                footstepAudio.Play();
+            }
             Vector3 location = PickLocationInRange(searchRange);
             MoveTo(location);
         }
@@ -336,13 +365,13 @@ public class FSM_Walker : MonoBehaviour
 
             }
 
-           
-            if (distanceToTarget <= 3f && canAttakRun )
+
+            if (distanceToTarget <= 3f && canAttakRun)
             {
                 //StartCoroutine(PlayAnimation("Zombie Attack", 6));
                 animator.SetLayerWeight(6, 1);
                 animator.SetBool("Charge", true);
-                Debug.Log("true");
+
                 //StartCoroutine(AttackCooldown(.4f));
 
             }
@@ -351,11 +380,15 @@ public class FSM_Walker : MonoBehaviour
                 animator.SetLayerWeight(6, 0);
                 animator.SetBool("Charge", false);
             }
+            else
+            {
+                animator.SetLayerWeight(6, 0);
+                animator.SetBool("Charge", false);
+            }
 
 
             if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
             {
-
                 agentState = AgentState.Attacking;
                 agent.isStopped = true;
             }
@@ -365,7 +398,7 @@ public class FSM_Walker : MonoBehaviour
     public IEnumerator PlayAnimation(string animationName, int layer = 0)
     {
         animator.Play(animationName, layer);
-        Debug.Log("play");
+      
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layer);
         while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1f)
         {
@@ -440,6 +473,16 @@ public class FSM_Walker : MonoBehaviour
         animator.SetBool("noHead", false);
 
         animator.SetFloat("vely", agent.velocity.magnitude);
+
+        footstepAudio.clip = footstepClips[1];
+        if (shouldMove && transform.position.InRangeOf(target.position, soundRadius) && !footstepAudio.isPlaying)
+        {
+            footstepAudio.Play();
+        }
+        else if (!shouldMove && footstepAudio.isPlaying)
+        {
+            footstepAudio.Stop();
+        }
     }
     public void SynchronizeAnimatorAndAgent()
     {
@@ -473,6 +516,16 @@ public class FSM_Walker : MonoBehaviour
         animator.SetFloat("vely", agent.velocity.magnitude);
 
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
+
+        footstepAudio.clip = footstepClips[0];
+        if (shouldMove && transform.position.InRangeOf(target.position, soundRadius)  && !footstepAudio.isPlaying)
+        {
+            footstepAudio.Play();
+        }
+        else if (!shouldMove  && footstepAudio.isPlaying)
+        {
+            footstepAudio.Stop();
+        }
     }
 
     private void AttackBehaviour()
@@ -520,12 +573,8 @@ public class FSM_Walker : MonoBehaviour
             return; 
         }
 
-        
-
         animator.SetInteger("Attack", Random.Range(nrOfAttacks, 4));
         StartCoroutine(AttackCooldown(.5f));
-
-
 
     }
     private IEnumerator AttackCooldown(float t)
@@ -552,6 +601,15 @@ public class FSM_Walker : MonoBehaviour
     {
         if (currentTarget == null || currentTarget.transform == null)
             return;
+
+        attackAudio.clip = attackClips[0];
+
+        //if(!attackAudio.isPlaying)
+        {
+            attackAudio.Play();
+        }
+       
+        
 
         Vector3 targetDelta = currentTarget.transform.position - transform.position;
 

@@ -1,6 +1,7 @@
 using System;
-
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class EnemyHealth : MonoBehaviour, IDamageble
@@ -23,6 +24,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public float Value => health;
     public float MaxHealth => maxHealth;
 
+    [SerializeField] private AudioSource dmgAudio;
+    [SerializeField] private List<AudioClip> dmgClips;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -60,10 +63,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
                 health -= damage;
             }
         }
+
        
-       
+
         if (legHealth <= 0)
         {
+            LoseLimbSound();
             regrow.Hit(point);
             //regrow.TriggerRegrow(point);
             if (d != null)
@@ -77,15 +82,29 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         }
         else if (health <= 0)
         {
+            LoseLimbSound();
             regrow.Hit(point);
             health = maxHealth;
         }
+        //dmgAudio.clip = dmgClips[1];
+        //if (!dmgAudio.isPlaying)
+        //{
+        //    dmgAudio.Play();
+        //}
+
         // PlayHitAnimation(direction);
         //Impact(direction, point);
 
     }
 
-
+    void LoseLimbSound()
+    {
+        dmgAudio.clip = dmgClips[0];
+        if (!dmgAudio.isPlaying)
+        {
+            dmgAudio.Play();
+        }
+    }
 
     public void Reset()
     {
