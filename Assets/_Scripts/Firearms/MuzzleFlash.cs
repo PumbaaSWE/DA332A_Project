@@ -1,36 +1,58 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MuzzleFlash : MonoBehaviour
 {
-    [SerializeField] ParticleSystem muzzleFlashEffect;
+    [SerializeField] List<ParticleSystem> MuzzleFlashEffects;
+    [SerializeField] AudioSource GunShot;
     [SerializeField] Light lightFlash;
     [SerializeField] float fadeTime;
+    [SerializeField] bool DisableOverlap;
 
-    public void Awake()
+    void Awake()
     {
-        Firearm firearm = GetComponentInParent<Firearm>();
-        if (firearm)
-        {
-            firearm.OnFire += DoFlash;
-        } 
+        GetComponentInParent<WeaponHandler>().OnShoot.AddListener(DoFlash);
     }
 
-    private void OnDestroy()
+    void OnEnable()
     {
-        Firearm firearm = GetComponentInParent<Firearm>();
-        if (firearm)
-        {
-            firearm.OnFire -= DoFlash;
-        }
+        GetComponentInParent<WeaponHandler>().OnShoot.AddListener(DoFlash);
+    }
+
+    void OnDisable()
+    {
+        GetComponentInParent<WeaponHandler>().OnShoot.RemoveListener(DoFlash);
+    }
+
+    void OnDestroy()
+    {
+        GetComponentInParent<WeaponHandler>().OnShoot.RemoveListener(DoFlash);
     }
 
     public void DoFlash()
     {
-        if (muzzleFlashEffect) muzzleFlashEffect.Play();
+        if (MuzzleFlashEffects.Count > 0)
+        {
+            if (DisableOverlap)
+                GunShot.Play();
+
+            else
+                GunShot.PlayOneShot(GunShot.clip);
+
+            MuzzleFlashEffects.ForEach(s => s.Play());
+            //StopAllCoroutines();
+            StartCoroutine(FlashFade());
+        }
     }
 
-    private void Update()
+    IEnumerator FlashFade()
     {
-        
+        lightFlash.enabled = true;
+
+        yield return new WaitForSeconds(fadeTime);
+
+        lightFlash.enabled = false;
     }
 }
