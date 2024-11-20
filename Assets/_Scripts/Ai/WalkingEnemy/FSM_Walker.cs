@@ -604,7 +604,7 @@ public class FSM_Walker : MonoBehaviour
 
         attackAudio.clip = attackClips[0];
 
-        //if(!attackAudio.isPlaying)
+        if(!attackAudio.isPlaying)
         {
             attackAudio.Play();
         }

@@ -71,6 +71,7 @@ public class Firearm : MonoBehaviour
     NonphysController nc;
     [SerializeField] ParticleSystem CaseEjectorParticleSystem;
     [SerializeField] CaseEjector CaseEjector;
+    MuzzleFlash MuzzleFlasher;
 
     // Start is called before the first frame update
     void Start()
@@ -81,6 +82,7 @@ public class Firearm : MonoBehaviour
         Animator = GetComponentInParent<Animator>();
         Camera = GetComponentInParent<PlayerCamera>();
         nc = GetComponentInParent<NonphysController>();
+        MuzzleFlasher = GetComponentInChildren<MuzzleFlash>();
     }
 
     // Update is called once per frame
@@ -159,7 +161,8 @@ public class Firearm : MonoBehaviour
             Fire();
             PerformAnimation(Animation.Firing);
             WHandler.OnShoot.Invoke();
-            HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
+            HearingManager.Instance.OrNull()?.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
+            MuzzleFlasher.DoFlash();
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
 
