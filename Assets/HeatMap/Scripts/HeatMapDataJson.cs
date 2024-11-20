@@ -21,7 +21,7 @@ public class HeatMapDataJson : MonoBehaviour
     {
         Debug.Log("Data Tracking Started");
 
-        InvokeRepeating("RecordData", 0f, 1f);
+        InvokeRepeating("RecordData", 0f, 0.5f);
     }
 
     void Update()
@@ -48,7 +48,7 @@ public class HeatMapDataJson : MonoBehaviour
 
         dataContainers.Add(container);
 
-        Debug.Log("Data saved: " + container.playerPos);
+        //Debug.Log("Data saved: " + container.playerPos);
     }
 
     private void SaveDataToJson()

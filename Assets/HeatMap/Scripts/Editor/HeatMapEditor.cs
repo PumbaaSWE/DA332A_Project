@@ -11,17 +11,49 @@ public class HeatMapEditor : Editor
         DrawDefaultInspector();
 
         HeatMap heatMap = (HeatMap)target;
-        if(GUILayout.Button("CreateHeatMap"))
+
+
+        if (GUILayout.Button("InitializeComponents"))
         {
-            heatMap.CreateHeatMap();
+            heatMap.InitializeComponents();
         }
 
-      
-
-        if (GUILayout.Button("CreateObjects"))
+        if (GUILayout.Button("CreateDataContainerArrayFromJson"))
         {
-            heatMap.CreateObjects();
+            heatMap.CreateDataContainerArrayFromJson();
         }
+
+        if (GUILayout.Button("CreateGameObjList"))
+        {
+            heatMap.CreateGameObjList();
+        }
+        if (GUILayout.Button("ChangeObjColor"))
+        {
+            heatMap.ChangeObjColor();
+        }
+        if (GUILayout.Button("EmptyGameObjList"))
+        {
+            heatMap.EmptyGameObjList();
+        }
+
+        if (GUILayout.Button("CreateArrayOfVectors"))
+        {
+            heatMap.CreateArrayOfVectors();
+        }
+
+        if (GUILayout.Button("DrawLines"))
+        {
+            heatMap.DrawLines();
+        }
+        
+        if (GUILayout.Button("DeleteLines"))
+        {
+            heatMap.DeleteLines();
+        }
+
+
+
+
 
 
 
