@@ -13,6 +13,7 @@ public class HeatMap : MonoBehaviour
     public string filePath;
 
     public GameObject prefab;
+    private List<GameObject> listObjects = new List<GameObject>();
     public void CreateHeatMap()
     {
         Debug.Log("creating heat map");
@@ -41,18 +42,48 @@ public class HeatMap : MonoBehaviour
             Vector3 lastPosition = data[i].playerPos;
             GameObject obj1 = Instantiate(prefab);
             obj1.transform.position = lastPosition;
+            listObjects.Add(obj1);
+
+
+        }
+
+        /*
+        for(int i = 0;i < listObjects.Count; i++)
+        {
+            if (listObjects[i] != null)
+            {
+                Gizmos.DrawLine(listObjects[i].transform.position, listObjects[i + 1].transform.position);
+            }
+        }
+        */
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < listObjects.Count; i++)
+        {
+            if (listObjects[i] != null)
+            {
+                Gizmos.DrawLine(listObjects[i].transform.position, listObjects[i + 1].transform.position);
+            }
         }
     }
 
     public void ReadJson(string name)
     {
-        name = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/test.json";
+        name = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/Level0.json";
         string fileString = File.ReadAllText(name);
         data = JsonUtility.FromJson<Wrapper>(fileString).dataContainers;
         Debug.Log(data.Length);
 
     }
 
+    public void Start()
+    {
+        
+    }
 
- 
+
+
 }
