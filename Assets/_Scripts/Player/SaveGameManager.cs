@@ -46,9 +46,10 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
 
             PlayerData playerData = gameData.playerData;
             p.GetComponent<Health>().SetHealth(playerData.health);
-            FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
+            FlareThrower flareThrower = p.GetComponent<FlareThrower>();
             flareThrower.NumFlares = playerData.numFlares;
-
+            SyrringeUser syrringeUser = p.GetComponent<SyrringeUser>();
+            syrringeUser.NumSyrringes = playerData.numSyrringes;
             WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
 
             AmmoPool ap = p.GetOrAddComponent<AmmoPool>();
@@ -104,8 +105,10 @@ public class SaveGameManager : PersistentSingleton<SaveGameManager>
         gameData.playerData = playerData;
         Player p = FindAnyObjectByType<Player>();
         playerData.health = p.GetComponent<Health>().Value;
-        FlareThrower flareThrower = p.GetComponent<Health>().GetComponent<FlareThrower>();
+        FlareThrower flareThrower = p.GetComponent<FlareThrower>();
         playerData.numFlares = flareThrower.NumFlares;
+        SyrringeUser syrringeUser = p.GetComponent<SyrringeUser>();
+        playerData.numSyrringes = syrringeUser.NumSyrringes;
         gameData.id = SceneGroupLoader.Instance.LastLoaded;
 
         WeaponHandler weaponHandler = p.GetComponent<WeaponHandler>();
