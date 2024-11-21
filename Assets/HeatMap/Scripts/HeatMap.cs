@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.Rendering;
 using UnityEngine;
 using static HeatMapDataJson;
 
@@ -10,7 +11,10 @@ public class HeatMap : MonoBehaviour
 
     //public Vector3[] positions; // read from Json and convert to array
     public DataContainer [] data;
-    public string filePath;
+    private string filePath;
+    private string fileName;
+    private string fileParentName;
+    public TextAsset file;
 
     public GameObject prefab;
     private List<GameObject> listObjects;
@@ -22,15 +26,25 @@ public class HeatMap : MonoBehaviour
 
     public void InitializeComponents()
     {
-        Debug.Log("Initializing");
+        
         lineRenderer = GetComponent<LineRenderer>();
         listObjects = new List<GameObject>();
         dataPosition = new Vector3[data.Length];
+        fileName = file.name;
+        Debug.Log("file Name getting from json file.name is: " + fileName);
+        DirectoryInfo parentDirectory = Directory.GetParent(fileName);
+        fileParentName = parentDirectory.Name;
+        Debug.Log("directory filePARENT name:" + fileParentName);
+        filePath = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/" + fileParentName + "/ " + fileName + ".json";
+        Debug.Log("Initializing");
     }
 
     public void CreateDataContainerArrayFromJson()
     {
-        ReadJson(filePath);                
+        Debug.Log(filePath);
+        ReadJson(filePath);
+        Debug.Log("string filePath " + filePath.Length);
+        Debug.Log(filePath);
     }
 
     public void CreateGameObjList()
@@ -51,6 +65,11 @@ public class HeatMap : MonoBehaviour
     {
         for (int i = 0; i < listObjects.Count; i++)
         {
+            if(i > listObjects.Count - 2)
+            {
+                break;
+            }
+
             float distance = Vector3.Distance(listObjects[i].transform.position, listObjects[i + 1].transform.position);
 
             if (distance < 0.5)
@@ -59,28 +78,28 @@ public class HeatMap : MonoBehaviour
             }
             else if (distance < 0.8)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = new Color(255,69,0);
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
             }
             else if (distance < 1.3)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.cyan;
             }
             else if (distance < 1.5)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = new Color(4, 2, 115);
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.blue;
             }
             else if (distance < 1.8)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = new Color(144, 213, 255);
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.green;
             }
             else if (distance < 2)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = new Color(6, 64, 43);
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.grey;
             }
 
             else
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.green;
+                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.black;
             }
         }
     }
@@ -128,7 +147,6 @@ public class HeatMap : MonoBehaviour
 
     public void ReadJson(string name)
     {
-        name = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/Level0.json";
         string fileString = File.ReadAllText(name);
         data = JsonUtility.FromJson<Wrapper>(fileString).dataContainers;
         Debug.Log("ReadJson: " + data.Length);
