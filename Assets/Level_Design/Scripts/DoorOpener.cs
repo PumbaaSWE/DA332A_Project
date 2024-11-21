@@ -30,6 +30,7 @@ public class DoorOpener : MonoBehaviour
             source.clip = closeClip;
             source.Play();
             anim.SetTrigger("Exit");
+            anim.ResetTrigger("Open");
             hasOpened = false;
         }
     }
@@ -45,7 +46,7 @@ public class DoorOpener : MonoBehaviour
 
     public void OpenDoor(Transform transform)
     {
-        Debug.Log(transform);
+        //Debug.Log(transform);
         if (!transform.gameObject.GetComponent<WeaponHandler>().enabled) 
         {
             return;
