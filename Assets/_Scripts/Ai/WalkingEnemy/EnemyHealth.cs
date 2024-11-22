@@ -8,21 +8,25 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 {
     public GameObject enemy;
 
-    public float deathHealth = 1400;
+    public float health = 1000;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
-    [SerializeField] private float health;
-    [SerializeField] private float legHealth;
-    [SerializeField] private float maxHealth;
+   
+
+
+
+    private float leftLegHealth = 100f;
+    private float rightLegHealth = 100f;
+    private float leftArmHealth = 100f;
+    private float rightArmHealth = 100f;
+    private float headHealth = 100f;
+    private float limbHealth = 100f;
 
     public Action<EnemyHealth, float> OnHealthChanged;
     public Action<EnemyHealth> OnDeath;
 
     public bool dead;
-
-    public float Value => health;
-    public float MaxHealth => maxHealth;
 
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
@@ -34,7 +38,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     private void Update()
     {
-        if (deathHealth <= 0)
+        if (health <= 0)
         {
             Death();
         }
@@ -42,49 +46,85 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 1.5f);
+        ragdoll.TriggerRagdoll(new Vector3(0, 1f, 0), new Vector3(0, 0, 0));
+        Destroy(enemy, 3.5f);
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        deathHealth -= damage;
+        health -= damage;
         Impact(direction, point);
         //Damage(damage);
         Detachable d = regrow.GetDetachable(point);
         if (d != null)
         {
-            if (d.leg)
+            if (d.leftLeg)
             {
-                legHealth -= damage;
+                leftLegHealth -= damage;
             }
-            else
+            else if(d.rightLeg)
             {
-                health -= damage;
+                rightLegHealth -= damage;
+            }
+            else if(d.rightArm) 
+            {
+                rightArmHealth -= damage;
+            }
+            else if(d.leftArm)
+            {
+                leftArmHealth -= damage;
+            }
+            else if(d.head)
+            {
+                headHealth -= damage;
             }
         }
 
        
 
-        if (legHealth <= 0)
+        if (leftLegHealth <= 0)
         {
             LoseLimbSound();
             regrow.Hit(point);
-            //regrow.TriggerRegrow(point);
             if (d != null)
             {
-                if (d.leg)
+                if (d.leftLeg)
                 {
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            legHealth = maxHealth;
+            leftLegHealth = limbHealth;
         }
-        else if (health <= 0)
+        else if(rightLegHealth <= 0)
         {
             LoseLimbSound();
             regrow.Hit(point);
-            health = maxHealth;
+            if (d != null)
+            {
+                if (d.leftLeg)
+                {
+                    ragdoll.TriggerRagdoll(direction, point);
+                }
+            }
+            leftLegHealth = limbHealth;
+        }
+        else if (rightArmHealth <= 0)
+        {
+            LoseLimbSound();
+            regrow.Hit(point);
+            rightArmHealth = limbHealth;
+        }
+        else if (leftArmHealth <= 0)
+        {
+            LoseLimbSound();
+            regrow.Hit(point);
+            leftArmHealth = limbHealth;
+        }
+        else if (headHealth <= 0)
+        {
+            LoseLimbSound();
+            regrow.Hit(point);
+            headHealth = limbHealth;
         }
         //dmgAudio.clip = dmgClips[1];
         //if (!dmgAudio.isPlaying)
@@ -104,50 +144,6 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         {
             dmgAudio.Play();
         }
-    }
-
-    public void Reset()
-    {
-        health = maxHealth;
-        dead = false;
-    }
-
-    public void Damage(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health -= amount;
-        if (health <= 0)
-        {
-            health = 0;
-            if (!dead)
-            {
-                dead = true;
-                OnDeath?.Invoke(this);
-            }
-
-        }
-        OnHealthChanged?.Invoke(this, -amount);
-    }
-
-    public void Heal(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health += amount;
-
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
-        OnHealthChanged?.Invoke(this, amount);
-    }
-
-    public void SetHealth(float health)
-    {
-        this.health = health;
     }
 
 
