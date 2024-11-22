@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEditor;
 using Random = UnityEngine.Random;
+using System;
 
 public class CaseEjector : MonoBehaviour
 {
@@ -18,19 +19,26 @@ public class CaseEjector : MonoBehaviour
     [SerializeField] float AngularDrag = 0.05f;
     [SerializeField] PhysicMaterial PhysicMat;
     [SerializeField] bool Debug;
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    [SerializeField] int MaxCasings = 20;
+    [SerializeField] float PitchVariance;
+    Queue<GameObject> Casings = new();
+    [SerializeField] AudioSource CasingSounds;
+    [SerializeField] float MinEmitVelocity = 5;
 
     public void Eject()
     {
+        if (Casings.Count >= MaxCasings)
+            Destroy(Casings.Dequeue());
+
         GameObject newCasing = Instantiate(Casing,transform.position,transform.rotation);
         newCasing.name = "Casing Particle";
         newCasing.layer = CasingLayer;
         newCasing.transform.localScale = transform.lossyScale;
+
+        Casing casing = newCasing.AddComponent<Casing>();
+        casing.PlaySound = () => PlaySound();
+        casing.MinEmitVelocity = MinEmitVelocity;
+        casing.SetDestroy(LifeTime);
 
         // Creates and sets the values for the collider
         MeshCollider collider = newCasing.AddComponent<MeshCollider>();
@@ -52,6 +60,14 @@ public class CaseEjector : MonoBehaviour
         rb.AddTorque(transform.up * Random.Range(MinHorizontalTorque,MaxHorizontalTorque), ForceMode.Impulse);
         rb.AddTorque(transform.forward * Random.Range(MinVerticalTorque, MaxVerticalTorque), ForceMode.Impulse);
 
-        Destroy(newCasing, LifeTime);
+        Casings.Enqueue(newCasing);
+
+        //Destroy(newCasing, LifeTime);
+    }
+
+    public void PlaySound()
+    {
+        CasingSounds.pitch = 1 + Random.Range(-PitchVariance, PitchVariance);
+        CasingSounds.PlayOneShot(CasingSounds.clip);
     }
 }

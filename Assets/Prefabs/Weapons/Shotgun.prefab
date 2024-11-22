@@ -526,6 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6408009249511592628}
   - component: {fileID: 3373812779887825996}
+  - component: {fileID: 3450865944519953614}
   m_Layer: 14
   m_Name: CaseEjector
   m_TagString: Untagged
@@ -576,6 +577,106 @@ MonoBehaviour:
   AngularDrag: 0.1
   PhysicMat: {fileID: 13400000, guid: df1a2ff67d8a83f4eaa28610f2f35592, type: 2}
   Debug: 0
+  MaxCasings: 20
+  PitchVariance: 0.05
+  CasingSounds: {fileID: 3450865944519953614}
+  MinEmitVelocity: 6
+--- !u!82 &3450865944519953614
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2154165062043657722}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: aa7567d9600546644bae3651002392f7, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 100
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2191677642303953252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1204,7 @@ MonoBehaviour:
   lightFlash: {fileID: 8814106177054130672}
   fadeTime: 0.02
   DisableOverlap: 0
+  RandomPitchVariance: 0.1
 --- !u!82 &5862919202693881135
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6588,40 +6690,33 @@ MonoBehaviour:
   - Clips:
     - {fileID: 8300000, guid: cc7c40fd4a6a6a64080f3431e9430ea6, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: d4162a5d2ad29b348bf6a86f6ef76329, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 576988a66b6fc5242b120fa8fecc6d0b, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 0bd5330b9051904408a5e235ba037cf9, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 9e0d52edfc724ec469d5f4a161eb37a3, type: 3}
     - {fileID: 8300000, guid: f766893b0f657ff4aba8b26e79f3d207, type: 3}
     - {fileID: 8300000, guid: 87d6576606cd5554498b451808b1a9c5, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 15b7e3bfd6992af458399ac588bf2a21, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 1902a2fb842200740a2f3fe083139e9d, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
 --- !u!1 &4989965598524480736
 GameObject:
   m_ObjectHideFlags: 0

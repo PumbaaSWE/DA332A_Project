@@ -10,6 +10,7 @@ public class MuzzleFlash : MonoBehaviour
     [SerializeField] Light lightFlash;
     [SerializeField] float fadeTime;
     [SerializeField] bool DisableOverlap;
+    [SerializeField] float RandomPitchVariance = 0.1f;
 
     //void Awake()
     //{
@@ -35,6 +36,8 @@ public class MuzzleFlash : MonoBehaviour
     {
         if (MuzzleFlashEffects.Count > 0)
         {
+            GunShot.pitch = 1 + Random.Range(-RandomPitchVariance, RandomPitchVariance);
+
             if (DisableOverlap)
                 GunShot.Play();
 
