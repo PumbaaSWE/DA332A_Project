@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 {
     public GameObject enemy;
 
-    public float deahtHealth = 1400;
+    public float deathHealth = 1400;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
@@ -34,7 +34,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     private void Update()
     {
-        if (deahtHealth <= 0)
+        if (deathHealth <= 0)
         {
             Death();
         }
@@ -42,13 +42,13 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(1, 1, 1), new Vector3(0, 1, 0));
+        ragdoll.TriggerRagdoll(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
         Destroy(enemy, 1.5f);
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        deahtHealth -= damage;
+        deathHealth -= damage;
         Impact(direction, point);
         //Damage(damage);
         Detachable d = regrow.GetDetachable(point);
