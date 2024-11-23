@@ -14,7 +14,7 @@ public class FSM_Walker : MonoBehaviour
 
 
     [Header("Nav")]
-    [SerializeField] float searchRange = 5f;
+    [SerializeField] float wanderRange = 25f;
     private float idleTime;
     bool destinationSet = true;
     bool reachedDestination = false;
@@ -69,7 +69,7 @@ public class FSM_Walker : MonoBehaviour
 
     public bool sleep;
 
-
+    private Vector3 startPosition;
     // sound
     [SerializeField] private AudioSource footstepAudio;
     [SerializeField] private AudioSource attackAudio;
@@ -102,6 +102,7 @@ public class FSM_Walker : MonoBehaviour
     }
     void Start()
     {
+        startPosition = transform.position;
         player.NotifyOnPlayerChanged(OnPlayer);
     }
 
@@ -288,7 +289,7 @@ public class FSM_Walker : MonoBehaviour
             {
                 footstepAudio.Play();
             }
-            Vector3 location = PickLocationInRange(searchRange);
+            Vector3 location = PickLocationInRange(wanderRange);
             MoveTo(location);
         }
     }
@@ -303,7 +304,8 @@ public class FSM_Walker : MonoBehaviour
     }
     public Vector3 PickLocationInRange(float range)
     {
-        Vector3 searchLocation = transform.position;
+        //Vector3 searchLocation = transform.position;
+        Vector3 searchLocation = startPosition;
         searchLocation += Random.Range(-range, range) * Vector3.forward;
         searchLocation += Random.Range(-range, range) * Vector3.right;
         NavMeshHit hitResult;
@@ -631,9 +633,6 @@ public class FSM_Walker : MonoBehaviour
         agent.isStopped = false;
      
     }
-
-   
-
 
     private void OnAnimatorMove()
     {

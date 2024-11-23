@@ -96,7 +96,6 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
-            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }
@@ -207,6 +206,11 @@ public class Limbstate : MonoBehaviour
 
     void CheckStanding()
     {
+        if (rag.state != Ragdoll.RagdollState.Default)
+        {
+            limbStatehit = AgentHit.Crawl;
+        }
+
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
         {
             standing = true;
