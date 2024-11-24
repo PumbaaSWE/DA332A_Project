@@ -22,6 +22,7 @@ public class NonphysController : MovementController
     [SerializeField] float minLookUpAngle = -90;
     [SerializeField] float maxLookUpAngle = 90f;
     [SerializeField] float mouseSensitivity = 0.05f;
+    [SerializeField] float AdsSensitivityModifier = 0.5f;
     [SerializeField] float camOffset = 0.35f;
 
     [Header("Movement")]
@@ -143,6 +144,10 @@ public class NonphysController : MovementController
         // look
         Vector2 preRot = Rotation();
         look *= mouseSensitivity;
+
+        if (wh.IsAds())
+            look *= AdsSensitivityModifier;
+
         Rotate(look.y, look.x);
         LookDelta = Rotation() - preRot;
         LookDelta = new Vector3(Mathf.DeltaAngle(0, LookDelta.x), Mathf.DeltaAngle(0, LookDelta.y));

@@ -1,47 +1,30 @@
 using TMPro;
 using UnityEngine;
 
-public class FirearmHUD : MonoBehaviour
+public class FirearmHUD : TemplateTextHUD
 {
-    PlayerDataSO playerData;
+    //PlayerDataSO playerData;
     WeaponHandler weaponHandler;
     [SerializeField] TMP_Text loadedAmmo;
     [SerializeField] TMP_Text reserveAmmo;
+    [SerializeField] TMP_Text label;
 
-
-    public void SetFirearm(WeaponHandler weaponHandler)
+    protected override void Initialize()
     {
-        this.weaponHandler = weaponHandler;
-    }
-
-
-    void Start()
-    {
-        if (!playerData)
-        {
-            PlayerDataHUDHolder data = GetComponentInParent<PlayerDataHUDHolder>();
-            playerData = data.playerData;
-        }
-        //if (!playerData)
-        //{
-        //    playerData = FindAnyObjectByType<PlayerDataSO>();
-        //}
         if (!weaponHandler && playerData)
         {
             FindEquippedFireArm();
         }
-    }
-    void FindEquippedFireArm()
-    {
-        Transform playerParent = playerData.PlayerTransform;
-        if (playerParent != null) {
-            weaponHandler = playerParent.GetComponent<WeaponHandler>();
-            //TooltipUtil.Display("Press left click to shoot", 10.0f);
-        }
+        idleTimerMax = 3.0f;
+        defaultColor = Color.white;
+        if(targets != null) { return; }
+        targets = new TMP_Text[3];
+        targets[0] = loadedAmmo;
+        targets[1] = reserveAmmo;
+        targets[2] = label;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Handle()
     {
         if (weaponHandler)
         {
@@ -53,4 +36,43 @@ public class FirearmHUD : MonoBehaviour
             FindEquippedFireArm();
         }
     }
+
+    protected override bool CheckIdle()
+    {
+        if (weaponHandler)
+        {
+            return weaponHandler.GetMagazineCount() <= 0 && weaponHandler.GetAmmoCount() <= 0;
+        }
+        return true;
+    }
+
+    void FindEquippedFireArm()
+    {
+        Transform playerParent = playerData.PlayerTransform;
+        if (playerParent != null)
+        {
+            weaponHandler = playerParent.GetComponent<WeaponHandler>();
+            //TooltipUtil.Display("Press left click to shoot", 10.0f);
+        }
+    }
+
+    //public void SetFirearm(WeaponHandler weaponHandler)
+    //{
+    //    this.weaponHandler = weaponHandler;
+    //}
+
+    //void Start()
+    //{
+    //    if (!playerData)
+    //    {
+    //        PlayerDataHUDHolder data = GetComponentInParent<PlayerDataHUDHolder>();
+    //        playerData = data.playerData;
+    //    }
+    //    //if (!playerData)
+    //    //{
+    //    //    playerData = FindAnyObjectByType<PlayerDataSO>();
+    //    //}
+
+    //}
+
 }

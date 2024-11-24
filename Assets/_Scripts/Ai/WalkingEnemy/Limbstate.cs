@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -20,7 +21,7 @@ public class Limbstate : MonoBehaviour
     public bool standing;
 
     public bool noHead;
-
+ 
 
     private void Awake()
     {
@@ -95,6 +96,7 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
+            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }
@@ -156,7 +158,8 @@ public class Limbstate : MonoBehaviour
 
     void CrawlBehavior()
     {
-      
+        fsm.canAttakRun = false;
+
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
@@ -164,6 +167,7 @@ public class Limbstate : MonoBehaviour
 
     void ArmAndLegBehavior()
     {
+        fsm.canAttakRun = false;
         standing = false;
         //fsm.agentState = FSM_Walker.AgentState.Sleep;
 
@@ -173,6 +177,8 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
+        fsm.canAttakRun = false;
+        fsm.nrOfAttacks = 3;
         //if (!standing)
         //{
         //    limbStatehit = AgentHit.StandUp;
@@ -211,7 +217,9 @@ public class Limbstate : MonoBehaviour
     }
     void Normal()
     {
-        if(!standing)
+        fsm.canAttakRun = true;
+        fsm.nrOfAttacks = 1;
+        if (!standing)
         {
             limbStatehit = AgentHit.StandUp;
         }

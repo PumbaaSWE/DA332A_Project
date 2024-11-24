@@ -33,22 +33,22 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
     public void PlayVoiceLine(VoicelineData voiceline)
     {
         if(voiceline)
-            PlayVoiceLine(voiceline.audioClip, voiceline.subtitle, voiceline.time, voiceline.color);
+            PlayVoiceLine(voiceline.audioClip, voiceline.subtitles, voiceline.time, voiceline.color);
     }
-    public void PlayVoiceLine(AudioClip clip, string subtitleText, float subtitleTime, Color subtitleColor)
+    public void PlayVoiceLine(AudioClip clip, string[] subtitleText, float overrideTime, Color subtitleColor)
     {
         //this.voiceline = voiceline;
         source.clip = clip;
         source.Play();
 
-        clipLength = clip.length;
-
+        clipLength = overrideTime > 0.0f? overrideTime : clip.length;
+        
         if (subtitleChannel)
         {
             SubtitleData subtitle = new()
             {
-                text = subtitleText,
-                time = subtitleTime,
+                text = subtitleText[0],
+                time = clipLength,
                 color = subtitleColor
             };
             subtitleChannel.Raise(subtitle);
@@ -59,8 +59,9 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
 
     public void Update()
     {
-        if (source.isPlaying) {
-            float t = source.time / clipLength;
+        if (source.isPlaying || clipLength > 0) {
+            clipLength -= Time.deltaTime;
+            //float t = source.time / clipLength;
             return;
         }
 
