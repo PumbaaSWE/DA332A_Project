@@ -24,7 +24,8 @@ public class TriggerZone : MonoBehaviour
     {
         zone = GetComponent<Collider>();
         zone.isTrigger = true;
-        gameObject.layer = triggerMask;
+        //gameObject.layer = triggerMask;
+        gameObject.layer = 2;
     }
     
     public void TriggerTheZone(Transform trigger)
