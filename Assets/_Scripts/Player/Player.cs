@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 
@@ -10,11 +9,15 @@ public class Player : MonoBehaviour
     public Vector3 LookDir => playerHead.forward;
     public Vector3 HeadPos => playerHead.position;
     static bool created;
+    static int instances;
+
+    public Health Health { get; private set; }
 
     void Awake()
     {
 
 
+        instances++;
         //Debug.Assert(!created, "Player - multiple created/loaded");
         //A kind of singelton player...
         if (created)
@@ -24,7 +27,8 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        instances = 1;
+        Health = GetComponent<Health>();
         gameObject.tag = "Player";
         playerData.PlayerTransform = transform;
 
@@ -44,8 +48,10 @@ public class Player : MonoBehaviour
 
     private void OnDestroy()
     {
-        created = false;
+        instances--;
+        created = instances > 0;
     }
+
 #if UNITY_EDITOR
     [MakeButton]
     public void SetSpawnPoint()

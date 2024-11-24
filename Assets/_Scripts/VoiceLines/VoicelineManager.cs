@@ -46,6 +46,18 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
         clipLength = voicelineTime > 0.0f ? voicelineTime : clip.length;
 
+        InitializeNewSubtitle(subtitleText, subtitleTime, subtitleColor);
+    }
+
+    void InitializeNewSubtitle(string[] subtitleText, float[] subtitleTime, Color subtitleColor)
+    {
+        subtitleSequence = 0;
+        if (subtitleText == null || subtitleTime == null || subtitleText.Length == 0 || subtitleTime.Length != subtitleText.Length)
+        {
+            subtitles = new string[0];
+            subtitleDuration = new float[0];
+            return;
+        }
         subtitleDuration = new float[subtitleTime.Length];
         subtitles = new string[subtitleText.Length];
         float timeTotal = 0.0f;
@@ -55,9 +67,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
             subtitles[i] = subtitleText[i];
             timeTotal += subtitleDuration[i];
         }
-
         this.subtitleColor = subtitleColor;
-        subtitleSequence = 0;
 
         SetNewSubtitle(subtitleSequence);
     }
