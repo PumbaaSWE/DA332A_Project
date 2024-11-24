@@ -4,12 +4,22 @@ public class DetectableTarget : MonoBehaviour
 {
 
     public bool bosted = false;
-    void Start()
+    //void Start()
+    //{
+    //    DetectableTargetManager.Instance.Register(this);
+    //}
+
+    private void OnEnable()
     {
-        DetectableTargetManager.Instance.Register(this);
+        if (DetectableTargetManager.Instance != null)
+        {
+            DetectableTargetManager.Instance.Register(this);
+        }
+        else
+        {
+            Debug.LogError("DetectableTargetManager.Instance is null during OnEnable.");
+        }
     }
-
-
 
     private void OnDisable()
     {

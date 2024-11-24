@@ -38,12 +38,12 @@ public class TwoBoneIK : MonoBehaviour
         Debug.DrawLine(root.position, target.position);
         Debug.DrawLine((root.position + target.position) / 2, mid.position);
 
-        //Set the rotation of the root arm
+        //Set the rotation of the root leftArm
         root.rotation = Quaternion.LookRotation(target.position - root.position, Quaternion.AngleAxis(rootElbowRotation, mid.position - root.position) * en);
         root.rotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, mid.localPosition));
         root.rotation = Quaternion.AngleAxis(-CosAngle(a, c, b), -en) * root.rotation;
 
-        //set the rotation of the mid arm
+        //set the rotation of the mid leftArm
         mid.rotation = Quaternion.LookRotation(target.position - mid.position, Quaternion.AngleAxis(midElbowRotation, tip.position - mid.position) * en);
         mid.rotation *= Quaternion.Inverse(Quaternion.FromToRotation(Vector3.forward, tip.localPosition));
 

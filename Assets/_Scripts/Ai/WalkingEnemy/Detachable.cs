@@ -12,9 +12,11 @@ public class Detachable : MonoBehaviour
     float time;
     Rigidbody rbAnchor;
     float[] limits = new float[4];
-    public bool leg;
+    public bool leftLeg;
+    public bool rightLeg;
     public bool head;
-    public bool arm;
+    public bool leftArm;
+    public bool rightArm;
     private void Awake()
     {
         if (transform.parent != null && transform.parent.TryGetComponent(out Detachable detachable))

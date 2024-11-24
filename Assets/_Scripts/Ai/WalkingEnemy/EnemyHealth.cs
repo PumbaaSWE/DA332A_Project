@@ -8,83 +8,163 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 {
     public GameObject enemy;
 
-    public float deahtHealth = 1400;
+    public float health = 1000;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
-    [SerializeField] private float health;
-    [SerializeField] private float legHealth;
-    [SerializeField] private float maxHealth;
+    FSM_Walker fsm;
+   
+
+
+
+    private float leftLegHealth = 100f;
+    private float rightLegHealth = 100f;
+    private float leftArmHealth = 100f;
+    private float rightArmHealth = 100f;
+    private float headHealth = 100f;
+    private float limbHealth = 100f;
 
     public Action<EnemyHealth, float> OnHealthChanged;
     public Action<EnemyHealth> OnDeath;
 
     public bool dead;
 
-    public float Value => health;
-    public float MaxHealth => maxHealth;
-
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
+
+    [SerializeField] GameObject headblodParticle;
+    [SerializeField] GameObject rightArmblodParticle;
+    [SerializeField] GameObject leftArmblodParticle;
+    [SerializeField] GameObject rightLegblodParticle;
+    [SerializeField] GameObject leftLegblodParticle;
+
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        fsm = GetComponent<FSM_Walker>();
+         animator = GetComponent<Animator>();
         regrow = GetComponent<Regrow>();
         ragdoll = GetComponent<Ragdoll>();
+       
     }
+
     private void Update()
     {
-        if (deahtHealth <= 0)
+        if (health <= 0)
         {
+           
             Death();
+         
         }
 
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(1, 1, 1), new Vector3(0, 1, 0));
-        Destroy(enemy, 1.5f);
+        //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
+        Destroy(enemy, 25f);
+        ragdoll.state = Ragdoll.RagdollState.Ragdoll;
+        regrow.canRegrow = false;
+        fsm.agentState = FSM_Walker.AgentState.Sleep;
+
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        deahtHealth -= damage;
+
+        leftLegblodParticle.SetActive(false);
+        rightLegblodParticle.SetActive(false);
+        rightArmblodParticle.SetActive(false);
+        leftArmblodParticle.SetActive(false);
+        headblodParticle.SetActive(false);
+
+
+        health -= damage;
         Impact(direction, point);
         //Damage(damage);
         Detachable d = regrow.GetDetachable(point);
         if (d != null)
         {
-            if (d.leg)
+            if (d.leftLeg)
             {
-                legHealth -= damage;
+                leftLegHealth -= damage;
             }
-            else
+            else if(d.rightLeg)
             {
-                health -= damage;
+                rightLegHealth -= damage;
+            }
+            else if(d.rightArm) 
+            {
+                rightArmHealth -= damage;
+            }
+            else if(d.leftArm)
+            {
+                leftArmHealth -= damage;
+            }
+            else if(d.head)
+            {
+                headHealth -= damage;
             }
         }
 
-       
+        
 
-        if (legHealth <= 0)
+        if (leftLegHealth <= 0)
         {
+            leftLegblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            //regrow.TriggerRegrow(point);
             if (d != null)
             {
-                if (d.leg)
+                if (d.leftLeg)
                 {
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            legHealth = maxHealth;
+            leftLegHealth = limbHealth;
+
         }
-        else if (health <= 0)
+        else if(rightLegHealth <= 0)
         {
+            rightLegblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            health = maxHealth;
+            if (d != null)
+            {
+                if (d.leftLeg)
+                {
+                    ragdoll.TriggerRagdoll(direction, point);
+                }
+            }
+            leftLegHealth = limbHealth;
+          
+        }
+        else if (rightArmHealth <= 0)
+        {
+            rightArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            rightArmHealth = limbHealth;
+            
+        }
+        else if (leftArmHealth <= 0)
+        {
+            leftArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            leftArmHealth = limbHealth;
+          
+        }
+        else if (headHealth <= 0)
+        {
+            headblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            headHealth = limbHealth;
+        }
+
+        if (health <= 0)
+        {
+            ragdoll.TriggerRagdoll(direction, point);
+            regrow.Hit(point);
         }
         //dmgAudio.clip = dmgClips[1];
         //if (!dmgAudio.isPlaying)
@@ -95,6 +175,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         // PlayHitAnimation(direction);
         //Impact(direction, point);
 
+
     }
 
     void LoseLimbSound()
@@ -104,50 +185,6 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         {
             dmgAudio.Play();
         }
-    }
-
-    public void Reset()
-    {
-        health = maxHealth;
-        dead = false;
-    }
-
-    public void Damage(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health -= amount;
-        if (health <= 0)
-        {
-            health = 0;
-            if (!dead)
-            {
-                dead = true;
-                OnDeath?.Invoke(this);
-            }
-
-        }
-        OnHealthChanged?.Invoke(this, -amount);
-    }
-
-    public void Heal(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health += amount;
-
-        if (health > maxHealth)
-        {
-            health = maxHealth;
-        }
-        OnHealthChanged?.Invoke(this, amount);
-    }
-
-    public void SetHealth(float health)
-    {
-        this.health = health;
     }
 
 
