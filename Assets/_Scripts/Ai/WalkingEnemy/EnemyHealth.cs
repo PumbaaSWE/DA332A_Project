@@ -12,6 +12,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
+    FSM_Walker fsm;
    
 
 
@@ -30,28 +31,39 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
+
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        fsm = GetComponent<FSM_Walker>();
+         animator = GetComponent<Animator>();
         regrow = GetComponent<Regrow>();
         ragdoll = GetComponent<Ragdoll>();
+       
     }
+
     private void Update()
     {
         if (health <= 0)
         {
+           
             Death();
+         
         }
 
     }
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(0, 1f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 3.5f);
+        //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
+        Destroy(enemy, 25f);
+        ragdoll.state = Ragdoll.RagdollState.Ragdoll;
+        regrow.canRegrow = false;
+        fsm.agentState = FSM_Walker.AgentState.Sleep;
+
     }
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
+
         health -= damage;
         Impact(direction, point);
         //Damage(damage);
@@ -80,9 +92,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             }
         }
 
-       
-
-        if (leftLegHealth <= 0)
+        if (health <= 0)
+        {
+            ragdoll.TriggerRagdoll(direction, point);
+            regrow.Hit(point);
+        }
+        else if (leftLegHealth <= 0)
         {
             LoseLimbSound();
             regrow.Hit(point);

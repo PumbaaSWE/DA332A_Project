@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static Limb;
 
 public class FSM_Walker : MonoBehaviour
 {
@@ -65,6 +66,8 @@ public class FSM_Walker : MonoBehaviour
     Eye eye;
     bool ragdoll;
 
+    Limbstate limbState;
+
     public int nrOfAttacks;
 
     public bool sleep;
@@ -76,10 +79,11 @@ public class FSM_Walker : MonoBehaviour
     [SerializeField] private List<AudioClip> footstepClips;
     [SerializeField] private List<AudioClip> soundClips;
     [SerializeField] private List<AudioClip> attackClips;
-    [SerializeField] private float soundRadius = 10f;
+    //[SerializeField] private float soundRadius = 10f;
 
     private void Awake()
     {
+        limbState = GetComponent<Limbstate>();
         footstepAudio = GetComponent<AudioSource>();
         footstepAudio.volume = 1f;
         characterController = GetComponent<CharacterController>();
@@ -477,7 +481,7 @@ public class FSM_Walker : MonoBehaviour
         animator.SetFloat("vely", agent.velocity.magnitude);
 
         footstepAudio.clip = footstepClips[1];
-        if (shouldMove && transform.position.InRangeOf(target.position, soundRadius) && !footstepAudio.isPlaying)
+        if (shouldMove  && !footstepAudio.isPlaying)
         {
             footstepAudio.Play();
         }
@@ -520,7 +524,7 @@ public class FSM_Walker : MonoBehaviour
         lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
 
         footstepAudio.clip = footstepClips[0];
-        if (shouldMove && transform.position.InRangeOf(target.position, soundRadius)  && !footstepAudio.isPlaying)
+        if (shouldMove  && !footstepAudio.isPlaying)
         {
             footstepAudio.Play();
         }
@@ -532,18 +536,20 @@ public class FSM_Walker : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        //animator.SetLayerWeight(6, 0);
-        //animator.SetBool("Charge", false);
-
         eye.AngryEye();
 
+        
         if (!currentTarget.transform)
         {
             //swap state?
             agentState = AgentState.Idle;
             return;
         }
-        if (currentTarget.transform.position.InRangeOf(transform.position, attackRange))
+        if(!limbState.standing)
+        {
+
+        }
+        else if (currentTarget.transform.position.InRangeOf(transform.position, attackRange))
         {
             Attack();
             Vector3 dir = currentTarget.transform.position - transform.position;
@@ -554,13 +560,13 @@ public class FSM_Walker : MonoBehaviour
                 transform.position -= transform.forward * Time.deltaTime;
             }
         }
-        else
+       
         {
-            animator.SetBool("CrawlAttack", false);
+            //animator.SetBool("CrawlAttack", false);
 
-            agent.SetDestination(currentTarget.transform.position);
-            agent.isStopped = false;
-            agentState = AgentState.Chasing;
+            //agent.SetDestination(currentTarget.transform.position);
+            //agent.isStopped = false;
+            //agentState = AgentState.Chasing;
         }
 
     }

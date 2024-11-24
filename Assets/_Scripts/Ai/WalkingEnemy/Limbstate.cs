@@ -162,6 +162,12 @@ public class Limbstate : MonoBehaviour
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
+
+        if (fsm.agentState == FSM_Walker.AgentState.Attacking)
+        {
+            animator.SetLayerWeight(6, 1);
+            animator.SetBool("Charge", true);
+        }
     }
 
     void ArmAndLegBehavior()
