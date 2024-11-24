@@ -63,6 +63,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3746649637440918095}
   - component: {fileID: 4721810108466282202}
+  - component: {fileID: 5535454370477885869}
   m_Layer: 14
   m_Name: CaseEjector
   m_TagString: Untagged
@@ -113,6 +114,106 @@ MonoBehaviour:
   AngularDrag: 0.1
   PhysicMat: {fileID: 13400000, guid: abeb2a2903f5a5546acd3d00d55abf4f, type: 2}
   Debug: 0
+  MaxCasings: 10
+  PitchVariance: 0.05
+  CasingSounds: {fileID: 5535454370477885869}
+  MinEmitVelocity: 5
+--- !u!82 &5535454370477885869
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954403249378307529}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f9b2dca82bddc7345a2e5a2f3c5a3f4a, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 100
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2402193654711996126
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +535,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 65be6ecdf080f6140affc553d7588a50,
         type: 2}
+    - target: {fileID: 8286670682168213792, guid: f1d1587903622c94daacba58e9c893c0,
+        type: 3}
+      propertyPath: RandomPitchVariance
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7774189439558787382, guid: f1d1587903622c94daacba58e9c893c0, type: 3}
     m_RemovedGameObjects: []
@@ -1148,23 +1254,19 @@ MonoBehaviour:
   - Clips:
     - {fileID: 8300000, guid: 13920aa7e9310834fa039e233cbaaa18, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 11ebdea14a79b6748a231606ad967e99, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: f969daa84ae76b44fa073b1789dd88d4, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
   - Clips:
     - {fileID: 8300000, guid: 1902a2fb842200740a2f3fe083139e9d, type: 3}
     Pitch: 1
-    MinPitchVariance: 0
-    MaxPitchVariance: 0
+    PitchVariance: 0
 --- !u!4 &7559075458078971297 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c50bcbb55993e1749bff9dc37f742fdf,

@@ -14,12 +14,12 @@ public class PlayVoiceline : MonoBehaviour
     {
         if (!this.enabled) {  return; }
         if(voiceline)
-            SimpleVoiceManager.Instance.QueueVoiceLine(voiceline);
+            VoicelineManager.Instance.QueueVoiceLine(voiceline);
         if(voicelines != null)
         {
             for (int i = 0; i < voicelines.Length; i++)
             {
-                SimpleVoiceManager.Instance.QueueVoiceLine(voicelines[i]);
+                VoicelineManager.Instance.QueueVoiceLine(voicelines[i]);
             }
         }
         if (disableOnPlay)

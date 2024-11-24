@@ -34,11 +34,14 @@ public class SubtitleHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if(timer < 0)
+        if(timer <= 0)
         {
             //text.text = "";
             text.enabled = false;
+        }
+        else
+        {
+            timer -= Time.deltaTime;
         }
     }
 }

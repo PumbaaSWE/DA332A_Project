@@ -65,7 +65,12 @@ public class ZombieSensor : MonoBehaviour, IDamageble
     {
         if (!player) return;
         float dt = Time.deltaTime;
-        Vector3 delta = player.position - transform.position;
+
+        Vector3 eyePos = transform.position + new Vector3(0, 1.6f, 0);
+        Vector3 playerHeadPos = player.GetChild(0).position + Vector3.up * 0.1f;
+        Vector3 delta = playerHeadPos - eyePos;
+
+        //Vector3 delta = player.position - transform.position;
         SeeTarget = false;
 
         //always see if close 360 sens
@@ -82,7 +87,7 @@ public class ZombieSensor : MonoBehaviour, IDamageble
         //semiclose 180 degree fov
         if (delta.sqrMagnitude < visionRange * visionRange && Vector3.Dot(delta, transform.forward) > 0)
         {
-            if(HasDirectLineOfSight(delta, visionRange))
+            if(HasDirectLineOfSight(eyePos, delta, visionRange))
             {
                 return;
             }
@@ -90,8 +95,13 @@ public class ZombieSensor : MonoBehaviour, IDamageble
             {
                 timer += dt;
             }
+            Debug.DrawLine(eyePos, playerHeadPos, Color.magenta);
         }
+        else
+        {
 
+            Debug.DrawLine(eyePos, playerHeadPos, Color.cyan);
+        }
         //if(timer > looseSightTime)
         //{
         //    SeeTarget = false;
@@ -117,9 +127,9 @@ public class ZombieSensor : MonoBehaviour, IDamageble
     }
 
 
-    bool HasDirectLineOfSight(Vector3 delta, float range)
+    bool HasDirectLineOfSight(Vector3 origin, Vector3 delta, float range)
     {
-        if (Physics.Raycast(transform.position + Vector3.up, delta, out RaycastHit hit, range, visionMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(origin, delta, out RaycastHit hit, range, visionMask, QueryTriggerInteraction.Ignore))
         {
             if (hit.transform == player)
             {

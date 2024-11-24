@@ -1279,6 +1279,11 @@ PrefabInstance:
       propertyPath: LoadedAmmo
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1251183013979085846, guid: 48c321238730fae47b2f26631fb63184,
+        type: 3}
+      propertyPath: CaseEjectorParticleSystem
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4886926093768923865, guid: 48c321238730fae47b2f26631fb63184,
         type: 3}
       propertyPath: m_Name
@@ -1290,7 +1295,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4989965598524480736, guid: 48c321238730fae47b2f26631fb63184, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48c321238730fae47b2f26631fb63184, type: 3}
@@ -3394,6 +3400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 4953037288395936356}
+  lerpFactor: 10
 --- !u!114 &7917173091351295907
 MonoBehaviour:
   m_ObjectHideFlags: 0

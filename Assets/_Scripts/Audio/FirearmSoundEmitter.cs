@@ -22,7 +22,7 @@ public class SoundStage
 {
     public List<AudioClip> Clips;
     public float Pitch = 1;
-    public float MinPitchVariance = 0, MaxPitchVariance = 0;
+    public float PitchVariance = 0;
 
     public AudioClip GetClip()
     {
@@ -31,6 +31,6 @@ public class SoundStage
 
     public float GetPitch()
     {
-        return Pitch + Random.Range(-MinPitchVariance, MaxPitchVariance);
+        return Pitch + Random.Range(-PitchVariance, PitchVariance);
     }
 }
