@@ -158,16 +158,23 @@ public class Limbstate : MonoBehaviour
     void CrawlBehavior()
     {
         fsm.canAttakRun = false;
-
+        
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
 
-        if (fsm.agentState == FSM_Walker.AgentState.Attacking)
-        {
-            animator.SetLayerWeight(6, 1);
-            animator.SetBool("Charge", true);
-        }
+        fsm.nrOfAttacks = 4;
+
+        //if (fsm.agentState == FSM_Walker.AgentState.Attacking)
+        //{
+        //    animator.SetLayerWeight(6, 1);
+        //    animator.SetBool("Charge", true);
+        //}
+        //else
+        //{
+        //    animator.SetLayerWeight(6, 0);
+        //    animator.SetBool("Charge", false);
+        //}
     }
 
     void ArmAndLegBehavior()
