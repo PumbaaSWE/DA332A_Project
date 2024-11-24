@@ -1,36 +1,61 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MuzzleFlash : MonoBehaviour
 {
-    [SerializeField] ParticleSystem muzzleFlashEffect;
+    [SerializeField] List<ParticleSystem> MuzzleFlashEffects;
+    [SerializeField] AudioSource GunShot;
     [SerializeField] Light lightFlash;
     [SerializeField] float fadeTime;
+    [SerializeField] bool DisableOverlap;
+    [SerializeField] float RandomPitchVariance = 0.1f;
 
-    public void Awake()
-    {
-        Firearm firearm = GetComponentInParent<Firearm>();
-        if (firearm)
-        {
-            firearm.OnFire += DoFlash;
-        } 
-    }
+    //void Awake()
+    //{
+    //    GetComponentInParent<WeaponHandler>().OnShoot.AddListener(DoFlash);
+    //}
 
-    private void OnDestroy()
-    {
-        Firearm firearm = GetComponentInParent<Firearm>();
-        if (firearm)
-        {
-            firearm.OnFire -= DoFlash;
-        }
-    }
+    //void OnEnable()
+    //{
+    //    GetComponentInParent<WeaponHandler>().OnShoot.AddListener(DoFlash);
+    //}
+
+    //void OnDisable()
+    //{
+    //    GetComponentInParent<WeaponHandler>().OnShoot.RemoveListener(DoFlash);
+    //}
+
+    //void OnDestroy()
+    //{
+    //    GetComponentInParent<WeaponHandler>().OnShoot.RemoveListener(DoFlash);
+    //}
 
     public void DoFlash()
     {
-        if (muzzleFlashEffect) muzzleFlashEffect.Play();
+        if (MuzzleFlashEffects.Count > 0)
+        {
+            GunShot.pitch = 1 + Random.Range(-RandomPitchVariance, RandomPitchVariance);
+
+            if (DisableOverlap)
+                GunShot.Play();
+
+            else
+                GunShot.PlayOneShot(GunShot.clip);
+
+            MuzzleFlashEffects.ForEach(s => s.Play());
+            //StopAllCoroutines();
+            StartCoroutine(FlashFade());
+        }
     }
 
-    private void Update()
+    IEnumerator FlashFade()
     {
-        
+        lightFlash.enabled = true;
+
+        yield return new WaitForSeconds(fadeTime);
+
+        lightFlash.enabled = false;
     }
 }

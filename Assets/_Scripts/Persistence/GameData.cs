@@ -46,6 +46,7 @@ public class PlayerData
 {
     public float health;
     public int numFlares;
+    public int numSyrringes;
     public int numPistolRounds;
     public int numRifleRounds;
     public int numShotgunShells;

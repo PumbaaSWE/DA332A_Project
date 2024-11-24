@@ -13,7 +13,10 @@ public class Flashlight : MonoBehaviour
     InputAction action;
     string key = "<nope>";
     bool lightHasBeenOn = false;
-    // Start is called before the first frame update
+
+    Quaternion rotation;
+    [SerializeField] float lerpFactor = 10;
+
     void Start()
     {
         action = playerInput.actions.FindAction("G");
@@ -42,5 +45,8 @@ public class Flashlight : MonoBehaviour
             lightHasBeenOn = true;
             Blackboard.Instance.Set("lightHasBeenOn", true);
         }
+
+        // Interpolate rotation
+        transform.rotation = rotation = Quaternion.Lerp(rotation, transform.parent.rotation, lerpFactor * Time.deltaTime);
     }
 }

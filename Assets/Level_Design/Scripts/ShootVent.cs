@@ -29,4 +29,15 @@ public class ShootVent : MonoBehaviour, IDamageble
             jointNr++;
         }
     }
+
+    public void DestroyJoints()
+    {
+        for (int i = 0;  i < joints.Length; i++)
+        {
+            if (joints[i] != null)
+            {
+                Destroy(joints[i]);
+            }
+        }
+    }
 }

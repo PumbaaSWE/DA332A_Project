@@ -6,7 +6,8 @@ using UnityEngine;
 public class VoicelineData : ScriptableObject
 {
     public AudioClip audioClip;
-    public string subtitle;
+    public string[] subtitles;
+    public float[] subtitlesTimeStamps;
     [Tooltip("Manual time set, default is same as aucioclip")]
     public float time = 0; //set specified time voiceline will play, if time is 0, the time will be set to the audioclips duration instead
     public Color color = Color.white;
@@ -41,14 +42,17 @@ public class VoicelineData : ScriptableObject
     [MakeButton]
     public void ComputeTime()
     {
-        time = Mathf.Clamp(subtitle.Length / 21.0f, 1.5f, 6.0f);
-        if (subtitle.Length > 42)
+        for(int i = 0; i < subtitles[i].Length; i++)
         {
-            int breakLineIndex = subtitle.LastIndexOf(' ', 42);
-            StringBuilder stringBuilder = new();
-            stringBuilder.AppendLine(subtitle[..breakLineIndex]);
-            stringBuilder.AppendLine(subtitle[breakLineIndex..]);
-            subtitle = stringBuilder.ToString();
+            time = Mathf.Clamp(subtitles[i].Length / 21.0f, 1.5f, 6.0f);
+            if (subtitles[i].Length > 42)
+            {
+                int breakLineIndex = subtitles[i].LastIndexOf(' ', 42);
+                StringBuilder stringBuilder = new();
+                stringBuilder.AppendLine(subtitles[i][..breakLineIndex]);
+                stringBuilder.AppendLine(subtitles[i][breakLineIndex..]);
+                subtitles[i] = stringBuilder.ToString();
+            }
         }
     }
 }

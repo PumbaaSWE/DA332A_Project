@@ -57,7 +57,7 @@ public class RagdollController : MonoBehaviour
         {
             rbs[i].isKinematic = false;
         }
-         animator.enabled = false;
+        animator.enabled = false;
         if (disableList != null)
         {
             for (int i = 0; i < disableList.Length; i++)
@@ -69,6 +69,17 @@ public class RagdollController : MonoBehaviour
 
 
     }
+
+    public void FreezeRagdoll()
+    {
+        for (int i = 0; i < rbs.Length; i++)
+        {
+            rbs[i].isKinematic = true;
+        }
+
+    }
+
+
 
     [ContextMenu("Enable Projection..")]
     private void EnableProjection()

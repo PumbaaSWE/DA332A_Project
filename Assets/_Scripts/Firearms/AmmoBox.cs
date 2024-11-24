@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class AmmoBox : MonoBehaviour, IInteractable
@@ -14,16 +15,28 @@ public class AmmoBox : MonoBehaviour, IInteractable
 
     public Cartridgetype AmmoType;
     public int Ammo;
+    [SerializeField] bool UnlimitedUse;
+    [SerializeField] float BoxCooldown;
+    bool CanUse = true;
 
     public void Interact(Transform interactor)
     {
-        interactor.GetComponent<WeaponHandler>().AddAmmo(AmmoType, Ammo);
-        Destroy(gameObject);
+        if (CanUse)
+        {
+            interactor.GetComponent<WeaponHandler>().AddAmmo(AmmoType, Ammo);
+            CanUse = false;
+
+            if (UnlimitedUse)
+                StartCoroutine(Cooldown());
+
+            else
+                Destroy(gameObject);
+        }
     }
 
     public void SpeculateInteract(Transform interactor)
     {
-        switch(AmmoType)
+        switch (AmmoType)
         {
             case Cartridgetype.Rifle:
                 Tooltip = "Pickup Rifle Bullets";
@@ -48,5 +61,19 @@ public class AmmoBox : MonoBehaviour, IInteractable
         //    Tooltip = "Press {0} to pickup 100 ammo";
         //}
 
+    }
+
+    IEnumerator Cooldown()
+    {
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Renderer>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+
+        yield return new WaitForSeconds(BoxCooldown);
+
+        gameObject.GetComponent<BoxCollider>().enabled = true;
+        gameObject.GetComponent<Renderer>().enabled = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
+        CanUse = true;
     }
 }

@@ -26,21 +26,27 @@ public class SimpleAgent : MonoBehaviour
     [SerializeField] float attackRange = 1.4f;
     [SerializeField] float attackSpeed = 2;
     [SerializeField] float maxDetectionRange = 10;
+    [SerializeField] float maxWanderRange = 10;
     [SerializeField] float forgetTime = 10;
     [SerializeField] float avoidRadius = 5;
     [SerializeField] LayerMask avoidLayer = -1;
 
     Health health;
     RagdollController ragdollController;
+    Vector3 spawnPos;
 
-    void Start()
+    void Awake()
     {
         controller = GetComponent<MoveTowardsController>();
         lookAt = GetComponentInChildren<LookAt>();
         player.NotifyOnPlayerChanged(OnPlayer);
         health = GetComponent<Health>();
         ragdollController = GetComponent<RagdollController>();
-        health.OnDeath += (x) => { ragdollController.EnableRagdoll(); Destroy(gameObject, 10); };
+        if (ragdollController)
+        {
+            health.OnDeath += (x) => { ragdollController.EnableRagdoll(); Destroy(gameObject, 10); };
+        }
+        spawnPos = transform.position;
     }
 
 
@@ -82,7 +88,7 @@ public class SimpleAgent : MonoBehaviour
     }
 
 
-    static readonly Collider[] others = new Collider[20];
+    static readonly Collider[] others = new Collider[10];
     private void CheckAvoid()
     {
         avoid = Vector3.zero;
@@ -95,15 +101,28 @@ public class SimpleAgent : MonoBehaviour
         mindlessState = n > 0 ? AgentState.Avoiding : AgentState.Wander;
     }
 
+    /// <summary>
+    /// Will set stateto wander, will attack if sees player and will avoid flares
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="timeOut"></param>
+    public void WanderTo(Vector3 pos, float timeOut = 10)
+    {
+        controller.SetTarget(pos);
+        timer = timeOut;
+        spawnPos = pos;
+        mindlessState = AgentState.Wander;
+    }
+
     private void HandleWander(float dt)
     {
         timer -= dt;
         if (timer < 0)
         {
-            timer = 10;
-            Vector3 pos = transform.position + Random.onUnitSphere * 10;
+            timer = forgetTime;
+            Vector3 pos = spawnPos + Random.onUnitSphere * maxWanderRange;
             controller.SetTarget(pos);
-            lookAt.lookAtTargetPosition = pos;
+            if(lookAt)lookAt.lookAtTargetPosition = pos;
         }
     }
 
@@ -134,8 +153,8 @@ public class SimpleAgent : MonoBehaviour
 
     private void HandleLooking()
     {
-        Debug.Log("HandleLooking");
-        Debug.Log(Time.time - lastSeenTime + " " + Time.time + " " + lastSeenTime);
+        //Debug.Log("HandleLooking");
+        //Debug.Log(Time.time - lastSeenTime + " " + Time.time + " " + lastSeenTime);
         
         if (Time.time - lastSeenTime > forgetTime)
         {
@@ -158,7 +177,7 @@ public class SimpleAgent : MonoBehaviour
             {
                 lastSeenPos = target.position;
                 lastSeenTime = Time.time;
-                lookAt.lookAtTargetPosition = lastSeenPos;
+                if (lookAt) lookAt.lookAtTargetPosition = lastSeenPos;
                 if (mindlessState != AgentState.Avoiding) mindlessState = AgentState.Chasing;
                 //Debug.Log("See target");
             }
