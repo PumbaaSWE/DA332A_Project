@@ -32,6 +32,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
 
+    [SerializeField] GameObject headblodParticle;
+    [SerializeField] GameObject rightArmblodParticle;
+    [SerializeField] GameObject leftArmblodParticle;
+    [SerializeField] GameObject rightLegblodParticle;
+    [SerializeField] GameObject leftLegblodParticle;
+
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -64,6 +70,13 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
 
+        leftLegblodParticle.SetActive(false);
+        rightLegblodParticle.SetActive(false);
+        rightArmblodParticle.SetActive(false);
+        leftArmblodParticle.SetActive(false);
+        headblodParticle.SetActive(false);
+
+
         health -= damage;
         Impact(direction, point);
         //Damage(damage);
@@ -92,54 +105,66 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             }
         }
 
+        
+
+        if (leftLegHealth <= 0)
+        {
+            leftLegblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            if (d != null)
+            {
+                if (d.leftLeg)
+                {
+                    ragdoll.TriggerRagdoll(direction, point);
+                }
+            }
+            leftLegHealth = limbHealth;
+
+        }
+        else if(rightLegHealth <= 0)
+        {
+            rightLegblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            if (d != null)
+            {
+                if (d.leftLeg)
+                {
+                    ragdoll.TriggerRagdoll(direction, point);
+                }
+            }
+            leftLegHealth = limbHealth;
+          
+        }
+        else if (rightArmHealth <= 0)
+        {
+            rightArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            rightArmHealth = limbHealth;
+            
+        }
+        else if (leftArmHealth <= 0)
+        {
+            leftArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            leftArmHealth = limbHealth;
+          
+        }
+        else if (headHealth <= 0)
+        {
+            headblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            headHealth = limbHealth;
+        }
+
         if (health <= 0)
         {
             ragdoll.TriggerRagdoll(direction, point);
             regrow.Hit(point);
-        }
-        else if (leftLegHealth <= 0)
-        {
-            LoseLimbSound();
-            regrow.Hit(point);
-            if (d != null)
-            {
-                if (d.leftLeg)
-                {
-                    ragdoll.TriggerRagdoll(direction, point);
-                }
-            }
-            leftLegHealth = limbHealth;
-        }
-        else if(rightLegHealth <= 0)
-        {
-            LoseLimbSound();
-            regrow.Hit(point);
-            if (d != null)
-            {
-                if (d.leftLeg)
-                {
-                    ragdoll.TriggerRagdoll(direction, point);
-                }
-            }
-            leftLegHealth = limbHealth;
-        }
-        else if (rightArmHealth <= 0)
-        {
-            LoseLimbSound();
-            regrow.Hit(point);
-            rightArmHealth = limbHealth;
-        }
-        else if (leftArmHealth <= 0)
-        {
-            LoseLimbSound();
-            regrow.Hit(point);
-            leftArmHealth = limbHealth;
-        }
-        else if (headHealth <= 0)
-        {
-            LoseLimbSound();
-            regrow.Hit(point);
-            headHealth = limbHealth;
         }
         //dmgAudio.clip = dmgClips[1];
         //if (!dmgAudio.isPlaying)
@@ -149,6 +174,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
         // PlayHitAnimation(direction);
         //Impact(direction, point);
+
 
     }
 

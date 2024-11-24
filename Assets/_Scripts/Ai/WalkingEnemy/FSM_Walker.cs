@@ -271,7 +271,7 @@ public class FSM_Walker : MonoBehaviour
 
     private void IdleBehaviour()
     {
-        eye.NormalEye();
+       
         idleTime = Random.Range(10f, 25f);
         StartCoroutine(IdleTimer(idleTime));
     }
@@ -285,7 +285,6 @@ public class FSM_Walker : MonoBehaviour
     {
        
 
-        eye.NormalEye();
         if (atDestination)
         {
             footstepAudio.clip = soundClips[0];
@@ -299,7 +298,7 @@ public class FSM_Walker : MonoBehaviour
     }
     private void InvestegateBehavior()
     {
-        eye.AngryEye();
+      
         if (atDestination)
         {
            MoveTo(soundLocation);
@@ -353,7 +352,7 @@ public class FSM_Walker : MonoBehaviour
 
     private void ChaseBehaviour()
     {
-        eye.AngryEye();
+   
 
         if (currentTarget?.transform == null)
         {
@@ -536,7 +535,6 @@ public class FSM_Walker : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        eye.AngryEye();
 
         
         if (!currentTarget.transform)
