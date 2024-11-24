@@ -66,8 +66,6 @@ public class RagdollController : MonoBehaviour
             }
         }
         active = false;
-
-
     }
 
     public void FreezeRagdoll()

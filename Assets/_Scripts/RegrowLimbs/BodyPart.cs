@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class BodyPart : MonoBehaviour
     private Health healthScript;
     private bool doRegow = true;
 
+    public event Action<bool> OnDetach;
     public float Health
     {
         get { return health; }
@@ -24,6 +26,8 @@ public class BodyPart : MonoBehaviour
         get { return maxHealth; }
         set { maxHealth = value; }
     }
+
+    public bool IsDetached => detachableLimb.IsDetatched();
 
     void Awake()
     {
@@ -61,6 +65,7 @@ public class BodyPart : MonoBehaviour
         {
             detachableLimb.Detatch();
             if(doRegow)StartCoroutine(RegrowIn(timeBeforeRegrow));
+            OnDetach?.Invoke(doRegow);
         }
     }
 

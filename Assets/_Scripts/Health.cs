@@ -13,7 +13,10 @@ public class Health : MonoBehaviour
     public bool dead;
 
     public float Value => health;
-    public float MaxHealth => maxHealth;
+    public float MaxHealth {
+        get { return maxHealth; }
+        set { maxHealth = value; }
+    }
 
     public void Reset()
     {

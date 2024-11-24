@@ -91,15 +91,9 @@ public class ZombieBrain : MonoBehaviour
         }
     }
 
-    private IEnumerator DoDamageCoroutine()
-    {
-        while (attacking)
-        {
-            yield return new WaitForSeconds(.4f);
-            DoDamage();
-            yield return new WaitForSeconds(.4f);
-        }
-    }
+    /// <summary>
+    /// Called by animation clip event
+    /// </summary>
     private void DoDamage()
     {
         //Debug.Log("DoDammage called?");
