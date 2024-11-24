@@ -50,6 +50,7 @@ public class ZombieBrain : MonoBehaviour
 
     private void Sensor_OnHit(Transform player, Vector3 point, Vector3 dir, float damage)
     {
+        //animator.ResetTrigger("HitForward");
         animator.SetTrigger("HitForward");
     }
 
