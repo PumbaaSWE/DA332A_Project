@@ -1690,7 +1690,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04
+  m_Radius: 0.06
   m_Height: 0.17025459
   m_Direction: 1
   m_Center: {x: 0.00000009495015, y: 0.085127294, z: -0.00000030745286}
@@ -1859,8 +1859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd4f44d57b9484a805bac84293f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 200
-  maxHealth: 200
+  health: 500
+  maxHealth: 500
   dead: 0
 --- !u!114 &8590213407153981481
 MonoBehaviour:
@@ -1926,10 +1926,16 @@ MonoBehaviour:
   - {fileID: 6614344852975052591}
   - {fileID: 2661980175320005448}
   head: {fileID: 8547508128034714424}
+  totalHealth: 500
   legHealth: 100
+  legRegrowDelay: 5
+  legRegrowTime: 1
   armHealth: 100
+  armRegrowDelay: 5
+  armRegrowTime: 1
   headHealth: 100
-  totalHealth: 200
+  headRegrowDelay: 5
+  headRegrowTime: 1
 --- !u!4 &4408283476810631187 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 601012693420446119, guid: 4ea55f7d14957f0469e4a43a3c2df33c,
@@ -2553,7 +2559,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04
+  m_Radius: 0.055
   m_Height: 0.17204599
   m_Direction: 1
   m_Center: {x: -0.0000001028274, y: 0.086022995, z: -0.00000012316744}
@@ -2934,7 +2940,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04
+  m_Radius: 0.045
   m_Height: 0.19132145
   m_Direction: 1
   m_Center: {x: -0.000000018061076, y: 0.095660724, z: -0.00000013734278}
@@ -3325,7 +3331,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04
+  m_Radius: 0.05
   m_Height: 0.1689937
   m_Direction: 1
   m_Center: {x: -0.000000063065634, y: 0.08449685, z: -0.000000048952653}

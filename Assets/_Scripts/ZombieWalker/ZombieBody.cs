@@ -1,18 +1,26 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieBody : MonoBehaviour
 {
+    [Header("Setup")]
     [SerializeField] private BodyPart[] legs; 
     [SerializeField] private BodyPart[] arms; 
-    [SerializeField] private BodyPart head; 
+    [SerializeField] private BodyPart head;
     //[SerializeField] private BodyPart tail; 
-    [SerializeField] private float legHealth = 100;
-    [SerializeField] private float armHealth = 100;
+    [Header("Health Settings")]
+    [SerializeField][Tooltip("Total health before death (overrides Health-script)")] private float totalHealth = 400;
+    [Header("Leg Settings")]
+    [SerializeField][Tooltip("Max health per leg")] private float legHealth = 100;
+    [SerializeField][Tooltip("Time in seconds before regrow starts")] private float legRegrowDelay = 5;
+    [SerializeField][Tooltip("Time in seconds of how long it takes to regrow")] private float legRegrowTime = 1;
+    [Header("Arm Settings")]
+    [SerializeField][Tooltip("Max health per arm")] private float armHealth = 100;
+    [SerializeField][Tooltip("Time in seconds before regrow starts")] private float armRegrowDelay = 5;
+    [SerializeField][Tooltip("Time in seconds of how long it takes to regrow")] private float armRegrowTime = 1;
+    [Header("Head Settings")]
     [SerializeField] private float headHealth = 100;
-    [SerializeField] private float totalHealth = 400;
+    [SerializeField][Tooltip("Time in seconds before regrow starts")] private float headRegrowDelay = 5;
+    [SerializeField][Tooltip("Time in seconds of how long it takes to regrow")] private float headRegrowTime = 1;
 
     
 
@@ -32,17 +40,17 @@ public class ZombieBody : MonoBehaviour
         head.OnDetach += OnHeadDetach;
         //if (tail) tail.OnDetach += OnTailDetach;
 
-        Hitbox[] hbs = GetComponentsInChildren<Hitbox>();
-        foreach (var hb in hbs)
-        {
-            hb.OnHitRb += Hb_OnHitRb;
-        }
+        //Hitbox[] hbs = GetComponentsInChildren<Hitbox>();
+        //foreach (var hb in hbs)
+        //{
+        //    hb.OnHitRb += Hb_OnHitRb;
+        //}
     }
 
-    private void Hb_OnHitRb(Vector3 point, Vector3 dir, float damage, Rigidbody rb)
-    {
-        //rb.AddForceAtPosition(dir*100, point, ForceMode.Impulse);
-    }
+    //private void Hb_OnHitRb(Vector3 point, Vector3 dir, float damage, Rigidbody rb)
+    //{
+    //    rb.AddForceAtPosition(dir*100, point, ForceMode.Impulse);
+    //}
 
     //private void OnTailDetach(bool obj)
     //{
@@ -95,13 +103,38 @@ public class ZombieBody : MonoBehaviour
 
     private void OnValidate()
     {
-        if(legs != null)
+        if (legs != null)
+        {
             for (int i = 0; i < legs.Length; i++)
-                if(legs[i]) legs[i].MaxHealth = legHealth;
+            {
+
+                if (legs[i])
+                {
+                    legs[i].MaxHealth = legHealth;
+                    legs[i].RegrowTime = legRegrowTime;
+                    legs[i].TimeBeforeRegrow = legRegrowDelay;
+                }
+            }
+        }
         if (arms != null)
+        {
+
             for (int i = 0; i < arms.Length; i++)
-                if (arms[i]) arms[i].MaxHealth = armHealth;
-        if(head) head.MaxHealth = headHealth;
+            {
+                if (arms[i])
+                {
+                    arms[i].MaxHealth = armHealth;
+                    arms[i].RegrowTime = armRegrowTime;
+                    arms[i].TimeBeforeRegrow = armRegrowDelay;
+                }
+            }
+        }
+        if (head)
+        {
+            head.MaxHealth = headHealth;
+            head.RegrowTime = headRegrowTime;
+            head.TimeBeforeRegrow = headRegrowDelay;
+        }
 
         if (TryGetComponent(out Health health))
         {

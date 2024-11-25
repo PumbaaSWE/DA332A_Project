@@ -21,6 +21,17 @@ public class BodyPart : MonoBehaviour
         set { health = Mathf.Min(maxHealth, value); }
     }
 
+    public float TimeBeforeRegrow
+    {
+        get { return timeBeforeRegrow; }
+        set { timeBeforeRegrow = value; }
+    }
+    public float RegrowTime
+    {
+        get { return regrowTime; }
+        set { regrowTime = value; }
+    }
+
     public float MaxHealth
     {
         get { return maxHealth; }
