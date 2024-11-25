@@ -31,6 +31,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
+    [SerializeField] private AudioClip deathClip;
 
     [SerializeField] GameObject headblodParticle;
     [SerializeField] GameObject rightArmblodParticle;
@@ -50,8 +51,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     private void Update()
     {
         if (health <= 0)
-        {
-           
+        {          
             Death();
          
         }
@@ -64,6 +64,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
+
+        dmgAudio.clip = deathClip;
+        if (!dmgAudio.isPlaying)
+        {
+            dmgAudio.Play();
+        }
 
     }
 
