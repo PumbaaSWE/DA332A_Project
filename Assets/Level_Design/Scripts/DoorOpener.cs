@@ -51,6 +51,10 @@ public class DoorOpener : MonoBehaviour
         {
             return;
         }
+        if (hasOpened)
+        {
+            return;
+        }
         source = gameObject.AddComponent<AudioSource>();
         source.clip = openClip;
         source.Play();

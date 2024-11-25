@@ -10,4 +10,9 @@ public class PlayAnimation : MonoBehaviour
     {
         anim.SetTrigger(trigger);
     }
+
+    public void SetActive()
+    {
+        gameObject.SetActive(false);
+    }
 }
