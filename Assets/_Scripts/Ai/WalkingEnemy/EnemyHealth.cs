@@ -38,12 +38,16 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] GameObject rightLegblodParticle;
     [SerializeField] GameObject leftLegblodParticle;
 
+
+    public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
-         animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         regrow = GetComponent<Regrow>();
         ragdoll = GetComponent<Ragdoll>();
+
+       
        
     }
 
@@ -64,6 +68,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
+
+        foreach (var dis in dissolveEffects)
+        {
+            dis.death = true;
+        }
 
     }
 
