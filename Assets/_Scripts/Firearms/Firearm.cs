@@ -66,9 +66,8 @@ public class Firearm : MonoBehaviour
     Transform CameraView;
     public GameObject DropPrefab;
     public int Id;
-    Animation CurrentAnimation;
     PlayerCamera Camera;
-    NonphysController nc;
+    NonphysController Nc;
     [SerializeField] ParticleSystem CaseEjectorParticleSystem;
     [SerializeField] CaseEjector CaseEjector;
     MuzzleFlash MuzzleFlasher;
@@ -77,12 +76,7 @@ public class Firearm : MonoBehaviour
     void Start()
     {
         //LoadedAmmo = MagazineSize + Convert.ToInt32(RoundInTheChamber);
-        HipFireSpread = MinHipFireSpread;
-        OriginalFov = GameObject.Find("Main Camera").GetComponent<Camera>().fieldOfView;
-        Animator = GetComponentInParent<Animator>();
-        Camera = GetComponentInParent<PlayerCamera>();
-        nc = GetComponentInParent<NonphysController>();
-        MuzzleFlasher = GetComponentInChildren<MuzzleFlash>();
+        Set();
     }
 
     // Update is called once per frame
@@ -94,7 +88,7 @@ public class Firearm : MonoBehaviour
         }
 
         bool CouldAds = CanAds;
-        if (nc.IsSprinting || (!nc.Grounded && nc.VerticalVelocity > 0))
+        if (Nc.IsSprinting || (!Nc.Grounded && Nc.VerticalVelocity > 0))
             CanAds = false;
 
         if (Ads && CanAds)
@@ -137,7 +131,7 @@ public class Firearm : MonoBehaviour
                 IsReloading = false;
                 StartCoroutine(Shoot());
             }
-            
+
             else if (!IsReloading && LoadedAmmo == 0 && AutoReload && WHandler.AmmoLeft(AmmoType))
             {
                 PerformAnimation(Animation.Reloading);
@@ -206,6 +200,7 @@ public class Firearm : MonoBehaviour
         if (ProportionalAmmoConsumption && projectilesToFire < LoadedAmmo)
             projectilesToFire = LoadedAmmo;
 
+        // Shoots raycasts from camera
         for (int x = 0; x < projectilesToFire; x++)
         {
             Vector3 shotDirection = CameraView.forward;
@@ -220,12 +215,13 @@ public class Firearm : MonoBehaviour
                 spread = Mathf.Lerp(HipFireSpread, 0, AdsProcentage);
 
             shotDirection = Quaternion.Euler(randomPoint.x * spread, randomPoint.y * spread, 0) * shotDirection;
-
             RaycastHit hit;
+ 
             if (Physics.Raycast(CameraView.position, shotDirection, out hit, MaxRange, ShootableLayers))
             {
                 //Debug.DrawLine(CameraView.position, hit.point, Color.red, 10f);
 
+                // If target can be dealt damage, damage it
                 if (hit.collider.TryGetComponent(out IDamageble target))
                     target.TakeDamage(hit.point, shotDirection, Damage);
 
@@ -236,6 +232,7 @@ public class Firearm : MonoBehaviour
                         target.TakeDamage(hit.point, shotDirection, Damage);
                 }
 
+                // Create bullet impact
                 EventBus<BulletHitEvent>.Raise(new BulletHitEvent()
                 {
                     hit = hit,
@@ -260,6 +257,9 @@ public class Firearm : MonoBehaviour
             LoadedAmmo--;
     }
 
+    /// <summary>
+    /// Recoils the screen upwards and hipfire smootly
+    /// </summary>
     IEnumerator Recoil()
     {
         float recoilDuration = RecoilDuration;
@@ -273,6 +273,7 @@ public class Firearm : MonoBehaviour
 
         RHandler.AddImpluse(new(xRecoil, yRecoil));
 
+        // Interpolates hipfire and recoil
         while (timeElapsed < recoilDuration)
         {
             Vector2 recoil = new(Mathf.Lerp(0, xRecoil, timeElapsed / recoilDuration), Mathf.Lerp(0, yRecoil, timeElapsed / recoilDuration));
@@ -295,7 +296,7 @@ public class Firearm : MonoBehaviour
         Player.Rotate(xRecoil - previousXRecoil, yRecoil - previousYRecoil);
 
         //if (!Firing)
-            RHandler.StartImpulse();
+        RHandler.StartImpulse();
     }
 
     public void AimDownSights(CallbackContext context)
@@ -307,6 +308,9 @@ public class Firearm : MonoBehaviour
             Ads = false;
     }
 
+    /// <summary>
+    /// Reloads firearms magazine and returns ammo to weaponhandler. Animator event
+    /// </summary>
     public void Reload()
     {
         if (UseLocalAmmoPool)
@@ -340,6 +344,9 @@ public class Firearm : MonoBehaviour
         WHandler.OnReloadEnd.Invoke();
     }
 
+    /// <summary>
+    /// Reloads Current firearm. 
+    /// </summary>
     public void Reload(CallbackContext context)
     {
         if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && !Firing && WHandler.AmmoLeft(AmmoType) && !IsReloading)
@@ -360,6 +367,10 @@ public class Firearm : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Load shell/s into firearm. Used by animator events
+    /// </summary>
+    /// <param name="shellsToLoad">How many shells to load</param>
     public void LoadShells(int shellsToLoad)
     {
         if (UseLocalAmmoPool)
@@ -382,7 +393,7 @@ public class Firearm : MonoBehaviour
 
         if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
         {
-            Animator.SetTrigger("ReloadFinished");
+            PerformAnimation(Animation.ReloadFinished);
             IsReloading = false;
             CanAds = true;
             CanFire = true;
@@ -398,6 +409,9 @@ public class Firearm : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Equips current firearm
+    /// </summary>
     public void Equip()
     {
         //Debug.Log("Pulling out");
@@ -409,6 +423,10 @@ public class Firearm : MonoBehaviour
         CanAds = true;
     }
 
+    /// <summary>
+    /// Unequips firearm
+    /// </summary>
+    /// <param name="equip"></param>
     public void Unequip(Action equip)
     {
         //Debug.Log("Holstering");
@@ -420,6 +438,9 @@ public class Firearm : MonoBehaviour
         CanAds = false;
     }
 
+    /// <summary>
+    /// Switches to another firearm or item
+    /// </summary>
     public void Switch()
     {
         //Debug.Log("Switching weapons");
@@ -429,6 +450,10 @@ public class Firearm : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Performs specified animation using a trigger
+    /// </summary>
+    /// <param name="animation">animation to perform</param>
     void PerformAnimation(Animation animation)
     {
         switch (animation)
@@ -445,31 +470,55 @@ public class Firearm : MonoBehaviour
             case Animation.Holstering:
                 Animator.SetTrigger("Holster");
                 break;
+            case Animation.ReloadFinished:
+                Animator.SetTrigger("ReloadFinished");
+                break;
         }
+    }
+
+    public void Set()
+    {
+        HipFireSpread = MinHipFireSpread;
+        Animator = GetComponentInParent<Animator>();
+        Camera = GetComponentInParent<PlayerCamera>();
+        CameraView = Camera.transform;
+        OriginalFov = Camera.DefaultFov;
+        Nc = GetComponentInParent<NonphysController>();
+        MuzzleFlasher = GetComponentInChildren<MuzzleFlash>();
     }
 
     public void Set(WeaponHandler wHandler, RecoilHandler rHandler, MovementController player)
     {
+        Set();
         WHandler = wHandler;
         RHandler = rHandler;
-        CameraView = wHandler.GetComponentInChildren<Camera>().transform;
         Player = player;
     }
 
+    /// <summary>
+    /// Animator event
+    /// </summary>
+    /// <param name="canAds"></param>
     public void SetCanFire(int canFire)
     {
         CanFire = Convert.ToBoolean(canFire);
     }
 
+    /// <summary>
+    /// Animator event
+    /// </summary>
+    /// <param name="canAds"></param>
     public void SetCanAds(int canAds)
     {
         CanAds = Convert.ToBoolean(canAds);
     }
 
+
     public void EjectCasing()
     {
         //CaseEjectorParticleSystem.Emit(1);
-        CaseEjector.Eject();
+        if (CaseEjector != null)
+            CaseEjector.Eject();
     }
 }
 
@@ -486,6 +535,7 @@ public enum Animation
     Firing,
     Reloading,
     ReloadingEmpty,
+    ReloadFinished,
     Holstering,
     PullingOut
 }
