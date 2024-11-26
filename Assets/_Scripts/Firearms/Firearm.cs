@@ -481,7 +481,7 @@ public class Firearm : MonoBehaviour
         HipFireSpread = MinHipFireSpread;
         Animator = GetComponentInParent<Animator>();
         Camera = GetComponentInParent<PlayerCamera>();
-        CameraView = Camera.transform;
+        CameraView = Camera.MainCam.transform;
         OriginalFov = Camera.DefaultFov;
         Nc = GetComponentInParent<NonphysController>();
         MuzzleFlasher = GetComponentInChildren<MuzzleFlash>();
