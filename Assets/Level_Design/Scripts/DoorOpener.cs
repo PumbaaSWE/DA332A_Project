@@ -47,10 +47,10 @@ public class DoorOpener : MonoBehaviour
     public void OpenDoor(Transform transform)
     {
         //Debug.Log(transform);
-        if (!transform.gameObject.GetComponent<WeaponHandler>().enabled) 
-        {
-            return;
-        }
+        //if (!transform.gameObject.GetComponent<WeaponHandler>().enabled) 
+        //{
+        //    return;
+        //}
         if (hasOpened)
         {
             return;

@@ -145,7 +145,8 @@ MonoBehaviour:
   onFailEvent:
     m_PersistentCalls:
       m_Calls: []
-  requrements: []
+  requrements:
+  - {fileID: 1150941122937936656}
 --- !u!1 &5794787167351142173
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +292,8 @@ MonoBehaviour:
   onFailEvent:
     m_PersistentCalls:
       m_Calls: []
-  requrements: []
+  requrements:
+  - {fileID: 1150941122937936656}
 --- !u!1 &9171715925416721157
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +306,7 @@ GameObject:
   - component: {fileID: 6113768665501362232}
   - component: {fileID: 788106700160065943}
   - component: {fileID: 5993060708139686915}
+  - component: {fileID: 1150941122937936656}
   m_Layer: 2
   m_Name: Door
   m_TagString: Untagged
@@ -386,6 +389,19 @@ MonoBehaviour:
   anim: {fileID: 6113768665501362232}
   openClip: {fileID: 8300000, guid: 73f4147fdd2d40049b6b9c9a0907aef1, type: 3}
   closeClip: {fileID: 8300000, guid: af7d07350c4a86d4688e493f3fccb1c5, type: 3}
+--- !u!114 &1150941122937936656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171715925416721157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107e0ad4fb11b74bbc6d0ecc57b3257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipOnFail: Failed
 --- !u!1001 &2580542798117473661
 PrefabInstance:
   m_ObjectHideFlags: 0

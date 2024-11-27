@@ -2546,6 +2546,46 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b11f5819e22aec94bbd1f8b9060032b9, type: 3}
+--- !u!114 &199637228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671224172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb5a207ac4ab067458889550952f7871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canPassTooltip: Press {0} button!
+  onPassTooltip: 
+  OnPassEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1671224169}
+        m_TargetAssemblyTypeName: DoorOpener, Assembly-CSharp
+        m_MethodName: OpenDoor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPassEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  requrements:
+  - {fileID: 1671224174}
 --- !u!1 &205469514 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4710818845658391364, guid: 503a8b0025a5ee44ea9c279c72b17bd4,
@@ -25454,6 +25494,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1074783825}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1078862789 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6168209253871930868, guid: 4117ac492b37c9f408addf9a250829b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1671224168}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1082078815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45345,14 +45391,18 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6168209253871930868, guid: 4117ac492b37c9f408addf9a250829b5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1671224174}
     - targetCorrespondingSourceObject: {fileID: 304981484871074241, guid: 4117ac492b37c9f408addf9a250829b5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1671224171}
+      addedObject: {fileID: 1671224175}
     - targetCorrespondingSourceObject: {fileID: 4440414004086568829, guid: 4117ac492b37c9f408addf9a250829b5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1671224173}
+      addedObject: {fileID: 199637228}
   m_SourcePrefab: {fileID: 100100000, guid: 4117ac492b37c9f408addf9a250829b5, type: 3}
 --- !u!114 &1671224169 stripped
 MonoBehaviour:
@@ -45360,7 +45410,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1671224168}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1078862789}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 368b10298f384444380d17edb0b8961a, type: 3}
@@ -45372,7 +45422,26 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1671224168}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1671224171
+--- !u!1 &1671224172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4440414004086568829, guid: 4117ac492b37c9f408addf9a250829b5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1671224168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1671224174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078862789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9107e0ad4fb11b74bbc6d0ecc57b3257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipOnFail: Failed
+--- !u!114 &1671224175
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45381,14 +45450,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1671224170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7917d9bc677198c4280a71a0f6ce1610, type: 3}
+  m_Script: {fileID: 11500000, guid: cb5a207ac4ab067458889550952f7871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltip: Press {0} button!
-  interactedTooltip: 
-  displayPriority: 1
-  tipDisplayTime: 3
-  OnPress:
+  canPassTooltip: Press {0} button!
+  onPassTooltip: 
+  OnPassEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1671224169}
@@ -45403,43 +45470,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1 &1671224172 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4440414004086568829, guid: 4117ac492b37c9f408addf9a250829b5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1671224168}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1671224173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671224172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7917d9bc677198c4280a71a0f6ce1610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltip: Press {0} button!
-  interactedTooltip: 
-  displayPriority: 1
-  tipDisplayTime: 3
-  OnPress:
+  onPassEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1671224169}
-        m_TargetAssemblyTypeName: DoorOpener, Assembly-CSharp
-        m_MethodName: OpenDoor
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  OnFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onFailEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  requrements:
+  - {fileID: 1671224174}
 --- !u!4 &1681304777 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000014233188020, guid: b11f5819e22aec94bbd1f8b9060032b9,
