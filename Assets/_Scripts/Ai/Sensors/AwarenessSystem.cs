@@ -213,7 +213,7 @@ public class AwarenessSystem : MonoBehaviour
             }
             else if (fsmWalker)
             {
-                fsmWalker.HeardSomthing(location);
+          
             }
 
             UpdateAwarness(source, null, location, awareness, 1);
@@ -232,7 +232,7 @@ public class AwarenessSystem : MonoBehaviour
             }
             else if (fsmWalker)
             {
-                fsmWalker.HeardSomthing(location);
+      
             }
         }
        

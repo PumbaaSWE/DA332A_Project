@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Sensing : MonoBehaviour
 {
     [Header("Vision Settings")]
@@ -11,25 +12,33 @@ public class Sensing : MonoBehaviour
 
     [Header("Hearing Settings")]
     public float hearingRange = 5f;
+    public float gunHearingRange = 45f;
     public LayerMask hearingMask;
 
     [Header("Target")]
-    public Transform target;
+    [SerializeField] Transform target;
+    public PlayerDataSO player;
 
-    private void Update()
+
+    void Start()
     {
-        if (CanSeeTarget())
-        {
-            Debug.Log("Target visible!");
-        }
-        else if (CanHearTarget())
-        {
-            Debug.Log("Target heard!");
+        player.NotifyOnPlayerChanged(OnPlayer);
+    }
 
+ 
+    private void OnPlayer(Transform obj)
+    {
+        target = obj;
+        if (target)
+        {
+            // Hantering om målet sätts
         }
     }
 
-    private bool CanSeeTarget()
+   
+
+
+    public bool CanSeeTarget()
     {
         if (target == null) return false;
 
@@ -41,7 +50,6 @@ public class Sensing : MonoBehaviour
             float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
             if (angleToTarget < visionAngle / 2f)
             {
-
                 if (!Physics.Linecast(transform.position, target.position, visionMask))
                 {
                     return true;
@@ -51,16 +59,14 @@ public class Sensing : MonoBehaviour
         return false;
     }
 
-    private bool CanHearTarget()
+    public bool CanHearTarget()
     {
         if (target == null) return false;
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-    
         if (distanceToTarget < hearingRange)
         {
-            
             return true;
         }
         return false;
@@ -68,7 +74,7 @@ public class Sensing : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-     
+        // Rita synfältet
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
 

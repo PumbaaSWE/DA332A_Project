@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements.Experimental;
 using static Limb;
+using static UnityEditor.FilePathAttribute;
 
 public class FSM_Walker : MonoBehaviour
 {
     [Header("Sensors")]
-    protected AwarenessSystem sensors;
-    DetectableTarget currentTarget;
+    Sensing sensing;
+    //protected AwarenessSystem sensors;
+    //DetectableTarget currentTarget;
     [SerializeField] float detectedAwarness = 1.2f;
     private float nearestPointSearchRange = 7f;
+    [SerializeField] float gunHearingRange = 45;
 
 
     [Header("Nav")]
@@ -85,6 +90,18 @@ public class FSM_Walker : MonoBehaviour
     [SerializeField] private List<AudioClip> attackClips;
     //[SerializeField] private float soundRadius = 10f;
 
+  
+    private void OnEnable()
+    {
+        Firearm.OnShoot += ReactToShoot;
+    }
+
+    private void OnDisable()
+    {
+        Firearm.OnShoot -= ReactToShoot;
+    }
+
+
     private void Awake()
     {
         limbState = GetComponent<Limbstate>();
@@ -92,8 +109,9 @@ public class FSM_Walker : MonoBehaviour
         footstepAudio.volume = 1f;
         characterController = GetComponent<CharacterController>();
 
-        eye = GetComponent<Eye>();
-        sensors = GetComponent<AwarenessSystem>();
+    
+        sensing = GetComponent<Sensing>();
+        //sensors = GetComponent<AwarenessSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         lookAt = GetComponent<LookAt>();
@@ -221,30 +239,50 @@ public class FSM_Walker : MonoBehaviour
             agent.isStopped = false;
         }
     }
-   
-   
+
+
+    //void Found()
+    //{
+    //    if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0)
+    //        return;
+
+    //    foreach (var candidate in sensors.ActiveTargets.Values)
+    //    {
+    //        if (candidate.detectable != null)
+    //        {
+    //            if (candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
+    //            {
+    //                //CancelCurrentCommand();
+    //                currentTarget = candidate.detectable;
+    //                agentState = AgentState.Chasing;
+
+    //            }
+    //        }
+    //    }
+    //}
     void Found()
     {
-        if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0)
-            return;
-
-        foreach (var candidate in sensors.ActiveTargets.Values)
+        if(agentState != AgentState.Attacking && (sensing.CanSeeTarget() || sensing.CanHearTarget()))
         {
-            if (candidate.detectable != null)
-            {
-                if (candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
-                {
-                    //CancelCurrentCommand();
-                    currentTarget = candidate.detectable;
-                    agentState = AgentState.Chasing;
-                    
-                }
-            }
-        }
+            agentState = AgentState.Chasing;
+        }       
+
+       
     }
 
+    public void ReactToShoot(Vector3 playerPosition)
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+        if (distanceToPlayer <= gunHearingRange)
+        {
+            soundLocation = playerPosition;
+            agentState = AgentState.Investegate;
 
-   
+        }
+
+
+    }
+
     public void SetAgentActive(bool active)
     {
 
@@ -295,16 +333,16 @@ public class FSM_Walker : MonoBehaviour
             MoveTo(location);
         }
     }
-    public void HeardSomthing(Vector3 location)
-    {
-        if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
-        {
-            soundLocation = location;
-            agentState = AgentState.Investegate;
-            // 
-            //MoveTo(location);
-        }
-    }
+    //public void HeardSomthing(Vector3 location)
+    //{
+    //    if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
+    //    {
+    //        soundLocation = location;
+    //        agentState = AgentState.Investegate;
+    //        // 
+    //        //MoveTo(location);
+    //    }
+    //}
     private void InvestegateBehavior()
     {
       
@@ -363,7 +401,7 @@ public class FSM_Walker : MonoBehaviour
     {
    
 
-        if (currentTarget?.transform == null)
+        if (target.transform == null)
         {
             Debug.Log("null");
             agentState = AgentState.Idle;
@@ -372,11 +410,11 @@ public class FSM_Walker : MonoBehaviour
 
         if (agent.isOnNavMesh)
         {
-            float distanceToTarget = Vector3.Distance(agent.transform.position, currentTarget.transform.position);
+            float distanceToTarget = Vector3.Distance(agent.transform.position, target.transform.position);
 
             if (distanceToTarget > minAttackRange)
             {
-                MoveTo(currentTarget.transform.position);
+                MoveTo(target.transform.position);
                 Debug.Log("move");
 
             }
@@ -391,7 +429,7 @@ public class FSM_Walker : MonoBehaviour
                 //StartCoroutine(AttackCooldown(.4f));
 
             }
-            else if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+            else if (transform.position.InRangeOf(target.transform.position, attackRange))
             {
                 animator.SetLayerWeight(6, 0);
                 animator.SetBool("Charge", false);
@@ -404,7 +442,7 @@ public class FSM_Walker : MonoBehaviour
             }
 
 
-            if (transform.position.InRangeOf(currentTarget.transform.position, attackRange))
+            if (transform.position.InRangeOf(target.transform.position, attackRange))
             {
                 agentState = AgentState.Attacking;
                 agent.isStopped = true;
@@ -550,7 +588,7 @@ public class FSM_Walker : MonoBehaviour
     {
 
         
-        if (!currentTarget.transform)
+        if (!target.transform)
         {
             //swap state?
             agentState = AgentState.Idle;
@@ -560,12 +598,12 @@ public class FSM_Walker : MonoBehaviour
         {
 
         }
-        else if (currentTarget.transform.position.InRangeOf(transform.position, attackRange))
+        else if (target.transform.position.InRangeOf(transform.position, attackRange))
         {
             Attack();
-            Vector3 dir = currentTarget.transform.position - transform.position;
+            Vector3 dir = target.transform.position - transform.position;
             transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
-            if (currentTarget.transform.position.InRangeOf(transform.position, minAttackRange))
+            if (target.transform.position.InRangeOf(transform.position, minAttackRange))
             {
                 //we are too close = pushback self!
                 transform.position -= transform.forward * Time.deltaTime;
@@ -618,7 +656,7 @@ public class FSM_Walker : MonoBehaviour
 
     public void ApplyDamage()
     {
-        if (currentTarget == null || currentTarget.transform == null)
+        if (target == null || target.transform == null)
             return;
 
         attackAudio.clip = attackClips[0];
@@ -630,11 +668,11 @@ public class FSM_Walker : MonoBehaviour
        
         
 
-        Vector3 targetDelta = currentTarget.transform.position - transform.position;
+        Vector3 targetDelta = target.transform.position - transform.position;
 
         if (targetDelta.sqrMagnitude < 2 * 2)
         {
-            if (currentTarget.TryGetComponent(out IDamageble damageable))
+            if (target.TryGetComponent(out IDamageble damageable))
             {
                 damageable.TakeDamage(transform.position, targetDelta, dmg); 
             }

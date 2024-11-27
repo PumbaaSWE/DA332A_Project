@@ -73,6 +73,9 @@ public class Firearm : MonoBehaviour
     [SerializeField] CaseEjector CaseEjector;
     MuzzleFlash MuzzleFlasher;
 
+    // Sound for enemy
+    public static event Action<Vector3> OnShoot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -161,7 +164,7 @@ public class Firearm : MonoBehaviour
             Fire();
             PerformAnimation(Animation.Firing);
             WHandler.OnShoot.Invoke();
-            HearingManager.Instance.OrNull()?.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
+            OnShoot?.Invoke(transform.position);
             MuzzleFlasher.DoFlash();
 
             //Debug.Log($"Mag:{LoadedAmmo} | Reserve: {ReserveAmmo}");
