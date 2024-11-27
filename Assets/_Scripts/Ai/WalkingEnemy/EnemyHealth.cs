@@ -60,7 +60,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public void Death()
     {
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 10f);
+        Destroy(enemy, 9f);
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
