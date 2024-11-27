@@ -109,6 +109,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
     {
         clipLength = 0.0f;
         source.Stop();
+        source.clip = null;
         if (subtitleChannel)
         {
             SubtitleData subtitle = new()
@@ -147,7 +148,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
         {
             paused = false;
         }
-        if (clipLength > 0 && !source.isPlaying && !paused) { source.Play(); }
+        if (clipLength > 0 && !source.isPlaying && !paused && source.clip != null) { source.UnPause(); }
     }
 
     public void Update()
@@ -175,6 +176,10 @@ public class VoicelineManager : Singleton<VoicelineManager>
         {
             clipLength -= Time.deltaTime;
             return;
+        }
+        else
+        {
+            Stop();
         }
 
         if (queue.TryDequeue(out VoicelineData voiceline))
