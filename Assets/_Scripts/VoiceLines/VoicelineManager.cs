@@ -55,6 +55,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
     void InitializeNewSubtitle(string[] subtitleText, float[] subtitleTime, Color subtitleColor)
     {
+        
         voicelineSequence = 0;
         if (subtitleText == null || subtitleTime == null || subtitleText.Length == 0 || subtitleTime.Length != subtitleText.Length)
         {
@@ -80,7 +81,6 @@ public class VoicelineManager : Singleton<VoicelineManager>
         }
 
         this.subtitleColor = subtitleColor;
-
         SetNewSubtitle(voicelineSequence);
     }
 
