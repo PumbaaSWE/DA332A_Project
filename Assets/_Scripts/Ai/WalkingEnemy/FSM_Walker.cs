@@ -187,7 +187,6 @@ public class FSM_Walker : MonoBehaviour
     }
     void UpdateState()
     {
-
         switch (agentState)
         {
             case AgentState.Idle:
@@ -197,20 +196,32 @@ public class FSM_Walker : MonoBehaviour
                 footstepAudio.Stop();
                 break;
             case AgentState.Wander:
+                if (sensing.isTrackingPlayer)
+                {
+                    agentState = AgentState.Chasing;
+                    return;
+                }
+                Debug.Log("wander");
                 WanderBehavior();
                 break;
             case AgentState.Investegate:
                 InvestegateBehavior();
                 break;
             case AgentState.Chasing:
+                Debug.Log("chase");
+                if (!sensing.isTrackingPlayer && !sensing.CanHearTarget())
+                {
+                    agentState = AgentState.Wander; 
+                    return;
+                }
                 ChaseBehaviour();
                 break;
             case AgentState.Attacking:
                 AttackBehaviour();
                 break;
-
         }
     }
+
     void OnStateEnter(AgentState newState)
     {
        
@@ -262,7 +273,7 @@ public class FSM_Walker : MonoBehaviour
     //}
     void Found()
     {
-        if(agentState != AgentState.Attacking && (sensing.CanSeeTarget() || sensing.CanHearTarget()))
+        if(agentState != AgentState.Attacking && (sensing.isTrackingPlayer || sensing.CanHearTarget()))
         {
             agentState = AgentState.Chasing;
         }       
@@ -318,21 +329,22 @@ public class FSM_Walker : MonoBehaviour
     }
     private void WanderBehavior()
     {
-        animator.SetLayerWeight(6, 0);
-        animator.SetBool("Charge", false);
-
+        if (!destinationSet)
+        {
+            Vector3 location = PickLocationInRange(wanderRange);
+            MoveTo(location);
+            destinationSet = true;
+            reachedDestination = false;
+        }
 
         if (atDestination)
         {
-            footstepAudio.clip = soundClips[0];
-            if (footstepAudio.isPlaying)
-            {
-                footstepAudio.Play();
-            }
-            Vector3 location = PickLocationInRange(wanderRange);
-            MoveTo(location);
+            destinationSet = false;
+            idleTime = Random.Range(5f, 10f); 
+            StartCoroutine(IdleTimer(idleTime));
         }
     }
+
     //public void HeardSomthing(Vector3 location)
     //{
     //    if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
@@ -397,60 +409,108 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
+    //private void ChaseBehaviour()
+    //{
+
+
+    //    if (target.transform == null)
+    //    {
+    //        Debug.Log("null");
+    //        agentState = AgentState.Idle;
+    //        return;
+    //    }
+
+    //    if (agent.isOnNavMesh)
+    //    {
+    //        float distanceToTarget = Vector3.Distance(agent.transform.position, target.transform.position);
+
+    //        if (distanceToTarget > minAttackRange)
+    //        {
+    //            MoveTo(target.transform.position);
+
+
+    //        }
+
+
+    //        //if (distanceToTarget <= 2.9f && canAttakRun)
+    //        //{
+    //        //    //StartCoroutine(PlayAnimation("Zombie Attack", 6));
+    ////animator.SetLayerWeight(6, 1);
+    ////    animator.SetBool("Charge", true);
+
+    //        //    //StartCoroutine(AttackCooldown(.4f));
+
+    //        //}
+    //        //else if (transform.position.InRangeOf(target.transform.position, attackRange))
+    //        //{
+    //        //    animator.SetLayerWeight(6, 0);
+    //        //    animator.SetBool("Charge", false);
+    //        //}
+    //        //else
+    //        //{
+    //        //    animator.SetLayerWeight(6, 0);
+    //        //    animator.SetBool("Charge", false);
+    //        //}
+
+
+    //        if (transform.position.InRangeOf(target.transform.position, attackRange))
+    //        {
+    //            agentState = AgentState.Attacking;
+    //            agent.isStopped = true;
+    //        }
+    //    }
+
+
+    //}
+
     private void ChaseBehaviour()
     {
-   
-
-        if (target.transform == null)
+        if (target == null)
         {
-            Debug.Log("null");
-            agentState = AgentState.Idle;
+            agentState = AgentState.Wander;
             return;
+        }
+
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if (distanceToTarget > attackRange)
+        {
+            animator.SetLayerWeight(6, 0);
+            animator.SetBool("Charge", false);
+        }
+
+        if (distanceToTarget <= attackRange && canAttakRun)
+        {
+            PerformChargeAttack();
+        }
+        else
+        {
+            animator.SetLayerWeight(6, 0);
+            animator.SetBool("Charge", false);
         }
 
         if (agent.isOnNavMesh)
         {
-            float distanceToTarget = Vector3.Distance(agent.transform.position, target.transform.position);
-
-            if (distanceToTarget > minAttackRange)
-            {
-                MoveTo(target.transform.position);
-                Debug.Log("move");
-
-            }
+            MoveTo(target.position);
+        }
+    }
 
 
-            if (distanceToTarget <= 2.9f && canAttakRun)
-            {
-                //StartCoroutine(PlayAnimation("Zombie Attack", 6));
-                animator.SetLayerWeight(6, 1);
-                animator.SetBool("Charge", true);
-                Debug.Log("Should attack");
-                //StartCoroutine(AttackCooldown(.4f));
+    private void PerformChargeAttack()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(6);
 
-            }
-            else if (transform.position.InRangeOf(target.transform.position, attackRange))
-            {
-                animator.SetLayerWeight(6, 0);
-                animator.SetBool("Charge", false);
-            }
-            else
-            {
-                Debug.Log("Should not attack");
-                animator.SetLayerWeight(6, 0);
-                animator.SetBool("Charge", false);
-            }
-
-
-            if (transform.position.InRangeOf(target.transform.position, attackRange))
-            {
-                agentState = AgentState.Attacking;
-                agent.isStopped = true;
-            }
+        if (stateInfo.IsName("Charge") && stateInfo.normalizedTime < 1f)
+        {
+            return;
         }
 
+        animator.SetLayerWeight(6, 1);
+        animator.SetBool("Charge", true);
 
+        agent.isStopped = false;
     }
+
 
     public IEnumerator PlayAnimation(string animationName, int layer = 0)
     {
@@ -584,41 +644,77 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
+
     private void AttackBehaviour()
     {
-
-        
-        if (!target.transform)
+        if (target == null)
         {
-            //swap state?
+            agentState = AgentState.Wander;
+            return;
+        }
+
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if (distanceToTarget > attackRange)
+        {
+            agentState = AgentState.Chasing;
+            agent.isStopped = false;
+            return;
+        }
+
+        if (!limbState.standing)
+        {
             agentState = AgentState.Idle;
             return;
         }
-        if(!limbState.standing)
-        {
 
-        }
-        else if (target.transform.position.InRangeOf(transform.position, attackRange))
+        if (CanAttack())
         {
+            animator.SetLayerWeight(6, 0); 
+            animator.SetTrigger("Attack");
             Attack();
-            Vector3 dir = target.transform.position - transform.position;
-            transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
-            if (target.transform.position.InRangeOf(transform.position, minAttackRange))
-            {
-                //we are too close = pushback self!
-                transform.position -= transform.forward * Time.deltaTime;
-            }
         }
-       
-        {
-            //animator.SetBool("CrawlAttack", false);
-
-            //agent.SetDestination(currentTarget.transform.position);
-            //agent.isStopped = false;
-            //agentState = AgentState.Chasing;
-        }
-
     }
+
+    private bool CanAttack()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return !stateInfo.IsName("Attack") || stateInfo.normalizedTime >= 1f;
+    }
+
+
+
+    //private void AttackBehaviour()
+    //{
+    //    if (!target.transform)
+    //    {
+    //        //swap state?
+    //        agentState = AgentState.Idle;
+    //        return;
+    //    }
+    //    if(!limbState.standing)
+    //    {
+
+    //    }
+    //    else if (target.transform.position.InRangeOf(transform.position, attackRange))
+    //    {
+    //        Attack();
+    //        Vector3 dir = target.transform.position - transform.position;
+    //        transform.forward = Vector3.MoveTowards(transform.forward, dir, agent.angularSpeed * Time.deltaTime).WithY();
+    //        if (target.transform.position.InRangeOf(transform.position, minAttackRange))
+    //        {
+    //            //we are too close = pushback self!
+    //            transform.position -= transform.forward * Time.deltaTime;
+    //        }
+    //    }       
+    //    {
+    //        //animator.SetBool("CrawlAttack", false);
+
+    //        //agent.SetDestination(currentTarget.transform.position);
+    //        //agent.isStopped = false;
+    //        //agentState = AgentState.Chasing;
+    //    }
+    //}
 
     public void Attack()
     {

@@ -41265,7 +41265,7 @@ GameObject:
   - component: {fileID: 3538009532647977504}
   - component: {fileID: 5546626934150627481}
   - component: {fileID: 2228375137068118773}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41439,7 +41439,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseStrength: 0.25
   objectHeight: 4
-  dissolveSpeed: 0.5
   death: 0
 --- !u!1 &4368361037381064081
 GameObject:
@@ -51840,7 +51839,7 @@ GameObject:
   - component: {fileID: 198699188187242066}
   - component: {fileID: 7069912991238932655}
   - component: {fileID: 2893673242874162659}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52014,7 +52013,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseStrength: 0.25
   objectHeight: 4
-  dissolveSpeed: 0.5
   death: 0
 --- !u!1 &5979927583175145168
 GameObject:
@@ -67081,7 +67079,7 @@ GameObject:
   - component: {fileID: 2657311770521519499}
   - component: {fileID: 2136972488791676191}
   - component: {fileID: 5854152298305992439}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67255,7 +67253,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseStrength: 0.25
   objectHeight: 2
-  dissolveSpeed: 0.5
   death: 0
 --- !u!1 &6794400782007581154
 GameObject:
@@ -72142,11 +72139,6 @@ GameObject:
   - component: {fileID: 4053115662542694471}
   - component: {fileID: 3564344971996959261}
   - component: {fileID: 5500613063764999277}
-  - component: {fileID: 3003233861451713179}
-  - component: {fileID: 9059014126516434967}
-  - component: {fileID: 3900866041487452530}
-  - component: {fileID: 185106156231684116}
-  - component: {fileID: 6677512539432209752}
   - component: {fileID: 2271062581147713878}
   - component: {fileID: 937403024446076896}
   - component: {fileID: 3981083743001323090}
@@ -72156,7 +72148,8 @@ GameObject:
   - component: {fileID: 1901911760674212929}
   - component: {fileID: 6027009463676243990}
   - component: {fileID: 115788045184267563}
-  m_Layer: 0
+  - component: {fileID: 4946822435915522266}
+  m_Layer: 13
   m_Name: SalamanoidSkin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72220,120 +72213,6 @@ MonoBehaviour:
   lookAtCoolTime: 0.2
   lookAtHeatTime: 0.2
   looking: 1
---- !u!114 &3003233861451713179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912366530435567227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4068bf791f916d34fafa76eb0481e2fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FeedbackDisplay: {fileID: 0}
-  _VisionConeAngle: 60
-  _VisionConeRange: 60
-  _VisionConeColour: {r: 1, g: 0, b: 0, a: 0.25}
-  _HearingRange: 20
-  _HearingRangeColour: {r: 1, g: 1, b: 0, a: 0.25}
-  _ProximityDetectionRange: 3
-  _ProximityRangeColour: {r: 1, g: 1, b: 1, a: 0.25}
-  head: {fileID: 278197718855126372}
---- !u!114 &9059014126516434967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912366530435567227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3be5ee7c4ca176f4785accd777634870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visonSensitivity:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.0023585558
-      inSlope: 1.9952829
-      outSlope: 1.9952829
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: -0.01848936
-      outSlope: -0.01848936
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9990263
-      value: -0.014151931
-      inSlope: -2.0322616
-      outSlope: -2.0322616
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  visionMinimumAwareness: 1
-  visionAwarenessBuildRate: 12
-  hearingMinimumAwareness: 0
-  hearingAwarnessBuildRate: 1.5
-  proximityMinimumAwareness: 0
-  proximityAwarenessBuildRate: 1
-  awarenessDecayDelay: 0.1
-  awarenessDecaRate: 0.1
-  soundLocation: {x: 0, y: 0, z: 0}
---- !u!114 &3900866041487452530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912366530435567227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d375e7088956c443a8afa4a1b198537, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionMask:
-    serializedVersion: 2
-    m_Bits: 8191
---- !u!114 &185106156231684116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912366530435567227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb10c718ca277c4f89692e49200a170, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6677512539432209752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6912366530435567227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 205ee72c9d4fc2e42b513e7d660918a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!143 &2271062581147713878
 CharacterController:
   m_ObjectHideFlags: 0
@@ -72424,7 +72303,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedAwarness: 1.2
+  gunHearingRange: 45
   wanderRange: 25
+  dmg: 15
   attackRange: 2.5
   minAttackRange: 1.1
   attackCrawlRange: 1
@@ -72463,10 +72344,11 @@ MonoBehaviour:
   enemy: {fileID: 6912366530435567227}
   health: 600
   dead: 0
-  dmgAudio: {fileID: 1901911760674212929}
+  dmgAudio: {fileID: 6027009463676243990}
   dmgClips:
   - {fileID: 8300000, guid: ee1b35e00bb2c4dbaa04a0727e757c62, type: 3}
   - {fileID: 8300000, guid: 80f2f6184ca5c421e830af89570a605a, type: 3}
+  deathClip: {fileID: 8300000, guid: 90d342cf6f89440b9aa6c6ef4af6af88, type: 3}
   headblodParticle: {fileID: 3182253719909031556}
   rightArmblodParticle: {fileID: 3296550830393805426}
   leftArmblodParticle: {fileID: 1990958010339973661}
@@ -72690,6 +72572,32 @@ NavMeshAgent:
   m_BaseOffset: -0.09
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4946822435915522266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912366530435567227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a92d3627f79bd488948df0b518af35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionRange: 25
+  visionAngle: 60
+  visionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoredVisionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  hearingRange: 8
+  hearingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  target: {fileID: 0}
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
 --- !u!1 &7125232290476210582
 GameObject:
   m_ObjectHideFlags: 0

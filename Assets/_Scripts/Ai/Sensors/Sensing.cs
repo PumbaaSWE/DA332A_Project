@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Sensing : MonoBehaviour
 {
     [Header("Vision Settings")]
@@ -19,24 +18,48 @@ public class Sensing : MonoBehaviour
     [SerializeField] Transform target;
     public PlayerDataSO player;
 
+    [Header("Memory Settings")]
+    public float memoryDuration = 2f;
+    private float memoryTimer = 0f;
+    public bool isTrackingPlayer = false;
 
     void Start()
     {
         player.NotifyOnPlayerChanged(OnPlayer);
     }
 
- 
     private void OnPlayer(Transform obj)
     {
         target = obj;
-        if (target)
-        {
-            // Hantering om målet sätts
-        }
     }
 
-   
+    private void Update()
+    {
+        if (target == null) return;
 
+        if (CanSeeTarget())
+        {
+            memoryTimer = memoryDuration; 
+            isTrackingPlayer = true; 
+        }
+        else if (isTrackingPlayer)
+        {
+            memoryTimer -= Time.deltaTime; 
+            if (memoryTimer <= 0f)
+            {
+                isTrackingPlayer = false; 
+            }
+        }
+
+        if (isTrackingPlayer)
+        {
+            Debug.Log("Tracking the target!");
+        }
+        else
+        {
+            Debug.Log("Lost the target.");
+        }
+    }
 
     public bool CanSeeTarget()
     {
@@ -56,6 +79,7 @@ public class Sensing : MonoBehaviour
                 }
             }
         }
+
         return false;
     }
 
@@ -67,14 +91,17 @@ public class Sensing : MonoBehaviour
 
         if (distanceToTarget < hearingRange)
         {
-            return true;
+            if (!Physics.Linecast(transform.position, target.position, hearingMask))
+            {
+                return true;
+            }
         }
+
         return false;
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Rita synfältet
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
 
@@ -83,7 +110,6 @@ public class Sensing : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
 
-        // Rita hörselområdet
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, hearingRange);
     }
