@@ -31,6 +31,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     [SerializeField] private AudioSource dmgAudio;
     [SerializeField] private List<AudioClip> dmgClips;
+    [SerializeField] private AudioClip deathClip;
 
     [SerializeField] GameObject headblodParticle;
     [SerializeField] GameObject rightArmblodParticle;
@@ -38,24 +39,19 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] GameObject rightLegblodParticle;
     [SerializeField] GameObject leftLegblodParticle;
 
-
-    public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
-        animator = GetComponent<Animator>();
+         animator = GetComponent<Animator>();
         regrow = GetComponent<Regrow>();
         ragdoll = GetComponent<Ragdoll>();
-
-       
        
     }
 
     private void Update()
     {
         if (health <= 0)
-        {
-           
+        {          
             Death();
          
         }
@@ -69,9 +65,10 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
 
-        foreach (var dis in dissolveEffects)
+        dmgAudio.clip = deathClip;
+        if (!dmgAudio.isPlaying)
         {
-            dis.death = true;
+            dmgAudio.Play();
         }
 
     }
