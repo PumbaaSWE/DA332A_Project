@@ -201,14 +201,12 @@ public class FSM_Walker : MonoBehaviour
                     agentState = AgentState.Chasing;
                     return;
                 }
-                Debug.Log("wander");
                 WanderBehavior();
                 break;
             case AgentState.Investegate:
                 InvestegateBehavior();
                 break;
             case AgentState.Chasing:
-                Debug.Log("chase");
                 if (!sensing.isTrackingPlayer && !sensing.CanHearTarget())
                 {
                     agentState = AgentState.Wander; 

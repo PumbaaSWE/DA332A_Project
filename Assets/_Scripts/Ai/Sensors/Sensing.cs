@@ -51,14 +51,14 @@ public class Sensing : MonoBehaviour
             }
         }
 
-        if (isTrackingPlayer)
-        {
-            Debug.Log("Tracking the target!");
-        }
-        else
-        {
-            Debug.Log("Lost the target.");
-        }
+        //if (isTrackingPlayer)
+        //{
+        //    Debug.Log("Tracking the target!");
+        //}
+        //else
+        //{
+        //    Debug.Log("Lost the target.");
+        //}
     }
 
     public bool CanSeeTarget()
