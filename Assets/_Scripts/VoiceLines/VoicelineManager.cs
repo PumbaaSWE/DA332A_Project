@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(AudioSource))]
 public class VoicelineManager : Singleton<VoicelineManager>
@@ -8,11 +10,13 @@ public class VoicelineManager : Singleton<VoicelineManager>
     [SerializeField] private SubtitleChannel subtitleChannel;
 
     private readonly Queue<VoicelineData> queue = new();
-    float clipLength;
+    private float clipLength;
     float[] subtitleDuration;
+    float[] timeStamps;
     string[] subtitles;
     Color subtitleColor;
-    int subtitleSequence;
+    int voicelineSequence;
+    bool paused;
 
     protected override void Awake()
     {
@@ -43,7 +47,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
     {
         source.clip = clip;
         source.Play();
-
+        paused = false;
         clipLength = voicelineTime > 0.0f ? voicelineTime : clip.length;
 
         InitializeNewSubtitle(subtitleText, subtitleTime, subtitleColor);
@@ -51,7 +55,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
 
     void InitializeNewSubtitle(string[] subtitleText, float[] subtitleTime, Color subtitleColor)
     {
-        subtitleSequence = 0;
+        voicelineSequence = 0;
         if (subtitleText == null || subtitleTime == null || subtitleText.Length == 0 || subtitleTime.Length != subtitleText.Length)
         {
             subtitles = new string[0];
@@ -59,6 +63,7 @@ public class VoicelineManager : Singleton<VoicelineManager>
             return;
         }
         subtitleDuration = new float[subtitleTime.Length];
+        timeStamps = new float[subtitleTime.Length];
         subtitles = new string[subtitleText.Length];
         float timeTotal = 0.0f;
         for (int i = 0; i < subtitleText.Length; i++)
@@ -66,13 +71,57 @@ public class VoicelineManager : Singleton<VoicelineManager>
             subtitleDuration[i] = subtitleTime[i] - timeTotal;
             subtitles[i] = subtitleText[i];
             timeTotal += subtitleDuration[i];
+            
         }
+
+        for(int i = 1; i < timeStamps.Length; i++)
+        {
+            timeStamps[i] = subtitleTime[i - 1];
+        }
+
         this.subtitleColor = subtitleColor;
 
-        SetNewSubtitle(subtitleSequence);
+        SetNewSubtitle(voicelineSequence);
     }
 
-    void SetNewSubtitle(int i)
+    public void Skip(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Skip();
+        }
+    }
+
+    public void Skip()
+    {
+        if (!source.isPlaying) { return; }
+        voicelineSequence++;
+        if (subtitles.Length <= voicelineSequence) // play next audio in queue or stop
+        {
+            Stop();
+            return;
+        }
+        SetNewSubtitle(voicelineSequence);
+        source.time = timeStamps[voicelineSequence];
+    }
+
+    public void Stop() // stops current voiceline
+    {
+        clipLength = 0.0f;
+        source.Stop();
+        if (subtitleChannel)
+        {
+            SubtitleData subtitle = new()
+            {
+                text = "",
+                time = 0.0f,
+                color = Color.white
+            };
+            subtitleChannel.Raise(subtitle);
+        }
+    }
+
+    private void SetNewSubtitle(int i)
     {
         if (subtitleChannel)
         {
@@ -86,22 +135,42 @@ public class VoicelineManager : Singleton<VoicelineManager>
         }
     }
 
+    void HandlePause()
+    {
+        if (source.isPlaying && Time.timeScale == 0 && !paused)
+        {
+            source.Pause();
+            paused = true;
+            return;
+        }
+        if (!source.isPlaying && Time.timeScale == 1 && paused)
+        {
+            paused = false;
+        }
+        if (clipLength > 0 && !source.isPlaying && !paused) { source.Play(); }
+    }
+
     public void Update()
     {
-        if(subtitles != null && subtitles.Length > subtitleSequence)
+        if ((source.isPlaying && Time.timeScale == 0) || (!source.isPlaying && Time.timeScale == 1))
         {
-            subtitleDuration[subtitleSequence] -= Time.deltaTime;
+            HandlePause();
+        }
+        if (paused) { return; }
 
-            if(subtitleDuration[subtitleSequence] <= 0)
+        if (subtitles != null && subtitles.Length > voicelineSequence)
+        {
+            subtitleDuration[voicelineSequence] -= Time.deltaTime;
+
+            if (subtitleDuration[voicelineSequence] <= 0)
             {
-                subtitleSequence++;
-                if(subtitles.Length > subtitleSequence)
+                voicelineSequence++;
+                if(subtitles.Length > voicelineSequence)
                 {
-                    SetNewSubtitle(subtitleSequence);
+                    SetNewSubtitle(voicelineSequence);
                 }
             }
         }
-
         if (source.isPlaying || clipLength > 0)
         {
             clipLength -= Time.deltaTime;
