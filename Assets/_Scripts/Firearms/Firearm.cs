@@ -12,7 +12,7 @@ public class Firearm : MonoBehaviour
     public int RPM;
     [SerializeField] float MaxRange = 100;
     [SerializeField] int ProjectilesPerShot = 1;
-    bool CanFire = true;
+    public bool CanFire = true;
     public bool Firing = false;
 
     [Header("Recoil")]
@@ -391,7 +391,7 @@ public class Firearm : MonoBehaviour
             LoadedAmmo += WHandler.TakeAmmo(AmmoType, shellsToLoad);
         }
 
-        if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber))
+        if (LoadedAmmo == MagazineSize + Convert.ToInt32(RoundInTheChamber) || !WHandler.AmmoLeft(AmmoType))
         {
             PerformAnimation(Animation.ReloadFinished);
             IsReloading = false;
