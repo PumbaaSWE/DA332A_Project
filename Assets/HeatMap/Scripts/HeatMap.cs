@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using static HeatMapDataJson;
@@ -21,7 +22,8 @@ public class HeatMap : MonoBehaviour
     public Vector3[] dataPosition;
 
     LineRenderer lineRenderer;
- 
+   
+    public GameObject plane;
 
 
     public void InitializeComponents()
@@ -36,7 +38,9 @@ public class HeatMap : MonoBehaviour
         fileParentName = parentDirectory.Name;
         Debug.Log("directory filePARENT name:" + fileParentName);
         filePath = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/" + fileParentName + "/ " + fileName + ".json";
+        CreateTexture();
         Debug.Log("Initializing");
+        
     }
 
     public void CreateDataContainerArrayFromJson()
@@ -153,7 +157,58 @@ public class HeatMap : MonoBehaviour
 
     }
 
-    
+    public void CreateTexture()
+    {
+        var texture = new Texture2D(20, 20);
+        float r = 0f;
+        float g = 0f;
+        float b = 0f;
+        Color color = new Color(r, g, b);
+        Debug.Log(color);
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                color = Color.red;
+
+                texture.SetPixel(i, j, color);
+            }
+        }
+        for (int i = 10; i < 15; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                color = Color.green;
+
+                texture.SetPixel(i, j, color);
+            }
+        }
+        for (int i = 15; i < 20; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                color = Color.blue;
+
+                texture.SetPixel(i, j, color);
+            }
+        }
+        for (int i = 15; i < 20; i++)
+        {
+            for (int j = 10; j < 20; j++)
+            {
+                color = Color.black;
+
+                texture.SetPixel(i, j, color);
+               
+            }
+        }
+        texture.filterMode = FilterMode.Point;
+        texture.Apply();
+        Renderer rnd = plane.GetComponent<Renderer>();
+        rnd.sharedMaterial.mainTexture = texture;
+    }
+
+
 
 
 
