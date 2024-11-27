@@ -25,7 +25,7 @@ public class FSM_Walker : MonoBehaviour
 
 
     //public Transform target;
-
+    [SerializeField] float dmg = 15f;
     // Attack
     public float attackRange = 2.5f;
     public float minAttackRange = 1.0f;
@@ -623,7 +623,7 @@ public class FSM_Walker : MonoBehaviour
         {
             if (currentTarget.TryGetComponent(out IDamageble damageable))
             {
-                damageable.TakeDamage(transform.position, targetDelta, 5); 
+                damageable.TakeDamage(transform.position, targetDelta, dmg); 
             }
         }
     }

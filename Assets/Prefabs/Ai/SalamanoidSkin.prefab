@@ -41264,6 +41264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3538009532647977504}
   - component: {fileID: 5546626934150627481}
+  - component: {fileID: 2228375137068118773}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -41306,7 +41307,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd27393ddbb74514db33ae5bbc659ee8, type: 2}
+  - {fileID: 2100000, guid: 2f01f2fc119501e49b0d5869e092046f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41424,6 +41425,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000023961067, y: -0.050724506, z: 0.031209081}
     m_Extent: {x: 0.98125845, y: 1.030668, z: 0.34699705}
   m_DirtyAABB: 0
+--- !u!114 &2228375137068118773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267542800816945520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 395c5616017790d45bd90f4bdedb168e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseStrength: 0.25
+  objectHeight: 4
+  dissolveSpeed: 0.5
+  death: 0
 --- !u!1 &4368361037381064081
 GameObject:
   m_ObjectHideFlags: 0
@@ -51822,6 +51839,7 @@ GameObject:
   m_Component:
   - component: {fileID: 198699188187242066}
   - component: {fileID: 7069912991238932655}
+  - component: {fileID: 2893673242874162659}
   m_Layer: 0
   m_Name: Eye
   m_TagString: Untagged
@@ -51864,7 +51882,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd27393ddbb74514db33ae5bbc659ee8, type: 2}
+  - {fileID: 2100000, guid: 2f01f2fc119501e49b0d5869e092046f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51982,6 +52000,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00004787743, y: 0.88773394, z: 0.12836583}
     m_Extent: {x: 0.09910354, y: 0.046357214, z: 0.049283043}
   m_DirtyAABB: 0
+--- !u!114 &2893673242874162659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5947622781857724331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 395c5616017790d45bd90f4bdedb168e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseStrength: 0.25
+  objectHeight: 4
+  dissolveSpeed: 0.5
+  death: 0
 --- !u!1 &5979927583175145168
 GameObject:
   m_ObjectHideFlags: 0
@@ -67046,6 +67080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2657311770521519499}
   - component: {fileID: 2136972488791676191}
+  - component: {fileID: 5854152298305992439}
   m_Layer: 0
   m_Name: Tail
   m_TagString: Untagged
@@ -67088,7 +67123,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd27393ddbb74514db33ae5bbc659ee8, type: 2}
+  - {fileID: 2100000, guid: 2f01f2fc119501e49b0d5869e092046f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67206,6 +67241,22 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000461936, y: -0.32867593, z: -0.45926285}
     m_Extent: {x: 0.049665425, y: 0.59159666, z: 0.57545805}
   m_DirtyAABB: 0
+--- !u!114 &5854152298305992439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6761448554232795856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 395c5616017790d45bd90f4bdedb168e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseStrength: 0.25
+  objectHeight: 2
+  dissolveSpeed: 0.5
+  death: 0
 --- !u!1 &6794400782007581154
 GameObject:
   m_ObjectHideFlags: 0
@@ -72410,7 +72461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 6912366530435567227}
-  health: 800
+  health: 600
   dead: 0
   dmgAudio: {fileID: 1901911760674212929}
   dmgClips:
@@ -72421,6 +72472,10 @@ MonoBehaviour:
   leftArmblodParticle: {fileID: 1990958010339973661}
   rightLegblodParticle: {fileID: 8273268277251321644}
   leftLegblodParticle: {fileID: 512462457467571506}
+  dissolveEffects:
+  - {fileID: 2228375137068118773}
+  - {fileID: 5854152298305992439}
+  - {fileID: 2893673242874162659}
 --- !u!82 &1901911760674212929
 AudioSource:
   m_ObjectHideFlags: 0
