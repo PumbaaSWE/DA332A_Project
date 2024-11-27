@@ -312,13 +312,11 @@ GameObject:
   - component: {fileID: 8193721170716452780}
   - component: {fileID: 4098254105255887134}
   - component: {fileID: 6395069968086439082}
-  - component: {fileID: 8211327675218918678}
   - component: {fileID: 7444812139051102595}
   - component: {fileID: 8875638149624668865}
   - component: {fileID: 6502465325931389742}
   - component: {fileID: 3680255761473996564}
   - component: {fileID: 8114485479685823139}
-  - component: {fileID: 262098576200730755}
   - component: {fileID: 7710091920939830975}
   - component: {fileID: -2530877571503949333}
   - component: {fileID: 4226767867783217970}
@@ -805,6 +803,7 @@ MonoBehaviour:
   OnReloadEnd:
     m_PersistentCalls:
       m_Calls: []
+  CanPickup: 1
 --- !u!114 &7501088490361774610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,19 +877,6 @@ MonoBehaviour:
   maxNumSyrringes: 5
   healAmount: 25
   playerInput: {fileID: 8649392982515891842}
---- !u!114 &8211327675218918678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926258509007519574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 362ac6f3a871f6a41b17eea2387be753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bosted: 0
 --- !u!114 &7444812139051102595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,19 +986,6 @@ MonoBehaviour:
   Player: {fileID: 0}
   WHandler: {fileID: 0}
   RecoilImpulse: {x: 0, y: 0}
---- !u!114 &262098576200730755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926258509007519574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a89b4f3818f1124ab274d3543575458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkingThreshold: 0.1
 --- !u!114 &7710091920939830975
 MonoBehaviour:
   m_ObjectHideFlags: 0

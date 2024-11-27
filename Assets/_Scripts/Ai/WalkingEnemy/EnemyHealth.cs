@@ -38,7 +38,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] GameObject leftArmblodParticle;
     [SerializeField] GameObject rightLegblodParticle;
     [SerializeField] GameObject leftLegblodParticle;
-
+    public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -60,7 +60,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public void Death()
     {
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 25f);
+        Destroy(enemy, 10f);
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
@@ -70,6 +70,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         {
             dmgAudio.Play();
         }
+        foreach (var dis in dissolveEffects)
+        {
+            dis.death = true;
+        }
+
 
     }
 

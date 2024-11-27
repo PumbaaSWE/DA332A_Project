@@ -4,7 +4,7 @@ public class DissolveEffect : MonoBehaviour
 {
     [SerializeField] private float noiseStrength = 0.25f;
     [SerializeField] private float objectHeight = 1.0f;
-    [SerializeField] private float dissolveSpeed = 0.5f; 
+    private float dissolveSpeed = 0.3f; 
 
     private Material material;
     private float currentHeight;
