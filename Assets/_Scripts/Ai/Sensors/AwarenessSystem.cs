@@ -78,7 +78,7 @@ public class Trackedtarget
 
 
 
-[RequireComponent(typeof(EnemyAI))]
+//[RequireComponent(typeof(EnemyAI))]
 public class AwarenessSystem : MonoBehaviour
 {
     [SerializeField] AnimationCurve visonSensitivity;

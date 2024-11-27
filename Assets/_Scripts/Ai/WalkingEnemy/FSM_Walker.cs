@@ -38,6 +38,10 @@ public class FSM_Walker : MonoBehaviour
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
 
+
+    //chase
+    private Vector3 lastTargetPosition;
+
     // States
     public enum AgentState { Idle, Wander, Chasing, Attacking, Investegate, Sleep }
     public AgentState agentState = AgentState.Idle;
@@ -139,6 +143,7 @@ public class FSM_Walker : MonoBehaviour
 
         if (previousState != agentState)
         {
+            //MoveTo(transform.position);
             OnStateEnter(agentState);
             OnStateExit(previousState);
             destinationSet = false;
@@ -232,22 +237,14 @@ public class FSM_Walker : MonoBehaviour
                     //CancelCurrentCommand();
                     currentTarget = candidate.detectable;
                     agentState = AgentState.Chasing;
+                    
                 }
             }
         }
     }
 
 
-    public void HeardSomthing(Vector3 location)
-    {
-        if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
-        {
-            soundLocation = location;
-            agentState = AgentState.Investegate;
-            // 
-            //MoveTo(location);
-        }
-    }
+   
     public void SetAgentActive(bool active)
     {
 
@@ -283,7 +280,9 @@ public class FSM_Walker : MonoBehaviour
     }
     private void WanderBehavior()
     {
-       
+        animator.SetLayerWeight(6, 0);
+        animator.SetBool("Charge", false);
+
 
         if (atDestination)
         {
@@ -294,6 +293,16 @@ public class FSM_Walker : MonoBehaviour
             }
             Vector3 location = PickLocationInRange(wanderRange);
             MoveTo(location);
+        }
+    }
+    public void HeardSomthing(Vector3 location)
+    {
+        if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
+        {
+            soundLocation = location;
+            agentState = AgentState.Investegate;
+            // 
+            //MoveTo(location);
         }
     }
     private void InvestegateBehavior()
@@ -356,6 +365,7 @@ public class FSM_Walker : MonoBehaviour
 
         if (currentTarget?.transform == null)
         {
+            Debug.Log("null");
             agentState = AgentState.Idle;
             return;
         }
@@ -367,16 +377,17 @@ public class FSM_Walker : MonoBehaviour
             if (distanceToTarget > minAttackRange)
             {
                 MoveTo(currentTarget.transform.position);
+                Debug.Log("move");
 
             }
 
 
-            if (distanceToTarget <= 3f && canAttakRun)
+            if (distanceToTarget <= 2.9f && canAttakRun)
             {
                 //StartCoroutine(PlayAnimation("Zombie Attack", 6));
                 animator.SetLayerWeight(6, 1);
                 animator.SetBool("Charge", true);
-
+                Debug.Log("Should attack");
                 //StartCoroutine(AttackCooldown(.4f));
 
             }
@@ -387,6 +398,7 @@ public class FSM_Walker : MonoBehaviour
             }
             else
             {
+                Debug.Log("Should not attack");
                 animator.SetLayerWeight(6, 0);
                 animator.SetBool("Charge", false);
             }
@@ -398,6 +410,8 @@ public class FSM_Walker : MonoBehaviour
                 agent.isStopped = true;
             }
         }
+
+
     }
 
     public IEnumerator PlayAnimation(string animationName, int layer = 0)
@@ -414,7 +428,6 @@ public class FSM_Walker : MonoBehaviour
 
     //private void ChaseBehaviour()
     //{
-    //    eye.AngryEye();
     //    if (currentTarget.transform)
     //    {
     //        if (agent.isOnNavMesh)
@@ -619,7 +632,7 @@ public class FSM_Walker : MonoBehaviour
 
         Vector3 targetDelta = currentTarget.transform.position - transform.position;
 
-        if (targetDelta.sqrMagnitude < attackRange * attackRange)
+        if (targetDelta.sqrMagnitude < 2 * 2)
         {
             if (currentTarget.TryGetComponent(out IDamageble damageable))
             {
