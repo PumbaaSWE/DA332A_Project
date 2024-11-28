@@ -46,8 +46,9 @@ public class Talker : MonoBehaviour
 
     public void PlayVoiceLine(VoicelineData voiceline)
     {
-        if (voiceline)
-            PlayVoiceLine(voiceline.audioClip, voiceline.subtitle, voiceline.time, voiceline.color);
+        Debug.LogWarning("Talker - PlayerVoiceLine not implemented");
+        //if (voiceline)
+        //    PlayVoiceLine(voiceline.audioClip, voiceline.subtitle, voiceline.time, voiceline.color);
     }
     public void PlayVoiceLine(AudioClip clip, string subtitleText, float overrideTime, Color subtitleColor)
     {
