@@ -10,13 +10,26 @@ public class ParticleCreator : MonoBehaviour, IDamageble
     
     void Start()
     {
+
+        var hbs = GetComponentsInChildren<Hitbox>();
+        foreach (var hb in hbs)
+        {
+            hb.OnHit += TakeDamage;
+        }
+        if (TryGetComponent(out Health health))
+        {
+            health.OnDeath += (_) => UnsubHitboxes();
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UnsubHitboxes()
     {
-        
+        var hbs = GetComponentsInChildren<Hitbox>();
+        foreach (var hb in hbs)
+        {
+            hb.OnHit -= TakeDamage;
+        }
     }
 
     public virtual void TakeDamage(Vector3 point, Vector3 direction, float damage)
@@ -27,7 +40,5 @@ public class ParticleCreator : MonoBehaviour, IDamageble
     public void CreateParticle(Vector3 point)
     {
         Instantiate(particle, point, Quaternion.identity);
-        
-
     }
 }

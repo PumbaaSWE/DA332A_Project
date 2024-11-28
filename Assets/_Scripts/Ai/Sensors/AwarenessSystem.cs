@@ -78,7 +78,7 @@ public class Trackedtarget
 
 
 
-[RequireComponent(typeof(EnemyAI))]
+//[RequireComponent(typeof(EnemyAI))]
 public class AwarenessSystem : MonoBehaviour
 {
     [SerializeField] AnimationCurve visonSensitivity;
@@ -213,7 +213,7 @@ public class AwarenessSystem : MonoBehaviour
             }
             else if (fsmWalker)
             {
-                fsmWalker.HeardSomthing(location);
+          
             }
 
             UpdateAwarness(source, null, location, awareness, 1);
@@ -232,7 +232,7 @@ public class AwarenessSystem : MonoBehaviour
             }
             else if (fsmWalker)
             {
-                fsmWalker.HeardSomthing(location);
+      
             }
         }
        

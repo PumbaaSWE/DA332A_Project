@@ -35,7 +35,7 @@ public class LimbHealth : MonoBehaviour
     }
 
     /// <summary>
-    /// Heals a maxHealth amount of hitpoints in desired seconds
+    /// Heals a limbHealth amount of hitpoints in desired seconds
     /// </summary>
     /// <param name="seconds"></param>
     public void HealFull(float seconds)

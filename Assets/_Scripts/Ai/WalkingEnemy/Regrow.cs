@@ -20,8 +20,10 @@ public class Regrow : MonoBehaviour
     private Transform hip;
     private Animator animator;
 
-    [SerializeField] float regrowTime = 2;
-    [SerializeField] float legRegrowTime = 7;
+    [SerializeField][Range(7f, 20f)] float regrowTime = 7;
+    [SerializeField][Range(7f, 20f)] float legRegrowTime = 14;
+
+    public bool canRegrow = true;
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -76,20 +78,28 @@ public class Regrow : MonoBehaviour
     }
     public void TriggerRegrow(Detachable detachable)
     {
-
+      
+        
         detachable.Detatch();
-        if(detachable.leg)
+        if (canRegrow)
         {
-            detachable.Regrow(legRegrowTime);
-        }
-        else
-        {
-            detachable.Regrow(regrowTime);
+            if (detachable.leftLeg)
+            {
+                detachable.Regrow(legRegrowTime);
+            }
+            else
+            {
+                detachable.Regrow(regrowTime);
 
+            }
+            detached.Add(detachable);
         }
-        detached.Add(detachable);
+
+       
 
         state = RegrowState.RemoveLimbs;
+        
+       
     }
     //public void ReGrow()
     //{
@@ -119,18 +129,32 @@ public class Regrow : MonoBehaviour
     {
         foreach (var detachable in detached)
         {
-            if (detachable.leg && detachable.detached)
+            if (detachable.leftLeg && detachable.detached)
             {
                 return true;
             }
             if(detachable.child != null)
             {
-                if (detachable.child.leg && detachable.child.detached)
+                if (detachable.child.leftLeg && detachable.child.detached)
                 {
                     return true;
                 }
             }
             
+        }
+        foreach (var detachable in detached)
+        {
+            if (detachable.rightLeg && detachable.detached)
+            {
+                return true;
+            }
+            if (detachable.child != null)
+            {
+                if (detachable.child.rightLeg && detachable.child.detached)
+                {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -152,19 +176,31 @@ public class Regrow : MonoBehaviour
     {
         foreach (var detachable in detached)
         {
-            if (detachable.arm && detachable.detached)
+            if (detachable.leftArm && detachable.detached)
             {
                 return true;
             }
             if(detachable.child != null)
             {
-                if (detachable.child.arm && detachable.child.detached)
+                if (detachable.child.leftArm && detachable.child.detached)
                 {
                     return true;
                 }
 
             }
-          
+            if (detachable.rightArm && detachable.detached)
+            {
+                return true;
+            }
+            if (detachable.child != null)
+            {
+                if (detachable.child.rightArm && detachable.child.detached)
+                {
+                    return true;
+                }
+
+            }
+
         }
 
         return false;

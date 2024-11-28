@@ -165,7 +165,7 @@ public class RagdollLims : MonoBehaviour
     {
         foreach (var detachable in detached)
         {
-            if (detachable.leg && detachable.detached)
+            if (detachable.leftLeg && detachable.detached)
             {
                 return true;
             }
@@ -189,7 +189,7 @@ public class RagdollLims : MonoBehaviour
     {
         foreach (var detachable in detached)
         {
-            if (detachable.arm && detachable.detached)
+            if (detachable.leftArm && detachable.detached)
             {
                 return true;
             }
@@ -203,11 +203,11 @@ public class RagdollLims : MonoBehaviour
     //    int nrAmrsDetached = 0;
     //    foreach (var detachable in detached)
     //    {
-    //        if (detachable.arm)
+    //        if (detachable.leftArm)
     //        {
     //            nrAmrs++;
     //        }
-    //        if (detachable.arm && detachable.detached)
+    //        if (detachable.leftArm && detachable.detached)
     //        {
     //            nrAmrsDetached++;   
     //        }
@@ -458,7 +458,7 @@ public class RagdollLims : MonoBehaviour
             {
                 //if(detachable.growing == false)
                 {
-                    if(detachable.leg)
+                    if(detachable.leftLeg)
                     {
                         detachable.Regrow(2);
                     }
@@ -490,7 +490,7 @@ public class RagdollLims : MonoBehaviour
         {
             if(arm)
             {
-                if(detachable.arm)
+                if(detachable.leftArm)
                 {
                     detachable.Regrow(2);
                     StartCoroutine(ResetArms());

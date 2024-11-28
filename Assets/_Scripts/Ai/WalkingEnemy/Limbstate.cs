@@ -96,7 +96,6 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
-            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }
@@ -159,10 +158,23 @@ public class Limbstate : MonoBehaviour
     void CrawlBehavior()
     {
         fsm.canAttakRun = false;
-
+        
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
+
+        fsm.nrOfAttacks = 4;
+
+        //if (fsm.agentState == FSM_Walker.AgentState.Attacking)
+        //{
+        //    animator.SetLayerWeight(6, 1);
+        //    animator.SetBool("Charge", true);
+        //}
+        //else
+        //{
+        //    animator.SetLayerWeight(6, 0);
+        //    animator.SetBool("Charge", false);
+        //}
     }
 
     void ArmAndLegBehavior()
@@ -207,6 +219,11 @@ public class Limbstate : MonoBehaviour
 
     void CheckStanding()
     {
+        if (rag.state != Ragdoll.RagdollState.Default)
+        {
+            limbStatehit = AgentHit.Crawl;
+        }
+
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
         {
             standing = true;
