@@ -238,6 +238,8 @@ public class FSM_Walker : MonoBehaviour
             {
                 attackAudio.Play();
             }
+           
+
         }
     }
     void OnStateExit(AgentState oldState)
@@ -246,6 +248,10 @@ public class FSM_Walker : MonoBehaviour
         {
             agent.enabled = true;
             agent.isStopped = false;
+        }
+        if(oldState == AgentState.Wander || oldState == AgentState.Idle)
+        {
+            PlayDetectPlayerAnimation();
         }
     }
 
@@ -471,15 +477,25 @@ public class FSM_Walker : MonoBehaviour
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-        if (distanceToTarget > attackRange)
+        if (distanceToTarget <= attackRange)
         {
-            animator.SetLayerWeight(6, 0);
-            animator.SetBool("Charge", false);
-        }
-
-        if (distanceToTarget <= attackRange && canAttakRun)
-        {
-            PerformChargeAttack();
+            if (!limbState.standing) 
+            {
+                PerformCrawlAttack();
+            }
+            else if (agent.velocity.magnitude < 0.1f)
+            {
+                Attack();
+            }
+            else if (canAttakRun) 
+            {
+                PerformChargeAttack();
+            }
+            else
+            {
+                animator.SetLayerWeight(6, 0);
+                animator.SetBool("Charge", false);
+            }
         }
         else
         {
@@ -492,6 +508,7 @@ public class FSM_Walker : MonoBehaviour
             MoveTo(target.position);
         }
     }
+
 
 
     private void PerformChargeAttack()
@@ -509,6 +526,18 @@ public class FSM_Walker : MonoBehaviour
         agent.isStopped = false;
     }
 
+    private void PerformCrawlAttack()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (stateInfo.IsName("CrawlA") && stateInfo.normalizedTime < 1f)
+        {
+            return;
+        }
+
+        animator.SetTrigger("CrawlA");
+        agent.isStopped = true; 
+    }
 
     public IEnumerator PlayAnimation(string animationName, int layer = 0)
     {
@@ -642,7 +671,16 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
+    private void PlayDetectPlayerAnimation()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("DetectPlayer") && stateInfo.normalizedTime < 1f)
+        {
+            return;
+        }
 
+        animator.SetTrigger("DetectPlayer");
+    }
     private void AttackBehaviour()
     {
         if (target == null)
@@ -753,12 +791,7 @@ public class FSM_Walker : MonoBehaviour
         if (target == null || target.transform == null)
             return;
 
-        attackAudio.clip = attackClips[0];
-
-        if(!attackAudio.isPlaying)
-        {
-            attackAudio.Play();
-        }
+      
        
         
 
@@ -766,6 +799,13 @@ public class FSM_Walker : MonoBehaviour
 
         if (targetDelta.sqrMagnitude < 2 * 2)
         {
+            attackAudio.clip = attackClips[0];
+
+            if (!attackAudio.isPlaying)
+            {
+                attackAudio.Play();
+            }
+
             if (target.TryGetComponent(out IDamageble damageable))
             {
                 damageable.TakeDamage(transform.position, targetDelta, dmg); 

@@ -163,7 +163,7 @@ public class Limbstate : MonoBehaviour
         SetLayerActive(true);
         fsm.HandleCrawling();
 
-        fsm.nrOfAttacks = 4;
+        fsm.nrOfAttacks = 2;
 
         //if (fsm.agentState == FSM_Walker.AgentState.Attacking)
         //{
@@ -222,9 +222,18 @@ public class Limbstate : MonoBehaviour
         if (rag.state != Ragdoll.RagdollState.Default)
         {
             limbStatehit = AgentHit.Crawl;
+            standing = false;
+            return;
         }
 
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Standing Up") && stateInfo.normalizedTime < 1f)
+        {
+            standing = false;
+            return;
+        }
+
+        if (!stateInfo.IsName("Standing Up"))
         {
             standing = true;
             fsm.sleep = false;
@@ -232,6 +241,7 @@ public class Limbstate : MonoBehaviour
             fsm.agentState = FSM_Walker.AgentState.Idle;
         }
     }
+
     void Normal()
     {
         fsm.canAttakRun = true;
