@@ -284,6 +284,11 @@ public class WeaponHandler : MonoBehaviour
         });
     }
 
+    public bool HasGun()
+    {
+        return Guns.Count > 0;
+    }
+
     public bool HasGun(int id)
     {
         return Guns.Any(x => x.Id == id);
