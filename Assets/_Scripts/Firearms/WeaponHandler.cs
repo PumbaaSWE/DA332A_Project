@@ -54,14 +54,6 @@ public class WeaponHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EquippedGun != null)
-        {
-            if (Time.timeScale == 0 && EquippedGun.CanFire)
-                EquippedGun.CanFire = false;
-
-            else if (Time.timeScale == 1 && !EquippedGun.CanFire)
-                EquippedGun.CanFire = true;
-        }
     }
 
     public void EquipGun(Firearm gunToEquip)
@@ -151,7 +143,7 @@ public class WeaponHandler : MonoBehaviour
 
     public void CycleWeapons(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0 && Time.timeScale > 0)
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
     }
 
@@ -198,7 +190,7 @@ public class WeaponHandler : MonoBehaviour
         //if (Guns.Any(gun => newGun.name == gun.name))
         //    return false;
 
-        if (!CanPickup)
+        if (!CanPickup || Time.timeScale == 0)
             return false;
 
         // If player has the same gun, grab the guns ammo
@@ -236,7 +228,7 @@ public class WeaponHandler : MonoBehaviour
 
     public void Shoot(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
         {
             EquippedGun.Shoot(context);
         }
@@ -244,19 +236,19 @@ public class WeaponHandler : MonoBehaviour
 
     public void AimDownSights(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
             EquippedGun.AimDownSights(context);
     }
 
     public void ToggleFireMode(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
             EquippedGun.ToggleFireMode(context);
     }
 
     public void Reload(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
         {
             EquippedGun.Reload(context);
             OnReloadStart.Invoke();
