@@ -41,10 +41,18 @@ public class SwitchController : MonoBehaviour
             endPos = transform.position.WithY(transform.position.y + ClimbController.Radius);
 
             // disable weapon
-            _equippedGun = WeaponHandler.EquippedGun;
-            _equippedGun.gameObject.SetActive(false);
-            WeaponHandler.EquippedGun = null;
-            WeaponHandler.enabled = false;
+            if (WeaponHandler != null)
+            {
+                if (WeaponHandler.HasGun())
+                {
+                    _equippedGun = WeaponHandler.EquippedGun;
+                    _equippedGun.gameObject.SetActive(false);
+                    WeaponHandler.EquippedGun = null;
+                }
+
+                WeaponHandler.SetCanPickup(false);
+                WeaponHandler.enabled = false;
+            }
         }
         else
         {
@@ -107,9 +115,17 @@ public class SwitchController : MonoBehaviour
                 NonphysController.SetVelocity(Vector3.zero);
 
                 // enable weapon
-                WeaponHandler.EquippedGun = _equippedGun;
-                _equippedGun.gameObject.SetActive(true);
-                WeaponHandler.enabled = true;
+                if (WeaponHandler != null)
+                {
+                    if (WeaponHandler.HasGun())
+                    {
+                        WeaponHandler.EquippedGun = _equippedGun;
+                        _equippedGun.gameObject.SetActive(true);
+                    }
+                    
+                    WeaponHandler.SetCanPickup(true);
+                    WeaponHandler.enabled = true;
+                }
             }
         }
     }
