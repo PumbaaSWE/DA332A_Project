@@ -42,7 +42,7 @@ public class FSM_Walker : MonoBehaviour
     private Vector2 velocity;
     private Vector2 smoothDeltaPosition;
     private LookAt lookAt;
-
+    bool attack;
 
     //chase
     private Vector3 lastTargetPosition;
@@ -481,7 +481,8 @@ public class FSM_Walker : MonoBehaviour
         {
             if (!limbState.standing) 
             {
-                PerformCrawlAttack();
+                animator.SetLayerWeight(6, 0);
+                Attack();
             }
             else if (agent.velocity.magnitude < 0.1f)
             {
@@ -526,30 +527,28 @@ public class FSM_Walker : MonoBehaviour
         agent.isStopped = false;
     }
 
-    private void PerformCrawlAttack()
-    {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+    //private void PerformCrawlAttack()
+    //{
+    //    AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (stateInfo.IsName("CrawlA") && stateInfo.normalizedTime < 1f)
-        {
-            return;
-        }
+    //    if (stateInfo.IsName("CrawlA") && stateInfo.normalizedTime < 1f)
+    //    {
+    //        return;
+    //    }
 
-        animator.SetTrigger("CrawlA");
-        agent.isStopped = true; 
-    }
+    //    if(attack)
+    //    {
+    //        ApplyDamage();
+    //        attack = false;
+       
+    //    }
 
-    public IEnumerator PlayAnimation(string animationName, int layer = 0)
-    {
-        animator.Play(animationName, layer);
-      
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layer);
-        while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1f)
-        {
-            stateInfo = animator.GetCurrentAnimatorStateInfo(layer);
-            yield return null; 
-        }
-    }
+
+    //    animator.SetTrigger("CrawlA");
+    //    agent.isStopped = true; 
+    //}
+  
+   
 
     //private void ChaseBehaviour()
     //{
@@ -791,9 +790,6 @@ public class FSM_Walker : MonoBehaviour
         if (target == null || target.transform == null)
             return;
 
-      
-       
-        
 
         Vector3 targetDelta = target.transform.position - transform.position;
 

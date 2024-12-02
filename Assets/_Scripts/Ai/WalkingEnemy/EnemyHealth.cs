@@ -38,6 +38,9 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] GameObject leftArmblodParticle;
     [SerializeField] GameObject rightLegblodParticle;
     [SerializeField] GameObject leftLegblodParticle;
+
+    public GameObject damageEffectPrefab;
+
     public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
     private void Awake()
     {
@@ -87,6 +90,9 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         leftArmblodParticle.SetActive(false);
         headblodParticle.SetActive(false);
 
+        Quaternion rotation = Quaternion.LookRotation(direction);
+
+        Instantiate(damageEffectPrefab, point, rotation);
 
         health -= damage;
         Impact(direction, point);

@@ -72354,6 +72354,8 @@ MonoBehaviour:
   leftArmblodParticle: {fileID: 1990958010339973661}
   rightLegblodParticle: {fileID: 8273268277251321644}
   leftLegblodParticle: {fileID: 512462457467571506}
+  damageEffectPrefab: {fileID: 5442775631600215609, guid: 1efbfc22003cf16418bb9d44ce6deaf1,
+    type: 3}
   dissolveEffects:
   - {fileID: 2228375137068118773}
   - {fileID: 5854152298305992439}
@@ -72589,15 +72591,15 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  ignoredVisionLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  hearingRange: 8
+  hearingRange: 20
+  gunHearingRange: 60
   hearingMask:
     serializedVersion: 2
     m_Bits: 4294967295
   target: {fileID: 0}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  memoryDuration: 2
+  isTrackingPlayer: 0
 --- !u!1 &7125232290476210582
 GameObject:
   m_ObjectHideFlags: 0
