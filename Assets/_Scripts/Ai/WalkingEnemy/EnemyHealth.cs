@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 
 public class EnemyHealth : MonoBehaviour, IDamageble
@@ -13,8 +12,9 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     Ragdoll ragdoll;
     Regrow regrow;
     FSM_Walker fsm;
-   
 
+    [Range(0f, 1f)]
+    public float chanceToHappen = 0.1f;
 
 
     private float leftLegHealth = 100f;
@@ -40,6 +40,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     [SerializeField] GameObject leftLegblodParticle;
 
     public GameObject damageEffectPrefab;
+
+    public List<GameObject> drops;
 
     public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
     private void Awake()
@@ -81,6 +83,17 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     }
 
+    public void DropThing(Vector3 point, Quaternion rotation)
+    {
+      
+        if (UnityEngine.Random.value < chanceToHappen)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, drops.Count);
+
+            Instantiate(drops[randomIndex], point, rotation);
+        }
+    }
+
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
 
@@ -93,6 +106,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         Quaternion rotation = Quaternion.LookRotation(-direction);
 
         Instantiate(damageEffectPrefab, point, rotation);
+        DropThing(point, rotation);
 
         health -= damage;
         Impact(direction, point);
