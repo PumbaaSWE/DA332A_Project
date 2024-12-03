@@ -25724,6 +25724,7 @@ GameObject:
   - component: {fileID: 7180382806283229224}
   - component: {fileID: 6189161487847643052}
   - component: {fileID: 2992507878310961103}
+  - component: {fileID: 330305347276658271}
   m_Layer: 0
   m_Name: mixamorig:RightLeg
   m_TagString: Untagged
@@ -25865,6 +25866,20 @@ MonoBehaviour:
   head: 0
   leftArm: 0
   rightArm: 0
+--- !u!114 &330305347276658271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2483223040995317227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5de913af85f15c4782b575d1414ce6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectMaterial: {fileID: -876546973899608171, guid: b20c785bb8f796348bae88200014591b,
+    type: 3}
 --- !u!1 &2604731134585816056
 GameObject:
   m_ObjectHideFlags: 0
@@ -41307,7 +41322,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 698733d7c1e7a554990f4ee662303e76, type: 2}
+  - {fileID: -876546973899608171, guid: 6dcf9e4238bf7384699c0d02806618b1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51881,7 +51896,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 698733d7c1e7a554990f4ee662303e76, type: 2}
+  - {fileID: -876546973899608171, guid: 6dcf9e4238bf7384699c0d02806618b1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67121,7 +67136,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 698733d7c1e7a554990f4ee662303e76, type: 2}
+  - {fileID: -876546973899608171, guid: 6dcf9e4238bf7384699c0d02806618b1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72120,8 +72135,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6820119106147157561}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0.000000059604645, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -72170,8 +72185,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3538009532647977504}
-  - {fileID: 198699188187242066}
   - {fileID: 5680922085246729164}
+  - {fileID: 198699188187242066}
   - {fileID: 2657311770521519499}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72363,7 +72378,8 @@ MonoBehaviour:
   - {fileID: 2228375137068118773}
   - {fileID: 5854152298305992439}
   - {fileID: 2893673242874162659}
-  objectMaterial: {fileID: 2100000, guid: 698733d7c1e7a554990f4ee662303e76, type: 2}
+  objectMaterial: {fileID: -876546973899608171, guid: b20c785bb8f796348bae88200014591b,
+    type: 3}
   decalPrefab: {fileID: 541104331010276089, guid: f6af36af7f535b24e991553f1de5c436,
     type: 3}
 --- !u!82 &1901911760674212929

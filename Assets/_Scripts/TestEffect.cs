@@ -7,6 +7,8 @@ public class TestEffect : MonoBehaviour, IDamageble
     public Material objectMaterial;
 
 
+
+
     //public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     //{
 
@@ -17,7 +19,7 @@ public class TestEffect : MonoBehaviour, IDamageble
     //    Destroy(decal, 2f); 
     //}
 
-   
+ 
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {

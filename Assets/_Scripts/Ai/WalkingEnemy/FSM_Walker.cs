@@ -248,7 +248,7 @@ public class FSM_Walker : MonoBehaviour
         }
         if(oldState == AgentState.Wander || oldState == AgentState.Idle)
         {
-            if(limbState.standing)
+            if(limbState.standing && limbState.limbStatehit == Limbstate.AgentHit.Normal)
             {
                 PlayDetectPlayerAnimation();
 

@@ -90,7 +90,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public void DropThing(Vector3 point, Quaternion rotation)
     {
       
-        if (UnityEngine.Random.value < chanceToHappen)
+        //if (UnityEngine.Random.value < chanceToHappen)
         {
             int randomIndex = UnityEngine.Random.Range(0, drops.Count);
 
@@ -100,15 +100,15 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        Vector3 localPoint = transform.InverseTransformPoint(point);
+        //Vector3 localPoint = transform.InverseTransformPoint(point);
 
-        objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y, localPoint.z, 1));
-        objectMaterial.SetColor("_ImpactColor", Color.red);
-        objectMaterial.SetFloat("_ImactRadius", 0.1f);
+        //objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y, localPoint.z, 1));
+        //objectMaterial.SetColor("_ImpactColor", Color.red);
+        //objectMaterial.SetFloat("_ImactRadius", 0.3f);
 
 
 
-        StartCoroutine(ResetImpactEffect());
+        //StartCoroutine(ResetImpactEffect());
 
         leftLegblodParticle.SetActive(false);
         rightLegblodParticle.SetActive(false);
@@ -119,7 +119,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         Quaternion rotation = Quaternion.LookRotation(-direction);
 
         Instantiate(damageEffectPrefab, point, rotation);
-        DropThing(point, rotation);
+       
 
         health -= damage;
         Impact(direction, point);
@@ -216,6 +216,13 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             headblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
+            DropThing(point, rotation);
             if (regrow.canRegrow)
             {
                 headHealth = limbHealth;
@@ -242,7 +249,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     private IEnumerator ResetImpactEffect()
     {
         yield return new WaitForSeconds(2.5f);
-        objectMaterial.SetFloat("_ImpactRadius", 0.0001f);
+        objectMaterial.SetFloat("_ImpactRadius", 0.1f);
     }
     void LoseLimbSound()
     {
