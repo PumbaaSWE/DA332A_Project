@@ -90,7 +90,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         leftArmblodParticle.SetActive(false);
         headblodParticle.SetActive(false);
 
-        Quaternion rotation = Quaternion.LookRotation(direction);
+        Quaternion rotation = Quaternion.LookRotation(-direction);
 
         Instantiate(damageEffectPrefab, point, rotation);
 
