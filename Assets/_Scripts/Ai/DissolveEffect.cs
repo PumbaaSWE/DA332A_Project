@@ -3,8 +3,8 @@ using UnityEngine;
 public class DissolveEffect : MonoBehaviour
 {
     [SerializeField] private float noiseStrength = 0.25f;
-    [SerializeField] private float objectHeight = 1.0f;
-    private float dissolveSpeed = 0.3f; 
+    [SerializeField] private float objectHeight = .8f;
+    private float dissolveSpeed = 0.4f; 
 
     private Material material;
     private float currentHeight;

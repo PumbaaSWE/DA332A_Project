@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 980737338558164652}
   - component: {fileID: 3165790918357752340}
   - component: {fileID: -1775130757804846941}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: GibbletChunk_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,6 +256,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
         type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
+        type: 3}
       propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
@@ -266,18 +276,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
         type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
+        type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 75
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5601816898686173045, guid: 591b7c69e3353134da7f0a66c3af5126,
         type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.001
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 5687563158758039078, guid: 591b7c69e3353134da7f0a66c3af5126,
         type: 3}
       propertyPath: m_Name
       value: WaterEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 5687563158758039078, guid: 591b7c69e3353134da7f0a66c3af5126,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

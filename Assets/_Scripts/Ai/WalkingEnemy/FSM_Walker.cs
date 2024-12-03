@@ -87,7 +87,7 @@ public class FSM_Walker : MonoBehaviour
     [SerializeField] private List<AudioClip> attackClips;
     //[SerializeField] private float soundRadius = 10f;
 
-  
+    private float nextPlayTime = 0f;
     private void OnEnable()
     {
         Firearm.OnShoot += ReactToShoot;
@@ -251,6 +251,13 @@ public class FSM_Walker : MonoBehaviour
             if(limbState.standing && limbState.limbStatehit == Limbstate.AgentHit.Normal)
             {
                 PlayDetectPlayerAnimation();
+                int randomIndex = Random.Range(2, soundClips.Count);
+                attackAudio.clip = soundClips[randomIndex];
+
+                if (!attackAudio.isPlaying)
+                {
+                    attackAudio.Play();
+                }
 
             }
         }
@@ -439,13 +446,28 @@ public class FSM_Walker : MonoBehaviour
 
 
     //}
+    private void TryPlaySound()
+    {
+        if (soundClips.Count > 0)
+        {
+            int randomIndex = Random.Range(2, soundClips.Count);
+            attackAudio.clip = soundClips[randomIndex];
 
+            attackAudio.Play();
+        }
+
+        nextPlayTime = Time.time + Random.Range(4, 7);
+    }
     private void ChaseBehaviour()
     {
         if (target == null)
         {
             agentState = AgentState.Wander;
             return;
+        }
+        if (Time.time >= nextPlayTime)
+        {
+            TryPlaySound();
         }
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);

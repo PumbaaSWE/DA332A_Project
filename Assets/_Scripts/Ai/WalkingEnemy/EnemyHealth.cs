@@ -73,11 +73,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
         fsm.agentState = FSM_Walker.AgentState.Sleep;
-
+        
         dmgAudio.clip = deathClip;
-        if (!dmgAudio.isPlaying)
+        if (!dmgAudio.isPlaying && !dead)
         {
             dmgAudio.Play();
+            dead = true;
         }
         foreach (var dis in dissolveEffects)
         {
