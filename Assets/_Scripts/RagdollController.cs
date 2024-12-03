@@ -12,7 +12,9 @@ public class RagdollController : MonoBehaviour
     public Transform Hip => hip;
 
     //public UnityEvent OnRagDol
-    public bool active;
+    private bool active;
+    public bool Active { get {return active; } set { if (value == active) return; if (value) EnableRagdoll(); else DisableRagdoll();  }
+            }
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,6 +39,9 @@ public class RagdollController : MonoBehaviour
             rbs[i].isKinematic = true;
         }
         animator.enabled = true;
+        animator.SetLayerWeight(1, 1);
+        //animator.p
+        //animator.SetBool("DownedState", false);
         if (disableList != null)
         {
 
@@ -45,7 +50,7 @@ public class RagdollController : MonoBehaviour
                 disableList[i].enabled = true;
             }
         }
-        active = true;
+        active = false;
 
     }
 
@@ -58,6 +63,8 @@ public class RagdollController : MonoBehaviour
             rbs[i].isKinematic = false;
         }
         animator.enabled = false;
+        animator.SetLayerWeight(1, 0);
+        // animator.SetBool("DownedState", true);
         if (disableList != null)
         {
             for (int i = 0; i < disableList.Length; i++)
@@ -65,7 +72,7 @@ public class RagdollController : MonoBehaviour
                 disableList[i].enabled = false;
             }
         }
-        active = false;
+        active = true;
     }
 
     public void FreezeRagdoll()

@@ -11,7 +11,7 @@ public class Goal_Idle : Goal_Base
     {
         if(climber)
         {
-            if (ragdoll.active)
+            if (ragdoll.Active)
             {
                 Priority = 10;
             }

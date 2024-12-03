@@ -15,6 +15,7 @@ public class BodyPart : MonoBehaviour
     private bool doRegow = true;
 
     public event Action<bool> OnDetach;
+    public event Action OnRegrown;
     public float Health
     {
         get { return health; }
@@ -95,6 +96,7 @@ public class BodyPart : MonoBehaviour
             yield return null;
         }
         health = Mathf.Min(maxHealth, health);
+        OnRegrown?.Invoke();
     }
 
     // Update is called once per frame

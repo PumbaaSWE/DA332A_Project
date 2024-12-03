@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ZombieBody : MonoBehaviour
@@ -32,6 +33,7 @@ public class ZombieBody : MonoBehaviour
         for (int i = 0; i < legs.Length; i++)
         {
             legs[i].OnDetach += OnLegDetach;
+            legs[i].OnRegrown += OnLegRegrown;
         }
         for (int i = 0; i < arms.Length; i++)
         {
@@ -45,6 +47,16 @@ public class ZombieBody : MonoBehaviour
         //{
         //    hb.OnHitRb += Hb_OnHitRb;
         //}
+    }
+
+    private void OnLegRegrown()
+    {
+        if (HasLegs() && HasArms())
+        {
+            //we have arms and legs
+            GetComponent<RagdollToAnimation>().BeginAnimating(() => { Debug.Log("Resseting completed"); });
+            GetComponent<RagdollController>().DisableRagdoll();
+        }
     }
 
     //private void Hb_OnHitRb(Vector3 point, Vector3 dir, float damage, Rigidbody rb)
