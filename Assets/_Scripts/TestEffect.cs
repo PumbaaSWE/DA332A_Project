@@ -6,7 +6,7 @@ public class TestEffect : MonoBehaviour, IDamageble
 {
     public Material objectMaterial;
 
-    public GameObject decalPrefab;
+
     //public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     //{
 
@@ -21,7 +21,6 @@ public class TestEffect : MonoBehaviour, IDamageble
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        Debug.Log($"Damage taken at point: {point}, direction: {direction}, amount: {damage}");
 
  
 
@@ -29,11 +28,9 @@ public class TestEffect : MonoBehaviour, IDamageble
 
         objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y,localPoint.z, 1));
         objectMaterial.SetColor("_ImpactColor", Color.red);
-        objectMaterial.SetFloat("_ImpactRadius", 0.1f);
-
-        Debug.Log($"Impact Point: {localPoint}");
-        Debug.Log($"Material ImpactPoint: {objectMaterial.GetVector("_ImpactPoint")}");
-        Debug.Log($"Material ImpactRadius: {objectMaterial.GetFloat("_ImpactRadius")}");
+        objectMaterial.SetFloat("_ImpactRadius", .3f);
+        Debug.Log("as");
+   
 
         StartCoroutine(ResetImpactEffect());
     }
@@ -42,7 +39,7 @@ public class TestEffect : MonoBehaviour, IDamageble
     private IEnumerator ResetImpactEffect()
     {
         yield return new WaitForSeconds(1.5f);
-        objectMaterial.SetFloat("_ImpactRadius", 0.0f);
+        objectMaterial.SetFloat("_ImpactRadius", 0.01f);
     }
 
 }

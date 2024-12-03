@@ -100,13 +100,15 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        //GameObject decal = Instantiate(decalPrefab, point, Quaternion.identity);
+        Vector3 localPoint = transform.InverseTransformPoint(point);
 
-        //decal.transform.forward = direction;
+        objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y, localPoint.z, 1));
+        objectMaterial.SetColor("_ImpactColor", Color.red);
+        objectMaterial.SetFloat("_ImactRadius", 0.1f);
 
-        //decal.transform.parent = transform;
 
-        //Destroy(decal, 2f);
+
+        StartCoroutine(ResetImpactEffect());
 
         leftLegblodParticle.SetActive(false);
         rightLegblodParticle.SetActive(false);
@@ -239,8 +241,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     }
     private IEnumerator ResetImpactEffect()
     {
-        yield return new WaitForSeconds(1.5f);
-        objectMaterial.SetFloat("_ImpactRadius", 0.0f);
+        yield return new WaitForSeconds(2.5f);
+        objectMaterial.SetFloat("_ImpactRadius", 0.0001f);
     }
     void LoseLimbSound()
     {
