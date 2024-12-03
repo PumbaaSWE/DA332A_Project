@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -8314610224490189168}
   - component: {fileID: 980737338558164652}
   - component: {fileID: 3165790918357752340}
+  - component: {fileID: -1775130757804846941}
   m_Layer: 0
   m_Name: GibbletChunk_2
   m_TagString: Untagged
@@ -32,9 +33,9 @@ Transform:
   m_GameObject: {fileID: 3131704704638570262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -30.7846, y: 0.2886, z: -3.2722607}
-  m_LocalScale: {x: -0.0010438014, y: -0.0017054699, z: -0.0008886602}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.002, y: 0.0032678056, z: 0.0017027383}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3435049256008944589}
   m_Father: {fileID: 0}
@@ -182,6 +183,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clip: {fileID: 8300000, guid: 7e60fb9ce69df7743883c79422bce18d, type: 3}
+--- !u!114 &-1775130757804846941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3131704704638570262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c56895c24f5ef41b810d0043f5ee78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyDelay: 9
 --- !u!1001 &1324547535335405965
 PrefabInstance:
   m_ObjectHideFlags: 0

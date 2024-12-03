@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,6 +45,9 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public List<GameObject> drops;
 
     public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
+
+    public Material objectMaterial;
+    public GameObject decalPrefab;
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -96,6 +100,13 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
+        //GameObject decal = Instantiate(decalPrefab, point, Quaternion.identity);
+
+        //decal.transform.forward = direction;
+
+        //decal.transform.parent = transform;
+
+        //Destroy(decal, 2f);
 
         leftLegblodParticle.SetActive(false);
         rightLegblodParticle.SetActive(false);
@@ -137,6 +148,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         }
 
         
+       
 
         if (leftLegHealth <= 0)
         {
@@ -150,7 +162,10 @@ public class EnemyHealth : MonoBehaviour, IDamageble
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            leftLegHealth = limbHealth;
+            if (regrow.canRegrow)
+            {
+                leftLegHealth = limbHealth;
+            }
 
         }
         else if(rightLegHealth <= 0)
@@ -165,7 +180,10 @@ public class EnemyHealth : MonoBehaviour, IDamageble
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            leftLegHealth = limbHealth;
+            if (regrow.canRegrow)
+            {
+                rightLegHealth = limbHealth;
+            }           
           
         }
         else if (rightArmHealth <= 0)
@@ -173,7 +191,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             rightArmblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            rightArmHealth = limbHealth;
+            if (regrow.canRegrow)
+            {
+                rightArmHealth = limbHealth;
+            }
+
             
         }
         else if (leftArmHealth <= 0)
@@ -181,7 +203,10 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             leftArmblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            leftArmHealth = limbHealth;
+            if (regrow.canRegrow)
+            {
+                leftArmHealth = limbHealth;
+            }
           
         }
         else if (headHealth <= 0)
@@ -189,7 +214,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             headblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            headHealth = limbHealth;
+            if (regrow.canRegrow)
+            {
+                headHealth = limbHealth;
+            }
+        
         }
 
         if (health <= 0)
@@ -208,7 +237,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
 
     }
-
+    private IEnumerator ResetImpactEffect()
+    {
+        yield return new WaitForSeconds(1.5f);
+        objectMaterial.SetFloat("_ImpactRadius", 0.0f);
+    }
     void LoseLimbSound()
     {
         dmgAudio.clip = dmgClips[0];

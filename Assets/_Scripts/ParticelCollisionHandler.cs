@@ -16,7 +16,7 @@ public class ParticleCollisionHandler : MonoBehaviour
 
             for (int i = 0; i < numCollisionEvents; i++)
             {
-                Vector3 collisionPoint = collisionEvents[i].intersection;
+                Vector3 collisionPoint = collisionEvents[i].intersection;  
 
                 Instantiate(waterPuddlePrefab, collisionPoint, Quaternion.identity);
             }

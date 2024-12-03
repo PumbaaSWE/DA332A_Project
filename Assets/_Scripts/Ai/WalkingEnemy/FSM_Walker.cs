@@ -12,8 +12,6 @@ public class FSM_Walker : MonoBehaviour
 {
     [Header("Sensors")]
     Sensing sensing;
-    //protected AwarenessSystem sensors;
-    //DetectableTarget currentTarget;
     [SerializeField] float detectedAwarness = 1.2f;
     private float nearestPointSearchRange = 7f;
     [SerializeField] float gunHearingRange = 45;
@@ -25,7 +23,6 @@ public class FSM_Walker : MonoBehaviour
     bool destinationSet = true;
     bool reachedDestination = false;
     public bool atDestination => reachedDestination;
-    //private NavMeshTriangulation triangulation;
     private NavMeshAgent agent;
 
 
@@ -260,25 +257,7 @@ public class FSM_Walker : MonoBehaviour
     }
 
 
-    //void Found()
-    //{
-    //    if (sensors.ActiveTargets == null || sensors.ActiveTargets.Count == 0)
-    //        return;
-
-    //    foreach (var candidate in sensors.ActiveTargets.Values)
-    //    {
-    //        if (candidate.detectable != null)
-    //        {
-    //            if (candidate.Awarness >= detectedAwarness && agentState != AgentState.Attacking)
-    //            {
-    //                //CancelCurrentCommand();
-    //                currentTarget = candidate.detectable;
-    //                agentState = AgentState.Chasing;
-
-    //            }
-    //        }
-    //    }
-    //}
+  
     void Found()
     {
         if(agentState != AgentState.Attacking && (sensing.isTrackingPlayer || sensing.CanHearTarget()))
@@ -353,16 +332,6 @@ public class FSM_Walker : MonoBehaviour
         }
     }
 
-    //public void HeardSomthing(Vector3 location)
-    //{
-    //    if (agentState != AgentState.Attacking || agentState != AgentState.Chasing)
-    //    {
-    //        soundLocation = location;
-    //        agentState = AgentState.Investegate;
-    //        // 
-    //        //MoveTo(location);
-    //    }
-    //}
     private void InvestegateBehavior()
     {
       
