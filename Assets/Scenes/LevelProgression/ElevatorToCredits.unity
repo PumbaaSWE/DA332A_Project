@@ -2670,8 +2670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a350b56a482644b95ad791e565c6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipOnFail: Missing keycard!
-  keyCard: {fileID: 11400000, guid: ed70c89466b759a4783ae14379e716c2, type: 2}
+  tooltipOnFail: Do the things first!
+  keyCard: {fileID: 11400000, guid: f74198d6050aa49429ee76e29016fcdc, type: 2}
 --- !u!114 &2042551345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2710,7 +2710,8 @@ MonoBehaviour:
   onFailEvent:
     m_PersistentCalls:
       m_Calls: []
-  requrements: []
+  requrements:
+  - {fileID: 2042551344}
 --- !u!114 &2042551346
 MonoBehaviour:
   m_ObjectHideFlags: 0
