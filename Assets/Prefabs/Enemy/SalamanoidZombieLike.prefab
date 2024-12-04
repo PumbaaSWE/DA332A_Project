@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7457959491407752028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8834599608652428059}
+  - component: {fileID: 6240351569423087988}
+  m_Layer: 13
+  m_Name: MusicNode
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8834599608652428059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457959491407752028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5052753119568492282}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6240351569423087988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457959491407752028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6b1c4c4ec09324b8a122f27ed0364c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playMusicIds: 00000000010000000200000003000000
+  method: 0
+  radius: 7
+  smoothing: 3
+  transitionTime: 1
 --- !u!1001 &4725478103669608721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75,7 +124,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d63dd2dd000ff14097ab688164862fd,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 8834599608652428059}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8d63dd2dd000ff14097ab688164862fd,
         type: 3}
@@ -1927,6 +1980,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 6787296478070198665}
+--- !u!4 &5052753119568492282 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d63dd2dd000ff14097ab688164862fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4725478103669608721}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5172661200843384648 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8764921074188405159, guid: 8d63dd2dd000ff14097ab688164862fd,

@@ -1,12 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements.Experimental;
-using static Limb;
-using static UnityEditor.FilePathAttribute;
 
 public class FSM_Walker : MonoBehaviour
 {
