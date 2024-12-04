@@ -246,21 +246,21 @@ public class FSM_Walker : MonoBehaviour
             agent.enabled = true;
             agent.isStopped = false;
         }
-        if(oldState == AgentState.Wander || oldState == AgentState.Idle)
-        {
-            if(limbState.standing && limbState.limbStatehit == Limbstate.AgentHit.Normal)
-            {
-                PlayDetectPlayerAnimation();
-                int randomIndex = Random.Range(2, soundClips.Count);
-                attackAudio.clip = soundClips[randomIndex];
+        //if(oldState == AgentState.Wander || oldState == AgentState.Idle)
+        //{
+        //    if(limbState.standing && limbState.limbStatehit == Limbstate.AgentHit.Normal)
+        //    {
+        //        PlayDetectPlayerAnimation();
+        //        int randomIndex = Random.Range(2, soundClips.Count);
+        //        attackAudio.clip = soundClips[randomIndex];
 
-                if (!attackAudio.isPlaying)
-                {
-                    attackAudio.Play();
-                }
+        //        if (!attackAudio.isPlaying)
+        //        {
+        //            attackAudio.Play();
+        //        }
 
-            }
-        }
+        //    }
+        //}
     }
 
 
