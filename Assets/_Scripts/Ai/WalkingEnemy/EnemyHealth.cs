@@ -48,6 +48,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public Material objectMaterial;
     public GameObject decalPrefab;
+    public int headParticales = 10;
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -217,13 +218,12 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             headblodParticle.SetActive(true);
             LoseLimbSound();
             regrow.Hit(point);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
-            DropThing(point, rotation);
+            for (int i = 0; i < headParticales; i++)
+            {
+                DropThing(point, rotation);
+            }
+           
+         
             if (regrow.canRegrow)
             {
                 headHealth = limbHealth;
