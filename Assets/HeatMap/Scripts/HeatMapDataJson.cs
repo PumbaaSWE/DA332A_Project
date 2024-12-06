@@ -23,7 +23,7 @@ public class HeatMapDataJson : MonoBehaviour
     {
         Debug.Log("Data Tracking Started");
 
-        InvokeRepeating("RecordData", 0f, 0.5f);
+        InvokeRepeating("RecordData", 0f, 0.25f);
         folderName = DateTime.Now.ToString("yyyy-MM-dd_HH;mm;ss");
         FolderCreator.CreateNewFolder(folderName);
         levelName = "Level0"; //make this to read from Scene Level name
