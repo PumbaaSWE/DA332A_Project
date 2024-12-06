@@ -51,10 +51,12 @@ public class HeatMapEditor : Editor
             heatMap.DeleteLines();
         }
 
+        /*
         if (GUILayout.Button("CreateTexture"))
         {
-            heatMap.CreateTexture();
+            //heatMap.CreateTexture();
         }
+        */
 
 
 

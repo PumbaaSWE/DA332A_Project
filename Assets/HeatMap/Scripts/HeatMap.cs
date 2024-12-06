@@ -5,12 +5,13 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using static HeatMapDataJson;
 
 public class HeatMap : MonoBehaviour
 {
 
-    //public Vector3[] positions; // read from Json and convert to array
+    
     public DataContainer [] data;
     private string filePath;
     private string fileName;
@@ -25,30 +26,36 @@ public class HeatMap : MonoBehaviour
    
     public GameObject plane;
 
-    float[,] colorValues; //20 20
+    float[,] colorValues;
 
     int[] convertedXes;
+    int[] convertedZes;
+    Vector2[,] convertedXZ;
 
-    int[] ints;
+    int[] intsX;
+    int[] intsZ;
 
 
     public void InitializeComponents()
     {
         colorValues = new float[200,200];
         convertedXes = new int[200];
-        ints = new int[200];
-        colorValues = InitializeColorValues(ints);
+        convertedZes = new int[200];
+        convertedXZ = new Vector2[200, 200];
+        intsX = new int[200];
+        CreateArrayOfVectors();
+        //colorValues = InitializeColorValues(ints);
         lineRenderer = GetComponent<LineRenderer>();
         listObjects = new List<GameObject>();
         dataPosition = new Vector3[data.Length];
         fileName = file.name;
-        Debug.Log("file Name getting from json file.name is: " + fileName);
+        //Debug.Log("file Name getting from json file.name is: " + fileName);
         DirectoryInfo parentDirectory = Directory.GetParent(fileName);
         fileParentName = parentDirectory.Name;
-        Debug.Log("directory filePARENT name:" + fileParentName);
+        //Debug.Log("directory filePARENT name:" + fileParentName);
         filePath = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/" + fileParentName + "/ " + fileName + ".json";
-        CreateTexture();
-        Debug.Log("Initializing");
+        CreateTexture(convertedXZ);
+        //Debug.Log("Initializing");
        
 
 
@@ -137,15 +144,20 @@ public class HeatMap : MonoBehaviour
         {
             dataPosition[i] = data[i].playerPos;
         }
-        Debug.Log("creating vecxtor3 array Positions");
-        convertedXes = ConvertX(dataPosition);
-    
-        ints = HowManyInts(convertedXes);
-        Debug.Log(ints.Length);
-        for (int i = 0;i < ints.Length;i++)
+        //Debug.Log("creating vecxtor3 array Positions");
+        //convertedXes = ConvertX(dataPosition);
+        //convertedZes = ConvertZ(dataPosition); //make code
+        convertedXZ = ConvertXZ(dataPosition);
+
+        //intsX = HowManyIntsX(convertedXes);
+        //intsZ = HowManyIntsZ(convertedZes); //make code
+        //Debug.Log(intsX.Length);
+        /*
+        for (int i = 0;i < intsX.Length;i++)
         {
-            Debug.Log(ints[i]);
+            Debug.Log(intsX[i]);
         }
+        */
     }
 
     public void DrawLines()
@@ -177,6 +189,7 @@ public class HeatMap : MonoBehaviour
 
     }
 
+    /*
     public void CreateTexture()
     {
         var texture = new Texture2D(200, 200);
@@ -189,12 +202,52 @@ public class HeatMap : MonoBehaviour
             {
                 //color = color.grayscale;
                 a = colorValues[i, j];
-                //Debug.Log(a);
+                //Debug.Log("Color is: " + a);
                 Color color = new Color(a, a, a);
                 texture.SetPixel(i, j, color);
             }
         }
         
+
+        texture.filterMode = FilterMode.Point;
+        texture.Apply();
+        Renderer rnd = plane.GetComponent<Renderer>();
+        rnd.sharedMaterial.mainTexture = texture;
+    }
+    */
+    public void CreateTexture(Vector2[,] values)
+    {
+        var texture = new Texture2D(200, 200);
+        Color color = Color.white;
+        
+        for (int i = 0; i < 200; i++)
+        {
+            for (int j = 0; j < 200; j++)
+            {
+                if (values[i,j].x == 0)
+                {
+                    color = Color.grey;
+                }
+                if(values[i, j].x == 1)
+                {
+                        color = Color.green;
+                }
+               if(values[i, j].x == 2)
+                {
+                    color = Color.blue;
+                }
+                if (values[i, j].x == 3)
+                {
+                    color = Color.red;
+                }
+                if (values[i, j].x >= 4)
+                {
+                    color = Color.black;
+                }
+                texture.SetPixel(i, j, color);
+            }
+        }
+
 
         texture.filterMode = FilterMode.Point;
         texture.Apply();
@@ -213,8 +266,89 @@ public class HeatMap : MonoBehaviour
 
         return intArray;
     }
+    public int[] ConvertZ(Vector3[] data)
+    {
+        int[] intArray = new int[data.Length];
+        for (int i = 0; i < data.Length; i++)
+        {
+            intArray[i] = (int)(data[i].z + 100);
+        }
 
-    public int[] HowManyInts(int[] data)
+        return intArray;
+    }
+
+    public Vector2[,] ConvertXZ(Vector3[] data)
+    {
+        Vector2[,] intArray = new Vector2[200, 200];
+
+        foreach (Vector3 position in data)
+        {
+            // Map position.x and position.z to the grid
+            //int x = (int)(100 - position.x);
+            int x = (int)(100-position.x);
+            //int y = (int)(position.z + 100);
+            int y = (int)(100 - position.z);
+
+            // Ensure indices are within bounds
+            if (x >= 0 && x < 200 && y >= 0 && y < 200)
+            {
+                // Increment the value at (x, y) by (1, 1)
+                intArray[x, y] += new Vector2(1, 1);
+                Debug.Log("Updated cell (" + x + ", " + y + "): " + intArray[x, y]);
+            }
+            else
+            {
+                Debug.LogWarning("Out-of-bounds position: " + position);
+            }
+        }
+        /*
+        foreach (Vector3 position in data)
+        {
+            int x = (int)(100 - position.x);
+            int y = (int)(position.z + 100);
+
+            for (int i = 0; i < 200; i++)
+            {
+                for (int j = 0; j < 200; j++)
+                {
+                    
+                    if (x == i && y == j)
+                    {
+                        intArray[i, j] += new Vector2(1, 1);
+                        Debug.Log("..." + intArray[i, j]);
+                    }
+                    //intArray[i, j] = new Vector2(x, y);
+                    
+
+                }
+            }
+
+        }
+        */
+
+
+
+        return intArray;
+    }
+
+    public int[] HowManyIntsX(int[] data)
+    {
+        int[] ints = new int[200];
+        for (int i = 0; i < 200; i++)
+        {
+            foreach (int x in data)
+            {
+                if (x == i)
+                {
+                    ints[i] += 1;
+                }
+            }
+        }
+
+        return ints;
+    }
+
+    public int[] HowManyIntsZ(int[] data)
     {
         int[] ints = new int[200];
         for (int i = 0; i < 200; i++)
@@ -287,7 +421,7 @@ public class HeatMap : MonoBehaviour
     */
 
 
-    
+    /*
     private float[,] InitializeColorValues(int[] valueX)
     {
         float[,] colorValues = new float[200, 200];
@@ -301,6 +435,7 @@ public class HeatMap : MonoBehaviour
                 if (valueX[i] > 0)
                 {
                     colorValues[i, j] = 1f;
+                    Debug.Log("x value is more than 0");
                 }
                 else
                 {
@@ -313,7 +448,34 @@ public class HeatMap : MonoBehaviour
         }
         return colorValues;
     }
+    */
 
+    private float[,] InitializeColorValues(int[] ints)
+    {
+        float[,] colorValues = new float[200, 200];
+        //float valueX = 0;
+        float valueY = 0;
+        for (int i = 0; i < 200; i++)
+        {
+            valueY = 0f;
+            for (int j = 0; j < 200; j++)
+            {
+                if (ints[i] > 0)
+                {
+                    colorValues[i, j] = 1f;
+                    Debug.Log("x value is more than 0");
+                }
+                else
+                {
+                    colorValues[i, j] = 0f;
+                }
+
+                //valueY+= 0.005f;
+            }
+
+        }
+        return colorValues;
+    }
 
 
 
