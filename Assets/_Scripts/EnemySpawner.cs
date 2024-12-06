@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -13,10 +12,24 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Color color = Color.yellow;
     [SerializeField] Mesh mesh;
 
-    void Start()
+    EnemySpawnPoint[] points;
+
+    private void Awake()
     {
         Debug.Assert(prefab, "EnemySpawner - please assign a GameObject-prefab to spawn");
-        EnemySpawnPoint[] points = GetComponentsInChildren<EnemySpawnPoint>();
+        points = GetComponentsInChildren<EnemySpawnPoint>();
+    }
+
+    void Start()
+    {  
+        if (onStart)
+        {
+            SpawnAll();
+        }
+    }
+
+    public void SpawnAll()
+    {
         foreach (var point in points)
         {
             GameObject go = Instantiate(prefab, point.Position, point.Rotation);
