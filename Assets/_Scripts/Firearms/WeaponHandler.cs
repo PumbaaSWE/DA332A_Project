@@ -279,6 +279,7 @@ public class WeaponHandler : MonoBehaviour
         {
             GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
             droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
+            Guns[Guns.IndexOf(EquippedGun)] = newGun;
             Destroy(EquippedGun.gameObject);
             EquipGun(newGun);
         });
