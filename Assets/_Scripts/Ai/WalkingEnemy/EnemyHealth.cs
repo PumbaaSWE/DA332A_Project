@@ -9,6 +9,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public GameObject enemy;
 
     public float health = 1000;
+    [SerializeField] float headShotDmgModifer = 1.2f;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
@@ -147,7 +148,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             }
             else if(d.head)
             {
-                headHealth -= damage;
+                headHealth -= damage ;
+                health -= (damage * headShotDmgModifer - damage);
+                Debug.Log((damage * headShotDmgModifer - damage));
+                Debug.Log((damage * headShotDmgModifer ));
+                Debug.Log((damage));
             }
         }
 
