@@ -43,6 +43,7 @@ public class ClimbController : MonoBehaviour
 
     public float Radius => radius;
     public float CamOffset => camOffset;
+    public float MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
 
     // inputs
     Vector2 look;

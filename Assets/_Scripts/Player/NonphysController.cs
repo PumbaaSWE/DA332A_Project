@@ -84,7 +84,7 @@ public class NonphysController : MovementController
     public float CamOffset => camOffset;
     public float MaxStamina => maxStamina;
     public float Stamina => stamina;
-    public float MouseSensitivity => mouseSensitivity;
+    public float MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
     public bool Grounded => grounded;
     public float Speed => speed;
     public float MaxSpeed => maxSprintSpeed;
