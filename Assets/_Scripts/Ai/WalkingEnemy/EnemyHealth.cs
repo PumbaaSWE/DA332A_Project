@@ -150,9 +150,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             {
                 headHealth -= damage ;
                 health -= (damage * headShotDmgModifer - damage);
-                Debug.Log((damage * headShotDmgModifer - damage));
-                Debug.Log((damage * headShotDmgModifer ));
-                Debug.Log((damage));
+
             }
         }
 
