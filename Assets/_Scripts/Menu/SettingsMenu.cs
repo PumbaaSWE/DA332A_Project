@@ -10,15 +10,16 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] Slider sensitivitySlider;
     [SerializeField] TMP_InputField sensitivityField;
 
-    NonphysController nc;
-    ClimbController cc;
+    NonphysController nonphysController;
+    ClimbController climbController;
 
     void Awake()
     {
         StartCoroutine(FindPlayer());
-        StartCoroutine(TryGetAndSetSensitivity());
+        StartCoroutine(WaitForPlayer(() => SetSens(nonphysController.MouseSensitivity)));
     }
 
+    // Keep trying to find player in open scenes
     IEnumerator FindPlayer()
     {
         Player p = FindAnyObjectByType<Player>();
@@ -26,52 +27,46 @@ public class SettingsMenu : MonoBehaviour
         while (p == null)
         {
             p = FindAnyObjectByType<Player>();
-            Debug.Log("Lookig for player..");
+            //Debug.Log("Lookig for player..");
             yield return null;
         }
 
-        nc = p.GetComponent<NonphysController>();
-        cc = p.GetComponent<ClimbController>();
+        nonphysController = p.GetComponent<NonphysController>();
+        climbController = p.GetComponent<ClimbController>();
 
-        Debug.Log("Player found!");
+        //Debug.Log("Player found!");
     }
 
-    IEnumerator TryGetAndSetSensitivity()
+    // Wait for other coroutine to find player, then execute action
+    IEnumerator WaitForPlayer(Action callback)
     {
-        while (!nc || !cc)
+        while (!nonphysController || !climbController)
         {
             yield return null;
         }
 
-        SetSens(nc.MouseSensitivity);
+        callback.Invoke();
     }
 
-    IEnumerator TrySetSensitivity(float value)
-    {
-        while (!nc || !cc)
-        {
-            yield return null;
-        }
-
-        SetSens(value);
-    }
-
+    // Change slider, label and controll values
     private void SetSens(float value)
     {
-        // set controller values
-        nc.MouseSensitivity = value;
-        cc.MouseSensitivity = value;
+        // Set controller values
+        nonphysController.MouseSensitivity = value;
+        climbController.MouseSensitivity = value;
 
-        // set menu values
+        // Set menu values
         sensitivitySlider.value = value;
         sensitivityField.text = value.ToString("0.###");
     }
 
+    // Called from slider.
     public void SetSensitivity(float value)
     {
-        StartCoroutine(TrySetSensitivity(value));
+        StartCoroutine(WaitForPlayer(() => SetSens(value)));
     }
 
+    // Called from input field. If string doesn't parse to float, don't change sens.
     public void SetSensitivity(string value)
     {
         try
@@ -81,7 +76,7 @@ public class SettingsMenu : MonoBehaviour
         }
         catch
         {
-            StartCoroutine(TryGetAndSetSensitivity());
+            StartCoroutine(WaitForPlayer(() => SetSens(nonphysController.MouseSensitivity)));
         }
     }
 }
