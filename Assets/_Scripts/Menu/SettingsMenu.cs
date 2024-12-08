@@ -13,7 +13,7 @@ public class SettingsMenu : MonoBehaviour
     NonphysController nonphysController;
     ClimbController climbController;
 
-    void Awake()
+    void OnEnable()
     {
         StartCoroutine(FindPlayer());
         StartCoroutine(WaitForPlayer(() => SetSens(nonphysController.MouseSensitivity)));
