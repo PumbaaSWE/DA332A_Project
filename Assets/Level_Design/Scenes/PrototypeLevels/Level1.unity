@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 0}
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 0}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -17932,7 +17932,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 59274649911985696, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 54763289628365072, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 59051890676424398, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 54542665343206820, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -32263,7 +32267,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1639288472}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1293898214
+--- !u!64 &1293898210
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -34723,7 +34727,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 59051890676424398, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 54542665343206820, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 59274649911985696, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
+    - {fileID: 54763289628365072, guid: 1243e0861322e4340b06b4b1b96cc269, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -44695,7 +44703,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8f3705444f747274d8be4d88d67e853d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1293898214}
+      addedObject: {fileID: 1293898210}
   m_SourcePrefab: {fileID: 100100000, guid: 8f3705444f747274d8be4d88d67e853d, type: 3}
 --- !u!108 &1642450149 stripped
 Light:
