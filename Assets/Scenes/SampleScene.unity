@@ -1603,7 +1603,7 @@ PrefabInstance:
     - target: {fileID: 4226767867783217970, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: Pools.Array.data[1].MaxAmmo
-      value: 170
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4226767867783217970, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -1618,7 +1618,7 @@ PrefabInstance:
     - target: {fileID: 4226767867783217970, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
       propertyPath: Pools.Array.data[1].CurrentAmmo
-      value: 170
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4226767867783217970, guid: 3212e855c70a5c14b9726d4854c970a7,
         type: 3}
@@ -3355,6 +3355,9 @@ MonoBehaviour:
   collideWith:
     serializedVersion: 2
     m_Bits: 641
+  climbOn:
+    serializedVersion: 2
+    m_Bits: 0
   skinWidth: 0.015
   maxBounces: 3
   radiusDiff: -0.1

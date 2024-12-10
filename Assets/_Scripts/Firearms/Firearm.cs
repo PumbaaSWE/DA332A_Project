@@ -316,6 +316,8 @@ public class Firearm : MonoBehaviour
     /// </summary>
     public void Reload()
     {
+        // Ammo to load = magazine size - returned ammo
+
         if (UseLocalAmmoPool)
         {
             //if (ReserveAmmo == 0 || Firing)
@@ -335,11 +337,14 @@ public class Firearm : MonoBehaviour
             //if (!WHandler.AmmoLeft(AmmoType) || Firing)
             //    return;
 
-            int returnedAmmo = Mathf.Max(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0);
-            WHandler.AddAmmo(AmmoType, returnedAmmo);
+            //int returnedAmmo = Mathf.Max(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0);
+            //WHandler.AddAmmo(AmmoType, returnedAmmo);
 
-            LoadedAmmo -= returnedAmmo;
-            LoadedAmmo += WHandler.TakeAmmo(AmmoType, MagazineSize);
+            //LoadedAmmo -= returnedAmmo;
+            //LoadedAmmo += WHandler.TakeAmmo(AmmoType, MagazineSize);
+
+            int ammoToLoad = WHandler.TakeAmmo(AmmoType, MagazineSize - Mathf.Max(LoadedAmmo - Convert.ToInt32(RoundInTheChamber), 0));
+            LoadedAmmo += ammoToLoad;
         }
 
         CanAds = true;
