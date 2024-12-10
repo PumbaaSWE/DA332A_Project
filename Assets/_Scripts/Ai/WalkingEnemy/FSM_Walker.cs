@@ -7,7 +7,6 @@ public class FSM_Walker : MonoBehaviour
 {
     [Header("Sensors")]
     Sensing sensing;
-    [SerializeField] float detectedAwarness = 1.2f;
     private float nearestPointSearchRange = 7f;
     [SerializeField] float gunHearingRange = 45;
 
@@ -80,7 +79,6 @@ public class FSM_Walker : MonoBehaviour
     [SerializeField] private List<AudioClip> footstepClips;
     [SerializeField] private List<AudioClip> soundClips;
     [SerializeField] private List<AudioClip> attackClips;
-    //[SerializeField] private float soundRadius = 10f;
 
     private float nextPlayTime = 0f;
     private void OnEnable()

@@ -20,8 +20,8 @@ public class Regrow : MonoBehaviour
     private Transform hip;
     private Animator animator;
 
-    [SerializeField][Range(7f, 20f)] float regrowTime = 7;
-    [SerializeField][Range(7f, 20f)] float legRegrowTime = 14;
+    [SerializeField][Range(6f, 20f)] float regrowTime = 7;
+    [SerializeField][Range(6f, 20f)] float legRegrowTime = 14;
 
     public bool canRegrow = true;
     private void Awake()
