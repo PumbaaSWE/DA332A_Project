@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.Rendering;
 using static HeatMapDataJson;
 
 public class HeatMap : MonoBehaviour
@@ -26,66 +27,60 @@ public class HeatMap : MonoBehaviour
    
     public GameObject plane;
 
-    float[,] colorValues;
-
-    int[] convertedXes;
-    int[] convertedZes;
     Vector2[,] convertedXZ;
 
-    int[] intsX;
-    int[] intsZ;
-
+   
 
     public void InitializeComponents()
     {
-        colorValues = new float[200,200];
-        convertedXes = new int[200];
-        convertedZes = new int[200];
+        ReadJson();
+        dataPosition = new Vector3[data.Length];
+
         convertedXZ = new Vector2[200, 200];
-        intsX = new int[200];
-        CreateArrayOfVectors();
-        //colorValues = InitializeColorValues(ints);
+        
+        CreateEmptyTexture();
+        
         lineRenderer = GetComponent<LineRenderer>();
         listObjects = new List<GameObject>();
-        dataPosition = new Vector3[data.Length];
-        fileName = file.name;
-        //Debug.Log("file Name getting from json file.name is: " + fileName);
-        DirectoryInfo parentDirectory = Directory.GetParent(fileName);
-        fileParentName = parentDirectory.Name;
-        //Debug.Log("directory filePARENT name:" + fileParentName);
-        filePath = Path.GetDirectoryName(Application.dataPath) + "/Assets/HeatMap/SessionData/" + fileParentName + "/ " + fileName + ".json";
-        CreateTexture(convertedXZ);
-        //Debug.Log("Initializing");
-       
 
-
-        
+        Create2DArrayOfVectors();
     }
-
-    public void CreateDataContainerArrayFromJson()
-    {
-        Debug.Log(filePath);
-        ReadJson(filePath);
-        Debug.Log("string filePath " + filePath.Length);
-        Debug.Log(filePath);
-    }
-
-    public void CreateGameObjList()
+    
+   
+    public void CreateCubes()
     {
         for (int i = 0; i < data.Length; i++)
         {
+            var texture = new Texture2D(10, 10);
+            Color color = Color.white;
+            Color[] colors = new Color[10 * 10];
+            for(int j = 0; j < 10; j++)
+            {
+                colors[j] = color;
+            }
+
             Vector3 lastPosition = data[i].playerPos;
             GameObject obj1 = Instantiate(prefab);
             obj1.transform.position = lastPosition;
-            //change renderer material color
-            obj1.GetComponent<MeshRenderer>().material.color = Color.red;
+          
+
+            texture.filterMode = FilterMode.Point;
+            texture.Apply();
+            Renderer rnd = obj1.GetComponent<Renderer>();
+            texture.SetPixels(colors);
+            rnd.sharedMaterial.mainTexture = texture;
+
+
             listObjects.Add(obj1);
         }
-        Debug.Log("CreateGameObjList: " + listObjects.Count);
     }
-
-    public void ChangeObjColor()
+    public void ChangeCubesColor()
     {
+        var texture = new Texture2D(10, 10);
+        Color color = Color.white;
+        Color[] colors = new Color[10 * 10];
+        
+
         for (int i = 0; i < listObjects.Count; i++)
         {
             if(i > listObjects.Count - 2)
@@ -97,37 +92,54 @@ public class HeatMap : MonoBehaviour
 
             if (distance < 0.5)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.red;
+                color = Color.red;
             }
             else if (distance < 0.8)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.yellow;
+                color = Color.yellow;
             }
             else if (distance < 1.3)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.cyan;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.cyan;
+                color = Color.cyan;
             }
             else if (distance < 1.5)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.blue;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.blue;
+                color = Color.blue;
             }
             else if (distance < 1.8)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.green;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.green;
+                color = Color.green;
             }
             else if (distance < 2)
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.grey;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.grey;
+                color = Color.grey;
             }
 
             else
             {
-                listObjects[i].GetComponent<MeshRenderer>().material.color = Color.black;
+                //listObjects[i].GetComponent<MeshRenderer>().material.color = Color.black;
+                color = Color.black;
             }
-        }
-    }
+            for (int j = 0; j < 10; j++)
+            {
+                colors[j] = color;
+            }
 
-    public void EmptyGameObjList()
+            texture.filterMode = FilterMode.Point;
+            texture.Apply();
+            Renderer rnd = listObjects[i].GetComponent<Renderer>();
+            texture.SetPixels(colors);
+            rnd.sharedMaterial.mainTexture = texture;
+        }
+
+        
+    }
+    public void DeleteCubes()
     {
         foreach (GameObject o in listObjects)
         {
@@ -135,104 +147,37 @@ public class HeatMap : MonoBehaviour
         }
 
         listObjects.Clear();
-        Debug.Log("EmptyGameObjList: " + listObjects.Count);
     }
-
-    public void CreateArrayOfVectors()
-    {
-        for (int i = 0; i < data.Length; i++)
-        {
-            dataPosition[i] = data[i].playerPos;
-        }
-        //Debug.Log("creating vecxtor3 array Positions");
-        //convertedXes = ConvertX(dataPosition);
-        //convertedZes = ConvertZ(dataPosition); //make code
-        convertedXZ = ConvertXZ(dataPosition);
-
-        //intsX = HowManyIntsX(convertedXes);
-        //intsZ = HowManyIntsZ(convertedZes); //make code
-        //Debug.Log(intsX.Length);
-        /*
-        for (int i = 0;i < intsX.Length;i++)
-        {
-            Debug.Log(intsX[i]);
-        }
-        */
-    }
-
     public void DrawLines()
     {
-        
-        Debug.Log("Making lines");
         lineRenderer.positionCount = data.Length;
         lineRenderer.SetPositions(dataPosition);
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.red;
-    
-       
     }
-
     public void DeleteLines()
     {
-
-        Debug.Log("Deleting lines");
-
         lineRenderer.positionCount = 0;
-
     }
-
-    public void ReadJson(string name)
-    {
-        string fileString = File.ReadAllText(name);
-        data = JsonUtility.FromJson<Wrapper>(fileString).dataContainers;
-        Debug.Log("ReadJson: " + data.Length);
-
-    }
-
-    /*
     public void CreateTexture()
     {
         var texture = new Texture2D(200, 200);
-        float a;
-        //Color color = new Color(a, a, a);
-        //Debug.Log(color);
-        for (int i = 0; i < 200; i++)
-        {
-            for (int j = 0; j < 200; j++)
-            {
-                //color = color.grayscale;
-                a = colorValues[i, j];
-                //Debug.Log("Color is: " + a);
-                Color color = new Color(a, a, a);
-                texture.SetPixel(i, j, color);
-            }
-        }
-        
-
-        texture.filterMode = FilterMode.Point;
-        texture.Apply();
-        Renderer rnd = plane.GetComponent<Renderer>();
-        rnd.sharedMaterial.mainTexture = texture;
-    }
-    */
-    public void CreateTexture(Vector2[,] values)
-    {
-        var texture = new Texture2D(200, 200);
         Color color = Color.white;
-        
+        Vector2[,] values = convertedXZ;
         for (int i = 0; i < 200; i++)
         {
             for (int j = 0; j < 200; j++)
             {
-                if (values[i,j].x == 0)
+                if (values[i, j].x == 0)
                 {
-                    color = Color.grey;
+                    //color = Color.grey;
+                    color = new Color(0f, 0f, 0f, 0f);
                 }
-                if(values[i, j].x == 1)
+                if (values[i, j].x == 1)
                 {
-                        color = Color.green;
+                    color = Color.green;
                 }
-               if(values[i, j].x == 2)
+                if (values[i, j].x == 2)
                 {
                     color = Color.blue;
                 }
@@ -248,6 +193,56 @@ public class HeatMap : MonoBehaviour
             }
         }
 
+        texture.filterMode = FilterMode.Point;
+        texture.Apply();
+        Renderer rnd = plane.GetComponent<Renderer>();
+        rnd.sharedMaterial.mainTexture = texture;
+    }
+
+    //methods not btns
+    public void ReadJson()
+    {
+        Debug.Log("calling readjson");
+
+        //string fileString = File.ReadAllText(name);
+        string fileString = file.text;
+        data = JsonUtility.FromJson<Wrapper>(fileString).dataContainers;
+    }
+   
+    public Vector2[,] ConvertXZ(Vector3[] data)
+    {
+        Vector2[,] intArray = new Vector2[200, 200];
+
+        foreach (Vector3 position in data)
+        {
+            int x = (int)(100-position.x);
+            int y = (int)(100 - position.z);
+
+            if (x >= 0 && x < 200 && y >= 0 && y < 200)
+            {
+                intArray[x, y] += new Vector2(1, 1);
+            }
+            else
+            {
+                Debug.LogWarning("Out-of-bounds position: " + position);
+            }
+        }
+               return intArray;
+    }
+
+    public void CreateEmptyTexture()
+    {
+        var texture = new Texture2D(200, 200);
+        Color color = Color.white;
+        Vector2[,] values = convertedXZ;
+        for (int i = 0; i < 200; i++)
+        {
+            for (int j = 0; j < 200; j++)
+            {
+                color = Color.grey;
+                texture.SetPixel(i, j, color);
+            }
+        }
 
         texture.filterMode = FilterMode.Point;
         texture.Apply();
@@ -255,82 +250,20 @@ public class HeatMap : MonoBehaviour
         rnd.sharedMaterial.mainTexture = texture;
     }
 
-    public int[] ConvertX(Vector3 [] data)
+    public void Create2DArrayOfVectors()
     {
-        int[] intArray = new int[data.Length];
-        for(int i = 0; i <data.Length; i++)
-        {
-            intArray[i] = (int)(100 - data[i].x);
-           
-        }
-
-        return intArray;
-    }
-    public int[] ConvertZ(Vector3[] data)
-    {
-        int[] intArray = new int[data.Length];
         for (int i = 0; i < data.Length; i++)
         {
-            intArray[i] = (int)(data[i].z + 100);
+            dataPosition[i] = data[i].playerPos;
         }
-
-        return intArray;
+        convertedXZ = ConvertXZ(dataPosition);
     }
 
-    public Vector2[,] ConvertXZ(Vector3[] data)
-    {
-        Vector2[,] intArray = new Vector2[200, 200];
-
-        foreach (Vector3 position in data)
-        {
-            // Map position.x and position.z to the grid
-            //int x = (int)(100 - position.x);
-            int x = (int)(100-position.x);
-            //int y = (int)(position.z + 100);
-            int y = (int)(100 - position.z);
-
-            // Ensure indices are within bounds
-            if (x >= 0 && x < 200 && y >= 0 && y < 200)
-            {
-                // Increment the value at (x, y) by (1, 1)
-                intArray[x, y] += new Vector2(1, 1);
-                Debug.Log("Updated cell (" + x + ", " + y + "): " + intArray[x, y]);
-            }
-            else
-            {
-                Debug.LogWarning("Out-of-bounds position: " + position);
-            }
-        }
-        /*
-        foreach (Vector3 position in data)
-        {
-            int x = (int)(100 - position.x);
-            int y = (int)(position.z + 100);
-
-            for (int i = 0; i < 200; i++)
-            {
-                for (int j = 0; j < 200; j++)
-                {
-                    
-                    if (x == i && y == j)
-                    {
-                        intArray[i, j] += new Vector2(1, 1);
-                        Debug.Log("..." + intArray[i, j]);
-                    }
-                    //intArray[i, j] = new Vector2(x, y);
-                    
-
-                }
-            }
-
-        }
-        */
+  
 
 
-
-        return intArray;
-    }
-
+    //unused
+    /*
     public int[] HowManyIntsX(int[] data)
     {
         int[] ints = new int[200];
@@ -347,7 +280,6 @@ public class HeatMap : MonoBehaviour
 
         return ints;
     }
-
     public int[] HowManyIntsZ(int[] data)
     {
         int[] ints = new int[200];
@@ -364,92 +296,6 @@ public class HeatMap : MonoBehaviour
 
         return ints;
     }
-
-
-
-    /*
-    public void CreateTexture()
-    {
-        var texture = new Texture2D(20, 20);
-        float r = 0f;
-        float g = 0f;
-        float b = 0f;
-        Color color = new Color(r, g, b);
-        Debug.Log(color);
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 20; j++)
-            {
-                color = Color.red;
-
-                texture.SetPixel(i, j, color);
-            }
-        }
-        for (int i = 10; i < 15; i++)
-        {
-            for (int j = 0; j < 20; j++)
-            {
-                color = Color.green;
-
-                texture.SetPixel(i, j, color);
-            }
-        }
-        for (int i = 15; i < 20; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                color = Color.blue;
-
-                texture.SetPixel(i, j, color);
-            }
-        }
-        for (int i = 15; i < 20; i++)
-        {
-            for (int j = 10; j < 20; j++)
-            {
-                color = Color.black;
-
-                texture.SetPixel(i, j, color);
-
-            }
-        }
-        texture.filterMode = FilterMode.Point;
-        texture.Apply();
-        Renderer rnd = plane.GetComponent<Renderer>();
-        rnd.sharedMaterial.mainTexture = texture;
-    }
-    */
-
-
-    /*
-    private float[,] InitializeColorValues(int[] valueX)
-    {
-        float[,] colorValues = new float[200, 200];
-        //float valueX = 0;
-        float valueY = 0;
-        for (int i = 0; i < 200; i++)
-        {
-            valueY = 0f;
-            for(int j = 0; j < 200; j++)
-            {
-                if (valueX[i] > 0)
-                {
-                    colorValues[i, j] = 1f;
-                    Debug.Log("x value is more than 0");
-                }
-                else
-                {
-                    colorValues[i, j] = 0f;
-                }
-                
-                //valueY+= 0.005f;
-            }
-            
-        }
-        return colorValues;
-    }
-    */
-
     private float[,] InitializeColorValues(int[] ints)
     {
         float[,] colorValues = new float[200, 200];
@@ -476,9 +322,28 @@ public class HeatMap : MonoBehaviour
         }
         return colorValues;
     }
+    public int[] ConvertX(Vector3[] data)
+    {
+        int[] intArray = new int[data.Length];
+        for (int i = 0; i < data.Length; i++)
+        {
+            intArray[i] = (int)(100 - data[i].x);
 
+        }
 
+        return intArray;
+    }
+    public int[] ConvertZ(Vector3[] data)
+    {
+        int[] intArray = new int[data.Length];
+        for (int i = 0; i < data.Length; i++)
+        {
+            intArray[i] = (int)(data[i].z + 100);
+        }
 
+        return intArray;
+    }
+    */
 
 
 
