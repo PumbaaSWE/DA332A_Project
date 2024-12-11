@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5577389226495562866}
   - component: {fileID: 6843849323743230356}
   - component: {fileID: 7309895123822990970}
-  - component: {fileID: 3982583360324938386}
   - component: {fileID: 6494345175196591679}
   m_Layer: 0
   m_Name: FlareBox
@@ -29,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8109988193109611342}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.24978858, z: -0, w: 0.9683004}
+  m_LocalRotation: {x: 0, y: -0.24978858, z: 0, w: 0.9683004}
   m_LocalPosition: {x: -9.306, y: 1.097, z: -33.518}
-  m_LocalScale: {x: 0.3, y: 0.11, z: 0.20000003}
+  m_LocalScale: {x: 0.3, y: 0.11, z: 0.20000005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -108,37 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3982583360324938386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8109988193109611342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7917d9bc677198c4280a71a0f6ce1610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltip: Press {0} to pick up flares!
-  interactedTooltip: 
-  displayPriority: 1
-  tipDisplayTime: 3
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6494345175196591679}
-        m_TargetAssemblyTypeName: FlareBox, Assembly-CSharp
-        m_MethodName: PickUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &6494345175196591679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,3 +119,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079d7c3b20d179c4d805d8961c314c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TooltipOnCan: Press {0} to pick up flares
+  TooltipOnFull: You have max amount of flares

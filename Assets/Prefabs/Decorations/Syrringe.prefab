@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 2525149845797349565}
   - component: {fileID: 8359846148675094171}
   - component: {fileID: 6832049077292477655}
-  - component: {fileID: 8197300685284487095}
   - component: {fileID: 1980797658693851221}
   m_Layer: 10
   m_Name: Syrringe
@@ -195,37 +194,6 @@ CapsuleCollider:
   m_Height: 2.0000005
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940699}
---- !u!114 &8197300685284487095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4889380109671796500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7917d9bc677198c4280a71a0f6ce1610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltip: Press {0} to pick up syrringe!
-  interactedTooltip: 
-  displayPriority: 1
-  tipDisplayTime: 3
-  OnPress:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1980797658693851221}
-        m_TargetAssemblyTypeName: Syrringe, Assembly-CSharp
-        m_MethodName: PickUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1980797658693851221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,3 +206,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15de2c9798bdcf048bc49ba601af50b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TooltipOnCan: Press {0} to pick up syringe
+  TooltipOnFull: You have max amount of syringes
