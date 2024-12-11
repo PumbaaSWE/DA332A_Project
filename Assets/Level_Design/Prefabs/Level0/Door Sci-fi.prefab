@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 947908050086996454}
   - component: {fileID: 7247248538430725595}
   - component: {fileID: 6637356336156558871}
+  - component: {fileID: 7345245024052405830}
   m_Layer: 0
   m_Name: Door Sci-fi
   m_TagString: Untagged
@@ -629,6 +630,7 @@ MonoBehaviour:
   anim: {fileID: 7164483278329972193}
   openClip: {fileID: 8300000, guid: 73f4147fdd2d40049b6b9c9a0907aef1, type: 3}
   closeClip: {fileID: 8300000, guid: af7d07350c4a86d4688e493f3fccb1c5, type: 3}
+  source: {fileID: 7345245024052405830}
 --- !u!114 &6637356336156558871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,6 +645,103 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipOnFail: Missing correct Keycard!
   keyCard: {fileID: 11400000, guid: da9f491654d67804fa1417c71cdc01d2, type: 2}
+--- !u!82 &7345245024052405830
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6168209253871930868}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 9100707645532583629, guid: 879034b1408b2374e8ecdb3797342d93,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 20
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6691258471633406533
 GameObject:
   m_ObjectHideFlags: 0
