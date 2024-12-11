@@ -22,6 +22,7 @@ public class Sensing : MonoBehaviour
     public float memoryDuration = 2f;
     private float memoryTimer = 0f;
     public bool isTrackingPlayer = false;
+    EnemyHealth enemyHealth;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class Sensing : MonoBehaviour
     {
         target = obj;
     }
+  
 
     private void Update()
     {
@@ -60,7 +62,7 @@ public class Sensing : MonoBehaviour
         //    Debug.Log("Lost the target.");
         //}
     }
-
+   
     public bool CanSeeTarget()
     {
         if (target == null) return false;

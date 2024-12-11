@@ -50,6 +50,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public Material objectMaterial;
     public GameObject decalPrefab;
     public int headParticales = 10;
+    Vector3 playerPos;
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -68,6 +69,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
         }
 
     }
+  
+
     public void Death()
     {
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
@@ -100,9 +103,11 @@ public class EnemyHealth : MonoBehaviour, IDamageble
             Instantiate(drops[randomIndex], point, rotation);
         }
     }
-
+   
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
+        OnHealthChanged?.Invoke(this, damage);
+
         //Vector3 localPoint = transform.InverseTransformPoint(point);
 
         //objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y, localPoint.z, 1));

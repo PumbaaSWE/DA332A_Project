@@ -8,7 +8,7 @@ public class FSM_Walker : MonoBehaviour
     [Header("Sensors")]
     Sensing sensing;
     private float nearestPointSearchRange = 5f;
-    [SerializeField] float gunHearingRange = 45;
+    [SerializeField] float gunHearingRange = 55;
 
 
     [Header("Nav")]
@@ -67,6 +67,7 @@ public class FSM_Walker : MonoBehaviour
     bool ragdoll;
 
     Limbstate limbState;
+    EnemyHealth enemyHealth;
 
     public int nrOfAttacks;
 
@@ -83,15 +84,17 @@ public class FSM_Walker : MonoBehaviour
     private float nextPlayTime = 0f;
     private void OnEnable()
     {
-        Firearm.OnShoot += ReactToShoot;
+        enemyHealth.OnHealthChanged += ReactToShoot;
     }
 
     private void OnDisable()
     {
-        Firearm.OnShoot -= ReactToShoot;
+        enemyHealth.OnHealthChanged += ReactToShoot;
+    } 
+    public void ReactToShoot(EnemyHealth enemyHealth, float health)
+    {
+        MoveTo(player.PlayerTransform.position);
     }
-
-
     private void Awake()
     {
         limbState = GetComponent<Limbstate>();
@@ -99,13 +102,11 @@ public class FSM_Walker : MonoBehaviour
         footstepAudio.volume = 1f;
         characterController = GetComponent<CharacterController>();
 
-    
+        enemyHealth= GetComponent<EnemyHealth>();   
         sensing = GetComponent<Sensing>();
-        //sensors = GetComponent<AwarenessSystem>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         lookAt = GetComponent<LookAt>();
-        //triangulation = NavMesh.CalculateTriangulation();
         animator.applyRootMotion = true;
         agent.updatePosition = false;
         agent.updateRotation = true;
@@ -114,7 +115,6 @@ public class FSM_Walker : MonoBehaviour
         {
             rbs[i].isKinematic = true;
         }
-
     }
     void Start()
     {
@@ -122,11 +122,8 @@ public class FSM_Walker : MonoBehaviour
         player.NotifyOnPlayerChanged(OnPlayer);
     }
 
-
     void Update()
     {
- 
-
         if(sleep)
         {
             agentState = AgentState.Sleep;
