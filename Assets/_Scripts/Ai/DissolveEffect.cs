@@ -28,8 +28,8 @@ public class DissolveEffect : MonoBehaviour
 
     private void SetHeight(float height)
     {
-        material.SetFloat("_Cutoff_Height", height);
-        material.SetFloat("_NoiceStreanght", noiseStrength);
+        material.SetFloat("_Cutoff_Height", height);        
+        material.SetFloat("_NoiceStreanght", noiseStrength); 
     }
 
     [ContextMenu("Trigger Death")] 
@@ -40,7 +40,7 @@ public class DissolveEffect : MonoBehaviour
         SetHeight(currentHeight);
 
      
-        if (currentHeight <= 0)
+        if (currentHeight <= -1)
         {
             death = false;
         }

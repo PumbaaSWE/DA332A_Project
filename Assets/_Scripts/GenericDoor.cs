@@ -12,6 +12,7 @@ public class GenericDoor : MonoBehaviour
     [SerializeField] float duration;
     [SerializeField] AudioClips audioClips;
     [SerializeField] bool collideWithPlayer;
+    AudioSource source;
 
 #if UNITY_EDITOR
     [MakeButton("Set Open Rotation")]
@@ -51,6 +52,8 @@ public class GenericDoor : MonoBehaviour
 
         colliders = GetComponentsInChildren<BoxCollider>();
         enabled = false;
+
+        source = GetComponent<AudioSource>();
     }
 
     public void Interact()
@@ -123,11 +126,18 @@ public class GenericDoor : MonoBehaviour
         if (clip == null)
             return;
 
+
+        if (source) {
+            source.clip = clip;
+            source.Play();
+            return;
+        } 
+
         var go = new GameObject();
         go.transform.position = transform.position;
-        AudioSource source = go.AddComponent<AudioSource>();
-        source.clip = clip;
-        source.Play();
+        AudioSource source2 = go.AddComponent<AudioSource>();
+        source2.clip = clip;
+        source2.Play();
         Destroy(go, clip.length);
     }
 }

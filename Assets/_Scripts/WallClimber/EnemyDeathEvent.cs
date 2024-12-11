@@ -1,24 +1,27 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-[RequireComponent(typeof(Health))]
+//[RequireComponent(typeof(Health))]
 public class EnemyDeathEvent : MonoBehaviour
 {
-    private Health health;
-
-    private void Awake()
-    {
-        health = GetComponent<Health>();
-    }
 
     private void OnEnable()
     {
-        GetComponent<Health>().OnDeath += SendEvent;
+        if (TryGetComponent(out Health health)) health.OnDeath += SendEvent;
+        if (TryGetComponent(out EnemyHealth enemyHealth)) enemyHealth.OnDeath += SendEvent2;
     }
+
+    
 
     private void OnDisable()
     {
-        GetComponent<Health>().OnDeath -= SendEvent;
+        if (TryGetComponent(out Health health)) health.OnDeath -= SendEvent;
+        if (TryGetComponent(out EnemyHealth enemyHealth)) enemyHealth.OnDeath -= SendEvent2;
+    }
+
+    private void SendEvent2()
+    {
+        EventBus<DeathEvent>.Raise(new DeathEvent(transform.position));
     }
 
     private void SendEvent(Health obj)

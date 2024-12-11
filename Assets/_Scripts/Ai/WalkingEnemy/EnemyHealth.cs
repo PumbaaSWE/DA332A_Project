@@ -26,8 +26,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     private float headHealth = 100f;
     private float limbHealth = 100f;
 
-    public Action<EnemyHealth, float> OnHealthChanged;
-    public Action<EnemyHealth> OnDeath;
+    public Action<float> OnHealthChanged;
+    public Action OnDeath;
 
     public bool dead;
 
@@ -73,24 +73,30 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public void Death()
     {
+        fsm.agentState = FSM_Walker.AgentState.Sleep;
+        if (dead) return;//code after does not need to run every frame while dead?
+
+
+
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 9f);
+        Destroy(enemy, 9f);//hardcoded
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
-        fsm.agentState = FSM_Walker.AgentState.Sleep;
-        
+
         dmgAudio.clip = deathClip;
         if (!dmgAudio.isPlaying && !dead)
         {
             dmgAudio.Play();
             dead = true;
+
         }
         foreach (var dis in dissolveEffects)
         {
             dis.death = true;
         }
 
-
+        OnDeath?.Invoke();
+        dead = true;
     }
 
     public void DropThing(Vector3 point, Quaternion rotation)
@@ -106,7 +112,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
    
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        OnHealthChanged?.Invoke(this, damage);
+        OnHealthChanged?.Invoke(damage);
 
         //Vector3 localPoint = transform.InverseTransformPoint(point);
 

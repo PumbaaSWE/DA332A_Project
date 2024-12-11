@@ -91,7 +91,7 @@ public class FSM_Walker : MonoBehaviour
     {
         enemyHealth.OnHealthChanged += ReactToShoot;
     } 
-    public void ReactToShoot(EnemyHealth enemyHealth, float health)
+    public void ReactToShoot(float health)
     {
         MoveTo(player.PlayerTransform.position);
     }
