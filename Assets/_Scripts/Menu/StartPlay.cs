@@ -21,7 +21,7 @@ public class StartPlay : MonoBehaviour
     public void StartNewGame()
     {
         //progress.Level = firstLevel;
-        Debug.Log("*************StartNewGame***********");
+        //Debug.Log("*************StartNewGame***********");
         SceneGroupLoader.Instance.LoadGroup(firstLevel);
         //SceneManager.LoadScene(4);
     }

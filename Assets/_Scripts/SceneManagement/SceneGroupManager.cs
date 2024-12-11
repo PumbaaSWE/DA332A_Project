@@ -28,7 +28,7 @@ public class SceneGroupManager : MonoBehaviour
 
     public void LoadScenes(SceneGroup group, bool reloadDuplicates = false)
     {
-        Debug.Log("*************LoadScenes***********");
+        //Debug.Log("*************LoadScenes***********");
         if (loading)
         {
             Debug.LogError("SceneGroupManager - LoadScenes called before loading was done, please find the reason!");
@@ -44,7 +44,7 @@ public class SceneGroupManager : MonoBehaviour
 
     public IEnumerator LoadScenesCouroutine(SceneGroup group, bool reloadDuplicates = false)
     {
-        Debug.Log("*************LoadScenesCouroutine***********");
+        //Debug.Log("*************LoadScenesCouroutine***********");
         loading = true;
         Spawner.blockedBecauseLoading = true;
         activeSceneGroup = group;
@@ -94,7 +94,7 @@ public class SceneGroupManager : MonoBehaviour
         }
 
 
-        Debug.Log("***************See if we need loading scene***************");
+       // Debug.Log("***************See if we need loading scene***************");
         //Debug.Log(scenesToUnload.Count + "==" + sceneCount);
         bool loadingSceneUp = false;
         if(scenesToUnload.Count == sceneCount) //we are trying to unload all scenes

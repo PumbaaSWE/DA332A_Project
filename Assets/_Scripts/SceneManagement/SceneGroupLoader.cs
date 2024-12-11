@@ -82,20 +82,20 @@ public class SceneGroupLoader : PersistentSingleton<SceneGroupLoader>
     //[MakeButton(false)]
     public void LoadGroup(int index)
     {
-        Debug.Log("*************LoadGroup(i)***********");
+        //Debug.Log("*************LoadGroup(i)***********");
         LoadGroup(index, false);
     }
 
     public void LoadGroup(int index, bool reloadDuplicates)
     {
-        Debug.Log("*************LoadGroup(i+bool)***********");
+        //Debug.Log("*************LoadGroup(i+bool)***********");
         if (!AssertRange(index, sceneGroups))
         {
             return;
         }
        // playerData.Loading = true;
         lastLoaded = index;
-        Debug.Log("************* before sceneGroupManager.LoadScenes***********");
+        //Debug.Log("************* before sceneGroupManager.LoadScenes***********");
         sceneGroupManager.LoadScenes(sceneGroups[index], reloadDuplicates);
     }
 
