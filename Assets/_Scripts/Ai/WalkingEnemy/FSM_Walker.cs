@@ -7,7 +7,7 @@ public class FSM_Walker : MonoBehaviour
 {
     [Header("Sensors")]
     Sensing sensing;
-    private float nearestPointSearchRange = 7f;
+    private float nearestPointSearchRange = 5f;
     [SerializeField] float gunHearingRange = 45;
 
 
@@ -640,7 +640,6 @@ public class FSM_Walker : MonoBehaviour
 
 
         bool shouldMove = velocity.sqrMagnitude > 0.25f && manualRemainingDistance > agent.stoppingDistance;
-
         animator.SetBool("move", shouldMove);
         animator.SetBool("crawl", false);
         animator.SetFloat("vely", agent.velocity.magnitude);

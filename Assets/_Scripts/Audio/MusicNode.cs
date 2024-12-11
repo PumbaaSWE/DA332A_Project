@@ -151,8 +151,8 @@ public class MusicNode : MonoBehaviour
         if (method != Method.distance)
             return;
 
-        UnityEditor.Handles.DrawSolidDisc(transform.position, Vector3.up, radius);
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, radius + smoothing);
+        //UnityEditor.Handles.DrawSolidDisc(transform.position, Vector3.up, radius);
+        //UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, radius + smoothing);
     }
 #endif
 }
