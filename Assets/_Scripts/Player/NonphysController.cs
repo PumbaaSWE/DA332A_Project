@@ -90,6 +90,7 @@ public class NonphysController : MovementController
     public float MaxSpeed => maxSprintSpeed;
     public bool IsSprinting { get; private set; }
     public float VerticalVelocity => velocity.y;
+    public CapsuleCollider Collider => cc;
 
     // inputs
     Vector2 look;
