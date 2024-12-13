@@ -3,32 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ClimberAct : MonoBehaviour
+public class EnemyActivate : MonoBehaviour
 {
-    public List<FSMClimber> enemies = new List<FSMClimber>(); 
+    public List<FSM_Walker> enemies = new List<FSM_Walker>();
     //public string enemyTag = "Enemy"; 
 
-    private void Start()
-    {
-       
-      
-       
-    }
+    public EnemySpawn spawner;
 
-    // När spelaren går in i triggern
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             AgroEnemies(); 
-            this.gameObject.SetActive(false); 
+            this.gameObject.SetActive(false);
+            if (spawner != null)
+            {
+                spawner.gameObject.SetActive(true);
+            }
         }
     }
 
     public void AgroEnemies()
     {
-        // Gå igenom alla fiender i listan och aktivera dem
-        foreach (FSMClimber enemy in enemies)
+        foreach (FSM_Walker enemy in enemies)
         {
             if (enemy != null)
             {
