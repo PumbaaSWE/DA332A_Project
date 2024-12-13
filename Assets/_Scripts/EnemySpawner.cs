@@ -16,7 +16,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Assert(prefab, "EnemySpawner - please assign a GameObject-prefab to spawn");
+        Debug.Assert(prefab, "EnemySpawn - please assign a GameObject-prefab to spawn");
         points = GetComponentsInChildren<EnemySpawnPoint>();
     }
 
