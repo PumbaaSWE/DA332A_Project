@@ -8,18 +8,14 @@ public class EnemyActivate : MonoBehaviour
     public List<FSM_Walker> enemies = new List<FSM_Walker>();
     //public string enemyTag = "Enemy"; 
 
-    public EnemySpawn spawner;
-
+    public UnityEvent onTrigger;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             AgroEnemies(); 
             this.gameObject.SetActive(false);
-            if (spawner != null)
-            {
-                spawner.gameObject.SetActive(true);
-            }
+            onTrigger?.Invoke();
         }
     }
 
