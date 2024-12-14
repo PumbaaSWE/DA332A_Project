@@ -8,17 +8,29 @@ public class EnemySpawn : MonoBehaviour
     public float spawnCooldown = 5f;
     [SerializeField] private float minDistanceToPlayer = 10f;
     [SerializeField] private float maxDistanceToPlayer = 20f;
-    private List<GameObject> spawnedEnemies = new List<GameObject>();
     private bool isSpawning = false;
+    private bool canSpawn = false;
     public Vector3 Position => transform.position;
     public Quaternion Rotation => transform.rotation;
 
+    public Transform secondSpawn;
+
     [SerializeField] Transform target;
     public PlayerDataSO player;
+    public int spawnPool = 0;
+    public int spawnCount = 0;
 
+    private void Start()
+    {
+        
+       
+    }
     private void Update()
     {
-        ActivateSpawner();
+        if(canSpawn)
+        {
+            Spawn();
+        }
     }
     private void OnDestroy()
     {
@@ -43,16 +55,28 @@ public class EnemySpawn : MonoBehaviour
             transform.MatchUp(hit.normal);
         }
     }
+    public void EnemyDeath()
+    {
+        if (canSpawn)
+        {
+            spawnCount--;
+        }
+    }
+    public void CanSpawn(bool isSpawning)
+    {
+        canSpawn = isSpawning;
+    }
 
-  
-
-    public void ActivateSpawner()
+    public void Spawn()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.PlayerTransform.position);
 
-        if (!isSpawning && distanceToPlayer >= minDistanceToPlayer && distanceToPlayer <= maxDistanceToPlayer)
+        if (!isSpawning && distanceToPlayer <= maxDistanceToPlayer)
         {
-            StartCoroutine(SpawnEnemy());
+            if(spawnCount < spawnPool)
+            {
+                StartCoroutine(SpawnEnemy());
+            }
         }
     }
 
@@ -63,8 +87,18 @@ public class EnemySpawn : MonoBehaviour
 
         if (enemyPrefab != null)
         {
-            GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-            spawnedEnemies.Add(enemy);
+            float distanceToPlayer = Vector3.Distance(transform.position, player.PlayerTransform.position);
+            
+            if (distanceToPlayer >= minDistanceToPlayer)
+            {
+                GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                GameObject enemy = Instantiate(enemyPrefab, secondSpawn.position, Quaternion.identity);
+            }
+           
+            spawnCount++;
         }
 
         isSpawning = false;
