@@ -46,4 +46,20 @@ public class SlimePlane : MonoBehaviour
         }
 
     }
+
+    public void IncreaseSlime(float value)
+    {
+        slimeCounter += value;
+
+        if (slimeCounter > slimePartWay && slimeCounter < slimeDone && !part)
+        {
+            OnPart.Invoke(transform);
+            part = true;
+        }
+        else if (slimeCounter > slimeDone && !done)
+        {
+            OnDone.Invoke(transform);
+            done = true;
+        }
+    }
 }
