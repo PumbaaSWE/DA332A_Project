@@ -461,21 +461,28 @@ public class FSM_Walker : MonoBehaviour
         }
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-        if (distanceToTarget <= attackRange)
+        if( sensing.CanSeeTarget())
         {
-            if (!limbState.standing) 
+            if (distanceToTarget <= attackRange)
             {
-                animator.SetLayerWeight(6, 0);
-                Attack();
-            }
-            else if (agent.velocity.magnitude < 0.1f)
-            {
-                Attack();
-            }
-            else if (canAttakRun) 
-            {
-                PerformChargeAttack();
+                if (!limbState.standing)
+                {
+                    animator.SetLayerWeight(6, 0);
+                    Attack();
+                }
+                else if (agent.velocity.magnitude < 0.1f)
+                {
+                    Attack();
+                }
+                else if (canAttakRun)
+                {
+                    PerformChargeAttack();
+                }
+                else
+                {
+                    animator.SetLayerWeight(6, 0);
+                    animator.SetBool("Charge", false);
+                }
             }
             else
             {
@@ -483,11 +490,7 @@ public class FSM_Walker : MonoBehaviour
                 animator.SetBool("Charge", false);
             }
         }
-        else
-        {
-            animator.SetLayerWeight(6, 0);
-            animator.SetBool("Charge", false);
-        }
+      
 
         if (agent.isOnNavMesh)
         {

@@ -33,7 +33,6 @@ public class Sensing : MonoBehaviour
     {
         target = obj;
     }
-  
 
     private void Update()
     {
@@ -41,28 +40,19 @@ public class Sensing : MonoBehaviour
 
         if (CanSeeTarget())
         {
-            memoryTimer = memoryDuration; 
-            isTrackingPlayer = true; 
+            memoryTimer = memoryDuration;
+            isTrackingPlayer = true;
         }
         else if (isTrackingPlayer)
         {
-            memoryTimer -= Time.deltaTime; 
+            memoryTimer -= Time.deltaTime;
             if (memoryTimer <= 0f)
             {
-                isTrackingPlayer = false; 
+                isTrackingPlayer = false;
             }
         }
-
-        //if (isTrackingPlayer)
-        //{
-        //    Debug.Log("Tracking the target!");
-        //}
-        //else
-        //{
-        //    Debug.Log("Lost the target.");
-        //}
     }
-   
+
     public bool CanSeeTarget()
     {
         if (target == null) return false;
@@ -75,9 +65,16 @@ public class Sensing : MonoBehaviour
             float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
             if (angleToTarget < visionAngle / 2f)
             {
-                if (!Physics.Linecast(transform.position, target.position, visionMask))
+                Ray ray = new Ray(transform.position, directionToTarget);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, visionRange, visionMask))
                 {
-                    return true;
+                
+                    if (hit.transform == target)
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -85,17 +82,23 @@ public class Sensing : MonoBehaviour
         return false;
     }
 
+
     public bool CanHearTarget()
     {
         if (target == null) return false;
 
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
         if (distanceToTarget < hearingRange)
         {
-            if (!Physics.Linecast(transform.position, target.position, hearingMask))
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, directionToTarget, out hit, hearingRange, hearingMask))
             {
-                return true;
+                if (hit.transform == target)
+                {
+                    return true;
+                }
             }
         }
 
