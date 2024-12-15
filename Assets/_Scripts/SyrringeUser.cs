@@ -21,6 +21,10 @@ public class SyrringeUser : MonoBehaviour
     private string key = "<nope>";
     private Health health;
 
+    AudioSource audioSource;
+    [SerializeField]
+    private AudioClip clipUse;
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -32,6 +36,7 @@ public class SyrringeUser : MonoBehaviour
             Debug.LogError("SyrringeUser - No health script on player?");
 
         this.health = health;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnDisable()
@@ -58,6 +63,7 @@ public class SyrringeUser : MonoBehaviour
     private void StartThrow()
     {
         syrringeArms.SetActive(true);
+        PlayAudio(clipUse);
     }
 
     /// <summary>
@@ -91,4 +97,14 @@ public class SyrringeUser : MonoBehaviour
         syrringeArms.SetActive(false);
         weaponHandler.UnHideWeapons();
     }
+
+    private void PlayAudio(AudioClip clip)
+    {
+        if (clip == null) return;
+        if (!audioSource) return;
+
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
 }
