@@ -72286,20 +72286,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunHearingRange: 45
   wanderRange: 20
-  dmg: 15
+  target: {fileID: 0}
+  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
+  agentState: 0
+  sleep: 0
+  isCrawling: 0
+  isArmles: 0
+  canAttakRun: 0
+  nrOfAttacks: 0
   attackRange: 2.5
   minAttackRange: 1.1
   attackCrawlRange: 1
   minAttackCrawlRange: 0.3
-  agentState: 0
-  canAttakRun: 0
-  isCrawling: 0
-  isArmles: 0
-  run: 0
-  target: {fileID: 0}
-  player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
-  nrOfAttacks: 0
-  sleep: 0
+  dmg: 15
   footstepAudio: {fileID: 1901911760674212929}
   attackAudio: {fileID: 6027009463676243990}
   footstepClips:
@@ -72328,7 +72327,6 @@ MonoBehaviour:
   enemy: {fileID: 6912366530435567227}
   health: 600
   headShotDmgModifer: 1.3
-  chanceToHappen: 0.135
   dead: 0
   dmgAudio: {fileID: 6027009463676243990}
   dmgClips:
@@ -72581,12 +72579,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a92d3627f79bd488948df0b518af35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 20
-  visionAngle: 85
+  visionRange: 22
+  visionAngle: 95
   visionMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  hearingRange: 7
+  hearingRange: 8
   gunHearingRange: 60
   hearingMask:
     serializedVersion: 2
@@ -72595,6 +72593,8 @@ MonoBehaviour:
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
   memoryDuration: 160
   isTrackingPlayer: 0
+  attackAudio: {fileID: 1901911760674212929}
+  screem: {fileID: 8300000, guid: 0f0bea0caad178c42939d41565a7fb7f, type: 3}
 --- !u!114 &7810089941436912097
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,9 +24,14 @@ public class Sensing : MonoBehaviour
     public bool isTrackingPlayer = false;
     EnemyHealth enemyHealth;
 
+  
+    Animator animator;
+    [SerializeField] private AudioSource attackAudio;
+    [SerializeField] private AudioClip screem;
     void Start()
     {
         player.NotifyOnPlayerChanged(OnPlayer);
+        animator = GetComponent<Animator>();
     }
 
     private void OnPlayer(Transform obj)
@@ -41,6 +46,12 @@ public class Sensing : MonoBehaviour
         if (CanSeeTarget())
         {
             memoryTimer = memoryDuration;
+
+            if (!isTrackingPlayer)
+            {
+                PlayDetectionAnimation();
+            }
+
             isTrackingPlayer = true;
         }
         else if (isTrackingPlayer)
@@ -52,7 +63,23 @@ public class Sensing : MonoBehaviour
             }
         }
     }
+    private void PlayDetectionAnimation()
+    {
+        attackAudio.clip = screem;
+        attackAudio.Play();
 
+        if (animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("DetectPlayer") && stateInfo.normalizedTime < 1f)
+            {
+                return;
+            }
+
+            animator.SetTrigger("DetectPlayer");
+          
+        }
+    }
     public bool CanSeeTarget()
     {
         if (target == null) return false;
