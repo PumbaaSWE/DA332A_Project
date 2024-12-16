@@ -11,6 +11,8 @@ public class HeatMapDataJson : MonoBehaviour
     //List<float> timeStamps;
     List<DataContainer> dataContainers;
     float timeStamp;
+    string folderName;
+    string levelName;
 
     private void Awake()
     {
@@ -21,7 +23,10 @@ public class HeatMapDataJson : MonoBehaviour
     {
         Debug.Log("Data Tracking Started");
 
-        InvokeRepeating("RecordData", 0f, 0.5f);
+        InvokeRepeating("RecordData", 0f, 0.125f);
+        folderName = DateTime.Now.ToString("yyyy-MM-dd_HH;mm;ss");
+        FolderCreator.CreateNewFolder(folderName);
+        levelName = "Level0"; //make this to read from Scene Level name
     }
 
     void Update()
@@ -58,7 +63,7 @@ public class HeatMapDataJson : MonoBehaviour
         Debug.Log(json + " Json stored");
 
         File.WriteAllText(Path.GetDirectoryName(Application.dataPath) 
-            + "/Assets/HeatMap/SessionData/" + DateTime.Now.ToString("yyyy-MM-dd_HH;mm;ss") + ".json", json);
+            + "/Assets/HeatMap/SessionData/" + folderName + "/" + levelName + ".json", json);
     }
 
     [System.Serializable]

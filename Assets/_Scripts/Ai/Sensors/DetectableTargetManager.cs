@@ -11,7 +11,7 @@ public class DetectableTargetManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Debug.LogWarning("Multiple DetectableTargetManager found. Destroying: " + gameObject.name);
+           
             Destroy(gameObject); 
             return;
         }

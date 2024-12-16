@@ -15,9 +15,6 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     Regrow regrow;
     FSM_Walker fsm;
 
-    [Range(0f, 1f)]
-    public float chanceToHappen = 0.1f;
-
 
     private float leftLegHealth = 100f;
     private float rightLegHealth = 100f;
@@ -51,6 +48,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public GameObject decalPrefab;
     public int headParticales = 10;
     Vector3 playerPos;
+    float destroyTime = 5f;
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -79,7 +77,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
 
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 9f);//hardcoded
+        Destroy(enemy, destroyTime);
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
 
@@ -101,13 +99,8 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
     public void DropThing(Vector3 point, Quaternion rotation)
     {
-      
-        //if (UnityEngine.Random.value < chanceToHappen)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, drops.Count);
-
-            Instantiate(drops[randomIndex], point, rotation);
-        }
+        int randomIndex = UnityEngine.Random.Range(0, drops.Count);
+        Instantiate(drops[randomIndex], point, rotation);
     }
    
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)

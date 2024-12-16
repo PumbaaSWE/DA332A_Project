@@ -17,28 +17,19 @@ public class HeatMapEditor : Editor
         {
             heatMap.InitializeComponents();
         }
-
-        if (GUILayout.Button("CreateDataContainerArrayFromJson"))
+       
+        if (GUILayout.Button("CreateCubes"))
         {
-            heatMap.CreateDataContainerArrayFromJson();
+            heatMap.CreateCubes();
         }
 
-        if (GUILayout.Button("CreateGameObjList"))
+        if (GUILayout.Button("ChangeCubesColor"))
         {
-            heatMap.CreateGameObjList();
+            heatMap.ChangeCubesColor();
         }
-        if (GUILayout.Button("ChangeObjColor"))
+        if (GUILayout.Button("DeleteCubes"))
         {
-            heatMap.ChangeObjColor();
-        }
-        if (GUILayout.Button("EmptyGameObjList"))
-        {
-            heatMap.EmptyGameObjList();
-        }
-
-        if (GUILayout.Button("CreateArrayOfVectors"))
-        {
-            heatMap.CreateArrayOfVectors();
+            heatMap.DeleteCubes();
         }
 
         if (GUILayout.Button("DrawLines"))
@@ -50,6 +41,13 @@ public class HeatMapEditor : Editor
         {
             heatMap.DeleteLines();
         }
+        
+        if (GUILayout.Button("CreateTexture"))
+        {
+            heatMap.CreateTexture();
+        }
+        
+        
 
 
 

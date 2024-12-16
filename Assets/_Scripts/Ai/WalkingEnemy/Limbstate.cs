@@ -1,5 +1,4 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -19,7 +18,6 @@ public class Limbstate : MonoBehaviour
     int layerIndexNoHead = 5;
 
     public bool standing;
-
     public bool noHead;
  
 

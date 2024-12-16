@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,16 +24,20 @@ public class Sensing : MonoBehaviour
     public bool isTrackingPlayer = false;
     EnemyHealth enemyHealth;
 
+  
+    Animator animator;
+    [SerializeField] private AudioSource attackAudio;
+    [SerializeField] private AudioClip screem;
     void Start()
     {
         player.NotifyOnPlayerChanged(OnPlayer);
+        animator = GetComponent<Animator>();
     }
 
     private void OnPlayer(Transform obj)
     {
         target = obj;
     }
-  
 
     private void Update()
     {
@@ -41,28 +45,41 @@ public class Sensing : MonoBehaviour
 
         if (CanSeeTarget())
         {
-            memoryTimer = memoryDuration; 
-            isTrackingPlayer = true; 
+            memoryTimer = memoryDuration;
+
+            if (!isTrackingPlayer)
+            {
+                PlayDetectionAnimation();
+            }
+
+            isTrackingPlayer = true;
         }
         else if (isTrackingPlayer)
         {
-            memoryTimer -= Time.deltaTime; 
+            memoryTimer -= Time.deltaTime;
             if (memoryTimer <= 0f)
             {
-                isTrackingPlayer = false; 
+                isTrackingPlayer = false;
             }
         }
-
-        //if (isTrackingPlayer)
-        //{
-        //    Debug.Log("Tracking the target!");
-        //}
-        //else
-        //{
-        //    Debug.Log("Lost the target.");
-        //}
     }
-   
+    private void PlayDetectionAnimation()
+    {
+        attackAudio.clip = screem;
+        attackAudio.Play();
+
+        if (animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("DetectPlayer") && stateInfo.normalizedTime < 1f)
+            {
+                return;
+            }
+
+            animator.SetTrigger("DetectPlayer");
+          
+        }
+    }
     public bool CanSeeTarget()
     {
         if (target == null) return false;
@@ -75,9 +92,16 @@ public class Sensing : MonoBehaviour
             float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
             if (angleToTarget < visionAngle / 2f)
             {
-                if (!Physics.Linecast(transform.position, target.position, visionMask))
+                Ray ray = new Ray(transform.position, directionToTarget);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit, visionRange, visionMask))
                 {
-                    return true;
+                
+                    if (hit.transform == target)
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -85,17 +109,23 @@ public class Sensing : MonoBehaviour
         return false;
     }
 
+
     public bool CanHearTarget()
     {
         if (target == null) return false;
 
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
         if (distanceToTarget < hearingRange)
         {
-            if (!Physics.Linecast(transform.position, target.position, hearingMask))
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, directionToTarget, out hit, hearingRange, hearingMask))
             {
-                return true;
+                if (hit.transform == target)
+                {
+                    return true;
+                }
             }
         }
 

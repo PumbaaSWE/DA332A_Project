@@ -71,7 +71,7 @@ public class RagdollLims : MonoBehaviour
 
     private List<Detachable> detached = new List<Detachable>();
 
-    bool ragToCrawl;
+    //bool ragToCrawl;
 
 
    
@@ -242,7 +242,7 @@ public class RagdollLims : MonoBehaviour
     //}
     private void RegrowLimbsBehaviour()
     {
-        ragToCrawl = true;
+        //ragToCrawl = true;
         AlignRotationToHip(); 
         AlignPositionToHip(true); 
 
@@ -420,7 +420,7 @@ public class RagdollLims : MonoBehaviour
             DisableRagdoll();           
             animator.Play(StateNameTwo(), 0, 0);
             fSM.SetAgentActive(true);
-            ragToCrawl = true;
+            //ragToCrawl = true;
 
         }
       
