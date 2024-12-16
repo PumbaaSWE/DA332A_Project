@@ -6,6 +6,7 @@ public class PlayVoiceline : MonoBehaviour
     [SerializeField] private VoicelineData voiceline;
     [SerializeField] private bool playOnStart = false;
     [SerializeField] private bool disableOnPlay = false;
+    [SerializeField] private bool randomize = false;
     [SerializeField] private float delay = 1;
 
     [SerializeField] private VoicelineData[] voicelines;
@@ -13,6 +14,22 @@ public class PlayVoiceline : MonoBehaviour
     public void Play()
     {
         if (!this.enabled) {  return; }
+
+
+        if (randomize)
+        {
+            if (voicelines != null)
+            {
+
+                VoicelineManager.Instance.QueueVoiceLine(voicelines[Random.Range(0, voicelines.Length)]);
+                
+            }
+            return;
+        }
+
+
+
+
         if(voiceline)
             VoicelineManager.Instance.QueueVoiceLine(voiceline);
         if(voicelines != null)
