@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 8649392982515891842}
   lerpFactor: 10
+  audioSource: {fileID: 0}
 --- !u!108 &2085176016028454569
 Light:
   m_ObjectHideFlags: 0
@@ -266,7 +267,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -446,6 +447,9 @@ MonoBehaviour:
   collideWith:
     serializedVersion: 2
     m_Bits: 641
+  climbOn:
+    serializedVersion: 2
+    m_Bits: 0
   skinWidth: 0.015
   maxBounces: 3
   radiusDiff: -0.1
@@ -859,6 +863,7 @@ MonoBehaviour:
   numFlares: 5
   maxNumFlares: 5
   playerInput: {fileID: 8649392982515891842}
+  clipThrow: {fileID: 0}
 --- !u!114 &6395069968086439082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +882,7 @@ MonoBehaviour:
   maxNumSyrringes: 5
   healAmount: 25
   playerInput: {fileID: 8649392982515891842}
+  clipUse: {fileID: 0}
 --- !u!114 &7444812139051102595
 MonoBehaviour:
   m_ObjectHideFlags: 0
