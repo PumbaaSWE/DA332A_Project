@@ -51,6 +51,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
     public GameObject decalPrefab;
     public int headParticales = 10;
     Vector3 playerPos;
+    float destroyTime = 5f;
     private void Awake()
     {
         fsm = GetComponent<FSM_Walker>();
@@ -79,7 +80,7 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 
 
         //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
-        Destroy(enemy, 9f);//hardcoded
+        Destroy(enemy, destroyTime);
         ragdoll.state = Ragdoll.RagdollState.Ragdoll;
         regrow.canRegrow = false;
 
