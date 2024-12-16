@@ -24,7 +24,7 @@ public class Sensing : MonoBehaviour
     public bool isTrackingPlayer = false;
     EnemyHealth enemyHealth;
 
-  
+    Limbstate limbstate;
     Animator animator;
     [SerializeField] private AudioSource attackAudio;
     [SerializeField] private AudioClip screem;
@@ -32,6 +32,7 @@ public class Sensing : MonoBehaviour
     {
         player.NotifyOnPlayerChanged(OnPlayer);
         animator = GetComponent<Animator>();
+        limbstate = GetComponent<Limbstate>();
     }
 
     private void OnPlayer(Transform obj)
@@ -65,20 +66,24 @@ public class Sensing : MonoBehaviour
     }
     private void PlayDetectionAnimation()
     {
-        attackAudio.clip = screem;
-        attackAudio.Play();
-
-        if (animator != null)
+        if(limbstate.limbStatehit == Limbstate.AgentHit.Normal)
         {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("DetectPlayer") && stateInfo.normalizedTime < 1f)
-            {
-                return;
-            }
+            attackAudio.clip = screem;
+            attackAudio.Play();
 
-            animator.SetTrigger("DetectPlayer");
-          
+            if (animator != null)
+            {
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("DetectPlayer") && stateInfo.normalizedTime < 1f)
+                {
+                    return;
+                }
+
+                animator.SetTrigger("DetectPlayer");
+
+            }
         }
+     
     }
     public bool CanSeeTarget()
     {
