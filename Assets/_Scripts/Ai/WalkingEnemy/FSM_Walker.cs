@@ -190,7 +190,7 @@ public class FSM_Walker : MonoBehaviour
             case AgentState.Chasing:
                 if (!sensing.isTrackingPlayer && !sensing.CanHearTarget())
                 {
-                    agentState = AgentState.Wander; 
+                    agentState = AgentState.Idle; 
                     return;
                 }
                 ChaseBehaviour();
@@ -351,7 +351,8 @@ public class FSM_Walker : MonoBehaviour
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
        
-        
+        if(sensing.CanSeeTarget())
+        {
             if (distanceToTarget <= attackRange)
             {
                 if (!limbState.standing)
@@ -378,6 +379,9 @@ public class FSM_Walker : MonoBehaviour
                 animator.SetLayerWeight(6, 0);
                 animator.SetBool("Charge", false);
             }
+        }
+        
+            
         
       
 
