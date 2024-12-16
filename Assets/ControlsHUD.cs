@@ -42,13 +42,37 @@ public class ControlsHUD : MonoBehaviour
     }
     void ApplyText()
     {
+        //text.text = string.Empty;
+        //for (int i = 0; i < inputCount; i++)
+        //{
+        //    string format = string.Format("{0} - {1}\n", inputs[i].name, inputs[i].bindings[0].path.ToString());
+        //    format = format.Replace("<Keyboard>/", string.Empty);
+        //    format = format.Replace("<Gamepad>/", string.Empty);
+        //    text.text += format;
+        //}
         text.text = string.Empty;
         for (int i = 0; i < inputCount; i++)
         {
-            string format = string.Format("{0} - {1}\n", inputs[i].name, inputs[i].bindings[0].path.ToString());
-            format = format.Replace("<Keyboard>/", string.Empty);
-            format = format.Replace("<Gamepad>/", string.Empty);
-            text.text += format;
+            if (inputs[i] == controls.Player.Move)
+            {
+                text.text += "Move - WASD\n";
+                continue;
+            }
+            if(inputs[i] == controls.Player.Fire)
+            {
+                text.text += "Fire - left mouse button\n";
+                continue;
+            }
+            foreach (var binding in inputs[i].bindings)
+            {
+                // Check if the binding is associated with the keyboard
+                if (binding.path.StartsWith("<Keyboard>")/* && !binding.isPartOfComposite*/)
+                {
+                    // Format and add to text
+                    string format = string.Format("{0} - {1}\n", inputs[i].name, binding.path.Replace("<Keyboard>/", string.Empty));
+                    text.text += format;
+                }
+            }
         }
     }
 }
