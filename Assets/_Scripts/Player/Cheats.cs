@@ -15,6 +15,7 @@ public class Cheats : MonoBehaviour
 
     bool noclip;
     bool godMode;
+    bool cheat;
     float health;
 
     Color ambientLight;
@@ -36,8 +37,13 @@ public class Cheats : MonoBehaviour
 
         Noclip(Time.deltaTime);
 
-        // Only listen to cheat inputs if holding Q
-        if (!Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            cheat = !cheat;
+            TooltipUtil.Display("Cheats " + (cheat ? "enabled" : "disabled") + ", F12 to toggle.", 2f);
+        }
+
+        if (!cheat)
             return;
 
         if (Input.GetKeyDown(KeyCode.BackQuote))
