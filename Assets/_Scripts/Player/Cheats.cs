@@ -34,6 +34,12 @@ public class Cheats : MonoBehaviour
         if (Time.deltaTime == 0)
             return;
 
+        Noclip(Time.deltaTime);
+
+        // Only listen to cheat inputs if holding Q
+        if (!Input.GetKey(KeyCode.Q))
+            return;
+
         if (Input.GetKeyDown(KeyCode.BackQuote))
             ClearConsole();
 
@@ -57,8 +63,6 @@ public class Cheats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace))
             GotoMarker();
-
-        Noclip(Time.deltaTime);
     }
 
 
