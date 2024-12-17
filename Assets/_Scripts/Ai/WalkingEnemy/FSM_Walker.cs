@@ -13,7 +13,6 @@ public class FSM_Walker : MonoBehaviour
 
     [Header("Nav")]
     [SerializeField] float wanderRange = 25f;
-    private float idleTime;
     bool destinationSet = true;
     bool reachedDestination = false;
     public bool atDestination => reachedDestination;
@@ -41,6 +40,8 @@ public class FSM_Walker : MonoBehaviour
     public bool sleep;
     public bool isCrawling;
     public bool isArmles;
+    private bool isIdling = false;
+    float idleTime = 5f;
 
 
     // Animation
@@ -78,12 +79,14 @@ public class FSM_Walker : MonoBehaviour
     private float nextPlayTime = 5f;
     private void OnEnable()
     {
+        Firearm.OnShoot += ReactShoot;
         enemyHealth.OnHealthChanged += ReactToShoot;
     }
 
     private void OnDisable()
     {
-        enemyHealth.OnHealthChanged += ReactToShoot;
+        Firearm.OnShoot -= ReactShoot;
+        enemyHealth.OnHealthChanged -= ReactToShoot;
     } 
     public void ReactToShoot(float health)
     {
@@ -176,6 +179,16 @@ public class FSM_Walker : MonoBehaviour
             case AgentState.Sleep:
                 footstepAudio.Stop();
                 break;
+            case AgentState.Investegate:
+                if (!sensing.isTrackingPlayer)
+                {
+                    InvestegateBehavior();
+                }
+                else
+                {
+                    agentState = AgentState.Chasing;
+                }
+                break;
             case AgentState.Wander:
                 if (sensing.isTrackingPlayer)
                 {
@@ -184,9 +197,7 @@ public class FSM_Walker : MonoBehaviour
                 }
                 WanderBehavior();
                 break;
-            case AgentState.Investegate:
-                InvestegateBehavior();
-                break;
+            
             case AgentState.Chasing:
                 if (!sensing.isTrackingPlayer && !sensing.CanHearTarget())
                 {
@@ -230,7 +241,7 @@ public class FSM_Walker : MonoBehaviour
             agentState = AgentState.Chasing;
         }             
     }
-    public void ReactToShoot(Vector3 playerPosition)
+    public void ReactShoot(Vector3 playerPosition)
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         if (distanceToPlayer <= gunHearingRange)
@@ -243,13 +254,18 @@ public class FSM_Walker : MonoBehaviour
 
     private void IdleBehaviour()
     {
-       
-        idleTime = Random.Range(10f, 25f);
-        StartCoroutine(IdleTimer(idleTime));
+        if (!isIdling) 
+        {
+            idleTime = Random.Range(5f, 15f);
+            StartCoroutine(IdleTimer(idleTime));
+        }
+     
     }
     private IEnumerator IdleTimer(float time)
     {
+        isIdling = true;
         yield return new WaitForSeconds(time);
+        isIdling = false;
         agentState = AgentState.Wander;
 
     }
@@ -273,10 +289,15 @@ public class FSM_Walker : MonoBehaviour
 
     private void InvestegateBehavior()
     {
-      
+
+        if (!destinationSet)
+        {           
+            MoveTo(soundLocation);
+        }
+
         if (atDestination)
         {
-           MoveTo(soundLocation);
+            agentState = AgentState.Wander;
         }
 
     }
