@@ -10,7 +10,7 @@ public class ControlsHUD : MonoBehaviour
     [SerializeField] TMP_Text text;
     private PlayerControls controls;
     InputAction[] inputs;
-    int inputCount = 6;
+    int inputCount = 10;
     void Awake()
     {
         text = transform.GetChild(1).GetComponentInChildren<TMP_Text>();
@@ -35,10 +35,14 @@ public class ControlsHUD : MonoBehaviour
         inputs = new InputAction[inputCount];
         inputs[0] = controls.Player.Move;
         inputs[1] = controls.Player.Fire;
-        inputs[2] = controls.Player.Crouch;
-        inputs[3] = controls.Player.Jump;
-        inputs[4] = controls.Player.Sprint;
-        inputs[5] = controls.Player.Interact;
+        inputs[2] = controls.Player.SecondaryUse;
+        inputs[3] = controls.Player.Crouch;
+        inputs[4] = controls.Player.Jump;
+        inputs[5] = controls.Player.Sprint;
+        inputs[6] = controls.Player.Interact;
+        inputs[7] = controls.Player.F;
+        inputs[8] = controls.Player.G;
+        inputs[9] = controls.Player.Reload;
     }
     void ApplyText()
     {
@@ -60,7 +64,22 @@ public class ControlsHUD : MonoBehaviour
             }
             if(inputs[i] == controls.Player.Fire)
             {
-                text.text += "Fire - left mouse button\n";
+                text.text += "Fire - LEFT MOUSE BUTTON\n";
+                continue;
+            }
+            if (inputs[i] == controls.Player.SecondaryUse)
+            {
+                text.text += "Aim - RIGHT MOUSE BUTTON\n";
+                continue;
+            }
+            if (inputs[i] == controls.Player.F)
+            {
+                text.text += "Throw Flare - F\n";
+                continue;
+            }
+            if (inputs[i] == controls.Player.G)
+            {
+                text.text += "Flashlight - G\n";
                 continue;
             }
             foreach (var binding in inputs[i].bindings)
@@ -69,7 +88,7 @@ public class ControlsHUD : MonoBehaviour
                 if (binding.path.StartsWith("<Keyboard>")/* && !binding.isPartOfComposite*/)
                 {
                     // Format and add to text
-                    string format = string.Format("{0} - {1}\n", inputs[i].name, binding.path.Replace("<Keyboard>/", string.Empty));
+                    string format = string.Format("{0} - {1}\n", inputs[i].name, binding.path.Replace("<Keyboard>/", string.Empty).ToUpper());
                     text.text += format;
                 }
             }
