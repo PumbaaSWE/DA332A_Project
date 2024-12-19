@@ -15365,8 +15365,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18316042
-  m_Center: {x: 9.0375546e-12, y: 0.15682016, z: 0.02634028}
+  m_Radius: 0.22517732
+  m_Center: {x: 7.343383e-12, y: 0.1568202, z: 0.06835718}
 --- !u!54 &7655068673168748648
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -72190,7 +72190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7479ff72ab201d488e5a7a73a18e90a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 0}
+  head: {fileID: 278197718855126372}
   lookAtTargetPosition: {x: 0, y: 0, z: 0}
   lookAtCoolTime: 0.2
   lookAtHeatTime: 0.2
@@ -72235,7 +72235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   detached: []
-  regrowTime: 6
+  regrowTime: 7
   legRegrowTime: 10.01
   canRegrow: 1
 --- !u!114 &3981083743001323090
@@ -72284,7 +72284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f6015878f820d48b5f31d2e19175be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunHearingRange: 45
+  gunHearingRange: 25
   wanderRange: 20
   target: {fileID: 0}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
@@ -72579,16 +72579,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a92d3627f79bd488948df0b518af35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 22
+  visionRange: 21
   visionAngle: 95
   visionMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  hearingRange: 8
-  gunHearingRange: 60
+    m_Bits: 253947
+  hearingRange: 10
+  gunHearingRange: 25
   hearingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 253947
   target: {fileID: 0}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
   memoryDuration: 160
