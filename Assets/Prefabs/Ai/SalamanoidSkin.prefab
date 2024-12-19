@@ -72235,7 +72235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   detached: []
-  regrowTime: 6
+  regrowTime: 7
   legRegrowTime: 10.01
   canRegrow: 1
 --- !u!114 &3981083743001323090
@@ -72284,8 +72284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f6015878f820d48b5f31d2e19175be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunHearingRange: 40
-  wanderRange: 25
+  gunHearingRange: 25
+  wanderRange: 20
   target: {fileID: 0}
   player: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
   agentState: 0
@@ -72579,13 +72579,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a92d3627f79bd488948df0b518af35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRange: 22
+  visionRange: 21
   visionAngle: 95
   visionMask:
     serializedVersion: 2
     m_Bits: 253947
   hearingRange: 10
-  gunHearingRange: 60
+  gunHearingRange: 25
   hearingMask:
     serializedVersion: 2
     m_Bits: 253947

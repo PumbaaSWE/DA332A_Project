@@ -8,7 +8,7 @@ public class FSM_Walker : MonoBehaviour
     [Header("Sensors")]
     Sensing sensing;
     private float nearestPointSearchRange = 5f;
-    [SerializeField] float gunHearingRange = 55;
+    [SerializeField] float gunHearingRange = 25;
 
 
     [Header("Nav")]
@@ -256,7 +256,7 @@ public class FSM_Walker : MonoBehaviour
     {
         if (!isIdling) 
         {
-            idleTime = Random.Range(5f, 15f);
+            idleTime = Random.Range(1f, 4f);
             StartCoroutine(IdleTimer(idleTime));
         }
      
@@ -369,6 +369,10 @@ public class FSM_Walker : MonoBehaviour
         {
             TryPlaySound();
         }
+
+        
+
+        
 
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
        
