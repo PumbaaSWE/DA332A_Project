@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using UnityEngine.Timeline;
 using System.IO;
 
 
@@ -14,7 +10,7 @@ public class FolderCreator : MonoBehaviour
   {
       
         Directory.CreateDirectory($"Assets/HeatMap/SessionData/{name}");
-        AssetDatabase.Refresh();
+       // AssetDatabase.Refresh();
         Debug.Log("creating folder");
 
   }

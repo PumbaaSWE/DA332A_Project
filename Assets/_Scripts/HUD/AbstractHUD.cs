@@ -22,6 +22,7 @@ public abstract class AbstractHUD<T> : MonoBehaviour where T : Component
         if (playerTransform)
         {
             if(playerTransform.TryGetComponent<T>(out var script)) SetScript(script);
+            PlayerSet();
         }
         else
         {
@@ -34,6 +35,8 @@ public abstract class AbstractHUD<T> : MonoBehaviour where T : Component
     /// </summary>
     /// <param name="script"></param>
     protected abstract void SetScript(T script);
+
+    protected abstract void PlayerSet();
 
     /// <summary>
     /// Will be called if no player is found, good idea to disable evrything maybe

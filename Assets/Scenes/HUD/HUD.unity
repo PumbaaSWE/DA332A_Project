@@ -2372,7 +2372,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 3043973842468129661}
-  progressBar: {fileID: 0}
+  progressBar: {fileID: 1803581342}
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.8764001, b: 0, a: 1}
+    key2: {r: 0.035300493, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 12722
+    ctime1: 26021
+    ctime2: 65342
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
   currentHealth: 0
   offset: 0
   debug: 0
@@ -2821,6 +2851,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 49433951}
     m_Modifications:
+    - target: {fileID: 328705470584966939, guid: 56d5db414740e494191f6c9fa1f580bb,
+        type: 3}
+      propertyPath: healColor.a
+      value: 0.39215687
+      objectReference: {fileID: 0}
     - target: {fileID: 2077280577526405780, guid: 56d5db414740e494191f6c9fa1f580bb,
         type: 3}
       propertyPath: m_Pivot.x

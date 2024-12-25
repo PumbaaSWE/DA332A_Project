@@ -34,4 +34,27 @@ public class TestSaveSystem : MonoBehaviour
         }
         SaveGameManager.LoadData();
     }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                LoadLevel(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                LoadLevel(2);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                LoadLevel(3);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                LoadLevel(4);
+            }
+        }
+    }
 }
