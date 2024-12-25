@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -99,7 +99,8 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000004, guid: 3ed759e091b476b448f717981dcd911c,
     type: 2}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: a9045e5247431d44daf932e101bdd078,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2371,6 +2372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52fb6b3a30ef79247842947d7385c6e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: c6deaf30f269be64c9737967d3fc9ec1, type: 2}
   text: {fileID: 3043973842468129661}
   progressBar: {fileID: 1803581342}
   gradient:
@@ -2403,9 +2405,6 @@ MonoBehaviour:
     m_ColorSpace: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
-  currentHealth: 0
-  offset: 0
-  debug: 0
 --- !u!1 &2534823018055334393
 GameObject:
   m_ObjectHideFlags: 0

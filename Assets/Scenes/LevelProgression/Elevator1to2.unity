@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.13333334, g: 0.12941177, b: 0.12941177, a: 1}
+  m_AmbientSkyColor: {r: 0.22792807, g: 0.22867262, b: 0.24528301, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1049,10 +1049,10 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1528545366}
-        m_TargetAssemblyTypeName: Elevator, Assembly-CSharp
-        m_MethodName: PressInsideButton
-        m_Mode: 0
+      - m_Target: {fileID: 1261281163}
+        m_TargetAssemblyTypeName: AmbientLight, Assembly-CSharp
+        m_MethodName: LightenUp
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1061,10 +1061,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1261281163}
-        m_TargetAssemblyTypeName: AmbientLight, Assembly-CSharp
-        m_MethodName: LightenUp
-        m_Mode: 1
+      - m_Target: {fileID: 1528545366}
+        m_TargetAssemblyTypeName: Elevator, Assembly-CSharp
+        m_MethodName: PressInsideButton
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2088,6 +2088,7 @@ GameObject:
   - component: {fileID: 2042551341}
   - component: {fileID: 2042551345}
   - component: {fileID: 2042551344}
+  - component: {fileID: 2042551346}
   m_Layer: 0
   m_Name: OutsideButton
   m_TagString: Untagged
@@ -2224,6 +2225,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2042551346}
+        m_TargetAssemblyTypeName: AmbientLight, Assembly-CSharp
+        m_MethodName: LerpUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPassEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2235,6 +2248,20 @@ MonoBehaviour:
       m_Calls: []
   requrements:
   - {fileID: 2042551344}
+--- !u!114 &2042551346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042551338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fbe8c45281d88f478f3b2569c74181d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
+  onStart: 0
 --- !u!1 &2052892324
 GameObject:
   m_ObjectHideFlags: 0

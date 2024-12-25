@@ -34,6 +34,11 @@ public class AmbientLight : MonoBehaviour
         SetAmbient(color);
     }
 
+    public void LerpUp()
+    {
+        StartCoroutine(LerpLight());
+    }
+
     public void SetAmbient(Color color)
     {
         RenderSettings.ambientLight = color;

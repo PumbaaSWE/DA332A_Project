@@ -7,7 +7,7 @@ public class HealthHud : AbstractHUD<Health>
     [SerializeField] TMP_Text text;
     [SerializeField] Image progressBar;
     [SerializeField] Gradient gradient;
-    float maxHealth;
+    //float maxHealth;
 
     Health health;
 
@@ -17,14 +17,17 @@ public class HealthHud : AbstractHUD<Health>
         //only get the progressbar this way if not assigne as I dont like this way
         if(!progressBar) progressBar = transform.GetChild(0).GetChild(0).GetComponent<Image>();
 
-        enabled = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        float percentage = health.Value / maxHealth;
+        if (!health) {
+            enabled = false;
+            return; 
+        }
+        float percentage = health.Value / health.MaxHealth;
 
         percentage = Mathf.Clamp01(percentage);
         progressBar.color = gradient.Evaluate(percentage);
@@ -53,6 +56,7 @@ public class HealthHud : AbstractHUD<Health>
     protected override void SetScript(Health script)
     {
         health = script;
+        enabled = true;
     }
 
     protected override void PlayerSet()
