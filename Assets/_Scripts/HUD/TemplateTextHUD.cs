@@ -10,14 +10,14 @@ public abstract class TemplateTextHUD : MonoBehaviour
     protected PlayerDataSO playerData;
     [SerializeField] protected TMP_Text[] targets;
     float idleTimer;
-    float idleTimerMin;
+    //float idleTimerMin;
     protected float idleTimerMax;
     float fadeOutTimer;
     protected Color defaultColor;
     Color color;
     void Start()
     {
-        idleTimerMin = 0.0f;
+        //idleTimerMin = 0.0f;
         if (!GetPlayerData()) { return; }
         Initialize();
         idleTimer = idleTimerMax = idleTimerMax > 0.0f ? idleTimerMax : 3.0f;

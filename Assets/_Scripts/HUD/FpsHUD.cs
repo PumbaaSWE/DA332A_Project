@@ -9,6 +9,11 @@ public class FpsHUD : MonoBehaviour
 
     private float timer;
 
+    private void Start()
+    {
+        fpsText.enabled = false;
+    }
+
     private void Update()
     {
         if (Time.unscaledTime > timer)
@@ -18,7 +23,7 @@ public class FpsHUD : MonoBehaviour
             timer = Time.unscaledTime + hudRefreshRate;
         }
 
-        if (Input.GetKeyDown(KeyCode.Tilde))
+        if (Input.GetKeyDown(KeyCode.F10))
         {
             fpsText.enabled = !fpsText.enabled;
         }

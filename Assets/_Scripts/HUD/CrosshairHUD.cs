@@ -11,7 +11,7 @@ public class CrosshairHUD : MonoBehaviour
     RectTransform[] transforms;
     PlayerDataSO playerData;
     WeaponHandler weaponHandler;
-    [SerializeField] private float degreesMultiplier = 7.0f;
+    //[SerializeField] private float degreesMultiplier = 7.0f;
     private float degrees = 0;
     private float minDegrees = 0;
     private float maxDegrees = 10.0f;
