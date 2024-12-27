@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +27,7 @@ public class Sensing : MonoBehaviour
     Animator animator;
     [SerializeField] private AudioSource attackAudio;
     [SerializeField] private AudioClip screem;
+
     void Start()
     {
         player.NotifyOnPlayerChanged(OnPlayer);
@@ -64,9 +64,10 @@ public class Sensing : MonoBehaviour
             }
         }
     }
+
     private void PlayDetectionAnimation()
     {
-        if(limbstate.limbStatehit == Limbstate.AgentHit.Normal)
+        if (limbstate.limbStatehit == Limbstate.AgentHit.Normal)
         {
             attackAudio.clip = screem;
             attackAudio.Play();
@@ -80,32 +81,33 @@ public class Sensing : MonoBehaviour
                 }
 
                 animator.SetTrigger("DetectPlayer");
-
             }
         }
-     
     }
+
     public bool CanSeeTarget()
     {
         if (target == null) return false;
 
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+        Vector3 rayOrigin = transform.position + Vector3.up * 1.5f;
+        Vector3[] offsets = { Vector3.zero, Vector3.up * 0.5f, Vector3.up * 1.5f };
+        float distanceToTarget = Vector3.Distance(rayOrigin, target.position);
 
         if (distanceToTarget < visionRange)
         {
-            float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
-            if (angleToTarget < visionAngle / 2f)
+            foreach (Vector3 offset in offsets)
             {
-                Ray ray = new Ray(transform.position, directionToTarget);
-                RaycastHit hit;
+                Vector3 directionToTarget = ((target.position + offset) - rayOrigin).normalized;
+                float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
 
-                if (Physics.Raycast(ray, out hit, visionRange, visionMask))
+                if (angleToTarget < visionAngle / 2f)
                 {
-                
-                    if (hit.transform == target)
+                    if (Physics.Raycast(rayOrigin, directionToTarget, out RaycastHit hit, visionRange, visionMask))
                     {
-                        return true;
+                        if (hit.transform == target)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -113,7 +115,6 @@ public class Sensing : MonoBehaviour
 
         return false;
     }
-
 
     public bool CanHearTarget()
     {
@@ -124,8 +125,7 @@ public class Sensing : MonoBehaviour
 
         if (distanceToTarget < hearingRange)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, directionToTarget, out hit, hearingRange, hearingMask))
+            if (Physics.Raycast(transform.position, directionToTarget, out RaycastHit hit, hearingRange, hearingMask))
             {
                 if (hit.transform == target)
                 {
