@@ -17,7 +17,7 @@ public class LookAt : MonoBehaviour
     {
         if (!head)
         {
-            Debug.LogError("No head transform - LookAt disabled");
+            //Debug.LogError("No head transform - LookAt disabled");
             enabled = false;
             return;
         }

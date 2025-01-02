@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_test
+  m_Shader: {fileID: -6465566751694194690, guid: b20c785bb8f796348bae88200014591b,
+    type: 3}
+  m_Parent: {fileID: -876546973899608171, guid: b20c785bb8f796348bae88200014591b,
+    type: 3}
+  m_ModifiedSerializedProperties: 2
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_44e8dee102e6401d99e5b4e07dc65199_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 06e4275a66b716846b2eba2432f96fe6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_7c5110d28bf24c43bc2c57f94b1974ce_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 8fd01063d0e494742a419b22802e6353, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_db03830728794132b699d7bddfb385b0_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 16621de2b6eb08e408d3c94b362d0bd1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ImpactRadius: 0.01
+    - _QueueControl: 0
+    m_Colors:
+    - _BaseColor: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 0}
+    - _ImpactColor: {r: 1, g: 0, b: 0, a: 1}
+    - _ImpactPoint: {r: -0.5, g: -0.37742138, b: -0.37587118, a: 1}
+  m_BuildTextureStacks: []
+--- !u!114 &1076294749280436838
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

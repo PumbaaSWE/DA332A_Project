@@ -45,6 +45,8 @@ public class LizardDeath : MonoBehaviour
             animator.enabled = false;
         if(material)
             StartCoroutine(Dissolve());
+
+        EventBus<DeathEvent>.Raise(new DeathEvent(transform.position));
     }
 
     private IEnumerator Dissolve()

@@ -30,7 +30,4 @@ public class DestroyabaleItem : MonoBehaviour
         debris.transform.localScale = this.transform.localScale;
         Destroy(cube);
     }
-
-
-
 }

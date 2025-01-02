@@ -101,11 +101,11 @@ public class ZombieBrain : MonoBehaviour
     }
     private void DoDamage()
     {
-        Debug.Log("DoDammage called?");
+        //Debug.Log("DoDammage called?");
         Debug.DrawLine(transform.position + Vector3.up, transform.position + Vector3.up + sensor.TargetDir, Color.red, .5f);
         if(Physics.Raycast(transform.position + Vector3.up, sensor.TargetDir, out RaycastHit hit, meleeRange, meleeMask, QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("hit" + hit.transform.gameObject.name);
+            //Debug.Log("hit" + hit.transform.gameObject.name);
             if (hit.transform.TryGetComponent(out IDamageble damageble))
             {
                 damageble.TakeDamage(hit.point, sensor.TargetDir, meleeDamage);

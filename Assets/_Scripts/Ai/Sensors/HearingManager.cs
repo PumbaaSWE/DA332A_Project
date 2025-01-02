@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ public class HearingManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.LogError("Multiple HearingTargetManager found. Destroying" + gameObject.name);
+            //Debug.LogError("Multiple HearingTargetManager found. Destroying" + gameObject.name);
             Destroy(gameObject);
             return;
         }

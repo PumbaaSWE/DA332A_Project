@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,12 +17,15 @@ public class TriggerZone : MonoBehaviour
     public UnityEvent<Transform> InZoneTriggered;
 
     private Collider zone;
+    [SerializeField] private bool debugDraw = true;
 
 
     private void Awake()
     {
         zone = GetComponent<Collider>();
         zone.isTrigger = true;
+        //gameObject.layer = triggerMask;
+        gameObject.layer = 2;
     }
     
     public void TriggerTheZone(Transform trigger)
@@ -74,5 +75,24 @@ public class TriggerZone : MonoBehaviour
         GetComponent<Collider>().excludeLayers = ~triggerMask;
         GetComponent<Collider>().includeLayers = triggerMask;
         GetComponent<Collider>().layerOverridePriority = 1;
+        zone = GetComponent<Collider>();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!debugDraw) return;
+        if (!zone) return;
+            //Gizmos.matrix = transform.localToWorldMatrix;
+        var m = Gizmos.matrix;
+        Gizmos.matrix = transform.localToWorldMatrix;
+
+        Gizmos.color = Color.cyan;
+        var box = zone as BoxCollider;
+        Gizmos.DrawWireCube(box.center, box.size);
+        
+
+
+        //Gizmos.DrawWireCube(Vector3.zero, Vector3.one*2);
+        Gizmos.matrix = m;
     }
 }

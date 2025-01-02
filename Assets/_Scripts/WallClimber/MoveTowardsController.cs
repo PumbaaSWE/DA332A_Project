@@ -103,7 +103,7 @@ public class MoveTowardsController : Controller
         move = Vector2.zero;
         look = Vector2.zero;
     }
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position, point);

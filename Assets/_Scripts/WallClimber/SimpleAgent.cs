@@ -35,7 +35,7 @@ public class SimpleAgent : MonoBehaviour
     RagdollController ragdollController;
     Vector3 spawnPos;
 
-    void Start()
+    void Awake()
     {
         controller = GetComponent<MoveTowardsController>();
         lookAt = GetComponentInChildren<LookAt>();

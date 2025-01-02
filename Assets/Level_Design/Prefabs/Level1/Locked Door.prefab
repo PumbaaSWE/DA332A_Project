@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 7665546647718926951}
   - component: {fileID: 247704650698927174}
   - component: {fileID: 8410495924574131925}
+  - component: {fileID: 2051520350289027505}
   m_Layer: 0
   m_Name: door (1)
   m_TagString: Untagged
@@ -272,6 +273,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.886516, y: 0.37871727, z: 10.540376}
   m_Center: {x: -2.9432285, y: -0.14032348, z: 5.270188}
+--- !u!208 &2051520350289027505
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739678454485254605}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.943, y: 0.45400003, z: 5.2700005}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -2.943, y: -0.40500003, z: 5.2700005}
+  m_TimeToStationary: 0.5
 --- !u!1 &7184746872298441814
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +301,7 @@ GameObject:
   - component: {fileID: 6675981845246901728}
   - component: {fileID: 3047965854510622628}
   - component: {fileID: 468651320995390511}
+  - component: {fileID: 7894577530459831858}
   m_Layer: 0
   m_Name: door
   m_TagString: Untagged
@@ -377,6 +395,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.886516, y: 0.3089138, z: 10.540376}
   m_Center: {x: -2.943224, y: -0.10542164, z: 5.270188}
+--- !u!208 &7894577530459831858
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7184746872298441814}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.943, y: 0.45400003, z: 5.2700005}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -2.943, y: -0.40500003, z: 5.2700005}
+  m_TimeToStationary: 0.5
 --- !u!1 &7516226964055161542
 GameObject:
   m_ObjectHideFlags: 0

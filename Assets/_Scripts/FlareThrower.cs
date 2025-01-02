@@ -24,6 +24,11 @@ public class FlareThrower : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
     private InputAction action;
     private string key = "<nope>";
+
+    AudioSource audioSource;
+    [SerializeField]
+    private AudioClip clipThrow;
+
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -31,7 +36,7 @@ public class FlareThrower : MonoBehaviour
         key = "[" + action.bindings.First().ToDisplayString() + "]";
         action.performed += Action_performed;
 
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnDisable()
@@ -52,6 +57,7 @@ public class FlareThrower : MonoBehaviour
     private void StartThrow()
     {
         flareArms.SetActive(true);
+        PlayAudio(clipThrow);
     }
 
 
@@ -116,5 +122,14 @@ public class FlareThrower : MonoBehaviour
     {
         flareArms.SetActive(false);
         weaponHandler.UnHideWeapons();
+    }
+
+    private void PlayAudio(AudioClip clip)
+    {
+        if (clip == null) return;
+        if(!audioSource) return;
+
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 }

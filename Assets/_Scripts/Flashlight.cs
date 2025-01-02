@@ -13,7 +13,11 @@ public class Flashlight : MonoBehaviour
     InputAction action;
     string key = "<nope>";
     bool lightHasBeenOn = false;
-    // Start is called before the first frame update
+
+    Quaternion rotation;
+    [SerializeField] float lerpFactor = 10;
+    [SerializeField] AudioSource audioSource;
+
     void Start()
     {
         action = playerInput.actions.FindAction("G");
@@ -23,6 +27,7 @@ public class Flashlight : MonoBehaviour
         m_light = GetComponent<Light>();
         //StartCoroutine(TooltipTest());
         m_light.enabled = false;
+        if(!audioSource)audioSource = GetComponent<AudioSource>();
     }
 
     private IEnumerator TooltipTest()
@@ -39,8 +44,12 @@ public class Flashlight : MonoBehaviour
         if (action.triggered)
         {
             m_light.enabled = !m_light.enabled;
+            if (audioSource) audioSource.Play();
             lightHasBeenOn = true;
             Blackboard.Instance.Set("lightHasBeenOn", true);
         }
+
+        // Interpolate rotation
+        transform.rotation = rotation = Quaternion.Lerp(rotation, transform.parent.rotation, lerpFactor * Time.deltaTime);
     }
 }

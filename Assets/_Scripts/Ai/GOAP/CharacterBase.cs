@@ -31,7 +31,7 @@ public class CharacterBase : MonoBehaviour
 
     protected void UpdateHealthDisplay()
     {
-        // FeedbackLabel.text = string.Format("{0} / {1}", currentHealth, maxHealth);
+        // FeedbackLabel.text = string.Format("{0} / {1}", currentHealth, limbHealth);
     }
     public Vector3 GetPosition()
     {

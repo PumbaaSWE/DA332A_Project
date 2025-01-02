@@ -79,6 +79,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInput: {fileID: 8649392982515891842}
+  lerpFactor: 10
+  audioSource: {fileID: 0}
 --- !u!108 &2085176016028454569
 Light:
   m_ObjectHideFlags: 0
@@ -265,7 +267,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -311,19 +313,17 @@ GameObject:
   - component: {fileID: 8193721170716452780}
   - component: {fileID: 4098254105255887134}
   - component: {fileID: 6395069968086439082}
-  - component: {fileID: 8211327675218918678}
   - component: {fileID: 7444812139051102595}
   - component: {fileID: 8875638149624668865}
   - component: {fileID: 6502465325931389742}
   - component: {fileID: 3680255761473996564}
   - component: {fileID: 8114485479685823139}
-  - component: {fileID: 262098576200730755}
   - component: {fileID: 7710091920939830975}
   - component: {fileID: -2530877571503949333}
   - component: {fileID: 4226767867783217970}
   - component: {fileID: 1964976663453118253}
   - component: {fileID: 7814214186349021388}
-  m_Layer: 2
+  m_Layer: 17
   m_Name: ClimbPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -387,12 +387,14 @@ MonoBehaviour:
   minLookUpAngle: -90
   maxLookUpAngle: 90
   mouseSensitivity: 0.05
+  AdsSensitivityModifier: 0.5
   camOffset: 0.35
   acceleration: 25
   maxWalkSpeed: 3
   maxSprintSpeed: 6
   drag: 7.5
   jumpVel: 4
+  jumpHeight: 0
   gravity: 9.81
   slopeAngle: 35
   crouchSpeed: 5
@@ -445,6 +447,9 @@ MonoBehaviour:
   collideWith:
     serializedVersion: 2
     m_Bits: 641
+  climbOn:
+    serializedVersion: 2
+    m_Bits: 0
   skinWidth: 0.015
   maxBounces: 3
   radiusDiff: -0.1
@@ -787,6 +792,22 @@ MonoBehaviour:
   EquippedGun: {fileID: 9004906902321269815}
   FirearmRoot: {fileID: 8804383274151757081}
   maxGuns: 2
+  OnShoot:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSwitchEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnReloadEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  CanPickup: 1
 --- !u!114 &7501088490361774610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,6 +863,7 @@ MonoBehaviour:
   numFlares: 5
   maxNumFlares: 5
   playerInput: {fileID: 8649392982515891842}
+  clipThrow: {fileID: 0}
 --- !u!114 &6395069968086439082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,19 +882,7 @@ MonoBehaviour:
   maxNumSyrringes: 5
   healAmount: 25
   playerInput: {fileID: 8649392982515891842}
---- !u!114 &8211327675218918678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926258509007519574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 362ac6f3a871f6a41b17eea2387be753, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bosted: 0
+  clipUse: {fileID: 0}
 --- !u!114 &7444812139051102595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,7 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd4f44d57b9484a805bac84293f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 50
   maxHealth: 100
   dead: 0
 --- !u!114 &8875638149624668865
@@ -982,19 +992,6 @@ MonoBehaviour:
   Player: {fileID: 0}
   WHandler: {fileID: 0}
   RecoilImpulse: {x: 0, y: 0}
---- !u!114 &262098576200730755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5926258509007519574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a89b4f3818f1124ab274d3543575458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkingThreshold: 0.1
 --- !u!114 &7710091920939830975
 MonoBehaviour:
   m_ObjectHideFlags: 0

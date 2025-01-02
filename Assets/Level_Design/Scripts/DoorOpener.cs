@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DoorOpener : MonoBehaviour
@@ -8,12 +6,14 @@ public class DoorOpener : MonoBehaviour
     [SerializeField] AudioClip openClip;
     [SerializeField] AudioClip closeClip;
 
-    AudioSource source;
+    [SerializeField] AudioSource source;
 
+
+    bool hasOpened = false;
     private void Start()
     {
 
-
+        if(!source) source =  gameObject.GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,19 +23,40 @@ public class DoorOpener : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && source != null)
+        if (other.CompareTag("Player") && hasOpened)
         {
-            source.clip = closeClip;
-            source.Play();
+            if (source) { 
+                source.clip = closeClip;
+                source.Play();
+            }
             anim.SetTrigger("Exit");
+            anim.ResetTrigger("Open");
+            hasOpened = false;
         }
     }
 
     public void OpenDoor()
     {
-        source = gameObject.AddComponent<AudioSource>();
-        source.clip = openClip;
-        source.Play();
+        if (source)
+        {
+            source.clip = openClip;
+            source.Play();
+        }    
         anim.SetTrigger("Open");
+        hasOpened = true;
+    }
+
+    public void OpenDoor(Transform transform)
+    {
+        //Debug.Log(transform);
+        //if (!transform.gameObject.GetComponent<WeaponHandler>().enabled) 
+        //{
+        //    return;
+        //}
+        if (hasOpened)
+        {
+            return;
+        }
+        OpenDoor();
     }
 }

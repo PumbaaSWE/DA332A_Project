@@ -1,5 +1,6 @@
 using System;
-
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -7,128 +8,264 @@ public class EnemyHealth : MonoBehaviour, IDamageble
 {
     public GameObject enemy;
 
-    public float deahtHealth = 1400;
+    public float health = 1000;
+    [SerializeField] float headShotDmgModifer = 1.2f;
     Animator animator;
     Ragdoll ragdoll;
     Regrow regrow;
-    [SerializeField] private float health;
-    [SerializeField] private float legHealth;
-    [SerializeField] private float maxHealth;
+    FSM_Walker fsm;
 
-    public Action<EnemyHealth, float> OnHealthChanged;
-    public Action<EnemyHealth> OnDeath;
+
+    private float leftLegHealth = 100f;
+    private float rightLegHealth = 100f;
+    private float leftArmHealth = 100f;
+    private float rightArmHealth = 100f;
+    private float headHealth = 100f;
+    private float limbHealth = 100f;
+
+    public Action<float> OnHealthChanged;
+    public Action OnDeath;
 
     public bool dead;
 
-    public float Value => health;
-    public float MaxHealth => maxHealth;
+    [SerializeField] private AudioSource dmgAudio;
+    [SerializeField] private List<AudioClip> dmgClips;
+    [SerializeField] private AudioClip deathClip;
 
+    [SerializeField] GameObject headblodParticle;
+    [SerializeField] GameObject rightArmblodParticle;
+    [SerializeField] GameObject leftArmblodParticle;
+    [SerializeField] GameObject rightLegblodParticle;
+    [SerializeField] GameObject leftLegblodParticle;
+
+    public GameObject damageEffectPrefab;
+
+    public List<GameObject> drops;
+
+    public List<DissolveEffect> dissolveEffects = new List<DissolveEffect>();
+
+    public Material objectMaterial;
+    public GameObject decalPrefab;
+    public int headParticales = 10;
+    Vector3 playerPos;
+    float destroyTime = 5f;
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+        fsm = GetComponent<FSM_Walker>();
+         animator = GetComponent<Animator>();
         regrow = GetComponent<Regrow>();
         ragdoll = GetComponent<Ragdoll>();
+       
     }
+
     private void Update()
     {
-        if (deahtHealth <= 0)
-        {
+        if (health <= 0)
+        {          
             Death();
+         
         }
 
     }
+  
+
     public void Death()
     {
-        ragdoll.TriggerRagdoll(new Vector3(1, 1, 1), new Vector3(0, 1, 0));
-        Destroy(enemy, 1.5f);
+        fsm.agentState = FSM_Walker.AgentState.Sleep;
+        if (dead) return;//code after does not need to run every frame while dead?
+
+
+
+        //ragdoll.TriggerRagdoll(new Vector3(0, 0.5f, 0), new Vector3(0, 0, 0));
+        Destroy(enemy, destroyTime);
+        ragdoll.state = Ragdoll.RagdollState.Ragdoll;
+        regrow.canRegrow = false;
+
+        dmgAudio.clip = deathClip;
+        if (!dmgAudio.isPlaying && !dead)
+        {
+            dmgAudio.Play();
+            dead = true;
+
+        }
+        foreach (var dis in dissolveEffects)
+        {
+            dis.death = true;
+        }
+
+        OnDeath?.Invoke();
+        dead = true;
     }
 
+    public void DropThing(Vector3 point, Quaternion rotation)
+    {
+        int randomIndex = UnityEngine.Random.Range(0, drops.Count);
+        Instantiate(drops[randomIndex], point, rotation);
+    }
+   
     public void TakeDamage(Vector3 point, Vector3 direction, float damage)
     {
-        deahtHealth -= damage;
+        OnHealthChanged?.Invoke(damage);
+
+        //Vector3 localPoint = transform.InverseTransformPoint(point);
+
+        //objectMaterial.SetVector("_ImpactPoint", new Vector4(localPoint.x, localPoint.y, localPoint.z, 1));
+        //objectMaterial.SetColor("_ImpactColor", Color.red);
+        //objectMaterial.SetFloat("_ImactRadius", 0.3f);
+
+
+
+        //StartCoroutine(ResetImpactEffect());
+
+        leftLegblodParticle.SetActive(false);
+        rightLegblodParticle.SetActive(false);
+        rightArmblodParticle.SetActive(false);
+        leftArmblodParticle.SetActive(false);
+        headblodParticle.SetActive(false);
+
+        Quaternion rotation = Quaternion.LookRotation(-direction);
+
+        Instantiate(damageEffectPrefab, point, rotation);
+       
+
+        health -= damage;
         Impact(direction, point);
         //Damage(damage);
         Detachable d = regrow.GetDetachable(point);
         if (d != null)
         {
-            if (d.leg)
+            if (d.leftLeg)
             {
-                legHealth -= damage;
+                leftLegHealth -= damage;
             }
-            else
+            else if(d.rightLeg)
             {
-                health -= damage;
+                rightLegHealth -= damage;
+            }
+            else if(d.rightArm) 
+            {
+                rightArmHealth -= damage;
+            }
+            else if(d.leftArm)
+            {
+                leftArmHealth -= damage;
+            }
+            else if(d.head)
+            {
+                headHealth -= damage ;
+                health -= (damage * headShotDmgModifer - damage);
+
             }
         }
+
+        
        
-       
-        if (legHealth <= 0)
+
+        if (leftLegHealth <= 0)
         {
+            leftLegblodParticle.SetActive(true);
+            LoseLimbSound();
             regrow.Hit(point);
-            //regrow.TriggerRegrow(point);
             if (d != null)
             {
-                if (d.leg)
+                if (d.leftLeg)
                 {
                     ragdoll.TriggerRagdoll(direction, point);
                 }
             }
-            legHealth = maxHealth;
-        }
-        else if (health <= 0)
-        {
-            regrow.Hit(point);
-            health = maxHealth;
-        }
-        // PlayHitAnimation(direction);
-        //Impact(direction, point);
-
-    }
-
-
-
-    public void Reset()
-    {
-        health = maxHealth;
-        dead = false;
-    }
-
-    public void Damage(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health -= amount;
-        if (health <= 0)
-        {
-            health = 0;
-            if (!dead)
+            if (regrow.canRegrow)
             {
-                dead = true;
-                OnDeath?.Invoke(this);
+                leftLegHealth = limbHealth;
             }
 
         }
-        OnHealthChanged?.Invoke(this, -amount);
-    }
-
-    public void Heal(float amount)
-    {
-        if (amount < 0)
-            return;
-
-        health += amount;
-
-        if (health > maxHealth)
+        else if(rightLegHealth <= 0)
         {
-            health = maxHealth;
+            rightLegblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            if (d != null)
+            {
+                if (d.leftLeg)
+                {
+                    ragdoll.TriggerRagdoll(direction, point);
+                }
+            }
+            if (regrow.canRegrow)
+            {
+                rightLegHealth = limbHealth;
+            }           
+          
         }
-        OnHealthChanged?.Invoke(this, amount);
-    }
+        else if (rightArmHealth <= 0)
+        {
+            rightArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            if (regrow.canRegrow)
+            {
+                rightArmHealth = limbHealth;
+            }
 
-    public void SetHealth(float health)
+            
+        }
+        else if (leftArmHealth <= 0)
+        {
+            leftArmblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            if (regrow.canRegrow)
+            {
+                leftArmHealth = limbHealth;
+            }
+          
+        }
+        else if (headHealth <= 0)
+        {
+            headblodParticle.SetActive(true);
+            LoseLimbSound();
+            regrow.Hit(point);
+            for (int i = 0; i < headParticales; i++)
+            {
+                DropThing(point, rotation);
+            }
+           
+         
+            if (regrow.canRegrow)
+            {
+                headHealth = limbHealth;
+            }
+        
+        }
+
+        if (health <= 0)
+        {
+            ragdoll.TriggerRagdoll(direction, point);
+            regrow.Hit(point);
+        }
+        //dmgAudio.clip = dmgClips[1];
+        //if (!dmgAudio.isPlaying)
+        //{
+        //    dmgAudio.Play();
+        //}
+
+        // PlayHitAnimation(direction);
+        //Impact(direction, point);
+
+
+    }
+    private IEnumerator ResetImpactEffect()
     {
-        this.health = health;
+        yield return new WaitForSeconds(2.5f);
+        objectMaterial.SetFloat("_ImpactRadius", 0.1f);
+    }
+    void LoseLimbSound()
+    {
+        dmgAudio.clip = dmgClips[0];
+        if (!dmgAudio.isPlaying)
+        {
+            dmgAudio.Play();
+        }
     }
 
 

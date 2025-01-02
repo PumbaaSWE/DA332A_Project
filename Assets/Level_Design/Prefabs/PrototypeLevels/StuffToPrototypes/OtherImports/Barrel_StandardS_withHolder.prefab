@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 644983211139389575}
   - component: {fileID: 1291008281697365613}
   - component: {fileID: 2544020699783827542}
+  - component: {fileID: 3981118650359183131}
   m_Layer: 0
   m_Name: Barrel_StandardS_withHolder
   m_TagString: Untagged
@@ -26,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6466974969786171963}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.479599, y: 1.6663439, z: -7.0352473}
-  m_LocalScale: {x: 0.85858, y: 0.94804406, z: 0.85858}
+  m_LocalScale: {x: 0.85858, y: 0.9710815, z: 0.85858}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6251395922380992206}
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ce59e8771fb1b864aa80c4f575896fcd, type: 2}
+  - {fileID: 2100000, guid: d11987eea4b7e57458049fadec0226e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,6 +85,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &3981118650359183131
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6466974969786171963}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35412878
+  m_Height: 1.9759793
+  m_Direction: 1
+  m_Center: {x: -8.1720606e-16, y: 0.21640164, z: -0.06455744}
 --- !u!1001 &6255322334132939762
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,6 +172,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23000011634599956, guid: 8d60ce487f563c24982c53e88f1dd5b4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d11987eea4b7e57458049fadec0226e2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

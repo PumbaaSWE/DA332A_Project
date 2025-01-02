@@ -15,6 +15,7 @@ public class Cheats : MonoBehaviour
 
     bool noclip;
     bool godMode;
+    bool cheat;
     float health;
 
     Color ambientLight;
@@ -32,6 +33,17 @@ public class Cheats : MonoBehaviour
     void Update()
     {
         if (Time.deltaTime == 0)
+            return;
+
+        Noclip(Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            cheat = !cheat;
+            TooltipUtil.Display("Cheats " + (cheat ? "enabled" : "disabled") + ", F12 to toggle.", 2f);
+        }
+
+        if (!cheat)
             return;
 
         if (Input.GetKeyDown(KeyCode.BackQuote))
@@ -57,8 +69,6 @@ public class Cheats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace))
             GotoMarker();
-
-        Noclip(Time.deltaTime);
     }
 
 

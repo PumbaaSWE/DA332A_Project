@@ -21,6 +21,7 @@ public class WeaponHandler : MonoBehaviour
     public UnityEvent OnReloadEnd;
 
     public int MaxGuns => maxGuns;
+    public bool CanPickup = true;
 
     private void Awake()
     {
@@ -46,23 +47,19 @@ public class WeaponHandler : MonoBehaviour
         foreach (Firearm gun in Guns)
             gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
 
-        if(EquippedGun) EquippedGun.Equip();
-
+        if (EquippedGun)
+            EquippedGun.Equip();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public void EquipGun()
+    public void EquipGun(Firearm gunToEquip)
     {
-        if (EquippedGun == null && Guns.Count > 0)
-        {
-            EquippedGun = Guns[0];
-            EquippedGun.Equip();
-        }
+        EquippedGun = gunToEquip;
+        EquippedGun.Equip();
     }
 
     public int TakeAmmo(Cartridgetype type, int ammoToTake)
@@ -146,7 +143,7 @@ public class WeaponHandler : MonoBehaviour
 
     public void CycleWeapons(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0)
+        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed && Guns.Count > 0 && Time.timeScale > 0)
             SwitchGun((Guns.IndexOf(EquippedGun) + 1) % Guns.Count);
     }
 
@@ -170,7 +167,7 @@ public class WeaponHandler : MonoBehaviour
     /// </summary>
     public void UnHideWeapons()
     {
-        if(EquippedGun)
+        if (EquippedGun)
             EquippedGun.Equip();
     }
 
@@ -180,8 +177,7 @@ public class WeaponHandler : MonoBehaviour
         {
             EquippedGun.Unequip(() =>
             {
-                Guns[gun].Equip();
-                EquippedGun = Guns[gun];
+                EquipGun(Guns[gun]);
                 OnSwitchEnd.Invoke();
             });
 
@@ -194,6 +190,9 @@ public class WeaponHandler : MonoBehaviour
         //if (Guns.Any(gun => newGun.name == gun.name))
         //    return false;
 
+        if (!CanPickup || Time.timeScale == 0)
+            return false;
+
         // If player has the same gun, grab the guns ammo
         if (HasGun(newGun.Id))
         {
@@ -201,61 +200,55 @@ public class WeaponHandler : MonoBehaviour
             return false;
         }
 
-        // Replace currently held gun
-        else if (Guns.Count == maxGuns)
+        Firearm gun = Instantiate(newGun.gameObject, FirearmRoot).GetComponent<Firearm>();
+        gun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
+        gun.LoadedAmmo = Mathf.Clamp(loadedAmmo, 0, gun.MagazineSize + Convert.ToInt32(gun.RoundInTheChamber));
+        gun.gameObject.SetActive(false);
+
+        // Replaces the current gun and drops it
+        if (Guns.Count == maxGuns)
+            DropGun(gun);
+
+        // Equip gun immediatly if player has no other guns
+        else if (Guns.Count == 0)
         {
-            int index = Guns.IndexOf(EquippedGun);
-
-            DropGun();
-
-            GameObject gun = Instantiate(newGun.gameObject, FirearmRoot);
-            Guns[index] = gun.GetComponent<Firearm>();
-            EquippedGun = Guns[index];
+            Guns.Add(gun);
+            EquipGun(gun);
         }
 
-        // Adds new gun
+        // Switch to new gun
         else
         {
-            GameObject gun = Instantiate(newGun.gameObject, FirearmRoot);
-
-            if (EquippedGun != null)
-                EquippedGun.gameObject.SetActive(false);
-
-            EquippedGun = gun.GetComponent<Firearm>();
-            Guns.Add(EquippedGun);
+            Guns.Add(gun);
+            SwitchGun(Guns.IndexOf(gun));
         }
 
-        EquippedGun.Set(this, GetComponent<RecoilHandler>(), GetComponent<MovementController>());
-        EquippedGun.Equip();
-        EquippedGun.LoadedAmmo = Mathf.Clamp(loadedAmmo, 0, EquippedGun.MagazineSize + Convert.ToInt32(EquippedGun.RoundInTheChamber));
         return true;
     }
 
     public void Shoot(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
         {
             EquippedGun.Shoot(context);
-            OnShoot.Invoke();
-            ////////////////////////////HearingManager.Instance.OnSoundEmitted(gameObject, transform.position, HearingManager.EHeardSoundCategory.EGunshot, 50.0f);
         }
     }
 
     public void AimDownSights(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
             EquippedGun.AimDownSights(context);
     }
 
     public void ToggleFireMode(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
             EquippedGun.ToggleFireMode(context);
     }
 
     public void Reload(CallbackContext context)
     {
-        if (EquippedGun != null)
+        if (EquippedGun != null && Time.timeScale > 0)
         {
             EquippedGun.Reload(context);
             OnReloadStart.Invoke();
@@ -272,14 +265,51 @@ public class WeaponHandler : MonoBehaviour
 
     void DropGun()
     {
-        GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
-        droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
-        Destroy(EquippedGun.gameObject);
+        EquippedGun.Unequip(() =>
+        {
+            GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+            droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
+            Destroy(EquippedGun.gameObject);
+        });
+    }
+
+    void DropGun(Firearm newGun)
+    {
+        EquippedGun.Unequip(() =>
+        {
+            GameObject droppedGun = Instantiate(EquippedGun.DropPrefab, FirearmRoot.position + FirearmRoot.forward, Quaternion.identity);
+            droppedGun.GetComponent<FirearmPickUp>().LoadedAmmo = EquippedGun.LoadedAmmo;
+            Guns[Guns.IndexOf(EquippedGun)] = newGun;
+            Destroy(EquippedGun.gameObject);
+            EquipGun(newGun);
+        });
+    }
+
+    public bool HasGun()
+    {
+        return Guns.Count > 0;
     }
 
     public bool HasGun(int id)
     {
         return Guns.Any(x => x.Id == id);
+    }
+
+    public void SetCanFire(bool newValue)
+    {
+        if (EquippedGun != null)
+            EquippedGun.SetCanFire(Convert.ToInt32(newValue));
+    }
+
+    public void SetCanAds(bool newValue)
+    {
+        if (EquippedGun != null)
+            EquippedGun.SetCanFire(Convert.ToInt32(newValue));
+    }
+
+    public void SetCanPickup(bool newValue)
+    {
+        CanPickup = newValue;
     }
 }
 

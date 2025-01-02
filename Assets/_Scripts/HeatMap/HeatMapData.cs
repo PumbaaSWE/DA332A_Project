@@ -19,6 +19,8 @@ public class HeatMapData : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Data Tracking Started");
+
         InvokeRepeating("RecordData", 0f, 1f);
     }
 
@@ -30,6 +32,8 @@ public class HeatMapData : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveDataToJson();
+
+        Debug.Log("Saved");
     }
 
     void RecordData()
@@ -43,11 +47,15 @@ public class HeatMapData : MonoBehaviour
         };
 
         dataContainers.Add(container);
+
+        Debug.Log("Data saved: " + container.playerPos);
     }
 
     private void SaveDataToJson()
     {
+
         string json = JsonUtility.ToJson(new Wrapper(dataContainers), true);
+        Debug.Log(json + " Json stored");
 
         File.WriteAllText(Path.GetDirectoryName(Application.dataPath) 
             + "/Logs/HeatMapSessionData/" + DateTime.Now.ToString("yyyy-MM-dd_HH;mm;ss") + ".json", json);

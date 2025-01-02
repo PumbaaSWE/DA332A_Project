@@ -23,6 +23,7 @@ public class ClimbController : MonoBehaviour
     [SerializeField] float radius;
     [Tooltip("Which layers will the player collide with?")]
     [SerializeField] LayerMask collideWith;
+    [SerializeField] LayerMask climbOn;
     [Tooltip("To prevent float point errors, keep a low value (< 0.1) or it will behave weirdly")]
     [SerializeField] float skinWidth;
     [Tooltip("Max amount of iterations when collision checks and bouncing off walls")]
@@ -42,6 +43,7 @@ public class ClimbController : MonoBehaviour
 
     public float Radius => radius;
     public float CamOffset => camOffset;
+    public float MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
 
     // inputs
     Vector2 look;
@@ -60,6 +62,12 @@ public class ClimbController : MonoBehaviour
 
     void Update()
     {
+        if (Time.deltaTime == 0)
+        {
+            look = Vector2.zero;
+            return;
+        }
+
         cc.radius = radius;
         cc.height = radius * 2;
         cc.center = Vector3.zero;
@@ -185,8 +193,11 @@ public class ClimbController : MonoBehaviour
             if (Vector3.Distance(transform.up, head.up) > 0.1f)
                 return snap;
 
-            SetUp(hit.normal);
-            velocity = transform.forward * fwdVel + transform.right * rghVel;
+            if (climbOn.Contains(hit.transform.gameObject.layer))
+            {
+                SetUp(hit.normal);
+                velocity = transform.forward * fwdVel + transform.right * rghVel;
+            }
 
             return snap + CollideAndRotate(velocity * leftOver.magnitude, pos + snap, depth + 1, dt);
         }

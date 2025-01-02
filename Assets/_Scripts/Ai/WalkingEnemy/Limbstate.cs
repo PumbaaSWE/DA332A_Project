@@ -18,9 +18,8 @@ public class Limbstate : MonoBehaviour
     int layerIndexNoHead = 5;
 
     public bool standing;
-
     public bool noHead;
-
+ 
 
     private void Awake()
     {
@@ -95,7 +94,6 @@ public class Limbstate : MonoBehaviour
         {
             SetNoHeadLayerActive(true);
             animator.speed = 0.5f;
-            Debug.Log("no head");
             //animator.SetFloat("LayerSpeed", 0.5f);
             //animator.SetFloat("velx", 0.5f);
         }
@@ -157,14 +155,29 @@ public class Limbstate : MonoBehaviour
 
     void CrawlBehavior()
     {
-      
+        fsm.canAttakRun = false;
+        
         standing = false;
         SetLayerActive(true);
         fsm.HandleCrawling();
+
+        fsm.nrOfAttacks = 2;
+
+        //if (fsm.agentState == FSM_Walker.AgentState.Attacking)
+        //{
+        //    animator.SetLayerWeight(6, 1);
+        //    animator.SetBool("Charge", true);
+        //}
+        //else
+        //{
+        //    animator.SetLayerWeight(6, 0);
+        //    animator.SetBool("Charge", false);
+        //}
     }
 
     void ArmAndLegBehavior()
     {
+        fsm.canAttakRun = false;
         standing = false;
         //fsm.agentState = FSM_Walker.AgentState.Sleep;
 
@@ -174,6 +187,7 @@ public class Limbstate : MonoBehaviour
     }
     void ArmBehavior()
     {
+        fsm.canAttakRun = false;
         fsm.nrOfAttacks = 3;
         //if (!standing)
         //{
@@ -203,7 +217,21 @@ public class Limbstate : MonoBehaviour
 
     void CheckStanding()
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Standing Up")  )
+        if (rag.state != Ragdoll.RagdollState.Default)
+        {
+            limbStatehit = AgentHit.Crawl;
+            standing = false;
+            return;
+        }
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Standing Up") && stateInfo.normalizedTime < 1f)
+        {
+            standing = false;
+            return;
+        }
+
+        if (!stateInfo.IsName("Standing Up"))
         {
             standing = true;
             fsm.sleep = false;
@@ -211,8 +239,10 @@ public class Limbstate : MonoBehaviour
             fsm.agentState = FSM_Walker.AgentState.Idle;
         }
     }
+
     void Normal()
     {
+        fsm.canAttakRun = true;
         fsm.nrOfAttacks = 1;
         if (!standing)
         {

@@ -84,12 +84,13 @@ public class NonphysController : MovementController
     public float CamOffset => camOffset;
     public float MaxStamina => maxStamina;
     public float Stamina => stamina;
-    public float MouseSensitivity => mouseSensitivity;
+    public float MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
     public bool Grounded => grounded;
     public float Speed => speed;
     public float MaxSpeed => maxSprintSpeed;
     public bool IsSprinting { get; private set; }
     public float VerticalVelocity => velocity.y;
+    public CapsuleCollider Collider => cc;
 
     // inputs
     Vector2 look;
@@ -200,26 +201,35 @@ public class NonphysController : MovementController
 
         IsSprinting = false;
 
-        if (isCrouched)
+        if (grounded)
         {
-            float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
-        }
-        else if (wh.IsAds())
-        {
-            maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, 1 - wh.GetAdsProcentage());
-        }
-        else if (sprint)
-        {
-            float staminaToRemove = sprintCost * dt;
-            if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.IsFiring())
+            if (isCrouched)
             {
-                // deplete stamina
-                stamina -= staminaToRemove;
+                float t = Mathf.InverseLerp(crouchHeight, height, cc.height);
+                maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, t);
+            }
+            else if (wh.IsAds())
+            {
+                maxSpeed = Mathf.Lerp(maxCrouchSpeed, maxWalkSpeed, 1 - wh.GetAdsProcentage());
+            }
+            else if (sprint)
+            {
+                float staminaToRemove = sprintCost * dt;
+                if (forwardSpeed > 0 && stamina >= staminaToRemove && !wh.IsFiring())
+                {
+                    // deplete stamina
+                    stamina -= staminaToRemove;
 
-                maxSpeed = maxSprintSpeed;
-                IsSprinting = true;
+                    maxSpeed = maxSprintSpeed;
+                    IsSprinting = true;
+                }
             }
         }
+        else
+        {
+            maxSpeed = Mathf.Max(speedWhenJump, maxSpeed);
+        }
+        
 
         // Apply drag
         Vector3 velocityInGroundPlane = velocity.WithY();
@@ -239,7 +249,7 @@ public class NonphysController : MovementController
 
         float acceleration = this.acceleration;
         if (sprint && Vector3.Dot(wishDir, transform.forward) > 0)
-            acceleration *= maxSprintSpeed / maxWalkSpeed;
+            acceleration *= maxSpeed / maxWalkSpeed;
 
         Vector3 deltaVel = wishDir * acceleration * dt;
 
@@ -500,6 +510,8 @@ public class NonphysController : MovementController
         Blackboard.Instance.Set("hasCrouched", true);
     }
 
+    float speedWhenJump;
+
     public void Jump(CallbackContext c)
     {
         if (!enabled)
@@ -519,6 +531,7 @@ public class NonphysController : MovementController
         if (jumpHeight != 0)
             jumpVel = Mathf.Sqrt(2 * gravity * jumpHeight);
 
+        speedWhenJump = velocity.WithY(0).magnitude;
         velocity = velocity.WithY(jumpVel);
         jump = true;
     }

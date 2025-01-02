@@ -33,9 +33,9 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
     public void PlayVoiceLine(VoicelineData voiceline)
     {
         if(voiceline)
-            PlayVoiceLine(voiceline.audioClip, voiceline.subtitle, voiceline.time, voiceline.color);
+            PlayVoiceLine(voiceline.audioClip, voiceline.subtitles, voiceline.time, voiceline.color);
     }
-    public void PlayVoiceLine(AudioClip clip, string subtitleText, float overrideTime, Color subtitleColor)
+    public void PlayVoiceLine(AudioClip clip, string[] subtitleText, float overrideTime, Color subtitleColor)
     {
         //this.voiceline = voiceline;
         source.clip = clip;
@@ -47,7 +47,7 @@ public class SimpleVoiceManager : Singleton<SimpleVoiceManager>
         {
             SubtitleData subtitle = new()
             {
-                text = subtitleText,
+                text = subtitleText[0],
                 time = clipLength,
                 color = subtitleColor
             };
