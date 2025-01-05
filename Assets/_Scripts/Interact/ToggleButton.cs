@@ -6,7 +6,16 @@ public class ToggleButton : MonoBehaviour, IInteractable
     public string toolTipOn = "Press {0} to turn off";
     public string toolTipOff = "Press {0} to turn on";
     private string tooltip = "";
-    public bool isOn;
+    [SerializeField] private bool isOn;
+
+
+    public bool IsOn
+    {
+        get { return isOn; }
+        set { isOn = value;
+            tooltip = isOn ? toolTipOn : toolTipOff;
+        }
+    }
 
     public UnityEvent<Transform> OnTurnOn;
     public UnityEvent<Transform> OnTurnOff;
@@ -24,8 +33,7 @@ public class ToggleButton : MonoBehaviour, IInteractable
 
     public void Interact(Transform interactor)
     {
-        isOn = !isOn;
-        tooltip = isOn ? toolTipOn : toolTipOff;
+        IsOn = !IsOn;
         if (isOn)
         {
             OnTurnOn?.Invoke(interactor);
