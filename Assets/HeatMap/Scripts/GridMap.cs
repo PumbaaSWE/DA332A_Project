@@ -9,7 +9,11 @@ public class GridMap
     private float cellSize;
     private int[,] grid;
 
-    Vector3 origin;
+    private Vector3 origin;
+
+    public int Width { get => width; set => width = value; }
+    public int Height { get => height; set => height = value; }
+    public float CellSize { get => cellSize; set => cellSize = value; }
 
     public GridMap(int width, int height, float cellSize, Vector3 origin)
     {
@@ -67,7 +71,7 @@ public class GridMap
         return GetValue(x, y);
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, 0, y) * cellSize + origin;
     }
