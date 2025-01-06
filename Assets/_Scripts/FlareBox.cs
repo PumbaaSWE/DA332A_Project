@@ -31,7 +31,7 @@ public class FlareBox : MonoBehaviour, IInteractable
         if (obj.TryGetComponent(out FlareThrower flareThrower)) {
             if (flareThrower.NumFlares >= flareThrower.MaxNumFlares)
             {
-                InteractedTooltip = "Lol nope...";
+                InteractedTooltip = "You have to many flares";
                 return;
             }
             flareThrower.NumFlares += 5;
