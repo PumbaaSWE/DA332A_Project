@@ -9,6 +9,7 @@ public class HeatMapMesh : MonoBehaviour
 {
     GridMap grid;
     Mesh mesh;
+    //Material mat;
 
     public GridMap Grid { get => grid; set => grid = value; }
 
@@ -16,12 +17,14 @@ public class HeatMapMesh : MonoBehaviour
     {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        
     }
 
     public void UpdateGridMesh(GridMap grid)
     {
         this.grid = grid;
-        grid.SetValue(1, 1, 90);
+        //grid.AddValue(1, 1, 10);
+        //grid.SetValue(1, 1, 90);
         UpdateMesh();
 
         grid.OnGridValueChanged += Grid_OnGridValueChanged;

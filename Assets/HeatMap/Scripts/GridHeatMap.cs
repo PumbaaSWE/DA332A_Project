@@ -2,21 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using static HeatMapDataJson;
 
 public class GridHeatMap : MonoBehaviour
 {
+    public string selectedFilePath = "";
+
     [SerializeField] int width;
     [SerializeField] int height;
     [SerializeField] float cellSize;
 
-    public string selectedFilePath = "";
+    [SerializeField] bool ShowNumbersAndBoxes;
 
+    GridMap gridMap;
     [SerializeField] HeatMapMesh heatMapMesh;
+
+    //[SerializeField] Transform testPos;
+    public TextAsset file;
+    DataContainer[] data;
 
     // Start is called before the first frame update
     void Start()
     {
-        GridMap gridMap = new GridMap(width, height, cellSize, transform.position);
+        string fileString = file.text;
+        data = JsonUtility.FromJson<Wrapper>(fileString).dataContainers;
+        //data = JsonUtility.FromJson<Wrapper>(selectedFilePath).dataContainers;
+
+        gridMap = new GridMap(width, height, cellSize, transform.position);
+
+        foreach (DataContainer position in data)
+        {
+            gridMap.AddValue(position.playerPos, 25);
+        }
+
+        if (ShowNumbersAndBoxes)
+            gridMap.DrawDebug();
+
         heatMapMesh.UpdateGridMesh(gridMap);
     }
 
