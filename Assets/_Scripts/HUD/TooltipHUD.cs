@@ -112,6 +112,7 @@ public class TooltipHUD : MonoBehaviour
                 QueueText(text, time);
             }
         }
+       // Debug.Log("HUD:" + text);
     }
 
     // Update is called once per frame

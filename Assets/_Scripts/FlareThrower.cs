@@ -105,6 +105,7 @@ public class FlareThrower : MonoBehaviour
         if (!hasThrownFlare && numFlares > 0)
         {
             TooltipUtil.Display("Press " + key + " to trow flare!", 5);
+           // Debug.Log("Flaresesedfg");
             hasThrownFlare = true;
         }
     }
