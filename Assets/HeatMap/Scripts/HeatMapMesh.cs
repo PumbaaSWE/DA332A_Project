@@ -21,6 +21,14 @@ public class HeatMapMesh : MonoBehaviour
     public void UpdateGridMesh(GridMap grid)
     {
         this.grid = grid;
+        grid.SetValue(1, 1, 90);
+        UpdateMesh();
+
+        grid.OnGridValueChanged += Grid_OnGridValueChanged;
+    }
+
+    private void Grid_OnGridValueChanged(object sender, GridMap.OnGridValueChangedEventArgs e)
+    {
         UpdateMesh();
     }
 
@@ -36,10 +44,15 @@ public class HeatMapMesh : MonoBehaviour
         {
             for (int y = 0; y < grid.Height; y++)
             {
-                int i = x * grid.Width + y;
-                Vector3 quadSize = new Vector3(1, 1) * grid.CellSize;
+                int i = x * grid.Height + y;
+                //0.99f for z axis alignment purposes
+                Vector3 quadSize = new Vector3(1, 1, 0.99f) * grid.CellSize;
 
-                AddToMeshArrays(vertices, uv, triangles, i, grid.GetWorldPosition(x,y), 0f, quadSize, Vector2.zero, Vector2.zero);
+                int gridValue = grid.GetValue(x, y);
+                float gridValueNormalized = (float)gridValue / 100;
+                Vector2 uvValue = new Vector2(gridValueNormalized, 0f);
+
+                AddToMeshArrays(vertices, uv, triangles, i, grid.GetWorldPosition(x,y) + quadSize * 0.5f, 0f, quadSize, uvValue, uvValue);
             }
         }
 
@@ -88,7 +101,7 @@ public class HeatMapMesh : MonoBehaviour
         bool skewed = baseSize.x != baseSize.z;
         if (skewed)
         {
-            // Here, the rotation and positioning are along XZ, so we keep y = 0
+            // Here, the rotation and positioning are along XZ, so y = 0
             vertices[vIndex0] = pos + GetQuaternionEuler(rot) * new Vector3(-baseSize.x, 0f, baseSize.y);
             vertices[vIndex1] = pos + GetQuaternionEuler(rot) * new Vector3(-baseSize.x, 0f, -baseSize.y);
             vertices[vIndex2] = pos + GetQuaternionEuler(rot) * new Vector3(baseSize.x, 0f, -baseSize.y);
@@ -96,7 +109,7 @@ public class HeatMapMesh : MonoBehaviour
         }
         else
         {
-            // The same logic here: vertices placed on the XZ plane
+            //Vertices placed on the XZ plane
             vertices[vIndex0] = pos + GetQuaternionEuler(rot - 270) * new Vector3(baseSize.x, 0f, baseSize.y);
             vertices[vIndex1] = pos + GetQuaternionEuler(rot - 180) * new Vector3(baseSize.x, 0f, baseSize.y);
             vertices[vIndex2] = pos + GetQuaternionEuler(rot - 90) * new Vector3(baseSize.x, 0f, baseSize.y);

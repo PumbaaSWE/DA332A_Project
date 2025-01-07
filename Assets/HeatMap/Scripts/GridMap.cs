@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,13 @@ public class GridMap
     private int[,] grid;
 
     private Vector3 origin;
+
+    public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
+    public class OnGridValueChangedEventArgs : EventArgs
+    {
+        public int x;
+        public int y;
+    }
 
     public int Width { get => width; set => width = value; }
     public int Height { get => height; set => height = value; }
@@ -46,7 +54,13 @@ public class GridMap
     public void SetValue(int x, int y, int value)
     {
         if(x >= 0 && y >= 0 && x < width && y < height)
+        {
             grid[x, y] = value;
+            if(OnGridValueChanged != null)
+                OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, y = y });
+        }
+            
+
     }
 
     public void SetValue(Vector3 worldPosition, int value)
