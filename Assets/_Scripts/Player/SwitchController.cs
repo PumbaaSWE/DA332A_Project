@@ -12,7 +12,7 @@ public class SwitchController : MonoBehaviour
 
     ClimbController ClimbController;
     NonphysController NonphysController;
-    CapsuleCollider CapsuleCollider;
+    CharacterController CapsuleCollider;
     WeaponHandler WeaponHandler;
     Firearm _equippedGun;
 
@@ -67,7 +67,7 @@ public class SwitchController : MonoBehaviour
     {
         ClimbController = GetComponent<ClimbController>();
         NonphysController = GetComponent<NonphysController>();
-        CapsuleCollider = GetComponent<CapsuleCollider>();
+        CapsuleCollider = GetComponent<CharacterController>();
         WeaponHandler = GetComponent<WeaponHandler>();
     }
 
