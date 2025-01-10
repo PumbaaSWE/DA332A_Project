@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using static UnityEngine.InputSystem.InputAction;
 
 public class ClimbController : MonoBehaviour
@@ -50,14 +51,14 @@ public class ClimbController : MonoBehaviour
     Vector2 move;
 
     // components
-    CapsuleCollider cc;
+    CharacterController cc;
 
     float xRot;
     bool wasGrounded;
 
     void Start()
     {
-        cc = GetComponent<CapsuleCollider>();
+        cc = GetComponent<CharacterController>();
     }
 
     void Update()
@@ -103,10 +104,11 @@ public class ClimbController : MonoBehaviour
         if (grounded)
         {
             SetUp(hit.normal);
-            transform.position = hit.point + transform.up * radius;
+            //cc.SimpleMove(hit.point + transform.up * radius - transform.position);
+            //transform.position = hit.point + transform.up * radius;
         }
 
-        return grounded;
+        return grounded || cc.isGrounded;
     }
 
     float rTime;
@@ -152,22 +154,61 @@ public class ClimbController : MonoBehaviour
         deltaVel = deltaVel.normalized * Mathf.Min(deltaVel.magnitude, Mathf.Max(0, maxSpeed - Vector3.Dot(velocity, deltaVel.normalized)));
         velocity += deltaVel;
 
-        if (!wasGrounded && grounded)
-            velocity = horizontalVelocity;
+        //if (!wasGrounded && grounded)
+        //    velocity = horizontalVelocity;
 
         // Apply gravity
-        if (!grounded)
-            velocity += Vector3.down * gravity * dt;
+        //if (!grounded)
+            velocity -= transform.up * gravity * dt;
 
-        // Collide and slide algorithm
-        Vector3 deltaPos = CollideAndRotate(velocity * dt, transform.position, 0, dt);
-        speed = velocity.magnitude;
+        cc.Move(velocity * dt);
 
         if (grounded)
             velocity = Vector3.ProjectOnPlane(velocity, transform.up);
 
+        if (Vector3.Distance(transform.up, head.up) <= 0.1f && (cc.collisionFlags & CollisionFlags.Sides) != 0)
+        {
+            //print("Touching sides!");
+            if (Vector3.Dot(velocity, head.forward) > 0)
+            {
+                //print("Walking forwards!");
+
+                if (Physics.SphereCast(transform.position, radius / 2f, velocity, out RaycastHit hitInfo, 1, climbOn))
+                {
+                    Debug.DrawLine(transform.position, transform.position + transform.forward * radius / 2f);
+                    Debug.DrawLine(transform.position, transform.position - transform.forward * radius / 2f);
+                    Debug.DrawLine(transform.position, transform.position + transform.right * radius / 2f);
+                    Debug.DrawLine(transform.position, transform.position - transform.right * radius / 2f);
+                    Debug.DrawLine(transform.position, transform.position + transform.up * radius / 2f);
+                    Debug.DrawLine(transform.position, transform.position - transform.up * radius / 2f);
+
+                    Vector3 hitPos = transform.position + velocity.normalized * hitInfo.distance;
+                    Debug.DrawLine(hitPos, hitPos + transform.forward * radius / 2f, Color.red);
+                    Debug.DrawLine(hitPos, hitPos - transform.forward * radius / 2f, Color.red);
+                    Debug.DrawLine(hitPos, hitPos + transform.right * radius / 2f, Color.red);
+                    Debug.DrawLine(hitPos, hitPos - transform.right * radius / 2f, Color.red);
+                    Debug.DrawLine(hitPos, hitPos + transform.up * radius / 2f, Color.red);
+                    Debug.DrawLine(hitPos, hitPos - transform.up * radius / 2f, Color.red);
+
+                    Debug.DrawRay(transform.position, velocity, Color.green);
+
+                    float fwdVel = Vector3.Dot(velocity, transform.forward);
+                    float rghVel = Vector3.Dot(velocity, transform.right);
+                    SetUp(hitInfo.normal);
+                    //velocity = Vector3.zero;
+                }
+            }
+        }
+
+        // Collide and slide algorithm
+        //Vector3 deltaPos = CollideAndRotate(velocity * dt, transform.position, 0, dt);
+        speed = velocity.magnitude;
+
+        //if (grounded)
+        //    velocity = Vector3.ProjectOnPlane(velocity, transform.up);
+
         // Set position
-        transform.position += deltaPos;
+        //transform.position += deltaPos;
     }
 
     Vector3 CollideAndRotate(Vector3 vel, Vector3 pos, int depth, float dt)
@@ -268,11 +309,12 @@ public class ClimbController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!enabled) return;
         if (!drawGizmos) return;
 
         if (cc == null)
         {
-            if (TryGetComponent(out CapsuleCollider c))
+            if (TryGetComponent(out CharacterController c))
                 cc = c;
             else
                 return;
@@ -282,7 +324,10 @@ public class ClimbController : MonoBehaviour
         Gizmos.DrawRay(head.position, head.forward);
 
         // IsGrounded
-        Gizmos.color = grounded ? Color.green : Color.red;
-        Gizmos.DrawWireSphere(transform.position - transform.up * distDiff, cc.radius + radiusDiff);
+        //Gizmos.color = grounded ? Color.green : Color.red;
+        //Gizmos.DrawWireSphere(transform.position - transform.up * distDiff, cc.radius + radiusDiff);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

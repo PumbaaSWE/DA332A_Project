@@ -335,7 +335,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5859507764126998225}
-  - component: {fileID: 6299688046846445486}
   - component: {fileID: 2071079050409164412}
   - component: {fileID: 7917173091721853720}
   - component: {fileID: 3353234815097919807}
@@ -356,6 +355,7 @@ GameObject:
   - component: {fileID: -1855847554356268370}
   - component: {fileID: 3808755127350680896}
   - component: {fileID: 3707336147806779300}
+  - component: {fileID: 7374339485065830390}
   m_Layer: 17
   m_Name: ClimbPlayerNoGun
   m_TagString: Player
@@ -380,29 +380,6 @@ Transform:
   - {fileID: 2201882714072579114}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6299688046846445486
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6149285530546776101}
-  m_Material: {fileID: 13400000, guid: 57c5a495aa0fde14985b92e52d91a344, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.85
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.925, z: 0}
 --- !u!114 &2071079050409164412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1190,6 +1167,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!143 &7374339485065830390
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149285530546776101}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 724032
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6154431561771674596
 GameObject:
   m_ObjectHideFlags: 0

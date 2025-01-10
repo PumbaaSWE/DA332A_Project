@@ -90,7 +90,7 @@ public class NonphysController : MovementController
     public float MaxSpeed => maxSprintSpeed;
     public bool IsSprinting { get; private set; }
     public float VerticalVelocity => velocity.y;
-    public CapsuleCollider Collider => cc;
+    public CharacterController Collider => cc;
 
     // inputs
     Vector2 look;
@@ -100,8 +100,7 @@ public class NonphysController : MovementController
     bool jump;
 
     // components
-    CapsuleCollider cc;
-    PlayerCamera pc;
+    CharacterController cc;
     WeaponHandler wh;
 
     // misc member variables
@@ -110,12 +109,11 @@ public class NonphysController : MovementController
     float xRot;
     float prevStamina;
     float rechargeTimer;
-    Vector3 groundNormal;
+    //Vector3 groundNormal;
 
     void Start()
     {
-        cc = GetComponent<CapsuleCollider>();
-        pc = GetComponent<PlayerCamera>();
+        cc = GetComponent<CharacterController>();
         wh = GetComponent<WeaponHandler>();
 
         cc.center = Vector3.up * Height / 2f;
@@ -165,14 +163,15 @@ public class NonphysController : MovementController
 
     bool IsGrounded()
     {
+        return cc.isGrounded;
         float r = cc.radius;
         float halfHeight = cc.height / 2;
         bool grounded = Physics.SphereCast(transform.position + Vector3.up * halfHeight, r + radiusDiff, Vector3.down, out RaycastHit hit, halfHeight - r + distDiff, collideWith, QueryTriggerInteraction.Ignore);
+        //return grounded;
+        //groundNormal = hit.normal;
 
-        groundNormal = hit.normal;
-
-        if (grounded)
-            return Vector3.Angle(hit.normal, Vector3.up) <= slopeAngle;
+        //if (grounded)
+        //    return Vector3.Angle(hit.normal, Vector3.up) <= slopeAngle;
 
         return false;
     }
@@ -234,8 +233,8 @@ public class NonphysController : MovementController
         // Apply drag
         Vector3 velocityInGroundPlane = velocity.WithY();
 
-        if (grounded)
-            velocityInGroundPlane = Vector3.ProjectOnPlane(velocity, groundNormal);
+        //if (grounded)
+        //    velocityInGroundPlane = Vector3.ProjectOnPlane(velocity, groundNormal);
 
         Vector3 dragForce = -velocityInGroundPlane * drag * dt;
 
@@ -261,10 +260,10 @@ public class NonphysController : MovementController
             velocity = velocity.WithY();
 
         // Apply gravity
-        if (!grounded)
-            velocity += Vector3.down * gravity * dt;
-        else if (!jump)
-            velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude; // Slope stuff
+        //if (!grounded)
+        velocity += Vector3.down * gravity * dt;
+        //else if (!jump)
+        //    velocity = Vector3.ProjectOnPlane(velocity, groundNormal).normalized * velocity.magnitude;
 
         // FOV (will probably change this later depending on which other system interact with FOV)
         //if (forwardSpeed >= maxWalkSpeed)
@@ -284,13 +283,17 @@ public class NonphysController : MovementController
 
         // Collide and slide algorithm
         float velY = velocity.y;
-        Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0, dt);
-        velocity = deltaPos / dt;
+        //Vector3 deltaPos = CollideAndSlide(velocity * dt, transform.position, 0, dt);
+        //velocity = deltaPos / dt;
         velocity.y = Mathf.Min(velocity.y, velY); // Otherwise we might slide up alot in the air. For example if we jump and hit a corner, not very grounded!
         speed = velocity.WithY().magnitude;
 
         // Set position
-        transform.position += deltaPos;
+        //transform.position += deltaPos;
+        cc.Move(velocity * dt);
+
+        if (grounded && velocity.y <= 0)
+            velocity = Vector3.ProjectOnPlane(velocity, transform.up);
 
         jump = false;
     }
@@ -310,7 +313,7 @@ public class NonphysController : MovementController
 
             if (!hitHead)
             {
-                cc.height = Mathf.Min(cc.height + crouchSpeed * Time.deltaTime, height);
+                cc.height = Mathf.Min(cc.height + crouchSpeed * dt, height);
                 cc.center = Vector3.up * cc.height / 2f;
             }
         }
@@ -405,11 +408,12 @@ public class NonphysController : MovementController
 
     private void OnDrawGizmos()
     {
+        if (!enabled) return;
         if (!drawGizmos) return;
 
         if (cc == null)
         {
-            if (TryGetComponent(out CapsuleCollider c))
+            if (TryGetComponent(out CharacterController c))
                 cc = c;
             else
                 return;
