@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridMap
@@ -37,6 +38,20 @@ public class GridMap
     {
         x = Mathf.FloorToInt((worldPosition - origin).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - origin).z / cellSize);
+    }
+
+    public void ScaleData(int targetMax, int targetMin)
+    {
+        int min = grid.Cast<int>().Min();
+        int max = grid.Cast<int>().Max();
+
+        for (int x = 0; x < grid.GetLength(0); x++)
+        {
+            for (int y = 0; y < grid.GetLength(0); y++)
+            {
+                grid[x, y] = (int)(((grid[x, y] - min) / (double)(max - min)) * (targetMax - targetMin) + targetMin);
+            }
+        }
     }
 
     public void SetValue(int x, int y, int value)
