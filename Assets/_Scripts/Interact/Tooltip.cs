@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public static class TooltipUtil
 {
@@ -13,5 +14,6 @@ public static class TooltipUtil
     public static void Display(string tip, float time)
     {
         OnTimedTooltip?.Invoke(tip, time);
+       // Debug.Log("Tooltip:" + tip + " for " + time);
     }
 }
