@@ -47,7 +47,7 @@ public class GridMap
 
         for (int x = 0; x < grid.GetLength(0); x++)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
                 grid[x, y] = (int)(((grid[x, y] - min) / (double)(max - min)) * (targetMax - targetMin) + targetMin);
             }
@@ -107,7 +107,7 @@ public class GridMap
     {
         for (int x = 0; x < grid.GetLength(0); x++)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < grid.GetLength(1); y++)
             {
                 DisplayTextOnWorld(null, grid[x, y].ToString(), GetWorldPosition(x, y) + new Vector3(cellSize, 0, cellSize) * 0.5f, 20, Color.white, TextAnchor.MiddleCenter, TextAlignment.Left, 5000);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 1000f);
