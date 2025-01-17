@@ -4,6 +4,8 @@ public class TestSaveSystem : MonoBehaviour
 {
     //public LevelOrderData levelOrderData;
 
+    bool enabledLoading = false;
+
     [MakeButton(false)]
     public void LoadLevel(int i)
     {
@@ -37,7 +39,12 @@ public class TestSaveSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            enabledLoading = !enabledLoading;
+            TooltipUtil.Display(enabledLoading ? "Loading maps enabled" : "Loading maps disabled", 1f);
+        }
+        if (enabledLoading)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
