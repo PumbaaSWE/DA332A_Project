@@ -13,10 +13,12 @@ public class HeatMapDataJson : MonoBehaviour
     float timeStamp;
     string folderName;
     string levelName;
+    
 
     private void Awake()
     {
         dataContainers = new List<DataContainer>();
+        levelName = this.gameObject.name;
     }
 
     void Start()
@@ -26,7 +28,8 @@ public class HeatMapDataJson : MonoBehaviour
         InvokeRepeating("RecordData", 0f, 0.125f);
         folderName = DateTime.Now.ToString("yyyy-MM-dd_HH;mm;ss");
         FolderCreator.CreateNewFolder(folderName);
-        levelName = "Level0"; //make this to read from Scene Level name
+        //levelName = "Level0"; //make this to read from Scene Level name
+        
     }
 
     void Update()
