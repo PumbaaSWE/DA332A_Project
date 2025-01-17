@@ -69,6 +69,27 @@ public class Cheats : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace))
             GotoMarker();
+
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+        {
+            noclipSpeed -= 1;
+            TooltipUtil.Display("Noclip speed: " + noclipSpeed, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        {
+            noclipSpeed += 1;
+            TooltipUtil.Display("Noclip speed: " + noclipSpeed, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadDivide))
+        {
+            noclipSpeed /= 2;
+            TooltipUtil.Display("Noclip speed: " + noclipSpeed, 1f);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+        {
+            noclipSpeed *= 2;
+            TooltipUtil.Display("Noclip speed: " + noclipSpeed, 1f);
+        }
     }
 
 
